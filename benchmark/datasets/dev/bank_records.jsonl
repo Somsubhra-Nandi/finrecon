@@ -1,0 +1,890 @@
+{"amount":3835346,"bank_record_id":"bnk_dev_000001","direction":"credit","narration":"RZPY/SETL/setl_dev_000001 CREDIT","value_date":"2026-12-13"}
+{"amount":4206597,"bank_record_id":"bnk_dev_000002","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-06-03"}
+{"amount":4187450,"bank_record_id":"bnk_dev_000003","direction":"credit","narration":"RTGS CR REF 5E***********VQ RAZORPAY SOFTWARE","value_date":"2026-12-27"}
+{"amount":4850970,"bank_record_id":"bnk_dev_000004","direction":"credit","narration":"RZPY/SETL/setl_dev_000005 CREDIT","value_date":"2026-09-26"}
+{"amount":4261904,"bank_record_id":"bnk_dev_000005","direction":"credit","narration":"RZPY/SETL/B4*********GC REF:PAY88/REV","value_date":"2026-10-18"}
+{"amount":3360296,"bank_record_id":"bnk_dev_000006","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-09-11"}
+{"amount":3694852,"bank_record_id":"bnk_dev_000007","direction":"credit","narration":"UPI/PBP5R9JRT6QSVF/RAZORPAY SETTLEMENT","value_date":"2026-03-31"}
+{"amount":4274340,"bank_record_id":"bnk_dev_000008","direction":"credit","narration":"IMPS/P2A/U6GC4H2JY2S/RAZORPAY","value_date":"2026-09-16"}
+{"amount":3807563,"bank_record_id":"bnk_dev_000009","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-12-13"}
+{"amount":5270257,"bank_record_id":"bnk_dev_000010","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-02-10"}
+{"amount":1431094,"bank_record_id":"bnk_dev_000011","direction":"credit","narration":"RTGS CR REF MQ8MR7YNFH RAZORPAY SOFTWARE","value_date":"2026-06-09"}
+{"amount":4503403,"bank_record_id":"bnk_dev_000012","direction":"credit","narration":"RZPY/SETL/setl_dev_000014 CREDIT","value_date":"2026-01-09"}
+{"amount":4575306,"bank_record_id":"bnk_dev_000013","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-12-26"}
+{"amount":1129020,"bank_record_id":"bnk_dev_000014","direction":"credit","narration":"UPI/6THTZWDBZ6BP/RAZORPAY SETTLEMENT","value_date":"2026-02-17"}
+{"amount":2872654,"bank_record_id":"bnk_dev_000015","direction":"credit","narration":"RZPY/SETL/setl_dev_000017 CREDIT","value_date":"2026-05-06"}
+{"amount":2717427,"bank_record_id":"bnk_dev_000016","direction":"credit","narration":"UPI/CPKEAVJJ1S9L7KDY/RAZORPAY SETTLEMENT","value_date":"2026-09-30"}
+{"amount":4866517,"bank_record_id":"bnk_dev_000017","direction":"credit","narration":"RZPY/SETL/setl_dev_000019 CREDIT","value_date":"2026-02-14"}
+{"amount":359022,"bank_record_id":"bnk_dev_000018","direction":"credit","narration":"RZPY*ORD293 UPI/KY***********MO","value_date":"2026-01-30"}
+{"amount":842914,"bank_record_id":"bnk_dev_000019","direction":"credit","narration":"RZPY/SETL/setl_dev_000021 CREDIT","value_date":"2026-04-12"}
+{"amount":3142492,"bank_record_id":"bnk_dev_000020","direction":"credit","narration":"RZPY/SETL/setl_dev_000022 CREDIT","value_date":"2026-07-18"}
+{"amount":2572698,"bank_record_id":"bnk_dev_000021","direction":"credit","narration":"UPI/A9TH5SAXPTKYJ/RAZORPAY SETTLEMENT","value_date":"2026-02-23"}
+{"amount":142189,"bank_record_id":"bnk_dev_000022","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-01-08"}
+{"amount":2293950,"bank_record_id":"bnk_dev_000023","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-03-30"}
+{"amount":3126853,"bank_record_id":"bnk_dev_000024","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-04-20"}
+{"amount":3323030,"bank_record_id":"bnk_dev_000025","direction":"credit","narration":"NEFT-CR-FEHOLB7HQ7AZ6CE","value_date":"2026-11-07"}
+{"amount":2472661,"bank_record_id":"bnk_dev_000026","direction":"credit","narration":"RZPY/SETL/C3GUV37YVHZ6OL REF:PAY88/REV","value_date":"2026-12-01"}
+{"amount":1730555,"bank_record_id":"bnk_dev_000027","direction":"credit","narration":"NEFT-CR-OLDKY8T1TX5AHR","value_date":"2026-05-28"}
+{"amount":2787303,"bank_record_id":"bnk_dev_000028","direction":"credit","narration":"RZPY/SETL/setl_dev_000030 CREDIT","value_date":"2026-02-17"}
+{"amount":2696780,"bank_record_id":"bnk_dev_000029","direction":"credit","narration":"RTGS CR REF 9T8YIDXG6KPSSLK RAZORPAY SOFTWARE","value_date":"2026-06-01"}
+{"amount":3478145,"bank_record_id":"bnk_dev_000030","direction":"credit","narration":"RZPY*ORD293 UPI/E1W4YB8WTX4VZL","value_date":"2026-06-18"}
+{"amount":3098024,"bank_record_id":"bnk_dev_000031","direction":"credit","narration":"RTGS CR REF QJKX61QLJR97 RAZORPAY SOFTWARE","value_date":"2026-05-26"}
+{"amount":3133561,"bank_record_id":"bnk_dev_000032","direction":"credit","narration":"RZPY/SETL/setl_dev_000034 CREDIT","value_date":"2026-06-25"}
+{"amount":2025816,"bank_record_id":"bnk_dev_000033","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-08-12"}
+{"amount":3995310,"bank_record_id":"bnk_dev_000034","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-19"}
+{"amount":4680369,"bank_record_id":"bnk_dev_000035","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-02-22"}
+{"amount":690884,"bank_record_id":"bnk_dev_000036","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-10-23"}
+{"amount":1111544,"bank_record_id":"bnk_dev_000037","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-12-20"}
+{"amount":186089,"bank_record_id":"bnk_dev_000038","direction":"credit","narration":"RZPY/SETL/XN68NQA42H0SCRC REF:PAY88/REV","value_date":"2026-07-14"}
+{"amount":4089288,"bank_record_id":"bnk_dev_000039","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-11-04"}
+{"amount":526989,"bank_record_id":"bnk_dev_000040","direction":"credit","narration":"UPI/NX0K4U0DIPMM/RAZORPAY SETTLEMENT","value_date":"2026-06-07"}
+{"amount":2564357,"bank_record_id":"bnk_dev_000041","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-01-18"}
+{"amount":232768,"bank_record_id":"bnk_dev_000042","direction":"credit","narration":"NEFT-CR-TAKJO30IV0521BJ","value_date":"2026-07-20"}
+{"amount":2982867,"bank_record_id":"bnk_dev_000043","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-11-03"}
+{"amount":646614,"bank_record_id":"bnk_dev_000044","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-09-27"}
+{"amount":1660690,"bank_record_id":"bnk_dev_000045","direction":"credit","narration":"RZPY/SETL/setl_dev_000047 CREDIT","value_date":"2026-02-26"}
+{"amount":2904016,"bank_record_id":"bnk_dev_000046","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-12-23"}
+{"amount":3450261,"bank_record_id":"bnk_dev_000047","direction":"credit","narration":"RZPY/SETL/setl_dev_000049 CREDIT","value_date":"2026-08-30"}
+{"amount":1261980,"bank_record_id":"bnk_dev_000048","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-05-27"}
+{"amount":1037408,"bank_record_id":"bnk_dev_000049","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-11-10"}
+{"amount":1680474,"bank_record_id":"bnk_dev_000050","direction":"credit","narration":"NEFT CR-RZRPAY-SETIH********BQ-MUM","value_date":"2026-09-15"}
+{"amount":3679606,"bank_record_id":"bnk_dev_000051","direction":"credit","narration":"RZPY/SETL/setl_dev_000053 CREDIT","value_date":"2026-05-05"}
+{"amount":1541799,"bank_record_id":"bnk_dev_000052","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-09"}
+{"amount":854047,"bank_record_id":"bnk_dev_000053","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-08-21"}
+{"amount":3794769,"bank_record_id":"bnk_dev_000054","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/2140W3/REV-8271","value_date":"2026-01-16"}
+{"amount":209607,"bank_record_id":"bnk_dev_000055","direction":"credit","narration":"UPI/HMCGBB93KW4FLCY7/RAZORPAY SETTLEMENT","value_date":"2026-04-17"}
+{"amount":2090702,"bank_record_id":"bnk_dev_000056","direction":"credit","narration":"RZPY/SETL/setl_dev_000058 CREDIT","value_date":"2026-09-16"}
+{"amount":2375910,"bank_record_id":"bnk_dev_000057","direction":"credit","narration":"NEFT CR-RZRPAY-SET4L82PNF731ZIH83-MUM","value_date":"2026-01-30"}
+{"amount":2366977,"bank_record_id":"bnk_dev_000058","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-11-23"}
+{"amount":1825153,"bank_record_id":"bnk_dev_000059","direction":"credit","narration":"RTGS CR REF 8A***********IJ RAZORPAY SOFTWARE","value_date":"2026-05-26"}
+{"amount":4281948,"bank_record_id":"bnk_dev_000060","direction":"credit","narration":"NEFT-CR-YMNT96V44VTQNUK","value_date":"2026-07-13"}
+{"amount":3925951,"bank_record_id":"bnk_dev_000061","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/L2********3O/REV-8271","value_date":"2026-12-09"}
+{"amount":3568236,"bank_record_id":"bnk_dev_000062","direction":"credit","narration":"IMPS/P2A/C995ZWFVL2BHZK/RAZORPAY","value_date":"2026-01-13"}
+{"amount":3942178,"bank_record_id":"bnk_dev_000063","direction":"credit","narration":"IMPS/P2A/70OZKNG9VR915A/RAZORPAY","value_date":"2026-05-24"}
+{"amount":4676233,"bank_record_id":"bnk_dev_000064","direction":"credit","narration":"RZPY/SETL/XOE4 REF:PAY88/REV","value_date":"2026-11-09"}
+{"amount":3457197,"bank_record_id":"bnk_dev_000065","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-08-24"}
+{"amount":3796712,"bank_record_id":"bnk_dev_000066","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-02-20"}
+{"amount":3246311,"bank_record_id":"bnk_dev_000067","direction":"credit","narration":"NEFT-CR-89N319AFERSSL","value_date":"2026-07-07"}
+{"amount":5336895,"bank_record_id":"bnk_dev_000068","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-01-10"}
+{"amount":4472164,"bank_record_id":"bnk_dev_000069","direction":"credit","narration":"RZPY/SETL/setl_dev_000073 CREDIT","value_date":"2026-06-03"}
+{"amount":3660436,"bank_record_id":"bnk_dev_000070","direction":"credit","narration":"NEFT-CR-GJSYAXIN2UA4BNK","value_date":"2026-02-07"}
+{"amount":4111742,"bank_record_id":"bnk_dev_000071","direction":"credit","narration":"RZPY/SETL/setl_dev_000075 CREDIT","value_date":"2026-11-10"}
+{"amount":206115,"bank_record_id":"bnk_dev_000072","direction":"credit","narration":"NEFT-CR-RDP5CDOF5Y9UNTF","value_date":"2026-04-18"}
+{"amount":4507161,"bank_record_id":"bnk_dev_000073","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-02-12"}
+{"amount":2862266,"bank_record_id":"bnk_dev_000074","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-02-04"}
+{"amount":4055494,"bank_record_id":"bnk_dev_000075","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-12-09"}
+{"amount":3494538,"bank_record_id":"bnk_dev_000076","direction":"credit","narration":"RZPY/SETL/setl_dev_000081 CREDIT","value_date":"2026-05-02"}
+{"amount":465561,"bank_record_id":"bnk_dev_000077","direction":"credit","narration":"RZPY/SETL/setl_dev_000082 CREDIT","value_date":"2026-01-29"}
+{"amount":319510,"bank_record_id":"bnk_dev_000078","direction":"credit","narration":"IMPS/P2A/JJ0S2ZSK5PI24/RAZORPAY","value_date":"2026-01-08"}
+{"amount":1884102,"bank_record_id":"bnk_dev_000079","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-05-20"}
+{"amount":335811,"bank_record_id":"bnk_dev_000080","direction":"credit","narration":"NEFT CR-RZRPAY-SET2-RPQ4CR8P46KQH2-MUM","value_date":"2026-05-22"}
+{"amount":1067288,"bank_record_id":"bnk_dev_000081","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-02-01"}
+{"amount":4878674,"bank_record_id":"bnk_dev_000082","direction":"credit","narration":"RTGS CR REF 2SLVQ0D RAZORPAY SOFTWARE","value_date":"2026-09-06"}
+{"amount":2060897,"bank_record_id":"bnk_dev_000083","direction":"credit","narration":"RZPY/SETL/setl_dev_000088 CREDIT","value_date":"2026-08-23"}
+{"amount":1019458,"bank_record_id":"bnk_dev_000084","direction":"credit","narration":"RZPY/SETL/8RORK8BR03IA5R REF:PAY88/REV","value_date":"2026-06-18"}
+{"amount":1474408,"bank_record_id":"bnk_dev_000085","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-17"}
+{"amount":3550214,"bank_record_id":"bnk_dev_000086","direction":"credit","narration":"NEFT-CR-A9AB6AMP98QJW1","value_date":"2026-07-06"}
+{"amount":4568666,"bank_record_id":"bnk_dev_000087","direction":"credit","narration":"NEFT-CR-WZMOLWMCCMVHLT","value_date":"2026-04-05"}
+{"amount":1666668,"bank_record_id":"bnk_dev_000088","direction":"credit","narration":"RZPY/SETL/setl_dev_000093 CREDIT","value_date":"2026-03-05"}
+{"amount":261735,"bank_record_id":"bnk_dev_000089","direction":"credit","narration":"UPI/75U97ENBLRY/RAZORPAY SETTLEMENT","value_date":"2026-02-03"}
+{"amount":4611419,"bank_record_id":"bnk_dev_000090","direction":"credit","narration":"RZPY/SETL/setl_dev_000095 CREDIT","value_date":"2026-04-28"}
+{"amount":1625603,"bank_record_id":"bnk_dev_000091","direction":"credit","narration":"RZPY/SETL/setl_dev_000096 CREDIT","value_date":"2026-10-02"}
+{"amount":1219132,"bank_record_id":"bnk_dev_000092","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-11-01"}
+{"amount":546525,"bank_record_id":"bnk_dev_000093","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-09-18"}
+{"amount":4846140,"bank_record_id":"bnk_dev_000094","direction":"credit","narration":"UPI/BKM4ZZMLHQEQN7N/RAZORPAY SETTLEMENT","value_date":"2026-05-04"}
+{"amount":3965292,"bank_record_id":"bnk_dev_000095","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-12-17"}
+{"amount":2478032,"bank_record_id":"bnk_dev_000096","direction":"credit","narration":"RZPY/SETL/setl_dev_000102 CREDIT","value_date":"2026-12-05"}
+{"amount":4322480,"bank_record_id":"bnk_dev_000097","direction":"credit","narration":"NEFT CR-RZRPAY-SETFL9LN24ZE3U8T-MUM","value_date":"2026-06-23"}
+{"amount":2454991,"bank_record_id":"bnk_dev_000098","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-08-07"}
+{"amount":4861067,"bank_record_id":"bnk_dev_000099","direction":"credit","narration":"RZPY/SETL/setl_dev_000106 CREDIT","value_date":"2026-09-24"}
+{"amount":1470691,"bank_record_id":"bnk_dev_000100","direction":"credit","narration":"UPI/MDSJ4075B07D/RAZORPAY SETTLEMENT","value_date":"2026-07-07"}
+{"amount":2803483,"bank_record_id":"bnk_dev_000101","direction":"credit","narration":"RZPY/SETL/setl_dev_000108 CREDIT","value_date":"2026-07-15"}
+{"amount":1861940,"bank_record_id":"bnk_dev_000102","direction":"credit","narration":"UPI/VGKYBID9R7DO4JFW/RAZORPAY SETTLEMENT","value_date":"2026-01-30"}
+{"amount":2145366,"bank_record_id":"bnk_dev_000103","direction":"credit","narration":"NEFT CR-RZRPAY-SETG11XKQRLUFL-MUM","value_date":"2026-01-25"}
+{"amount":2984519,"bank_record_id":"bnk_dev_000104","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-16"}
+{"amount":408372,"bank_record_id":"bnk_dev_000105","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-02-15"}
+{"amount":2480914,"bank_record_id":"bnk_dev_000106","direction":"credit","narration":"NEFT-CR-ELAPA7RJA7XSWUV","value_date":"2026-04-29"}
+{"amount":2275623,"bank_record_id":"bnk_dev_000107","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-01-23"}
+{"amount":5575871,"bank_record_id":"bnk_dev_000108","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-07-26"}
+{"amount":2964960,"bank_record_id":"bnk_dev_000109","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-05-01"}
+{"amount":1398213,"bank_record_id":"bnk_dev_000110","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-10-04"}
+{"amount":1008387,"bank_record_id":"bnk_dev_000111","direction":"credit","narration":"RZPY*ORD293 UPI/PLMLAOEH","value_date":"2026-04-19"}
+{"amount":4138041,"bank_record_id":"bnk_dev_000112","direction":"credit","narration":"RZPY/SETL/0ENJJXA33TD5E66K REF:PAY88/REV","value_date":"2026-05-08"}
+{"amount":552080,"bank_record_id":"bnk_dev_000113","direction":"credit","narration":"RZPY/SETL/EMT08DM REF:PAY88/REV","value_date":"2026-11-05"}
+{"amount":3013251,"bank_record_id":"bnk_dev_000114","direction":"credit","narration":"UPI/5OVG1MRAM51R3Z3G/RAZORPAY SETTLEMENT","value_date":"2026-11-22"}
+{"amount":687705,"bank_record_id":"bnk_dev_000115","direction":"credit","narration":"RZPY*ORD293 UPI/UH*******MP","value_date":"2026-11-24"}
+{"amount":2005223,"bank_record_id":"bnk_dev_000116","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-02-13"}
+{"amount":758478,"bank_record_id":"bnk_dev_000117","direction":"credit","narration":"NEFT CR-RZRPAY-SETLMA31R3DN45OOE-MUM","value_date":"2026-12-21"}
+{"amount":4595215,"bank_record_id":"bnk_dev_000118","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-06-26"}
+{"amount":3595400,"bank_record_id":"bnk_dev_000119","direction":"credit","narration":"NEFT CR-RZRPAY-SETDI23NSXGOKLG9-MUM","value_date":"2026-03-23"}
+{"amount":3765092,"bank_record_id":"bnk_dev_000120","direction":"credit","narration":"UPI/SPB8WZDKHB198M/RAZORPAY SETTLEMENT","value_date":"2026-03-19"}
+{"amount":3654234,"bank_record_id":"bnk_dev_000121","direction":"credit","narration":"RZPY/SETL/EEA7L9CYW REF:PAY88/REV","value_date":"2026-01-18"}
+{"amount":1372130,"bank_record_id":"bnk_dev_000122","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-05-04"}
+{"amount":3170416,"bank_record_id":"bnk_dev_000123","direction":"credit","narration":"RZPY*ORD293 UPI/GD************VT","value_date":"2026-04-27"}
+{"amount":4721147,"bank_record_id":"bnk_dev_000124","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-10-16"}
+{"amount":2015666,"bank_record_id":"bnk_dev_000125","direction":"credit","narration":"UPI/Y1NWGD7VLWYZG/RAZORPAY SETTLEMENT","value_date":"2026-01-27"}
+{"amount":1033171,"bank_record_id":"bnk_dev_000126","direction":"credit","narration":"NEFT CR-RZRPAY-SETAAWEJJ8KQ2-MUM","value_date":"2026-11-12"}
+{"amount":1061957,"bank_record_id":"bnk_dev_000127","direction":"credit","narration":"RZPY/SETL/setl_dev_000138 CREDIT","value_date":"2026-09-09"}
+{"amount":2571942,"bank_record_id":"bnk_dev_000128","direction":"credit","narration":"NEFT-CR-I3P84U5SLMIPZSPG","value_date":"2026-06-06"}
+{"amount":942400,"bank_record_id":"bnk_dev_000129","direction":"credit","narration":"UPI/15582Z5F3Z4W/RAZORPAY SETTLEMENT","value_date":"2026-11-01"}
+{"amount":4298077,"bank_record_id":"bnk_dev_000130","direction":"credit","narration":"RZPY/SETL/setl_dev_000141 CREDIT","value_date":"2026-07-31"}
+{"amount":645497,"bank_record_id":"bnk_dev_000131","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/K9COP4LG-3C4AQA/REV-8271","value_date":"2026-10-15"}
+{"amount":1448604,"bank_record_id":"bnk_dev_000132","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-12-11"}
+{"amount":2853532,"bank_record_id":"bnk_dev_000133","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-08-10"}
+{"amount":272731,"bank_record_id":"bnk_dev_000134","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-12-09"}
+{"amount":4370865,"bank_record_id":"bnk_dev_000135","direction":"credit","narration":"RZPY/SETL/setl_dev_000146 CREDIT","value_date":"2026-06-12"}
+{"amount":2766233,"bank_record_id":"bnk_dev_000136","direction":"credit","narration":"RZPY/SETL/setl_dev_000147 CREDIT","value_date":"2026-08-04"}
+{"amount":4581239,"bank_record_id":"bnk_dev_000137","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/AIIU288063PBV9/REV-8271","value_date":"2026-05-26"}
+{"amount":2840422,"bank_record_id":"bnk_dev_000138","direction":"credit","narration":"IMPS/P2A/8DFP2OUSG251RCQ5/RAZORPAY","value_date":"2026-02-09"}
+{"amount":1311190,"bank_record_id":"bnk_dev_000139","direction":"credit","narration":"RZPY/SETL/setl_dev_000150 CREDIT","value_date":"2026-05-01"}
+{"amount":3854904,"bank_record_id":"bnk_dev_000140","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-09-29"}
+{"amount":4170348,"bank_record_id":"bnk_dev_000141","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-06-18"}
+{"amount":1794987,"bank_record_id":"bnk_dev_000142","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-11-09"}
+{"amount":1300692,"bank_record_id":"bnk_dev_000143","direction":"credit","narration":"IMPS/P2A/LDV068WJ8R5U9MCD/RAZORPAY","value_date":"2026-03-14"}
+{"amount":5771550,"bank_record_id":"bnk_dev_000144","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-10-10"}
+{"amount":5184347,"bank_record_id":"bnk_dev_000145","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-10-02"}
+{"amount":1712030,"bank_record_id":"bnk_dev_000146","direction":"credit","narration":"UPI/FF5KOMITZVFU/RAZORPAY SETTLEMENT","value_date":"2026-01-07"}
+{"amount":3584488,"bank_record_id":"bnk_dev_000147","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-06-16"}
+{"amount":1068170,"bank_record_id":"bnk_dev_000148","direction":"credit","narration":"IMPS/P2A/49IO97FHX8H/RAZORPAY","value_date":"2026-08-24"}
+{"amount":4681088,"bank_record_id":"bnk_dev_000149","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/K6RNE3YQUA/REV-8271","value_date":"2026-03-11"}
+{"amount":878969,"bank_record_id":"bnk_dev_000150","direction":"credit","narration":"UPI/LOAG3DJZHLIH2/RAZORPAY SETTLEMENT","value_date":"2026-12-13"}
+{"amount":3351593,"bank_record_id":"bnk_dev_000151","direction":"credit","narration":"RZPY/SETL/setl_dev_000166 CREDIT","value_date":"2026-09-15"}
+{"amount":1536394,"bank_record_id":"bnk_dev_000152","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-02-11"}
+{"amount":584874,"bank_record_id":"bnk_dev_000153","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-09"}
+{"amount":2372442,"bank_record_id":"bnk_dev_000154","direction":"credit","narration":"RZPY/SETL/KCYYH4XWLTE REF:PAY88/REV","value_date":"2026-11-11"}
+{"amount":4703999,"bank_record_id":"bnk_dev_000155","direction":"credit","narration":"RZPY/SETL/setl_dev_000170 CREDIT","value_date":"2026-08-02"}
+{"amount":4332361,"bank_record_id":"bnk_dev_000156","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-09-02"}
+{"amount":3782635,"bank_record_id":"bnk_dev_000157","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-10-12"}
+{"amount":1835247,"bank_record_id":"bnk_dev_000158","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-06-20"}
+{"amount":5321783,"bank_record_id":"bnk_dev_000159","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-19"}
+{"amount":3894027,"bank_record_id":"bnk_dev_000160","direction":"credit","narration":"UPI/D1CBLPVI1MATWM/RAZORPAY SETTLEMENT","value_date":"2026-10-10"}
+{"amount":1221303,"bank_record_id":"bnk_dev_000161","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-01-26"}
+{"amount":2709065,"bank_record_id":"bnk_dev_000162","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-06-09"}
+{"amount":3181805,"bank_record_id":"bnk_dev_000163","direction":"credit","narration":"NEFT CR-RZRPAY-SETL46NDBY6ECZXTIU-MUM","value_date":"2026-07-12"}
+{"amount":4015088,"bank_record_id":"bnk_dev_000164","direction":"credit","narration":"NEFT CR-RZRPAY-SETSEJFOOHRCQL-MUM","value_date":"2026-10-20"}
+{"amount":2417767,"bank_record_id":"bnk_dev_000165","direction":"credit","narration":"RZPY/SETL/setl_dev_000184 CREDIT","value_date":"2026-08-13"}
+{"amount":552971,"bank_record_id":"bnk_dev_000166","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/FK9K0M8LYR2/REV-8271","value_date":"2026-07-21"}
+{"amount":2947343,"bank_record_id":"bnk_dev_000167","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-05-12"}
+{"amount":4262994,"bank_record_id":"bnk_dev_000168","direction":"credit","narration":"RTGS CR REF MG***********Z7 RAZORPAY SOFTWARE","value_date":"2026-03-01"}
+{"amount":3641674,"bank_record_id":"bnk_dev_000169","direction":"credit","narration":"NEFT CR-RZRPAY-SETTEFS-MUM","value_date":"2026-12-20"}
+{"amount":4201623,"bank_record_id":"bnk_dev_000170","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-03-01"}
+{"amount":4335174,"bank_record_id":"bnk_dev_000171","direction":"credit","narration":"IMPS/P2A/PWXALPSTD29/RAZORPAY","value_date":"2026-07-16"}
+{"amount":843301,"bank_record_id":"bnk_dev_000172","direction":"credit","narration":"RZPY/SETL/setl_dev_000192 CREDIT","value_date":"2026-05-30"}
+{"amount":950654,"bank_record_id":"bnk_dev_000173","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-01-16"}
+{"amount":510071,"bank_record_id":"bnk_dev_000174","direction":"credit","narration":"UPI/7ARKIVCLIM8J0EL/RAZORPAY SETTLEMENT","value_date":"2026-05-16"}
+{"amount":1806654,"bank_record_id":"bnk_dev_000175","direction":"credit","narration":"RZPY/SETL/setl_dev_000195 CREDIT","value_date":"2026-08-16"}
+{"amount":3106348,"bank_record_id":"bnk_dev_000176","direction":"credit","narration":"RZPY/SETL/setl_dev_000196 CREDIT","value_date":"2026-06-07"}
+{"amount":4849105,"bank_record_id":"bnk_dev_000177","direction":"credit","narration":"NEFT-CR-SEHTB7TW6SG","value_date":"2026-04-11"}
+{"amount":2474705,"bank_record_id":"bnk_dev_000178","direction":"credit","narration":"RTGS CR REF CX0VHERNE2 RAZORPAY SOFTWARE","value_date":"2026-08-19"}
+{"amount":58815,"bank_record_id":"bnk_dev_000179","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-02-16"}
+{"amount":3181919,"bank_record_id":"bnk_dev_000180","direction":"credit","narration":"UPI/QEX4URIDMT3WX4/RAZORPAY SETTLEMENT","value_date":"2026-03-14"}
+{"amount":4885746,"bank_record_id":"bnk_dev_000181","direction":"credit","narration":"RTGS CR REF SEK8 RAZORPAY SOFTWARE","value_date":"2026-09-15"}
+{"amount":3041776,"bank_record_id":"bnk_dev_000182","direction":"credit","narration":"RZPY/SETL/setl_dev_000202 CREDIT","value_date":"2026-10-05"}
+{"amount":2247044,"bank_record_id":"bnk_dev_000183","direction":"credit","narration":"RTGS CR REF A-76AV4160ON RAZORPAY SOFTWARE","value_date":"2026-09-25"}
+{"amount":2684420,"bank_record_id":"bnk_dev_000184","direction":"credit","narration":"NEFT CR-RZRPAY-SETX6MNDXQUTM9BL91-MUM","value_date":"2026-06-04"}
+{"amount":2659264,"bank_record_id":"bnk_dev_000185","direction":"credit","narration":"NEFT CR-RZRPAY-SETMGYPBJ15254ZNPWD-MUM","value_date":"2026-03-16"}
+{"amount":2466213,"bank_record_id":"bnk_dev_000186","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-10-29"}
+{"amount":4494865,"bank_record_id":"bnk_dev_000187","direction":"credit","narration":"RZPY*ORD293 UPI/MKTKKVIC82-BEDHLC","value_date":"2026-06-18"}
+{"amount":1414372,"bank_record_id":"bnk_dev_000188","direction":"credit","narration":"UPI/CWO7BXC23IA/RAZORPAY SETTLEMENT","value_date":"2026-12-06"}
+{"amount":95477,"bank_record_id":"bnk_dev_000189","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-10-05"}
+{"amount":2968666,"bank_record_id":"bnk_dev_000190","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-22"}
+{"amount":302245,"bank_record_id":"bnk_dev_000191","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-06-04"}
+{"amount":3606698,"bank_record_id":"bnk_dev_000192","direction":"credit","narration":"RZPY/SETL/setl_dev_000212 CREDIT","value_date":"2026-04-14"}
+{"amount":3619402,"bank_record_id":"bnk_dev_000193","direction":"credit","narration":"NEFT CR-RZRPAY-SETRMXWGJ55VEX2T-MUM","value_date":"2026-10-06"}
+{"amount":2384056,"bank_record_id":"bnk_dev_000194","direction":"credit","narration":"IMPS/P2A/HSODA6LGX4QMXB/RAZORPAY","value_date":"2026-08-23"}
+{"amount":2796952,"bank_record_id":"bnk_dev_000195","direction":"credit","narration":"RZPY/SETL/setl_dev_000215 CREDIT","value_date":"2026-11-05"}
+{"amount":4317868,"bank_record_id":"bnk_dev_000196","direction":"credit","narration":"NEFT CR-RZRPAY-SETKJ2SFML8BE4-MUM","value_date":"2026-10-14"}
+{"amount":415660,"bank_record_id":"bnk_dev_000197","direction":"credit","narration":"NEFT CR-RZRPAY-SETEDUW5VM98HFA04W-MUM","value_date":"2026-08-09"}
+{"amount":512258,"bank_record_id":"bnk_dev_000198","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-31"}
+{"amount":3574446,"bank_record_id":"bnk_dev_000199","direction":"credit","narration":"RZPY*ORD293 UPI/3THU8SOMKUBM","value_date":"2026-12-07"}
+{"amount":558904,"bank_record_id":"bnk_dev_000200","direction":"credit","narration":"IMPS/P2A/UVD7HA3DCCS3YMSS/RAZORPAY","value_date":"2026-11-10"}
+{"amount":2778210,"bank_record_id":"bnk_dev_000201","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-10-13"}
+{"amount":2254582,"bank_record_id":"bnk_dev_000202","direction":"credit","narration":"UPI/URMC1YCDZB8/RAZORPAY SETTLEMENT","value_date":"2026-04-17"}
+{"amount":1286982,"bank_record_id":"bnk_dev_000203","direction":"credit","narration":"UPI/NY9LO3MVWMIN2/RAZORPAY SETTLEMENT","value_date":"2026-06-03"}
+{"amount":1178814,"bank_record_id":"bnk_dev_000204","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-01-03"}
+{"amount":1545392,"bank_record_id":"bnk_dev_000205","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-12-05"}
+{"amount":1211918,"bank_record_id":"bnk_dev_000206","direction":"credit","narration":"NEFT-CR-H2HAODDNYXJZLC9V","value_date":"2026-01-17"}
+{"amount":3531307,"bank_record_id":"bnk_dev_000207","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-08"}
+{"amount":1705076,"bank_record_id":"bnk_dev_000208","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-09-10"}
+{"amount":263925,"bank_record_id":"bnk_dev_000209","direction":"credit","narration":"RZPY/SETL/setl_dev_000231 CREDIT","value_date":"2026-12-14"}
+{"amount":5981392,"bank_record_id":"bnk_dev_000210","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-06-15"}
+{"amount":4638961,"bank_record_id":"bnk_dev_000211","direction":"credit","narration":"NEFT CR-RZRPAY-SET5E748FKBBGBX1SEC-MUM","value_date":"2026-11-29"}
+{"amount":83129,"bank_record_id":"bnk_dev_000212","direction":"credit","narration":"RTGS CR REF SBIB RAZORPAY SOFTWARE","value_date":"2026-01-27"}
+{"amount":607438,"bank_record_id":"bnk_dev_000213","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/DNZ62T0/REV-8271","value_date":"2026-07-13"}
+{"amount":745439,"bank_record_id":"bnk_dev_000214","direction":"credit","narration":"UPI/7TR6DUH2704/RAZORPAY SETTLEMENT","value_date":"2026-12-08"}
+{"amount":1680670,"bank_record_id":"bnk_dev_000215","direction":"credit","narration":"RZPY/SETL/setl_dev_000238 CREDIT","value_date":"2026-01-29"}
+{"amount":4123229,"bank_record_id":"bnk_dev_000216","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-05-06"}
+{"amount":8192579,"bank_record_id":"bnk_dev_000217","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-04-20"}
+{"amount":3497004,"bank_record_id":"bnk_dev_000218","direction":"credit","narration":"NEFT-CR-UACYCEGHDBFT5RW","value_date":"2026-01-20"}
+{"amount":4059186,"bank_record_id":"bnk_dev_000219","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-04-08"}
+{"amount":3583044,"bank_record_id":"bnk_dev_000220","direction":"credit","narration":"RZPY/SETL/setl_dev_000244 CREDIT","value_date":"2026-11-17"}
+{"amount":4636574,"bank_record_id":"bnk_dev_000221","direction":"credit","narration":"UPI/U3YA2DWM2MLM2/RAZORPAY SETTLEMENT","value_date":"2026-11-15"}
+{"amount":4154549,"bank_record_id":"bnk_dev_000222","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-08-02"}
+{"amount":294529,"bank_record_id":"bnk_dev_000223","direction":"credit","narration":"NEFT CR-RZRPAY-SET34N8KQ7GIMR-MUM","value_date":"2026-03-07"}
+{"amount":2429245,"bank_record_id":"bnk_dev_000224","direction":"credit","narration":"RZPY/SETL/setl_dev_000248 CREDIT","value_date":"2026-09-01"}
+{"amount":2783811,"bank_record_id":"bnk_dev_000225","direction":"credit","narration":"UPI/DCCG9JWIR16YP7T/RAZORPAY SETTLEMENT","value_date":"2026-07-02"}
+{"amount":393017,"bank_record_id":"bnk_dev_000226","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-07-12"}
+{"amount":4047919,"bank_record_id":"bnk_dev_000227","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-10-06"}
+{"amount":1544306,"bank_record_id":"bnk_dev_000228","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-01-05"}
+{"amount":3073039,"bank_record_id":"bnk_dev_000229","direction":"credit","narration":"RTGS CR REF EX*********XH RAZORPAY SOFTWARE","value_date":"2026-02-04"}
+{"amount":1368967,"bank_record_id":"bnk_dev_000230","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-07-16"}
+{"amount":3626230,"bank_record_id":"bnk_dev_000231","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/RU*********ST/REV-8271","value_date":"2026-10-12"}
+{"amount":2011244,"bank_record_id":"bnk_dev_000232","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-06-23"}
+{"amount":1119362,"bank_record_id":"bnk_dev_000233","direction":"credit","narration":"RZPY/SETL/setl_dev_000258 CREDIT","value_date":"2026-06-11"}
+{"amount":3420027,"bank_record_id":"bnk_dev_000234","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-01-20"}
+{"amount":686351,"bank_record_id":"bnk_dev_000235","direction":"credit","narration":"RZPY/SETL/setl_dev_000260 CREDIT","value_date":"2026-01-26"}
+{"amount":3591017,"bank_record_id":"bnk_dev_000236","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-12-28"}
+{"amount":1892082,"bank_record_id":"bnk_dev_000237","direction":"credit","narration":"UPI/3Y3JZFJCK1NPM/RAZORPAY SETTLEMENT","value_date":"2026-07-14"}
+{"amount":1101675,"bank_record_id":"bnk_dev_000238","direction":"credit","narration":"NEFT CR-RZRPAY-SETYGOJRJ-MUM","value_date":"2026-09-09"}
+{"amount":835493,"bank_record_id":"bnk_dev_000239","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-02"}
+{"amount":1885849,"bank_record_id":"bnk_dev_000240","direction":"credit","narration":"RZPY/SETL/setl_dev_000265 CREDIT","value_date":"2026-01-18"}
+{"amount":3969027,"bank_record_id":"bnk_dev_000241","direction":"credit","narration":"RZPY/SETL/0YNULIL3GA-ADH23 REF:PAY88/REV","value_date":"2026-12-21"}
+{"amount":469876,"bank_record_id":"bnk_dev_000242","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-11"}
+{"amount":2096932,"bank_record_id":"bnk_dev_000243","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/PNTQGF2P9SA65AE/REV-8271","value_date":"2026-05-02"}
+{"amount":3373230,"bank_record_id":"bnk_dev_000244","direction":"credit","narration":"NEFT CR-RZRPAY-SETYRLAB6R772Y-MUM","value_date":"2026-02-20"}
+{"amount":630063,"bank_record_id":"bnk_dev_000245","direction":"credit","narration":"RTGS CR REF GX********I2 RAZORPAY SOFTWARE","value_date":"2026-01-09"}
+{"amount":4335700,"bank_record_id":"bnk_dev_000246","direction":"credit","narration":"RZPY/SETL/7L*******9J REF:PAY88/REV","value_date":"2026-05-21"}
+{"amount":1612957,"bank_record_id":"bnk_dev_000247","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/RCCUZ3TLH8W/REV-8271","value_date":"2026-09-23"}
+{"amount":4296195,"bank_record_id":"bnk_dev_000248","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-06-13"}
+{"amount":91277,"bank_record_id":"bnk_dev_000249","direction":"credit","narration":"RZPY/SETL/setl_dev_000275 CREDIT","value_date":"2026-01-25"}
+{"amount":4201018,"bank_record_id":"bnk_dev_000250","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-06-22"}
+{"amount":4372428,"bank_record_id":"bnk_dev_000251","direction":"credit","narration":"NEFT CR-RZRPAY-SETRPDKG6SVR5DPO5K2-MUM","value_date":"2026-02-24"}
+{"amount":100642,"bank_record_id":"bnk_dev_000252","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-05-26"}
+{"amount":1927532,"bank_record_id":"bnk_dev_000253","direction":"credit","narration":"IMPS/P2A/T0XHPLSCA5CLG8/RAZORPAY","value_date":"2026-11-03"}
+{"amount":2678027,"bank_record_id":"bnk_dev_000254","direction":"credit","narration":"NEFT-CR-S3ZBA7IPWRBDH","value_date":"2026-05-10"}
+{"amount":4735205,"bank_record_id":"bnk_dev_000255","direction":"credit","narration":"NEFT CR-RZRPAY-SET96ZRSLHWSQ4H-MUM","value_date":"2026-12-03"}
+{"amount":907850,"bank_record_id":"bnk_dev_000256","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-01-29"}
+{"amount":2757918,"bank_record_id":"bnk_dev_000257","direction":"credit","narration":"UPI/YNMHXF4R2YS96T/RAZORPAY SETTLEMENT","value_date":"2026-03-30"}
+{"amount":4377351,"bank_record_id":"bnk_dev_000258","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-04-09"}
+{"amount":3374800,"bank_record_id":"bnk_dev_000259","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-03-17"}
+{"amount":350421,"bank_record_id":"bnk_dev_000260","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/SAK6VBNR1/REV-8271","value_date":"2026-10-26"}
+{"amount":4754097,"bank_record_id":"bnk_dev_000261","direction":"credit","narration":"IMPS/P2A/W9DMF5DSRJQ/RAZORPAY","value_date":"2026-05-11"}
+{"amount":5102844,"bank_record_id":"bnk_dev_000262","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-05-21"}
+{"amount":3589092,"bank_record_id":"bnk_dev_000263","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-01-05"}
+{"amount":1376176,"bank_record_id":"bnk_dev_000264","direction":"credit","narration":"UPI/EP5FQX1G35GV0/RAZORPAY SETTLEMENT","value_date":"2026-01-08"}
+{"amount":1231491,"bank_record_id":"bnk_dev_000265","direction":"credit","narration":"UPI/T60S6PDIJOFNF/RAZORPAY SETTLEMENT","value_date":"2026-11-09"}
+{"amount":7389042,"bank_record_id":"bnk_dev_000266","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-01-19"}
+{"amount":1644884,"bank_record_id":"bnk_dev_000267","direction":"credit","narration":"UPI/VD6LU4ORXDCCE/RAZORPAY SETTLEMENT","value_date":"2026-08-30"}
+{"amount":379015,"bank_record_id":"bnk_dev_000268","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-09-07"}
+{"amount":3579020,"bank_record_id":"bnk_dev_000269","direction":"credit","narration":"NEFT-CR-4C9OFBXYBG89","value_date":"2026-04-20"}
+{"amount":3221940,"bank_record_id":"bnk_dev_000270","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-02-15"}
+{"amount":4932178,"bank_record_id":"bnk_dev_000271","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-05-19"}
+{"amount":1087763,"bank_record_id":"bnk_dev_000272","direction":"credit","narration":"NEFT-CR-90O213Q08BDVI","value_date":"2026-01-18"}
+{"amount":2971240,"bank_record_id":"bnk_dev_000273","direction":"credit","narration":"RZPY/SETL/YJ1DQP5 REF:PAY88/REV","value_date":"2026-03-18"}
+{"amount":2223603,"bank_record_id":"bnk_dev_000274","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-02-27"}
+{"amount":1959286,"bank_record_id":"bnk_dev_000275","direction":"credit","narration":"IMPS/P2A/8PL641F2PSRV7N/RAZORPAY","value_date":"2026-12-31"}
+{"amount":4437436,"bank_record_id":"bnk_dev_000276","direction":"credit","narration":"NEFT-CR-HS2VU8CX4HD0MV","value_date":"2026-11-04"}
+{"amount":2333230,"bank_record_id":"bnk_dev_000277","direction":"credit","narration":"RZPY/SETL/setl_dev_000311 CREDIT","value_date":"2026-04-02"}
+{"amount":708980,"bank_record_id":"bnk_dev_000278","direction":"credit","narration":"RZPY/SETL/setl_dev_000312 CREDIT","value_date":"2026-05-12"}
+{"amount":1533227,"bank_record_id":"bnk_dev_000279","direction":"credit","narration":"NEFT CR-RZRPAY-SETPWAF0-MUM","value_date":"2026-08-21"}
+{"amount":4519558,"bank_record_id":"bnk_dev_000280","direction":"credit","narration":"NEFT-CR-BTBYE1NCH2N","value_date":"2026-06-06"}
+{"amount":3854080,"bank_record_id":"bnk_dev_000281","direction":"credit","narration":"RZPY/SETL/setl_dev_000315 CREDIT","value_date":"2026-11-13"}
+{"amount":2401090,"bank_record_id":"bnk_dev_000282","direction":"credit","narration":"UPI/U71V82VPBUGT26TK/RAZORPAY SETTLEMENT","value_date":"2026-03-03"}
+{"amount":8750930,"bank_record_id":"bnk_dev_000283","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-07-21"}
+{"amount":1926779,"bank_record_id":"bnk_dev_000284","direction":"credit","narration":"RZPY/SETL/setl_dev_000319 CREDIT","value_date":"2026-07-29"}
+{"amount":567148,"bank_record_id":"bnk_dev_000285","direction":"credit","narration":"RZPY/SETL/setl_dev_000320 CREDIT","value_date":"2026-02-15"}
+{"amount":1098193,"bank_record_id":"bnk_dev_000286","direction":"credit","narration":"RTGS CR REF VFYCWHGS04 RAZORPAY SOFTWARE","value_date":"2026-04-24"}
+{"amount":1520392,"bank_record_id":"bnk_dev_000287","direction":"credit","narration":"RTGS CR REF 901TSUT00A6E42WQ RAZORPAY SOFTWARE","value_date":"2026-08-19"}
+{"amount":3207209,"bank_record_id":"bnk_dev_000288","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-08-05"}
+{"amount":3882927,"bank_record_id":"bnk_dev_000289","direction":"credit","narration":"RZPY/SETL/setl_dev_000324 CREDIT","value_date":"2026-01-08"}
+{"amount":700987,"bank_record_id":"bnk_dev_000290","direction":"credit","narration":"IMPS/P2A/OBGH6X6YS03M5I/RAZORPAY","value_date":"2026-07-15"}
+{"amount":3374099,"bank_record_id":"bnk_dev_000291","direction":"credit","narration":"UPI/8J7HSJE6BAN41AVZ/RAZORPAY SETTLEMENT","value_date":"2026-01-12"}
+{"amount":3455151,"bank_record_id":"bnk_dev_000292","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-12-20"}
+{"amount":4194603,"bank_record_id":"bnk_dev_000293","direction":"credit","narration":"RZPY/SETL/CH5YHATWF2AK8 REF:PAY88/REV","value_date":"2026-01-31"}
+{"amount":3973716,"bank_record_id":"bnk_dev_000294","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/P0ZH18DGTSUW/REV-8271","value_date":"2026-11-11"}
+{"amount":1389277,"bank_record_id":"bnk_dev_000295","direction":"credit","narration":"RZPY/SETL/URHQ-LCQFRJW REF:PAY88/REV","value_date":"2026-09-03"}
+{"amount":1090292,"bank_record_id":"bnk_dev_000296","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-06-12"}
+{"amount":3986768,"bank_record_id":"bnk_dev_000297","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-12-29"}
+{"amount":680466,"bank_record_id":"bnk_dev_000298","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-07-13"}
+{"amount":1494663,"bank_record_id":"bnk_dev_000299","direction":"credit","narration":"RZPY*ORD293 UPI/L0346O","value_date":"2026-12-02"}
+{"amount":1100050,"bank_record_id":"bnk_dev_000300","direction":"credit","narration":"RZPY/SETL/setl_dev_000336 CREDIT","value_date":"2026-06-08"}
+{"amount":4448032,"bank_record_id":"bnk_dev_000301","direction":"credit","narration":"RZPY*ORD293 UPI/QXCR8O4WYNMK","value_date":"2026-02-08"}
+{"amount":6548263,"bank_record_id":"bnk_dev_000302","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-05-27"}
+{"amount":3846832,"bank_record_id":"bnk_dev_000303","direction":"credit","narration":"NEFT CR-RZRPAY-SETTVZ4HEYJHBG8Z9C-MUM","value_date":"2026-11-26"}
+{"amount":2953473,"bank_record_id":"bnk_dev_000304","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-09-18"}
+{"amount":3527703,"bank_record_id":"bnk_dev_000305","direction":"credit","narration":"IMPS/P2A/NV48W5BH8CC/RAZORPAY","value_date":"2026-08-03"}
+{"amount":4231755,"bank_record_id":"bnk_dev_000306","direction":"credit","narration":"RZPY/SETL/setl_dev_000343 CREDIT","value_date":"2026-02-07"}
+{"amount":757257,"bank_record_id":"bnk_dev_000307","direction":"credit","narration":"NEFT-CR-14R0EOXN6HY","value_date":"2026-12-16"}
+{"amount":1773861,"bank_record_id":"bnk_dev_000308","direction":"credit","narration":"IMPS/P2A/GFROTF2ZJ96BD80G/RAZORPAY","value_date":"2026-12-29"}
+{"amount":3455270,"bank_record_id":"bnk_dev_000309","direction":"credit","narration":"NEFT CR-RZRPAY-SETZK5K9OC1QC-NXR3-MUM","value_date":"2026-05-22"}
+{"amount":1799283,"bank_record_id":"bnk_dev_000310","direction":"credit","narration":"UPI/KSF8Z2OYJJBDTZM/RAZORPAY SETTLEMENT","value_date":"2026-04-06"}
+{"amount":1364031,"bank_record_id":"bnk_dev_000311","direction":"credit","narration":"RZPY/SETL/setl_dev_000348 CREDIT","value_date":"2026-04-11"}
+{"amount":8316173,"bank_record_id":"bnk_dev_000312","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-12-10"}
+{"amount":165343,"bank_record_id":"bnk_dev_000313","direction":"credit","narration":"UPI/05TSCJN0LULN/RAZORPAY SETTLEMENT","value_date":"2026-09-17"}
+{"amount":4103458,"bank_record_id":"bnk_dev_000314","direction":"credit","narration":"NEFT CR-RZRPAY-SETAG3VL2V1FN1-MUM","value_date":"2026-06-30"}
+{"amount":1743999,"bank_record_id":"bnk_dev_000315","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-02-23"}
+{"amount":295432,"bank_record_id":"bnk_dev_000316","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-11-05"}
+{"amount":1602401,"bank_record_id":"bnk_dev_000317","direction":"credit","narration":"NEFT-CR-FNK8O3QGJR04T","value_date":"2026-06-08"}
+{"amount":978867,"bank_record_id":"bnk_dev_000318","direction":"credit","narration":"RZPY/SETL/setl_dev_000356 CREDIT","value_date":"2026-03-12"}
+{"amount":578466,"bank_record_id":"bnk_dev_000319","direction":"credit","narration":"RZPY/SETL/DOI7HV7TTV REF:PAY88/REV","value_date":"2026-10-04"}
+{"amount":686387,"bank_record_id":"bnk_dev_000320","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/J5UR6HW5NIFCDUJI/REV-8271","value_date":"2026-07-24"}
+{"amount":4129453,"bank_record_id":"bnk_dev_000321","direction":"credit","narration":"RZPY/SETL/setl_dev_000359 CREDIT","value_date":"2026-08-19"}
+{"amount":3404593,"bank_record_id":"bnk_dev_000322","direction":"credit","narration":"RTGS CR REF 6D962GW RAZORPAY SOFTWARE","value_date":"2026-07-28"}
+{"amount":2413884,"bank_record_id":"bnk_dev_000323","direction":"credit","narration":"UPI/K4RP8Q7V87BFD/RAZORPAY SETTLEMENT","value_date":"2026-07-31"}
+{"amount":4703599,"bank_record_id":"bnk_dev_000324","direction":"credit","narration":"NEFT CR-RZRPAY-SET8B************RE-MUM","value_date":"2026-12-07"}
+{"amount":851006,"bank_record_id":"bnk_dev_000325","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/6L**********KM/REV-8271","value_date":"2026-06-14"}
+{"amount":3962666,"bank_record_id":"bnk_dev_000326","direction":"credit","narration":"RZPY/SETL/setl_dev_000364 CREDIT","value_date":"2026-01-13"}
+{"amount":2922356,"bank_record_id":"bnk_dev_000327","direction":"credit","narration":"IMPS/P2A/ZUIFL7XR15EMX0/RAZORPAY","value_date":"2026-01-16"}
+{"amount":1710639,"bank_record_id":"bnk_dev_000328","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-04"}
+{"amount":1380227,"bank_record_id":"bnk_dev_000329","direction":"credit","narration":"RZPY/SETL/setl_dev_000367 CREDIT","value_date":"2026-04-29"}
+{"amount":92500,"bank_record_id":"bnk_dev_000330","direction":"credit","narration":"RZPY/SETL/setl_dev_000368 CREDIT","value_date":"2026-09-01"}
+{"amount":1992613,"bank_record_id":"bnk_dev_000331","direction":"credit","narration":"RZPY/SETL/H60IS5V0P REF:PAY88/REV","value_date":"2026-09-10"}
+{"amount":4825129,"bank_record_id":"bnk_dev_000332","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-27"}
+{"amount":4420433,"bank_record_id":"bnk_dev_000333","direction":"credit","narration":"RZPY*ORD293 UPI/JT********TJ","value_date":"2026-05-04"}
+{"amount":409380,"bank_record_id":"bnk_dev_000334","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-05-19"}
+{"amount":4001121,"bank_record_id":"bnk_dev_000335","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-06-12"}
+{"amount":2135776,"bank_record_id":"bnk_dev_000336","direction":"credit","narration":"RZPY/SETL/setl_dev_000376 CREDIT","value_date":"2026-10-07"}
+{"amount":2050235,"bank_record_id":"bnk_dev_000337","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-11-23"}
+{"amount":1502648,"bank_record_id":"bnk_dev_000338","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-05-22"}
+{"amount":2962124,"bank_record_id":"bnk_dev_000339","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-05-13"}
+{"amount":851845,"bank_record_id":"bnk_dev_000340","direction":"credit","narration":"NEFT-CR-XU739CFKPZD3CBW","value_date":"2026-10-23"}
+{"amount":2300634,"bank_record_id":"bnk_dev_000341","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-09-02"}
+{"amount":1496892,"bank_record_id":"bnk_dev_000342","direction":"credit","narration":"RZPY/SETL/setl_dev_000382 CREDIT","value_date":"2026-09-23"}
+{"amount":1446159,"bank_record_id":"bnk_dev_000343","direction":"credit","narration":"RZPY/SETL/setl_dev_000383 CREDIT","value_date":"2026-10-29"}
+{"amount":2643053,"bank_record_id":"bnk_dev_000344","direction":"credit","narration":"RZPY/SETL/setl_dev_000384 CREDIT","value_date":"2026-07-08"}
+{"amount":245940,"bank_record_id":"bnk_dev_000345","direction":"credit","narration":"RZPY/SETL/setl_dev_000385 CREDIT","value_date":"2026-08-13"}
+{"amount":2619474,"bank_record_id":"bnk_dev_000346","direction":"credit","narration":"RTGS CR REF A0Q80YDNMM9 RAZORPAY SOFTWARE","value_date":"2026-12-28"}
+{"amount":2485558,"bank_record_id":"bnk_dev_000347","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-11-08"}
+{"amount":495334,"bank_record_id":"bnk_dev_000348","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-11-02"}
+{"amount":3402871,"bank_record_id":"bnk_dev_000349","direction":"credit","narration":"RZPY/SETL/ZDZUXXCOB2N9 REF:PAY88/REV","value_date":"2026-12-18"}
+{"amount":1695629,"bank_record_id":"bnk_dev_000350","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/9KH78SA76I-D62N7G/REV-8271","value_date":"2026-10-20"}
+{"amount":2727171,"bank_record_id":"bnk_dev_000351","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/KXL45/REV-8271","value_date":"2026-02-25"}
+{"amount":2755656,"bank_record_id":"bnk_dev_000352","direction":"credit","narration":"NEFT CR-RZRPAY-SETGL6RUOU00TJRJ-MUM","value_date":"2026-11-05"}
+{"amount":1988158,"bank_record_id":"bnk_dev_000353","direction":"credit","narration":"IMPS/P2A/32E5C83IQBS/RAZORPAY","value_date":"2026-12-16"}
+{"amount":4689885,"bank_record_id":"bnk_dev_000354","direction":"credit","narration":"IMPS/P2A/LZ7V18X51PMB1/RAZORPAY","value_date":"2026-10-17"}
+{"amount":2593601,"bank_record_id":"bnk_dev_000355","direction":"credit","narration":"RZPY/SETL/setl_dev_000396 CREDIT","value_date":"2026-01-04"}
+{"amount":3517922,"bank_record_id":"bnk_dev_000356","direction":"credit","narration":"RZPY/SETL/94RQYA9PZN56Q REF:PAY88/REV","value_date":"2026-11-07"}
+{"amount":2018626,"bank_record_id":"bnk_dev_000357","direction":"credit","narration":"IMPS/P2A/O8XI96VF9ZFQ1DE/RAZORPAY","value_date":"2026-01-24"}
+{"amount":3032532,"bank_record_id":"bnk_dev_000358","direction":"credit","narration":"RZPY/SETL/7JT61O REF:PAY88/REV","value_date":"2026-06-24"}
+{"amount":7395867,"bank_record_id":"bnk_dev_000359","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-12-13"}
+{"amount":1371871,"bank_record_id":"bnk_dev_000360","direction":"credit","narration":"RZPY/SETL/setl_dev_000402 CREDIT","value_date":"2026-10-15"}
+{"amount":1663958,"bank_record_id":"bnk_dev_000361","direction":"credit","narration":"RZPY*ORD293 UPI/QNRS5FDDHM7YQO","value_date":"2026-08-12"}
+{"amount":1050613,"bank_record_id":"bnk_dev_000362","direction":"credit","narration":"RTGS CR REF 46ZI39GS2QITEDE RAZORPAY SOFTWARE","value_date":"2026-04-09"}
+{"amount":1381925,"bank_record_id":"bnk_dev_000363","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-12-19"}
+{"amount":4678643,"bank_record_id":"bnk_dev_000364","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-09-06"}
+{"amount":6580991,"bank_record_id":"bnk_dev_000365","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-09-29"}
+{"amount":1511954,"bank_record_id":"bnk_dev_000366","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-01-07"}
+{"amount":2036854,"bank_record_id":"bnk_dev_000367","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-03-08"}
+{"amount":965372,"bank_record_id":"bnk_dev_000368","direction":"credit","narration":"UPI/YWYMGQS2N3T28AC/RAZORPAY SETTLEMENT","value_date":"2026-02-03"}
+{"amount":1293850,"bank_record_id":"bnk_dev_000369","direction":"credit","narration":"RZPY/SETL/setl_dev_000412 CREDIT","value_date":"2026-09-14"}
+{"amount":2986523,"bank_record_id":"bnk_dev_000370","direction":"credit","narration":"RZPY/SETL/setl_dev_000413 CREDIT","value_date":"2026-12-21"}
+{"amount":2360482,"bank_record_id":"bnk_dev_000371","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-11-05"}
+{"amount":2800414,"bank_record_id":"bnk_dev_000372","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-07-11"}
+{"amount":1299981,"bank_record_id":"bnk_dev_000373","direction":"credit","narration":"RZPY/SETL/setl_dev_000416 CREDIT","value_date":"2026-09-27"}
+{"amount":2320835,"bank_record_id":"bnk_dev_000374","direction":"credit","narration":"NEFT CR-RZRPAY-SETJ1V02NIJEP7-MUM","value_date":"2026-10-19"}
+{"amount":3603876,"bank_record_id":"bnk_dev_000375","direction":"credit","narration":"RZPY/SETL/setl_dev_000418 CREDIT","value_date":"2026-05-15"}
+{"amount":902177,"bank_record_id":"bnk_dev_000376","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-09-21"}
+{"amount":4880973,"bank_record_id":"bnk_dev_000377","direction":"credit","narration":"UPI/RJ0AVOCE88ED/RAZORPAY SETTLEMENT","value_date":"2026-12-18"}
+{"amount":4377931,"bank_record_id":"bnk_dev_000378","direction":"credit","narration":"RTGS CR REF NQBI8 RAZORPAY SOFTWARE","value_date":"2026-12-16"}
+{"amount":1057489,"bank_record_id":"bnk_dev_000379","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/31DZ-CCDX7758N/REV-8271","value_date":"2026-07-22"}
+{"amount":1416682,"bank_record_id":"bnk_dev_000380","direction":"credit","narration":"RZPY/SETL/setl_dev_000423 CREDIT","value_date":"2026-09-17"}
+{"amount":1074037,"bank_record_id":"bnk_dev_000381","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-07-11"}
+{"amount":2421126,"bank_record_id":"bnk_dev_000382","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-12-07"}
+{"amount":1745925,"bank_record_id":"bnk_dev_000383","direction":"credit","narration":"NEFT-CR-AB8TKCZRBK4","value_date":"2026-08-27"}
+{"amount":410791,"bank_record_id":"bnk_dev_000384","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-09-29"}
+{"amount":3813454,"bank_record_id":"bnk_dev_000385","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-25"}
+{"amount":748980,"bank_record_id":"bnk_dev_000386","direction":"credit","narration":"RZPY/SETL/setl_dev_000430 CREDIT","value_date":"2026-09-16"}
+{"amount":3153974,"bank_record_id":"bnk_dev_000387","direction":"credit","narration":"IMPS/P2A/0MPZ5BBE051I/RAZORPAY","value_date":"2026-02-21"}
+{"amount":3012471,"bank_record_id":"bnk_dev_000388","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-06-04"}
+{"amount":1765109,"bank_record_id":"bnk_dev_000389","direction":"credit","narration":"UPI/JXREIR6K96Z0HOJ/RAZORPAY SETTLEMENT","value_date":"2026-02-19"}
+{"amount":390435,"bank_record_id":"bnk_dev_000390","direction":"credit","narration":"NEFT-CR-ZHJT68RY4QSEKFZB","value_date":"2026-06-24"}
+{"amount":661426,"bank_record_id":"bnk_dev_000391","direction":"credit","narration":"RZPY/SETL/setl_dev_000435 CREDIT","value_date":"2026-10-29"}
+{"amount":4737720,"bank_record_id":"bnk_dev_000392","direction":"credit","narration":"RZPY/SETL/setl_dev_000436 CREDIT","value_date":"2026-12-30"}
+{"amount":3849234,"bank_record_id":"bnk_dev_000393","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-04"}
+{"amount":4420621,"bank_record_id":"bnk_dev_000394","direction":"credit","narration":"RZPY/SETL/setl_dev_000438 CREDIT","value_date":"2026-07-10"}
+{"amount":2705434,"bank_record_id":"bnk_dev_000395","direction":"credit","narration":"RZPY/SETL/setl_dev_000439 CREDIT","value_date":"2026-11-04"}
+{"amount":2838383,"bank_record_id":"bnk_dev_000396","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-05-13"}
+{"amount":5422557,"bank_record_id":"bnk_dev_000397","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-08-25"}
+{"amount":3793802,"bank_record_id":"bnk_dev_000398","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-09-24"}
+{"amount":1638951,"bank_record_id":"bnk_dev_000399","direction":"credit","narration":"RZPY/SETL/setl_dev_000444 CREDIT","value_date":"2026-01-19"}
+{"amount":2458582,"bank_record_id":"bnk_dev_000400","direction":"credit","narration":"RZPY*ORD293 UPI/8P68Y41","value_date":"2026-02-27"}
+{"amount":3122673,"bank_record_id":"bnk_dev_000401","direction":"credit","narration":"UPI/ZMNO0LWWA5R/RAZORPAY SETTLEMENT","value_date":"2026-11-17"}
+{"amount":2944307,"bank_record_id":"bnk_dev_000402","direction":"credit","narration":"RZPY/SETL/setl_dev_000447 CREDIT","value_date":"2026-06-04"}
+{"amount":1570392,"bank_record_id":"bnk_dev_000403","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-06-01"}
+{"amount":4119631,"bank_record_id":"bnk_dev_000404","direction":"credit","narration":"UPI/TZ1YJYJGX2BRL7/RAZORPAY SETTLEMENT","value_date":"2026-08-23"}
+{"amount":615007,"bank_record_id":"bnk_dev_000405","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-04-18"}
+{"amount":4029957,"bank_record_id":"bnk_dev_000406","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/RJ5JJWQVXQ1X/REV-8271","value_date":"2026-05-19"}
+{"amount":3878602,"bank_record_id":"bnk_dev_000407","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-01-31"}
+{"amount":3407799,"bank_record_id":"bnk_dev_000408","direction":"credit","narration":"NEFT-CR-MCSE3MI5D655","value_date":"2026-03-06"}
+{"amount":1423854,"bank_record_id":"bnk_dev_000409","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-02-17"}
+{"amount":3280427,"bank_record_id":"bnk_dev_000410","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-05-23"}
+{"amount":707088,"bank_record_id":"bnk_dev_000411","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-08-12"}
+{"amount":2376217,"bank_record_id":"bnk_dev_000412","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-09-10"}
+{"amount":1788135,"bank_record_id":"bnk_dev_000413","direction":"credit","narration":"RZPY/SETL/setl_dev_000458 CREDIT","value_date":"2026-05-02"}
+{"amount":1612274,"bank_record_id":"bnk_dev_000414","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-01-15"}
+{"amount":2745613,"bank_record_id":"bnk_dev_000415","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-05-14"}
+{"amount":3050824,"bank_record_id":"bnk_dev_000416","direction":"credit","narration":"UPI/EDAU1O5A079HL/RAZORPAY SETTLEMENT","value_date":"2026-11-29"}
+{"amount":1283043,"bank_record_id":"bnk_dev_000417","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-11-20"}
+{"amount":1817287,"bank_record_id":"bnk_dev_000418","direction":"credit","narration":"RZPY/SETL/setl_dev_000463 CREDIT","value_date":"2026-05-28"}
+{"amount":1518612,"bank_record_id":"bnk_dev_000419","direction":"credit","narration":"RZPY/SETL/setl_dev_000464 CREDIT","value_date":"2026-05-12"}
+{"amount":755869,"bank_record_id":"bnk_dev_000420","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/YA-DGZOOM30XB7D/REV-8271","value_date":"2026-11-08"}
+{"amount":1429038,"bank_record_id":"bnk_dev_000421","direction":"credit","narration":"NEFT-CR-5GHCP9J7TU8SMN4F","value_date":"2026-11-09"}
+{"amount":518817,"bank_record_id":"bnk_dev_000422","direction":"credit","narration":"UPI/AOQWQOGGAFGNMES/RAZORPAY SETTLEMENT","value_date":"2026-11-08"}
+{"amount":4075216,"bank_record_id":"bnk_dev_000423","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-13"}
+{"amount":7965489,"bank_record_id":"bnk_dev_000424","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-10-08"}
+{"amount":1245033,"bank_record_id":"bnk_dev_000425","direction":"credit","narration":"RZPY/SETL/setl_dev_000471 CREDIT","value_date":"2026-04-24"}
+{"amount":2974885,"bank_record_id":"bnk_dev_000426","direction":"credit","narration":"RZPY*ORD293 UPI/MU1-WRIWKK3FRR","value_date":"2026-08-11"}
+{"amount":1735754,"bank_record_id":"bnk_dev_000427","direction":"credit","narration":"RZPY*ORD293 UPI/PA1OX52Y5RZFW","value_date":"2026-04-05"}
+{"amount":1353201,"bank_record_id":"bnk_dev_000428","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/OB8BPZ7G-CXTQ/REV-8271","value_date":"2026-12-03"}
+{"amount":2948289,"bank_record_id":"bnk_dev_000429","direction":"credit","narration":"RZPY/SETL/setl_dev_000475 CREDIT","value_date":"2026-01-23"}
+{"amount":2880907,"bank_record_id":"bnk_dev_000430","direction":"credit","narration":"RZPY/SETL/setl_dev_000476 CREDIT","value_date":"2026-06-26"}
+{"amount":321962,"bank_record_id":"bnk_dev_000431","direction":"credit","narration":"RZPY/SETL/setl_dev_000477 CREDIT","value_date":"2026-09-08"}
+{"amount":3550508,"bank_record_id":"bnk_dev_000432","direction":"credit","narration":"RZPY/SETL/setl_dev_000478 CREDIT","value_date":"2026-06-27"}
+{"amount":440603,"bank_record_id":"bnk_dev_000433","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-15"}
+{"amount":4109158,"bank_record_id":"bnk_dev_000434","direction":"credit","narration":"IMPS/P2A/F0C8HR0QNBS5L/RAZORPAY","value_date":"2026-02-24"}
+{"amount":4394413,"bank_record_id":"bnk_dev_000435","direction":"credit","narration":"RZPY*ORD293 UPI/B8**********7N","value_date":"2026-09-07"}
+{"amount":2138696,"bank_record_id":"bnk_dev_000436","direction":"credit","narration":"RZPY/SETL/XYA9FE4XXT75BVD REF:PAY88/REV","value_date":"2026-03-23"}
+{"amount":71106,"bank_record_id":"bnk_dev_000437","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-08-01"}
+{"amount":2881402,"bank_record_id":"bnk_dev_000438","direction":"credit","narration":"RZPY/SETL/setl_dev_000485 CREDIT","value_date":"2026-08-09"}
+{"amount":4439385,"bank_record_id":"bnk_dev_000439","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-01-21"}
+{"amount":3997270,"bank_record_id":"bnk_dev_000440","direction":"credit","narration":"UPI/P26IFS3PRB1X/RAZORPAY SETTLEMENT","value_date":"2026-11-17"}
+{"amount":664636,"bank_record_id":"bnk_dev_000441","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/C3HOLPHBMS1CS-MMK/REV-8271","value_date":"2026-12-07"}
+{"amount":168965,"bank_record_id":"bnk_dev_000442","direction":"credit","narration":"RZPY/SETL/setl_dev_000489 CREDIT","value_date":"2026-12-11"}
+{"amount":713402,"bank_record_id":"bnk_dev_000443","direction":"credit","narration":"UPI/TM7NR8WH8A7/RAZORPAY SETTLEMENT","value_date":"2026-10-31"}
+{"amount":1302948,"bank_record_id":"bnk_dev_000444","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-02-08"}
+{"amount":3284047,"bank_record_id":"bnk_dev_000445","direction":"credit","narration":"NEFT CR-RZRPAY-SETZ2CGC8GMEQHY6CHT-MUM","value_date":"2026-09-14"}
+{"amount":1949800,"bank_record_id":"bnk_dev_000446","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-03-15"}
+{"amount":1746488,"bank_record_id":"bnk_dev_000447","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-05-19"}
+{"amount":1259711,"bank_record_id":"bnk_dev_000448","direction":"credit","narration":"RZPY/SETL/setl_dev_000496 CREDIT","value_date":"2026-01-05"}
+{"amount":1886080,"bank_record_id":"bnk_dev_000449","direction":"credit","narration":"RZPY/SETL/setl_dev_000497 CREDIT","value_date":"2026-05-22"}
+{"amount":880403,"bank_record_id":"bnk_dev_000450","direction":"credit","narration":"RZPY/SETL/setl_dev_000498 CREDIT","value_date":"2026-03-07"}
+{"amount":299195,"bank_record_id":"bnk_dev_000451","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-01"}
+{"amount":4787765,"bank_record_id":"bnk_dev_000452","direction":"credit","narration":"RZPY/SETL/setl_dev_000500 CREDIT","value_date":"2026-01-24"}
+{"amount":4248510,"bank_record_id":"bnk_dev_000453","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-03-03"}
+{"amount":1474290,"bank_record_id":"bnk_dev_000454","direction":"credit","narration":"RZPY/SETL/VJNTXMV-T9ZK9R8WZ REF:PAY88/REV","value_date":"2026-09-28"}
+{"amount":3948753,"bank_record_id":"bnk_dev_000455","direction":"credit","narration":"RZPY*ORD293 UPI/6D***********NQ","value_date":"2026-04-21"}
+{"amount":2452040,"bank_record_id":"bnk_dev_000456","direction":"credit","narration":"UPI/HCEXFSI4Y33NX/RAZORPAY SETTLEMENT","value_date":"2026-03-12"}
+{"amount":4225693,"bank_record_id":"bnk_dev_000457","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/WOHSHID36ID/REV-8271","value_date":"2026-10-05"}
+{"amount":4817508,"bank_record_id":"bnk_dev_000458","direction":"credit","narration":"IMPS/P2A/5AE5YOQT4AYUWYM/RAZORPAY","value_date":"2026-04-17"}
+{"amount":390570,"bank_record_id":"bnk_dev_000459","direction":"credit","narration":"RZPY/SETL/HASGQXXOMB-HJ8S REF:PAY88/REV","value_date":"2026-08-01"}
+{"amount":392827,"bank_record_id":"bnk_dev_000460","direction":"credit","narration":"RZPY/SETL/setl_dev_000508 CREDIT","value_date":"2026-03-25"}
+{"amount":2760754,"bank_record_id":"bnk_dev_000461","direction":"credit","narration":"NEFT-CR-7Y4LUKAQ5PNYZN","value_date":"2026-04-07"}
+{"amount":2982063,"bank_record_id":"bnk_dev_000462","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-14"}
+{"amount":1179021,"bank_record_id":"bnk_dev_000463","direction":"credit","narration":"IMPS/P2A/5ZO7130LUGN51UZI/RAZORPAY","value_date":"2026-01-22"}
+{"amount":152354,"bank_record_id":"bnk_dev_000464","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-08-22"}
+{"amount":1557857,"bank_record_id":"bnk_dev_000465","direction":"credit","narration":"RZPY/SETL/53CVTY REF:PAY88/REV","value_date":"2026-01-23"}
+{"amount":511958,"bank_record_id":"bnk_dev_000466","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-09-06"}
+{"amount":3990242,"bank_record_id":"bnk_dev_000467","direction":"credit","narration":"RZPY/SETL/setl_dev_000516 CREDIT","value_date":"2026-07-08"}
+{"amount":1337079,"bank_record_id":"bnk_dev_000468","direction":"credit","narration":"UPI/XYAOL1ODGTY7M/RAZORPAY SETTLEMENT","value_date":"2026-12-07"}
+{"amount":625087,"bank_record_id":"bnk_dev_000469","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-29"}
+{"amount":542983,"bank_record_id":"bnk_dev_000470","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-10-01"}
+{"amount":3767773,"bank_record_id":"bnk_dev_000471","direction":"credit","narration":"RZPY/SETL/setl_dev_000520 CREDIT","value_date":"2026-06-01"}
+{"amount":1086562,"bank_record_id":"bnk_dev_000472","direction":"credit","narration":"UPI/NZXG267RG7ZA/RAZORPAY SETTLEMENT","value_date":"2026-12-20"}
+{"amount":1192426,"bank_record_id":"bnk_dev_000473","direction":"credit","narration":"RZPY/SETL/RSE50GG REF:PAY88/REV","value_date":"2026-11-27"}
+{"amount":5183148,"bank_record_id":"bnk_dev_000474","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-07-24"}
+{"amount":2962000,"bank_record_id":"bnk_dev_000475","direction":"credit","narration":"RZPY/SETL/KX5-KDKJ3TJVRBVL REF:PAY88/REV","value_date":"2026-01-22"}
+{"amount":3719233,"bank_record_id":"bnk_dev_000476","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-12-28"}
+{"amount":4632184,"bank_record_id":"bnk_dev_000477","direction":"credit","narration":"IMPS/P2A/I8J2DT4XSQWUK/RAZORPAY","value_date":"2026-02-20"}
+{"amount":1849167,"bank_record_id":"bnk_dev_000478","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-06-26"}
+{"amount":363474,"bank_record_id":"bnk_dev_000479","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-08-31"}
+{"amount":7257421,"bank_record_id":"bnk_dev_000480","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-12-19"}
+{"amount":2600684,"bank_record_id":"bnk_dev_000481","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-05-18"}
+{"amount":3387870,"bank_record_id":"bnk_dev_000482","direction":"credit","narration":"RZPY/SETL/setl_dev_000534 CREDIT","value_date":"2026-01-21"}
+{"amount":4248014,"bank_record_id":"bnk_dev_000483","direction":"credit","narration":"NEFT CR-RZRPAY-SETHKCEJWF1T18-MUM","value_date":"2026-03-24"}
+{"amount":3126362,"bank_record_id":"bnk_dev_000484","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-03-02"}
+{"amount":690982,"bank_record_id":"bnk_dev_000485","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-05-23"}
+{"amount":2818761,"bank_record_id":"bnk_dev_000486","direction":"credit","narration":"NEFT-CR-ITKGIPB5BAVDSD","value_date":"2026-08-21"}
+{"amount":3598740,"bank_record_id":"bnk_dev_000487","direction":"credit","narration":"RZPY*ORD293 UPI/K5*******B1","value_date":"2026-11-24"}
+{"amount":4315826,"bank_record_id":"bnk_dev_000488","direction":"credit","narration":"RZPY/SETL/setl_dev_000540 CREDIT","value_date":"2026-02-20"}
+{"amount":4337273,"bank_record_id":"bnk_dev_000489","direction":"credit","narration":"RZPY/SETL/7B************NX REF:PAY88/REV","value_date":"2026-05-04"}
+{"amount":4593057,"bank_record_id":"bnk_dev_000490","direction":"credit","narration":"UPI/DV3RLGKE9VV6FNU/RAZORPAY SETTLEMENT","value_date":"2026-03-30"}
+{"amount":1677066,"bank_record_id":"bnk_dev_000491","direction":"credit","narration":"RTGS CR REF QKXO120ICH RAZORPAY SOFTWARE","value_date":"2026-08-31"}
+{"amount":3161233,"bank_record_id":"bnk_dev_000492","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/C8CWC0G/REV-8271","value_date":"2026-05-28"}
+{"amount":2524173,"bank_record_id":"bnk_dev_000493","direction":"credit","narration":"IMPS/P2A/XCHQ94L9J2TKAXN/RAZORPAY","value_date":"2026-12-01"}
+{"amount":2336177,"bank_record_id":"bnk_dev_000494","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-07-29"}
+{"amount":1748949,"bank_record_id":"bnk_dev_000495","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-12-23"}
+{"amount":2306504,"bank_record_id":"bnk_dev_000496","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-07-12"}
+{"amount":4290684,"bank_record_id":"bnk_dev_000497","direction":"credit","narration":"RZPY/SETL/GY5DUH6BE REF:PAY88/REV","value_date":"2026-05-27"}
+{"amount":4356601,"bank_record_id":"bnk_dev_000498","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-12-23"}
+{"amount":1480673,"bank_record_id":"bnk_dev_000499","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/8NNO9GQ-GIAW5CZH/REV-8271","value_date":"2026-12-27"}
+{"amount":1000860,"bank_record_id":"bnk_dev_000500","direction":"credit","narration":"RZPY/SETL/setl_dev_000553 CREDIT","value_date":"2026-03-24"}
+{"amount":5222848,"bank_record_id":"bnk_dev_000501","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-05-22"}
+{"amount":1837103,"bank_record_id":"bnk_dev_000502","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-03-30"}
+{"amount":3214581,"bank_record_id":"bnk_dev_000503","direction":"credit","narration":"NEFT CR-RZRPAY-SET383LQZVMNRJG4R-MUM","value_date":"2026-01-21"}
+{"amount":4130382,"bank_record_id":"bnk_dev_000504","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-03-15"}
+{"amount":700102,"bank_record_id":"bnk_dev_000505","direction":"credit","narration":"NEFT-CR-FJFEZK0WVHAA1","value_date":"2026-03-11"}
+{"amount":2836960,"bank_record_id":"bnk_dev_000506","direction":"credit","narration":"NEFT CR-RZRPAY-SETN38DIH2DLPU6BQFL-MUM","value_date":"2026-10-14"}
+{"amount":3501020,"bank_record_id":"bnk_dev_000507","direction":"credit","narration":"RZPY/SETL/FT*******ZI REF:PAY88/REV","value_date":"2026-05-11"}
+{"amount":3250662,"bank_record_id":"bnk_dev_000508","direction":"credit","narration":"RZPY/SETL/setl_dev_000562 CREDIT","value_date":"2026-10-08"}
+{"amount":516206,"bank_record_id":"bnk_dev_000509","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-02-09"}
+{"amount":563351,"bank_record_id":"bnk_dev_000510","direction":"credit","narration":"RZPY*ORD293 UPI/FH*********15","value_date":"2026-06-08"}
+{"amount":299993,"bank_record_id":"bnk_dev_000511","direction":"credit","narration":"NEFT CR-RZRPAY-SETCACGTTNPR-MUM","value_date":"2026-05-18"}
+{"amount":464780,"bank_record_id":"bnk_dev_000512","direction":"credit","narration":"IMPS/P2A/32CTIJVO5SB/RAZORPAY","value_date":"2026-05-16"}
+{"amount":1153894,"bank_record_id":"bnk_dev_000513","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-10-11"}
+{"amount":4804952,"bank_record_id":"bnk_dev_000514","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-03-23"}
+{"amount":4497532,"bank_record_id":"bnk_dev_000515","direction":"credit","narration":"RZPY/SETL/setl_dev_000570 CREDIT","value_date":"2026-03-22"}
+{"amount":4764173,"bank_record_id":"bnk_dev_000516","direction":"credit","narration":"IMPS/P2A/UVRMM3WHYPIIFJG2/RAZORPAY","value_date":"2026-09-23"}
+{"amount":3966874,"bank_record_id":"bnk_dev_000517","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-28"}
+{"amount":4602602,"bank_record_id":"bnk_dev_000518","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-08-02"}
+{"amount":1406290,"bank_record_id":"bnk_dev_000519","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-08-23"}
+{"amount":2395230,"bank_record_id":"bnk_dev_000520","direction":"credit","narration":"IMPS/P2A/LSQ5QGVIWKV5/RAZORPAY","value_date":"2026-04-25"}
+{"amount":3720491,"bank_record_id":"bnk_dev_000521","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-11-08"}
+{"amount":2097148,"bank_record_id":"bnk_dev_000522","direction":"credit","narration":"RZPY/SETL/setl_dev_000578 CREDIT","value_date":"2026-05-18"}
+{"amount":114043,"bank_record_id":"bnk_dev_000523","direction":"credit","narration":"RZPY/SETL/1TEVWP4-8TDSUAMNZ REF:PAY88/REV","value_date":"2026-03-21"}
+{"amount":2121310,"bank_record_id":"bnk_dev_000524","direction":"credit","narration":"RZPY/SETL/setl_dev_000580 CREDIT","value_date":"2026-01-29"}
+{"amount":4006220,"bank_record_id":"bnk_dev_000525","direction":"credit","narration":"UPI/0RYN0KWRA6XO/RAZORPAY SETTLEMENT","value_date":"2026-12-26"}
+{"amount":2387542,"bank_record_id":"bnk_dev_000526","direction":"credit","narration":"RZPY/SETL/setl_dev_000582 CREDIT","value_date":"2026-08-16"}
+{"amount":831085,"bank_record_id":"bnk_dev_000527","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-02-18"}
+{"amount":3613903,"bank_record_id":"bnk_dev_000528","direction":"credit","narration":"NEFT-CR-VGOTLLUNBY4PCF1","value_date":"2026-12-16"}
+{"amount":3419638,"bank_record_id":"bnk_dev_000529","direction":"credit","narration":"RTGS CR REF 2WY7VOZE6IPU RAZORPAY SOFTWARE","value_date":"2026-06-20"}
+{"amount":1502315,"bank_record_id":"bnk_dev_000530","direction":"credit","narration":"IMPS/P2A/W8PN46AVW3CPND/RAZORPAY","value_date":"2026-01-23"}
+{"amount":2979695,"bank_record_id":"bnk_dev_000531","direction":"credit","narration":"RZPY/SETL/setl_dev_000588 CREDIT","value_date":"2026-12-28"}
+{"amount":1662377,"bank_record_id":"bnk_dev_000532","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-07-20"}
+{"amount":4530115,"bank_record_id":"bnk_dev_000533","direction":"credit","narration":"RZPY*ORD293 UPI/BR*******2C","value_date":"2026-02-08"}
+{"amount":3819868,"bank_record_id":"bnk_dev_000534","direction":"credit","narration":"RZPY/SETL/setl_dev_000591 CREDIT","value_date":"2026-05-31"}
+{"amount":3785129,"bank_record_id":"bnk_dev_000535","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-03-15"}
+{"amount":3582184,"bank_record_id":"bnk_dev_000536","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-02-12"}
+{"amount":4607713,"bank_record_id":"bnk_dev_000537","direction":"credit","narration":"IMPS/P2A/PS46D7VGXURIA4R/RAZORPAY","value_date":"2026-10-19"}
+{"amount":1134624,"bank_record_id":"bnk_dev_000538","direction":"credit","narration":"NEFT CR-RZRPAY-SETUPRN5Q-MUM","value_date":"2026-11-26"}
+{"amount":6632456,"bank_record_id":"bnk_dev_000539","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-01-18"}
+{"amount":4697038,"bank_record_id":"bnk_dev_000540","direction":"credit","narration":"RZPY/SETL/setl_dev_000600 CREDIT","value_date":"2026-01-26"}
+{"amount":8311476,"bank_record_id":"bnk_dev_000541","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-07-10"}
+{"amount":4444579,"bank_record_id":"bnk_dev_000542","direction":"credit","narration":"IMPS/P2A/S0LUVZW2E20ER/RAZORPAY","value_date":"2026-12-28"}
+{"amount":3553195,"bank_record_id":"bnk_dev_000543","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-06-08"}
+{"amount":757308,"bank_record_id":"bnk_dev_000544","direction":"credit","narration":"RZPY/SETL/setl_dev_000606 CREDIT","value_date":"2026-06-06"}
+{"amount":2823075,"bank_record_id":"bnk_dev_000545","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-09-05"}
+{"amount":3074549,"bank_record_id":"bnk_dev_000546","direction":"credit","narration":"RZPY/SETL/setl_dev_000608 CREDIT","value_date":"2026-09-02"}
+{"amount":1857503,"bank_record_id":"bnk_dev_000547","direction":"credit","narration":"RZPY/SETL/setl_dev_000609 CREDIT","value_date":"2026-01-05"}
+{"amount":1068366,"bank_record_id":"bnk_dev_000548","direction":"credit","narration":"UPI/X13BI8NDBQLE/RAZORPAY SETTLEMENT","value_date":"2026-05-16"}
+{"amount":2713903,"bank_record_id":"bnk_dev_000549","direction":"credit","narration":"UPI/M2FXLLK6X0Z/RAZORPAY SETTLEMENT","value_date":"2026-01-12"}
+{"amount":4044808,"bank_record_id":"bnk_dev_000550","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-05-18"}
+{"amount":701940,"bank_record_id":"bnk_dev_000551","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-08-30"}
+{"amount":2016300,"bank_record_id":"bnk_dev_000552","direction":"credit","narration":"IMPS/P2A/QQD4E1IZU939YS/RAZORPAY","value_date":"2026-04-17"}
+{"amount":3219387,"bank_record_id":"bnk_dev_000553","direction":"credit","narration":"RZPY/SETL/setl_dev_000615 CREDIT","value_date":"2026-11-05"}
+{"amount":1361339,"bank_record_id":"bnk_dev_000554","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-01-24"}
+{"amount":1132142,"bank_record_id":"bnk_dev_000555","direction":"credit","narration":"RZPY*ORD293 UPI/4IJ7","value_date":"2026-10-12"}
+{"amount":3424473,"bank_record_id":"bnk_dev_000556","direction":"credit","narration":"RZPY/SETL/setl_dev_000618 CREDIT","value_date":"2026-03-12"}
+{"amount":3035279,"bank_record_id":"bnk_dev_000557","direction":"credit","narration":"NEFT CR-RZRPAY-SETPCWAT-MUM","value_date":"2026-05-04"}
+{"amount":4313480,"bank_record_id":"bnk_dev_000558","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/GIV2R6YPGH/REV-8271","value_date":"2026-11-09"}
+{"amount":3330749,"bank_record_id":"bnk_dev_000559","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-05-05"}
+{"amount":3093983,"bank_record_id":"bnk_dev_000560","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-08-17"}
+{"amount":177206,"bank_record_id":"bnk_dev_000561","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-06-17"}
+{"amount":2392139,"bank_record_id":"bnk_dev_000562","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-12-12"}
+{"amount":4874382,"bank_record_id":"bnk_dev_000563","direction":"credit","narration":"NEFT CR-RZRPAY-SET3YP3HWB8JW9OOY-MUM","value_date":"2026-12-09"}
+{"amount":4707582,"bank_record_id":"bnk_dev_000564","direction":"credit","narration":"IMPS/P2A/XEHA6Z7874J/RAZORPAY","value_date":"2026-07-06"}
+{"amount":3636630,"bank_record_id":"bnk_dev_000565","direction":"credit","narration":"UPI/B11SQOUGSM01M6/RAZORPAY SETTLEMENT","value_date":"2026-10-09"}
+{"amount":1110472,"bank_record_id":"bnk_dev_000566","direction":"credit","narration":"UPI/AQLWGAECCODA3O/RAZORPAY SETTLEMENT","value_date":"2026-03-18"}
+{"amount":3263599,"bank_record_id":"bnk_dev_000567","direction":"credit","narration":"RZPY/SETL/setl_dev_000630 CREDIT","value_date":"2026-08-24"}
+{"amount":3789777,"bank_record_id":"bnk_dev_000568","direction":"credit","narration":"IMPS/P2A/IESLTGU3RNTE4SDB/RAZORPAY","value_date":"2026-05-14"}
+{"amount":957660,"bank_record_id":"bnk_dev_000569","direction":"credit","narration":"RZPY/SETL/setl_dev_000632 CREDIT","value_date":"2026-10-21"}
+{"amount":3405943,"bank_record_id":"bnk_dev_000570","direction":"credit","narration":"RZPY/SETL/setl_dev_000633 CREDIT","value_date":"2026-06-22"}
+{"amount":1483810,"bank_record_id":"bnk_dev_000571","direction":"credit","narration":"UPI/49SJSVVAI0BA3/RAZORPAY SETTLEMENT","value_date":"2026-06-09"}
+{"amount":3978948,"bank_record_id":"bnk_dev_000572","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-06-17"}
+{"amount":4378332,"bank_record_id":"bnk_dev_000573","direction":"credit","narration":"RZPY/SETL/setl_dev_000636 CREDIT","value_date":"2026-04-01"}
+{"amount":4046982,"bank_record_id":"bnk_dev_000574","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-02-25"}
+{"amount":1090637,"bank_record_id":"bnk_dev_000575","direction":"credit","narration":"RZPY/SETL/setl_dev_000639 CREDIT","value_date":"2026-05-31"}
+{"amount":2995769,"bank_record_id":"bnk_dev_000576","direction":"credit","narration":"IMPS/P2A/2J46H6UQ441T2S8C/RAZORPAY","value_date":"2026-09-17"}
+{"amount":2121661,"bank_record_id":"bnk_dev_000577","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-12-24"}
+{"amount":265349,"bank_record_id":"bnk_dev_000578","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-02-11"}
+{"amount":2736889,"bank_record_id":"bnk_dev_000579","direction":"credit","narration":"NEFT CR-RZRPAY-SETHN69HHYGN-7WYTGX-MUM","value_date":"2026-03-30"}
+{"amount":3387264,"bank_record_id":"bnk_dev_000580","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-06-14"}
+{"amount":2516028,"bank_record_id":"bnk_dev_000581","direction":"credit","narration":"NEFT-CR-O62KU57WX0Y","value_date":"2026-07-05"}
+{"amount":4368790,"bank_record_id":"bnk_dev_000582","direction":"credit","narration":"NEFT CR-RZRPAY-SETZZRYF56JUX23-MUM","value_date":"2026-08-30"}
+{"amount":230897,"bank_record_id":"bnk_dev_000583","direction":"credit","narration":"RTGS CR REF DOBWXQAK8Y RAZORPAY SOFTWARE","value_date":"2026-02-07"}
+{"amount":3170482,"bank_record_id":"bnk_dev_000584","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-07-03"}
+{"amount":3404853,"bank_record_id":"bnk_dev_000585","direction":"credit","narration":"RZPY/SETL/setl_dev_000650 CREDIT","value_date":"2026-02-05"}
+{"amount":3401109,"bank_record_id":"bnk_dev_000586","direction":"credit","narration":"UPI/JDQOI6TIGA0ZF/RAZORPAY SETTLEMENT","value_date":"2026-03-30"}
+{"amount":774862,"bank_record_id":"bnk_dev_000587","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-08-09"}
+{"amount":7797896,"bank_record_id":"bnk_dev_000588","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-03-22"}
+{"amount":1388922,"bank_record_id":"bnk_dev_000589","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/6MK2BWL9-MA2B/REV-8271","value_date":"2026-01-16"}
+{"amount":752836,"bank_record_id":"bnk_dev_000590","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-07-27"}
+{"amount":4545820,"bank_record_id":"bnk_dev_000591","direction":"credit","narration":"RZPY/SETL/setl_dev_000657 CREDIT","value_date":"2026-07-27"}
+{"amount":2890453,"bank_record_id":"bnk_dev_000592","direction":"credit","narration":"RTGS CR REF WD*******5V RAZORPAY SOFTWARE","value_date":"2026-11-11"}
+{"amount":403318,"bank_record_id":"bnk_dev_000593","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-07-31"}
+{"amount":4539448,"bank_record_id":"bnk_dev_000594","direction":"credit","narration":"IMPS/P2A/PM9E1TGQQUYJC/RAZORPAY","value_date":"2026-01-10"}
+{"amount":1806857,"bank_record_id":"bnk_dev_000595","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-01-20"}
+{"amount":2981755,"bank_record_id":"bnk_dev_000596","direction":"credit","narration":"RZPY*ORD293 UPI/0TGQS0RDMSB","value_date":"2026-11-23"}
+{"amount":1184430,"bank_record_id":"bnk_dev_000597","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-09-07"}
+{"amount":3039635,"bank_record_id":"bnk_dev_000598","direction":"credit","narration":"RZPY/SETL/setl_dev_000664 CREDIT","value_date":"2026-12-23"}
+{"amount":1467837,"bank_record_id":"bnk_dev_000599","direction":"credit","narration":"RTGS CR REF NU98 RAZORPAY SOFTWARE","value_date":"2026-02-09"}
+{"amount":2737456,"bank_record_id":"bnk_dev_000600","direction":"credit","narration":"RZPY*ORD293 UPI/71PXTD0SM6YZH06","value_date":"2026-06-07"}
+{"amount":4780968,"bank_record_id":"bnk_dev_000601","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-15"}
+{"amount":5911630,"bank_record_id":"bnk_dev_000602","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-05-09"}
+{"amount":48969,"bank_record_id":"bnk_dev_000603","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-12-18"}
+{"amount":135926,"bank_record_id":"bnk_dev_000604","direction":"credit","narration":"RZPY/SETL/setl_dev_000671 CREDIT","value_date":"2026-06-30"}
+{"amount":4098575,"bank_record_id":"bnk_dev_000605","direction":"credit","narration":"RZPY/SETL/setl_dev_000672 CREDIT","value_date":"2026-03-05"}
+{"amount":7527803,"bank_record_id":"bnk_dev_000606","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-12-19"}
+{"amount":5496644,"bank_record_id":"bnk_dev_000607","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-06-19"}
+{"amount":785465,"bank_record_id":"bnk_dev_000608","direction":"credit","narration":"UPI/TT7U66O66TU/RAZORPAY SETTLEMENT","value_date":"2026-10-21"}
+{"amount":176777,"bank_record_id":"bnk_dev_000609","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-08-26"}
+{"amount":471504,"bank_record_id":"bnk_dev_000610","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-06-19"}
+{"amount":3981683,"bank_record_id":"bnk_dev_000611","direction":"credit","narration":"UPI/HB356OVD16QX4746/RAZORPAY SETTLEMENT","value_date":"2026-09-28"}
+{"amount":282550,"bank_record_id":"bnk_dev_000612","direction":"credit","narration":"RTGS CR REF ML**********FV RAZORPAY SOFTWARE","value_date":"2026-08-23"}
+{"amount":2342339,"bank_record_id":"bnk_dev_000613","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-01-25"}
+{"amount":323407,"bank_record_id":"bnk_dev_000614","direction":"credit","narration":"IMPS/P2A/DYVZ2PW478N/RAZORPAY","value_date":"2026-11-26"}
+{"amount":4560276,"bank_record_id":"bnk_dev_000615","direction":"credit","narration":"RTGS CR REF IAPY0ATFC1SJ45Q-U RAZORPAY SOFTWARE","value_date":"2026-07-27"}
+{"amount":1294937,"bank_record_id":"bnk_dev_000616","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-11-28"}
+{"amount":2056224,"bank_record_id":"bnk_dev_000617","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-08-24"}
+{"amount":2375199,"bank_record_id":"bnk_dev_000618","direction":"credit","narration":"RZPY/SETL/setl_dev_000687 CREDIT","value_date":"2026-05-24"}
+{"amount":3395656,"bank_record_id":"bnk_dev_000619","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-10-30"}
+{"amount":4700618,"bank_record_id":"bnk_dev_000620","direction":"credit","narration":"NEFT CR-RZRPAY-SETDKEXDBMBT5VL5-MUM","value_date":"2026-01-13"}
+{"amount":2277684,"bank_record_id":"bnk_dev_000621","direction":"credit","narration":"RZPY/SETL/setl_dev_000690 CREDIT","value_date":"2026-04-02"}
+{"amount":3606127,"bank_record_id":"bnk_dev_000622","direction":"credit","narration":"RZPY/SETL/TN***********MC REF:PAY88/REV","value_date":"2026-12-28"}
+{"amount":1133130,"bank_record_id":"bnk_dev_000623","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/6V5BB0FNVI6/REV-8271","value_date":"2026-06-18"}
+{"amount":2753459,"bank_record_id":"bnk_dev_000624","direction":"credit","narration":"RZPY*ORD293 UPI/2WLN8FIUKS4CEHV-6","value_date":"2026-11-29"}
+{"amount":3899438,"bank_record_id":"bnk_dev_000625","direction":"credit","narration":"NEFT CR-RZRPAY-SETZZ2J65GWHY5LIYW6-MUM","value_date":"2026-06-24"}
+{"amount":2532211,"bank_record_id":"bnk_dev_000626","direction":"credit","narration":"RZPY/SETL/setl_dev_000695 CREDIT","value_date":"2026-08-31"}
+{"amount":3484399,"bank_record_id":"bnk_dev_000627","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-08-02"}
+{"amount":1128402,"bank_record_id":"bnk_dev_000628","direction":"credit","narration":"UPI/96RN638WLD7Z1IWH/RAZORPAY SETTLEMENT","value_date":"2026-04-20"}
+{"amount":2088656,"bank_record_id":"bnk_dev_000629","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-05-21"}
+{"amount":4161581,"bank_record_id":"bnk_dev_000630","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-01-28"}
+{"amount":1469688,"bank_record_id":"bnk_dev_000631","direction":"credit","narration":"RZPY/SETL/1DDIE REF:PAY88/REV","value_date":"2026-05-27"}
+{"amount":3153383,"bank_record_id":"bnk_dev_000632","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-08-20"}
+{"amount":3709977,"bank_record_id":"bnk_dev_000633","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-01-31"}
+{"amount":1649935,"bank_record_id":"bnk_dev_000634","direction":"credit","narration":"IMPS/P2A/V4YA1KY8C7Y65/RAZORPAY","value_date":"2026-02-25"}
+{"amount":2372034,"bank_record_id":"bnk_dev_000635","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-05-19"}
+{"amount":3696557,"bank_record_id":"bnk_dev_000636","direction":"credit","narration":"RZPY/SETL/setl_dev_000707 CREDIT","value_date":"2026-07-26"}
+{"amount":2389009,"bank_record_id":"bnk_dev_000637","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-02-28"}
+{"amount":1014799,"bank_record_id":"bnk_dev_000638","direction":"credit","narration":"RZPY/SETL/setl_dev_000709 CREDIT","value_date":"2026-07-29"}
+{"amount":815483,"bank_record_id":"bnk_dev_000639","direction":"credit","narration":"RZPY/SETL/setl_dev_000710 CREDIT","value_date":"2026-03-21"}
+{"amount":4499841,"bank_record_id":"bnk_dev_000640","direction":"credit","narration":"RZPY*ORD293 UPI/GTIX","value_date":"2026-03-02"}
+{"amount":4363944,"bank_record_id":"bnk_dev_000641","direction":"credit","narration":"IMPS/P2A/CH2GEUQAM4C09M2/RAZORPAY","value_date":"2026-09-19"}
+{"amount":4327009,"bank_record_id":"bnk_dev_000642","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-07-27"}
+{"amount":1748520,"bank_record_id":"bnk_dev_000643","direction":"credit","narration":"NEFT-CR-OYC7WJEIGWTPU6U9","value_date":"2026-06-18"}
+{"amount":1076209,"bank_record_id":"bnk_dev_000644","direction":"credit","narration":"RZPY/SETL/setl_dev_000716 CREDIT","value_date":"2026-02-09"}
+{"amount":3247118,"bank_record_id":"bnk_dev_000645","direction":"credit","narration":"RZPY/SETL/setl_dev_000717 CREDIT","value_date":"2026-08-02"}
+{"amount":248936,"bank_record_id":"bnk_dev_000646","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/I5********YI/REV-8271","value_date":"2026-04-07"}
+{"amount":2043516,"bank_record_id":"bnk_dev_000647","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-02"}
+{"amount":779856,"bank_record_id":"bnk_dev_000648","direction":"credit","narration":"IMPS/P2A/7GAGKLHR79FJDW/RAZORPAY","value_date":"2026-01-22"}
+{"amount":3126669,"bank_record_id":"bnk_dev_000649","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-11-06"}
+{"amount":993377,"bank_record_id":"bnk_dev_000650","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-05-12"}
+{"amount":3989084,"bank_record_id":"bnk_dev_000651","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-18"}
+{"amount":1825414,"bank_record_id":"bnk_dev_000652","direction":"credit","narration":"RZPY/SETL/setl_dev_000725 CREDIT","value_date":"2026-08-02"}
+{"amount":3482169,"bank_record_id":"bnk_dev_000653","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-11-21"}
+{"amount":1789343,"bank_record_id":"bnk_dev_000654","direction":"credit","narration":"UPI/WAB5HRWXFZZY/RAZORPAY SETTLEMENT","value_date":"2026-10-04"}
+{"amount":2064010,"bank_record_id":"bnk_dev_000655","direction":"credit","narration":"RZPY*ORD293 UPI/84Z2SEVYAJ-ZFHA","value_date":"2026-10-10"}
+{"amount":6150695,"bank_record_id":"bnk_dev_000656","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-02-01"}
+{"amount":3373969,"bank_record_id":"bnk_dev_000657","direction":"credit","narration":"RZPY/SETL/3U*******ZF REF:PAY88/REV","value_date":"2026-04-26"}
+{"amount":4654248,"bank_record_id":"bnk_dev_000658","direction":"credit","narration":"RZPY/SETL/76UEVCN3 REF:PAY88/REV","value_date":"2026-03-19"}
+{"amount":3634605,"bank_record_id":"bnk_dev_000659","direction":"credit","narration":"UPI/IHD074DG5DFNY/RAZORPAY SETTLEMENT","value_date":"2026-03-26"}
+{"amount":1619214,"bank_record_id":"bnk_dev_000660","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-07-11"}
+{"amount":2266526,"bank_record_id":"bnk_dev_000661","direction":"credit","narration":"NEFT CR-RZRPAY-SET91CVTIM4YEV9YD-MUM","value_date":"2026-08-27"}
+{"amount":999126,"bank_record_id":"bnk_dev_000662","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-06-30"}
+{"amount":1087611,"bank_record_id":"bnk_dev_000663","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-07-16"}
+{"amount":960589,"bank_record_id":"bnk_dev_000664","direction":"credit","narration":"RZPY/SETL/setl_dev_000738 CREDIT","value_date":"2026-10-20"}
+{"amount":2916761,"bank_record_id":"bnk_dev_000665","direction":"credit","narration":"RZPY/SETL/WUDWP551AK-TOI REF:PAY88/REV","value_date":"2026-10-24"}
+{"amount":933915,"bank_record_id":"bnk_dev_000666","direction":"credit","narration":"RZPY/SETL/setl_dev_000740 CREDIT","value_date":"2026-05-02"}
+{"amount":2626437,"bank_record_id":"bnk_dev_000667","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-06-02"}
+{"amount":7982689,"bank_record_id":"bnk_dev_000668","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-12-25"}
+{"amount":3685227,"bank_record_id":"bnk_dev_000669","direction":"credit","narration":"RZPY/SETL/setl_dev_000744 CREDIT","value_date":"2026-04-22"}
+{"amount":1205277,"bank_record_id":"bnk_dev_000670","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-11-28"}
+{"amount":3542141,"bank_record_id":"bnk_dev_000671","direction":"credit","narration":"UPI/5ZKHK467YC9KS39Y/RAZORPAY SETTLEMENT","value_date":"2026-05-13"}
+{"amount":3973351,"bank_record_id":"bnk_dev_000672","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-03-27"}
+{"amount":4746847,"bank_record_id":"bnk_dev_000673","direction":"credit","narration":"IMPS/P2A/T7PQXU6KE2S/RAZORPAY","value_date":"2026-09-08"}
+{"amount":7450334,"bank_record_id":"bnk_dev_000674","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-10-01"}
+{"amount":2668386,"bank_record_id":"bnk_dev_000675","direction":"credit","narration":"NEFT-CR-3TBDRAZ1IXZA1WBU","value_date":"2026-01-27"}
+{"amount":3273564,"bank_record_id":"bnk_dev_000676","direction":"credit","narration":"RZPY/SETL/8A89FDB-RMQF4ZN REF:PAY88/REV","value_date":"2026-02-09"}
+{"amount":2580190,"bank_record_id":"bnk_dev_000677","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-09-06"}
+{"amount":3218471,"bank_record_id":"bnk_dev_000678","direction":"credit","narration":"RZPY/SETL/QLSQZMLR2 REF:PAY88/REV","value_date":"2026-02-24"}
+{"amount":5489857,"bank_record_id":"bnk_dev_000679","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-07-22"}
+{"amount":3493812,"bank_record_id":"bnk_dev_000680","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2027-01-02"}
+{"amount":142597,"bank_record_id":"bnk_dev_000681","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-06-30"}
+{"amount":3920050,"bank_record_id":"bnk_dev_000682","direction":"credit","narration":"RZPY/SETL/setl_dev_000760 CREDIT","value_date":"2026-10-21"}
+{"amount":269984,"bank_record_id":"bnk_dev_000683","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-07-05"}
+{"amount":2506037,"bank_record_id":"bnk_dev_000684","direction":"credit","narration":"RZPY*ORD293 UPI/520DHH91MCSDIF","value_date":"2027-01-04"}
+{"amount":3298463,"bank_record_id":"bnk_dev_000685","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-01-28"}
+{"amount":3800115,"bank_record_id":"bnk_dev_000686","direction":"credit","narration":"IMPS/P2A/QK0W92NP0HXLABO/RAZORPAY","value_date":"2026-05-08"}
+{"amount":1094656,"bank_record_id":"bnk_dev_000687","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-08-25"}
+{"amount":1872263,"bank_record_id":"bnk_dev_000688","direction":"credit","narration":"RZPY/SETL/setl_dev_000767 CREDIT","value_date":"2026-11-06"}
+{"amount":3664805,"bank_record_id":"bnk_dev_000689","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-02-09"}
+{"amount":2440592,"bank_record_id":"bnk_dev_000690","direction":"credit","narration":"IMPS/P2A/Z2KJYY9GSGWQ3/RAZORPAY","value_date":"2026-10-12"}
+{"amount":3645705,"bank_record_id":"bnk_dev_000691","direction":"credit","narration":"NEFT-CR-VDTPRARW18TQOH02","value_date":"2026-12-31"}
+{"amount":1665702,"bank_record_id":"bnk_dev_000692","direction":"credit","narration":"RZPY/SETL/setl_dev_000771 CREDIT","value_date":"2026-02-22"}
+{"amount":1063637,"bank_record_id":"bnk_dev_000693","direction":"credit","narration":"RZPY/SETL/QXSVTQ-NMDGEAG REF:PAY88/REV","value_date":"2026-03-24"}
+{"amount":4544520,"bank_record_id":"bnk_dev_000694","direction":"credit","narration":"IMPS/P2A/AFB9J8OR0YJ/RAZORPAY","value_date":"2026-05-17"}
+{"amount":3335988,"bank_record_id":"bnk_dev_000695","direction":"credit","narration":"NEFT CR-RZRPAY-SETR8E7BIY7CTN7G9-MUM","value_date":"2026-04-04"}
+{"amount":2223880,"bank_record_id":"bnk_dev_000696","direction":"credit","narration":"RZPY/SETL/HQXMEEKEEG-ZM7ARO REF:PAY88/REV","value_date":"2026-10-04"}
+{"amount":2458975,"bank_record_id":"bnk_dev_000697","direction":"credit","narration":"RTGS CR REF PRGUNGKNB3ZJ5 RAZORPAY SOFTWARE","value_date":"2026-05-20"}
+{"amount":262109,"bank_record_id":"bnk_dev_000698","direction":"credit","narration":"IMPS/P2A/0Q4H8KQ1C1XC2L97/RAZORPAY","value_date":"2026-12-11"}
+{"amount":1835520,"bank_record_id":"bnk_dev_000699","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-01-29"}
+{"amount":3907469,"bank_record_id":"bnk_dev_000700","direction":"credit","narration":"NEFT CR-RZRPAY-SETXCKX85V7ZMO-52HH3-MUM","value_date":"2026-06-15"}
+{"amount":523901,"bank_record_id":"bnk_dev_000701","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-02-27"}
+{"amount":611982,"bank_record_id":"bnk_dev_000702","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/23FTZI12BUOC52/REV-8271","value_date":"2026-12-31"}
+{"amount":3194466,"bank_record_id":"bnk_dev_000703","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-09-02"}
+{"amount":121881,"bank_record_id":"bnk_dev_000704","direction":"credit","narration":"RZPY/SETL/setl_dev_000783 CREDIT","value_date":"2026-05-23"}
+{"amount":2262017,"bank_record_id":"bnk_dev_000705","direction":"credit","narration":"NEFT CR-RZRPAY-SET4-JTT0OS23K3Q-MUM","value_date":"2026-12-26"}
+{"amount":2377928,"bank_record_id":"bnk_dev_000706","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-05-14"}
+{"amount":3715562,"bank_record_id":"bnk_dev_000707","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-07-30"}
+{"amount":3568546,"bank_record_id":"bnk_dev_000708","direction":"credit","narration":"RZPY/SETL/setl_dev_000787 CREDIT","value_date":"2026-10-04"}
+{"amount":2803604,"bank_record_id":"bnk_dev_000709","direction":"credit","narration":"RZPY/SETL/setl_dev_000788 CREDIT","value_date":"2026-03-14"}
+{"amount":449613,"bank_record_id":"bnk_dev_000710","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-04-22"}
+{"amount":2309886,"bank_record_id":"bnk_dev_000711","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-06-06"}
+{"amount":500507,"bank_record_id":"bnk_dev_000712","direction":"credit","narration":"NEFT CR-RZRPAY-SETYM73KB3WECMMT-DAH-MUM","value_date":"2026-02-23"}
+{"amount":4824885,"bank_record_id":"bnk_dev_000713","direction":"credit","narration":"RZPY/SETL/G1WHLXYXI3FS REF:PAY88/REV","value_date":"2026-10-05"}
+{"amount":4565891,"bank_record_id":"bnk_dev_000714","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-22"}
+{"amount":1619250,"bank_record_id":"bnk_dev_000715","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-03-25"}
+{"amount":140868,"bank_record_id":"bnk_dev_000716","direction":"credit","narration":"RZPY/SETL/setl_dev_000796 CREDIT","value_date":"2026-10-21"}
+{"amount":4428973,"bank_record_id":"bnk_dev_000717","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-12-21"}
+{"amount":1076707,"bank_record_id":"bnk_dev_000718","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-12-28"}
+{"amount":547198,"bank_record_id":"bnk_dev_000719","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/4VA3/REV-8271","value_date":"2026-08-18"}
+{"amount":2168319,"bank_record_id":"bnk_dev_000720","direction":"credit","narration":"RZPY/SETL/setl_dev_000800 CREDIT","value_date":"2026-06-01"}
+{"amount":4313556,"bank_record_id":"bnk_dev_000721","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-11-06"}
+{"amount":3441973,"bank_record_id":"bnk_dev_000722","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-10-22"}
+{"amount":273555,"bank_record_id":"bnk_dev_000723","direction":"credit","narration":"RZPY/SETL/U35MK5LZ122EG7Q REF:PAY88/REV","value_date":"2026-08-01"}
+{"amount":2763045,"bank_record_id":"bnk_dev_000724","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2027-01-01"}
+{"amount":2842204,"bank_record_id":"bnk_dev_000725","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-06-29"}
+{"amount":2857511,"bank_record_id":"bnk_dev_000726","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-03-26"}
+{"amount":2612377,"bank_record_id":"bnk_dev_000727","direction":"credit","narration":"IMPS/P2A/ICT0N43JCBW/RAZORPAY","value_date":"2026-02-25"}
+{"amount":1859937,"bank_record_id":"bnk_dev_000728","direction":"credit","narration":"NEFT CR-RZRPAY-SETIW8VJOQHNKEQ36-MUM","value_date":"2026-05-27"}
+{"amount":3625296,"bank_record_id":"bnk_dev_000729","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-09-24"}
+{"amount":1241141,"bank_record_id":"bnk_dev_000730","direction":"credit","narration":"RZPY/SETL/setl_dev_000811 CREDIT","value_date":"2026-04-21"}
+{"amount":3385425,"bank_record_id":"bnk_dev_000731","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-12-01"}
+{"amount":2482928,"bank_record_id":"bnk_dev_000732","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-03"}
+{"amount":2081975,"bank_record_id":"bnk_dev_000733","direction":"credit","narration":"RZPY*ORD293 UPI/0MYH59AESSGOL","value_date":"2026-01-13"}
+{"amount":4378803,"bank_record_id":"bnk_dev_000734","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-11-08"}
+{"amount":6773676,"bank_record_id":"bnk_dev_000735","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-11-01"}
+{"amount":1501360,"bank_record_id":"bnk_dev_000736","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-12"}
+{"amount":2583927,"bank_record_id":"bnk_dev_000737","direction":"credit","narration":"RZPY*ORD293 UPI/IXQS1ZK6DXFR9QF2","value_date":"2026-07-16"}
+{"amount":227150,"bank_record_id":"bnk_dev_000738","direction":"credit","narration":"RZPY/SETL/setl_dev_000821 CREDIT","value_date":"2026-06-10"}
+{"amount":4060991,"bank_record_id":"bnk_dev_000739","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-05-12"}
+{"amount":5177389,"bank_record_id":"bnk_dev_000740","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-06-09"}
+{"amount":3102637,"bank_record_id":"bnk_dev_000741","direction":"credit","narration":"IMPS/P2A/ISF9K6FFS9QWS/RAZORPAY","value_date":"2026-11-26"}
+{"amount":4734510,"bank_record_id":"bnk_dev_000742","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-12-04"}
+{"amount":598263,"bank_record_id":"bnk_dev_000743","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-11-02"}
+{"amount":1408568,"bank_record_id":"bnk_dev_000744","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-25"}
+{"amount":2300899,"bank_record_id":"bnk_dev_000745","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-06-20"}
+{"amount":4439562,"bank_record_id":"bnk_dev_000746","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-09-27"}
+{"amount":1195216,"bank_record_id":"bnk_dev_000747","direction":"credit","narration":"IMPS/P2A/A2UKFUOPG3W/RAZORPAY","value_date":"2026-08-18"}
+{"amount":855506,"bank_record_id":"bnk_dev_000748","direction":"credit","narration":"RZPY/SETL/setl_dev_000834 CREDIT","value_date":"2026-06-04"}
+{"amount":6319412,"bank_record_id":"bnk_dev_000749","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-05-16"}
+{"amount":2056408,"bank_record_id":"bnk_dev_000750","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-01-07"}
+{"amount":3689254,"bank_record_id":"bnk_dev_000751","direction":"credit","narration":"UPI/YS66HXB4611INQ/RAZORPAY SETTLEMENT","value_date":"2026-05-05"}
+{"amount":1840479,"bank_record_id":"bnk_dev_000752","direction":"credit","narration":"UPI/SUFITXRVHRLI3PK/RAZORPAY SETTLEMENT","value_date":"2026-03-02"}
+{"amount":4184190,"bank_record_id":"bnk_dev_000753","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-01-21"}
+{"amount":3577232,"bank_record_id":"bnk_dev_000754","direction":"credit","narration":"RZPY/SETL/setl_dev_000841 CREDIT","value_date":"2026-07-07"}
+{"amount":1882391,"bank_record_id":"bnk_dev_000755","direction":"credit","narration":"RZPY/SETL/setl_dev_000842 CREDIT","value_date":"2026-10-17"}
+{"amount":764130,"bank_record_id":"bnk_dev_000756","direction":"credit","narration":"UPI/55UDD2M3IEER56/RAZORPAY SETTLEMENT","value_date":"2026-04-13"}
+{"amount":4559692,"bank_record_id":"bnk_dev_000757","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-03-29"}
+{"amount":1205545,"bank_record_id":"bnk_dev_000758","direction":"credit","narration":"RZPY/SETL/setl_dev_000845 CREDIT","value_date":"2026-03-24"}
+{"amount":4597772,"bank_record_id":"bnk_dev_000759","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-06-27"}
+{"amount":4363360,"bank_record_id":"bnk_dev_000760","direction":"credit","narration":"RZPY/SETL/setl_dev_000848 CREDIT","value_date":"2026-02-27"}
+{"amount":4558884,"bank_record_id":"bnk_dev_000761","direction":"credit","narration":"UPI/ONAJMI19WCIQA/RAZORPAY SETTLEMENT","value_date":"2026-10-16"}
+{"amount":2886359,"bank_record_id":"bnk_dev_000762","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-10-02"}
+{"amount":2315987,"bank_record_id":"bnk_dev_000763","direction":"credit","narration":"RZPY*ORD293 UPI/6HLLKIOVKMO","value_date":"2026-09-22"}
+{"amount":3716362,"bank_record_id":"bnk_dev_000764","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/F7*********YS/REV-8271","value_date":"2026-07-04"}
+{"amount":1595618,"bank_record_id":"bnk_dev_000765","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-11-23"}
+{"amount":1715717,"bank_record_id":"bnk_dev_000766","direction":"credit","narration":"RZPY/SETL/setl_dev_000854 CREDIT","value_date":"2026-07-19"}
+{"amount":215149,"bank_record_id":"bnk_dev_000767","direction":"credit","narration":"UPI/HF47Y5DRTV2QB/RAZORPAY SETTLEMENT","value_date":"2026-01-23"}
+{"amount":2181413,"bank_record_id":"bnk_dev_000768","direction":"credit","narration":"RZPY/SETL/setl_dev_000856 CREDIT","value_date":"2026-10-20"}
+{"amount":3905129,"bank_record_id":"bnk_dev_000769","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-08-18"}
+{"amount":2153842,"bank_record_id":"bnk_dev_000770","direction":"credit","narration":"RZPY/SETL/setl_dev_000858 CREDIT","value_date":"2026-08-07"}
+{"amount":4411460,"bank_record_id":"bnk_dev_000771","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-11"}
+{"amount":1073720,"bank_record_id":"bnk_dev_000772","direction":"credit","narration":"RZPY/SETL/setl_dev_000860 CREDIT","value_date":"2026-03-21"}
+{"amount":328571,"bank_record_id":"bnk_dev_000773","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-10-18"}
+{"amount":2596635,"bank_record_id":"bnk_dev_000774","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-11-22"}
+{"amount":94244,"bank_record_id":"bnk_dev_000775","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/MS6HSNGRXQR0AJ/REV-8271","value_date":"2026-11-23"}
+{"amount":2827397,"bank_record_id":"bnk_dev_000776","direction":"credit","narration":"RTGS CR REF W8OKVM755 RAZORPAY SOFTWARE","value_date":"2026-11-19"}
+{"amount":3990067,"bank_record_id":"bnk_dev_000777","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-12-20"}
+{"amount":3772113,"bank_record_id":"bnk_dev_000778","direction":"credit","narration":"RZPY/SETL/setl_dev_000868 CREDIT","value_date":"2026-11-07"}
+{"amount":3773946,"bank_record_id":"bnk_dev_000779","direction":"credit","narration":"RZPY/SETL/setl_dev_000869 CREDIT","value_date":"2026-05-19"}
+{"amount":1475706,"bank_record_id":"bnk_dev_000780","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-05-09"}
+{"amount":247731,"bank_record_id":"bnk_dev_000781","direction":"credit","narration":"UPI/7ATVCFE8LW2/RAZORPAY SETTLEMENT","value_date":"2026-10-31"}
+{"amount":457517,"bank_record_id":"bnk_dev_000782","direction":"credit","narration":"RZPY/SETL/setl_dev_000872 CREDIT","value_date":"2026-07-24"}
+{"amount":2055663,"bank_record_id":"bnk_dev_000783","direction":"credit","narration":"UPI/MEBD3LBE0C4/RAZORPAY SETTLEMENT","value_date":"2026-08-21"}
+{"amount":3430987,"bank_record_id":"bnk_dev_000784","direction":"credit","narration":"IMPS/P2A/VY0LRB4E9MNEW49/RAZORPAY","value_date":"2026-08-10"}
+{"amount":4509239,"bank_record_id":"bnk_dev_000785","direction":"credit","narration":"NEFT CR-RZRPAY-SETSGI6LR3-CSLZZ-MUM","value_date":"2026-05-06"}
+{"amount":4292884,"bank_record_id":"bnk_dev_000786","direction":"credit","narration":"UPI/SV2TLAL39B55/RAZORPAY SETTLEMENT","value_date":"2026-08-29"}
+{"amount":1538664,"bank_record_id":"bnk_dev_000787","direction":"credit","narration":"NEFT CR-RZRPAY-SETSBD3OV7AZ7V0YP6K-MUM","value_date":"2026-10-11"}
+{"amount":2494391,"bank_record_id":"bnk_dev_000788","direction":"credit","narration":"NEFT-CR-K2VKMS3YEP5RX2Q","value_date":"2026-08-06"}
+{"amount":5484069,"bank_record_id":"bnk_dev_000789","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-12-28"}
+{"amount":3326955,"bank_record_id":"bnk_dev_000790","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-12-29"}
+{"amount":2959579,"bank_record_id":"bnk_dev_000791","direction":"credit","narration":"IMPS/P2A/VOD6MN5NU27SB/RAZORPAY","value_date":"2026-08-21"}
+{"amount":3157635,"bank_record_id":"bnk_dev_000792","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-11-29"}
+{"amount":3142122,"bank_record_id":"bnk_dev_000793","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-06-29"}
+{"amount":563534,"bank_record_id":"bnk_dev_000794","direction":"credit","narration":"UPI/KCGEPY76MDV/RAZORPAY SETTLEMENT","value_date":"2026-07-09"}
+{"amount":3769419,"bank_record_id":"bnk_dev_000795","direction":"credit","narration":"RZPY/SETL/setl_dev_000886 CREDIT","value_date":"2026-07-23"}
+{"amount":2984459,"bank_record_id":"bnk_dev_000796","direction":"credit","narration":"RTGS CR REF YIKDRO RAZORPAY SOFTWARE","value_date":"2026-03-27"}
+{"amount":5393616,"bank_record_id":"bnk_dev_000797","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-01-26"}
+{"amount":2942413,"bank_record_id":"bnk_dev_000798","direction":"credit","narration":"UPI/4SMXXNKMOLSR68/RAZORPAY SETTLEMENT","value_date":"2026-08-29"}
+{"amount":4760391,"bank_record_id":"bnk_dev_000799","direction":"credit","narration":"RZPY/SETL/setl_dev_000891 CREDIT","value_date":"2026-08-22"}
+{"amount":3856481,"bank_record_id":"bnk_dev_000800","direction":"credit","narration":"IMPS/P2A/ABCPUY7Z6MUE9/RAZORPAY","value_date":"2026-07-13"}
+{"amount":3224285,"bank_record_id":"bnk_dev_000801","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-03-28"}
+{"amount":2173099,"bank_record_id":"bnk_dev_000802","direction":"credit","narration":"UPI/WYJTVTSLBT7/RAZORPAY SETTLEMENT","value_date":"2026-09-19"}
+{"amount":1386993,"bank_record_id":"bnk_dev_000803","direction":"credit","narration":"RZPY/SETL/setl_dev_000896 CREDIT","value_date":"2026-02-15"}
+{"amount":2631927,"bank_record_id":"bnk_dev_000804","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-09-12"}
+{"amount":74930,"bank_record_id":"bnk_dev_000805","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-04-25"}
+{"amount":4690803,"bank_record_id":"bnk_dev_000806","direction":"credit","narration":"RZPY/SETL/setl_dev_000899 CREDIT","value_date":"2026-01-11"}
+{"amount":1531779,"bank_record_id":"bnk_dev_000807","direction":"credit","narration":"NEFT CR-RZRPAY-SETR0N7L-MUM","value_date":"2026-01-25"}
+{"amount":262980,"bank_record_id":"bnk_dev_000808","direction":"credit","narration":"RZPY/SETL/setl_dev_000901 CREDIT","value_date":"2026-07-25"}
+{"amount":1317066,"bank_record_id":"bnk_dev_000809","direction":"credit","narration":"NEFT-CR-0XXOS24XIPZ","value_date":"2026-07-01"}
+{"amount":1156581,"bank_record_id":"bnk_dev_000810","direction":"credit","narration":"RZPY/SETL/setl_dev_000903 CREDIT","value_date":"2026-01-17"}
+{"amount":2549677,"bank_record_id":"bnk_dev_000811","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-12-05"}
+{"amount":114521,"bank_record_id":"bnk_dev_000812","direction":"credit","narration":"RZPY*ORD293 UPI/H2*******CA","value_date":"2026-05-24"}
+{"amount":877903,"bank_record_id":"bnk_dev_000813","direction":"credit","narration":"IMPS/P2A/9QU4L9FRZY6OI9GB/RAZORPAY","value_date":"2026-11-11"}
+{"amount":3115247,"bank_record_id":"bnk_dev_000814","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-12-15"}
+{"amount":603323,"bank_record_id":"bnk_dev_000815","direction":"credit","narration":"UPI/X0F8T41NBQD2E8/RAZORPAY SETTLEMENT","value_date":"2026-03-25"}
+{"amount":1992122,"bank_record_id":"bnk_dev_000816","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-09-24"}
+{"amount":2618571,"bank_record_id":"bnk_dev_000817","direction":"credit","narration":"NEFT-CR-91DXYZ244JPF7","value_date":"2026-01-22"}
+{"amount":3360898,"bank_record_id":"bnk_dev_000818","direction":"credit","narration":"RZPY/SETL/setl_dev_000913 CREDIT","value_date":"2026-10-03"}
+{"amount":56766,"bank_record_id":"bnk_dev_000819","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-06-20"}
+{"amount":1080379,"bank_record_id":"bnk_dev_000820","direction":"credit","narration":"RZPY/SETL/setl_dev_000915 CREDIT","value_date":"2026-07-18"}
+{"amount":2965750,"bank_record_id":"bnk_dev_000821","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-10-01"}
+{"amount":3529317,"bank_record_id":"bnk_dev_000822","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-05-18"}
+{"amount":86532,"bank_record_id":"bnk_dev_000823","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-11-13"}
+{"amount":3502823,"bank_record_id":"bnk_dev_000824","direction":"credit","narration":"UPI/FH1QOWIEFD0RIP5Q/RAZORPAY SETTLEMENT","value_date":"2026-05-02"}
+{"amount":584382,"bank_record_id":"bnk_dev_000825","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/WT*******EU/REV-8271","value_date":"2026-09-16"}
+{"amount":492332,"bank_record_id":"bnk_dev_000826","direction":"credit","narration":"RZPY/SETL/setl_dev_000921 CREDIT","value_date":"2026-09-24"}
+{"amount":2872784,"bank_record_id":"bnk_dev_000827","direction":"credit","narration":"RZPY/SETL/DDS5QW5ST1T REF:PAY88/REV","value_date":"2026-09-14"}
+{"amount":2489148,"bank_record_id":"bnk_dev_000828","direction":"credit","narration":"RZPY/SETL/setl_dev_000923 CREDIT","value_date":"2026-04-29"}
+{"amount":2836161,"bank_record_id":"bnk_dev_000829","direction":"credit","narration":"CR NEFT-RZPY-STLMNT/7W***********I6/REV-8271","value_date":"2026-04-08"}
+{"amount":1000490,"bank_record_id":"bnk_dev_000830","direction":"credit","narration":"RZPY/SETL/setl_dev_000925 CREDIT","value_date":"2026-09-03"}
+{"amount":3963031,"bank_record_id":"bnk_dev_000831","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-09-27"}
+{"amount":4300232,"bank_record_id":"bnk_dev_000832","direction":"credit","narration":"NEFT CR-RZRPAY-SETVVUMSIB53E-MUM","value_date":"2026-10-17"}
+{"amount":1442549,"bank_record_id":"bnk_dev_000833","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-09-17"}
+{"amount":4416229,"bank_record_id":"bnk_dev_000834","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-04-26"}
+{"amount":3025445,"bank_record_id":"bnk_dev_000835","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-11-05"}
+{"amount":1023581,"bank_record_id":"bnk_dev_000836","direction":"credit","narration":"NEFT CR-RZRPAY-SETAPGXDA6XNDZMDN-MUM","value_date":"2026-06-21"}
+{"amount":373521,"bank_record_id":"bnk_dev_000837","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-01-31"}
+{"amount":2996311,"bank_record_id":"bnk_dev_000838","direction":"credit","narration":"RZPY/SETL/setl_dev_000934 CREDIT","value_date":"2026-12-13"}
+{"amount":790305,"bank_record_id":"bnk_dev_000839","direction":"credit","narration":"RZPY*ORD293 UPI/0BDA2-AXVL0PH5","value_date":"2026-12-24"}
+{"amount":3806440,"bank_record_id":"bnk_dev_000840","direction":"credit","narration":"NEFT-CR-OH4R6QMQKPLF","value_date":"2026-06-27"}
+{"amount":1319121,"bank_record_id":"bnk_dev_000841","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-11-01"}
+{"amount":2479103,"bank_record_id":"bnk_dev_000842","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-11-05"}
+{"amount":1295583,"bank_record_id":"bnk_dev_000843","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-04-16"}
+{"amount":2597360,"bank_record_id":"bnk_dev_000844","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-11-26"}
+{"amount":2823942,"bank_record_id":"bnk_dev_000845","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-01-22"}
+{"amount":3945944,"bank_record_id":"bnk_dev_000846","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-02-15"}
+{"amount":3158480,"bank_record_id":"bnk_dev_000847","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-05-16"}
+{"amount":2199336,"bank_record_id":"bnk_dev_000848","direction":"credit","narration":"NEFT-CR-KU573YSF8SXPPYQ","value_date":"2026-04-30"}
+{"amount":1876311,"bank_record_id":"bnk_dev_000849","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-04-02"}
+{"amount":4255313,"bank_record_id":"bnk_dev_000850","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-05-31"}
+{"amount":4539391,"bank_record_id":"bnk_dev_000851","direction":"credit","narration":"IMPS/P2A/S3TK97LH6NG6QTSB/RAZORPAY","value_date":"2026-04-14"}
+{"amount":2187729,"bank_record_id":"bnk_dev_000852","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-06-11"}
+{"amount":3022077,"bank_record_id":"bnk_dev_000853","direction":"credit","narration":"UPI/3IYVLU560JT53/RAZORPAY SETTLEMENT","value_date":"2026-09-21"}
+{"amount":1539735,"bank_record_id":"bnk_dev_000854","direction":"credit","narration":"RZPY/SETL/setl_dev_000952 CREDIT","value_date":"2026-08-06"}
+{"amount":1258975,"bank_record_id":"bnk_dev_000855","direction":"credit","narration":"NEFT CR-RZRPAY-SETO4W4SJQXF9NE-MUM","value_date":"2026-10-21"}
+{"amount":733590,"bank_record_id":"bnk_dev_000856","direction":"credit","narration":"RZPY*ORD293 UPI/GJ************QV","value_date":"2026-06-08"}
+{"amount":1264995,"bank_record_id":"bnk_dev_000857","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-09"}
+{"amount":3938231,"bank_record_id":"bnk_dev_000858","direction":"credit","narration":"NEFT CR-RZRPAY-SETZZOFXFHUSOMP8527-MUM","value_date":"2026-09-02"}
+{"amount":388536,"bank_record_id":"bnk_dev_000859","direction":"credit","narration":"IMPS/P2A/PN5YV86DEDN77/RAZORPAY","value_date":"2026-03-13"}
+{"amount":285882,"bank_record_id":"bnk_dev_000860","direction":"credit","narration":"IMPS/P2A/ITY2F39GYNA/RAZORPAY","value_date":"2027-01-01"}
+{"amount":2303761,"bank_record_id":"bnk_dev_000861","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-09-23"}
+{"amount":4212559,"bank_record_id":"bnk_dev_000862","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-11-30"}
+{"amount":2076469,"bank_record_id":"bnk_dev_000863","direction":"credit","narration":"NEFT-CR-I2ZXT6RZSC3H","value_date":"2026-05-12"}
+{"amount":1159734,"bank_record_id":"bnk_dev_000864","direction":"credit","narration":"NEFT-CR-5WSHEEYES1G0","value_date":"2026-05-22"}
+{"amount":3237848,"bank_record_id":"bnk_dev_000865","direction":"credit","narration":"RZPY/SETL/setl_dev_000963 CREDIT","value_date":"2026-08-30"}
+{"amount":4273147,"bank_record_id":"bnk_dev_000866","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-02-10"}
+{"amount":659672,"bank_record_id":"bnk_dev_000867","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-09-19"}
+{"amount":1381309,"bank_record_id":"bnk_dev_000868","direction":"credit","narration":"RTGS CR REF G1KEUFUGA8Y61 RAZORPAY SOFTWARE","value_date":"2026-02-11"}
+{"amount":2208764,"bank_record_id":"bnk_dev_000869","direction":"credit","narration":"RZPY*ORD293 UPI/15MJA44MIN","value_date":"2026-02-05"}
+{"amount":2569630,"bank_record_id":"bnk_dev_000870","direction":"credit","narration":"RZPY/SETL/setl_dev_000969 CREDIT","value_date":"2026-07-22"}
+{"amount":1043426,"bank_record_id":"bnk_dev_000871","direction":"credit","narration":"RTGS CR REF 4LB0 RAZORPAY SOFTWARE","value_date":"2026-03-30"}
+{"amount":6073433,"bank_record_id":"bnk_dev_000872","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-01-30"}
+{"amount":4791078,"bank_record_id":"bnk_dev_000873","direction":"credit","narration":"UPI/VS6HW1WCYBXA7/RAZORPAY SETTLEMENT","value_date":"2026-10-17"}
+{"amount":1248572,"bank_record_id":"bnk_dev_000874","direction":"credit","narration":"RZPY/SETL/1NGWEI4DK1HSA REF:PAY88/REV","value_date":"2026-05-20"}
+{"amount":3555273,"bank_record_id":"bnk_dev_000875","direction":"credit","narration":"RZPY/SETL/setl_dev_000975 CREDIT","value_date":"2026-01-19"}
+{"amount":1248517,"bank_record_id":"bnk_dev_000876","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-07-29"}
+{"amount":4101541,"bank_record_id":"bnk_dev_000877","direction":"credit","narration":"NEFT CR - PAYMENT GATEWAY SETTLEMENT","value_date":"2026-02-11"}
+{"amount":435968,"bank_record_id":"bnk_dev_000878","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-12-27"}
+{"amount":3424333,"bank_record_id":"bnk_dev_000879","direction":"credit","narration":"RTGS CR REF 607K258NECM-V7U RAZORPAY SOFTWARE","value_date":"2026-07-03"}
+{"amount":4338843,"bank_record_id":"bnk_dev_000880","direction":"credit","narration":"RZPY/SETL/setl_dev_000980 CREDIT","value_date":"2026-07-13"}
+{"amount":566604,"bank_record_id":"bnk_dev_000881","direction":"credit","narration":"NEFT CR-RZRPAY-SETHPQJQ585CE0-MUM","value_date":"2026-02-24"}
+{"amount":3510282,"bank_record_id":"bnk_dev_000882","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-04-06"}
+{"amount":4741608,"bank_record_id":"bnk_dev_000883","direction":"credit","narration":"RTGS CR REF H81KFR RAZORPAY SOFTWARE","value_date":"2026-05-11"}
+{"amount":3138121,"bank_record_id":"bnk_dev_000884","direction":"credit","narration":"RZPY/SETL/setl_dev_000984 CREDIT","value_date":"2026-07-13"}
+{"amount":3285512,"bank_record_id":"bnk_dev_000885","direction":"credit","narration":"UPI/TQK23E6MPURV/RAZORPAY SETTLEMENT","value_date":"2026-05-14"}
+{"amount":169325,"bank_record_id":"bnk_dev_000886","direction":"credit","narration":"NEFT-CR-7CLZZ0WXVB3","value_date":"2026-01-11"}
+{"amount":784297,"bank_record_id":"bnk_dev_000887","direction":"credit","narration":"RZPY/SETL/UOLVU4JNEJ1 REF:PAY88/REV","value_date":"2026-02-23"}
+{"amount":2417075,"bank_record_id":"bnk_dev_000888","direction":"credit","narration":"NEFT CR-RZRPAY-SETVIUX2YUZI-MUM","value_date":"2026-04-09"}
+{"amount":1558515,"bank_record_id":"bnk_dev_000889","direction":"credit","narration":"RZPY/SETL/W32QG REF:PAY88/REV","value_date":"2026-12-26"}
+{"amount":1687125,"bank_record_id":"bnk_dev_000890","direction":"credit","narration":"RZPY/SETL/setl_dev_000990 CREDIT","value_date":"2026-04-17"}
