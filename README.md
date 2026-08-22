@@ -11,7 +11,7 @@ restate that document.
 
 ## Implementation status
 
-**Currently at Stage 1 (Benchmark generator)** of the plan in `DESIGN.md` §9.
+**Currently at Stage 2 (Deterministic core)** of the plan in `DESIGN.md` §9.
 
 Stage 0 delivered the foundations, reused as-is in Stage 1:
 
@@ -24,12 +24,44 @@ Stage 0 delivered the foundations, reused as-is in Stage 1:
 - The narration format library, with provenance labelling on every entry
   (`src/finrecon/benchmark/generator/narration_library.py`)
 
-Stage 1 delivers, and only delivers, the synthetic benchmark generator and
-its output: a DEV dataset, a FROZEN-EVAL dataset, hidden ground truth for
-both, deterministic manifests, and a SHA-256 fingerprint for FROZEN-EVAL.
-**No matcher, candidate generator, agent, validator, policy gate, ledger,
-API, or UI exists yet** — those belong to Stage 2+ in `DESIGN.md` §9, and
-nothing in this repository consumes the ground truth this stage emits.
+Stage 1 delivered the synthetic benchmark generator and its output: a DEV
+dataset, a FROZEN-EVAL dataset, hidden ground truth for both, deterministic
+manifests, and a SHA-256 fingerprint for FROZEN-EVAL. That generator and
+those datasets are frozen and unchanged by Stage 2.
+
+Stage 2 delivers the **deterministic reconciliation core**:
+
+- **Normalization** (`src/finrecon/normalize/`) — UTC timestamps, integer
+  paise preserved exactly, raw narration preserved byte-identical,
+  deterministic record ordering, and source provenance for every value the
+  normalizer rewrites.
+- **Direct-key matching** (`src/finrecon/matchers/direct_key_matcher.py`) —
+  whole-token exact equality against an intact UTR or a clean
+  `settlement_id`. No substring search, no similarity, no degraded-reference
+  recovery.
+- **Derived reconciliation** (`src/finrecon/matchers/derived_reconciliation.py`)
+  — settlement break-up accounting to the exact paise (fee, GST, refund,
+  transfer, declared adjustment), a declared value-date window, and
+  break-up line references that must name real records in a successful
+  state. Predicates only; no weighted scoring.
+- **Candidate generation + immutable case snapshots**
+  (`src/finrecon/candidates/`) — every unresolved case is frozen together
+  with its complete plausible candidate set, its base evidence, and a
+  content hash that makes later tampering detectable.
+- **SQLite ledger, structured audit trail and base idempotency**
+  (`src/finrecon/ledger/`) — every decision, resolution *and* refusal, is
+  persisted with its rule ID, matched IDs and exact-paise derivation.
+  Reprocessing the same batch is a no-op.
+
+**No LLM, Gemini call, narration parser, investigation agent, validator,
+policy gate, evaluation harness, API or UI exists yet** — those belong to
+Stage 3+ in `DESIGN.md` §9. Nothing on the reconciliation path reads the
+hidden ground truth, which `tests/test_benchmark_isolation.py` asserts
+structurally.
+
+**No benchmark result is reported here.** Match rate, precision, coverage
+and value at risk require the Stage-4 evaluation harness, which does not
+exist. There is deliberately no `make eval` target.
 
 ### Record, case, batch (DESIGN.md §5.0)
 
@@ -103,6 +135,19 @@ python -m finrecon.benchmark.generator.generate --split frozen-eval
 python -m finrecon.benchmark.generator.generate --verify-frozen
 ```
 
+### Running the deterministic core
+
+```bash
+make reconcile-dev      # one deterministic pass over DEV; prints decision counts by rule
+make test-idempotency   # process the same batch twice; assert no duplicate rows
+make test-isolation     # assert reconciliation code cannot read hidden ground truth
+```
+
+`reconcile-dev` reports operational facts only — how many cases resolved,
+under which rule, and how many produced candidate snapshots. It reports no
+accuracy: a production system has no ground truth, and accuracy belongs to
+the benchmark harness (`DESIGN.md` §7).
+
 ### Methodological limitations (stated plainly, per DESIGN.md §5.1/§10)
 
 - This is synthetic data, authored by the same person building the system
@@ -118,7 +163,13 @@ python -m finrecon.benchmark.generator.generate --verify-frozen
 - Not every real-world bank narration format, or every real degradation a
   bank statement can inflict on a reference, is represented here.
 - No benchmark result, match rate, precision, coverage, or ablation number
-  exists yet — Stage 1 only generates data; nothing here evaluates it.
+  exists yet — Stage 2 reconciles; nothing here evaluates it.
+- The structured financial evidence the generator leaves behind (settlement
+  amount, break-up, date) is as strong for T2 cases as for T1 ones, since
+  T2 degrades only the *reference*. A tier-blind deterministic rule
+  therefore reaches T2 cases too. That is a property of the frozen
+  benchmark, recorded here rather than worked around — see
+  `notes/STAGE2-FINDINGS.md`.
 
 ## Development setup
 
