@@ -97,6 +97,7 @@ class ToolValidationError(Exception):
     SCHEMA_VALIDATION_FAILED = "schema_validation_failed"
     UNKNOWN_CANDIDATE = "unknown_candidate"
     UNKNOWN_SETTLEMENT = "unknown_settlement"
+    TOOL_CALL_BATCH_LIMIT_EXCEEDED = "tool_call_batch_limit_exceeded"
 
     def __init__(self, reason: str, detail: str) -> None:
         super().__init__(f"{reason}: {detail}")
@@ -409,16 +410,49 @@ def validate_call(tool_name: str, raw_arguments: str) -> tuple[ToolDefinition, T
     return definition, arguments
 
 
+def prepare_call(
+    context: ToolContext, tool_name: str, raw_arguments: str
+) -> tuple[ToolDefinition, ToolInput]:
+    """Validate and authorize one call without executing its handler.
+
+    The loop uses this preflight boundary for multi-call assistant turns: every
+    call in the turn must pass strict JSON decoding, Pydantic validation and
+    snapshot access control before *any* handler in that batch runs. This makes
+    a malformed mixed batch deterministic and atomic even though all handlers
+    are read-only.
+    """
+    definition, arguments = validate_call(tool_name, raw_arguments)
+
+    # Access-control fields are deliberately uniform across the four input
+    # models. Resolve them against the immutable snapshot now, rather than in
+    # the handler, so a hallucinated ID aborts a whole batch before execution.
+    candidate_id = getattr(arguments, "candidate_id", None)
+    if candidate_id is not None:
+        context.candidate(candidate_id)
+    settlement_id = getattr(arguments, "settlement_id", None)
+    if settlement_id is not None:
+        context.settlement(settlement_id)
+
+    return definition, arguments
+
+
+def execute_prepared(
+    context: ToolContext, definition: ToolDefinition, arguments: ToolInput
+) -> ToolOutput:
+    """Execute a call that already passed :func:`prepare_call`."""
+    return definition.handler(context, arguments)
+
+
 def execute(context: ToolContext, tool_name: str, raw_arguments: str) -> tuple[ToolInput, ToolOutput]:
     """Validate then run one tool call against the immutable snapshot.
 
-    Access control happens inside the handlers' calls to
-    :meth:`ToolContext.candidate` / :meth:`ToolContext.settlement`, which
-    raise :class:`ToolValidationError` before any fact is read -- so an
-    unknown identifier produces a refusal, never a partial result.
+    Access control happens during :func:`prepare_call` and is repeated by the
+    handlers' reads through :meth:`ToolContext.candidate` /
+    :meth:`ToolContext.settlement`. An unknown identifier therefore produces
+    a refusal before any handler runs, never a partial result.
     """
-    definition, arguments = validate_call(tool_name, raw_arguments)
-    output = definition.handler(context, arguments)
+    definition, arguments = prepare_call(context, tool_name, raw_arguments)
+    output = execute_prepared(context, definition, arguments)
     return arguments, output
 
 
@@ -433,6 +467,8 @@ __all__ = [
     "ToolDefinition",
     "ToolValidationError",
     "execute",
+    "execute_prepared",
+    "prepare_call",
     "tool_specs",
     "validate_call",
 ]
