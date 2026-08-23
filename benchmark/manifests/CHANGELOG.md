@@ -7,14 +7,192 @@ to the generator, the taxonomy, or the tier recipes gets a new entry below
 with a stated rationale, and — if it changes frozen-eval's content — a new
 frozen-eval hash recorded in the manifest for that version and here.
 
-**Current version: v2.0.0** (`manifests/v2.json`). Superseded versions keep
+**Current version: v3.0.0** (`manifests/v3.json`). Superseded versions keep
 their own manifest file, unchanged, so a correction is auditable rather
 than a silent rewrite.
 
-## v2.0.0 — 2026-08-23 — T2 construct correction
+## v3.0.0 — 2026-08-23 — T0 usable-direct-key correction
 
 **Status: FROZEN.** This is the generator version that produced the
-currently committed DEV and FROZEN-EVAL datasets and `manifests/v2.json`.
+currently committed DEV and FROZEN-EVAL datasets and `manifests/v3.json`.
+
+**Created before any Stage-3 LLM, agent, prompt or extraction code
+existed.** No such code exists in the repository at this version. The
+correction was driven entirely by a discrepancy between the two splits'
+*deterministic* behaviour, described below, and no model outcome was
+consulted, because none was available to consult.
+
+### Why v2 was superseded
+
+FROZEN-EVAL and DEV disagreed about which rule resolved T0, and only one of
+them was right:
+
+| Split | T0 resolved by `direct_key` | T0 resolved by `derived` |
+|---|---:|---:|
+| DEV (v2) | 350 / 350 | 0 |
+| **FROZEN-EVAL (v2)** | **175 / 350** | **175** |
+
+DESIGN.md §5.2 defines T0 as the tier where "a usable direct join key
+survives", and §5.2's own gradient puts it above T2 precisely because an ID
+join settles it. T0 exists to measure `pandas.merge`. On FROZEN-EVAL, 175
+of its 350 cases were not resolvable by an ID join at all.
+
+**Root cause.** Record identifiers embedded the split name verbatim, so a
+FROZEN-EVAL settlement ID read:
+
+```
+setl_frozen-eval_000042
+```
+
+The reconciliation tokenizer (`finrecon.normalize.tokens`) declares
+`[^A-Za-z0-9_]+` as its delimiter class, so `-` splits tokens. A T0
+settlement-ID narration therefore tokenized as:
+
+```
+narration: RZPY/SETL/setl_frozen-eval_000042 CREDIT
+tokens   : RZPY | SETL | setl_frozen | eval_000042 | CREDIT
+```
+
+No whole token equals `setl_frozen-eval_000042`, so the direct-key matcher
+— which requires whole-token equality — could never reach it. The cases
+fell through to derived reconciliation, resolved correctly there, and thus
+produced a *correct outcome by the wrong mechanism*.
+
+The generator did not catch this because its T0 admission test used
+**substring containment**:
+
+```python
+if settlement.settlement_id in bank_record.narration:   # v2: too weak
+```
+
+Containment is strictly weaker than the whole-token equality the matcher
+applies. `setl_frozen-eval_000042` is trivially a substring of its own
+narration, so every one of those 175 cases was certified T0 and silently
+mislabelled.
+
+**Why a green test suite missed it.** DEV's slug is `dev`, which carries no
+delimiter, so DEV tokenizes cleanly and all 350 DEV T0 cases really were
+direct-key resolvable. Every DEV-based coverage assertion passed. The
+defect existed *only* in the split used for reporting, which is the split
+least often inspected case-by-case. That asymmetry is the actual lesson
+here, and it is why v3 adds a cross-split rule-distribution test rather
+than only fixing the slug.
+
+**Impact had it shipped.** No wrong auto-resolutions and no change to match
+rate — those 175 cases resolved correctly either way. What would have been
+wrong is every *mechanism* claim: any per-rule breakdown in the Stage-4
+results table would have understated direct-key coverage by 175 on the
+reported split, and T0 and T1 would have been measuring the same rule while
+the README asserted they measured different ones.
+
+### What changed
+
+Three things, all on the benchmark side.
+
+- **New `token_contract.py`.** The benchmark's own independent statement of
+  what makes a reference *usable*: the delimiter class, case folding,
+  `is_token_safe()` and `is_usable_direct_key()`. Deliberately a
+  reimplementation of the production tokenizer, not an import — an
+  assertion that imported the code it checks would prove nothing. `t2_evidence`
+  now delegates its token handling here, so T2's "no direct key survives"
+  invariant and T0's "a direct key survives" admission test are one
+  predicate read in opposite directions.
+
+- **Hardened T0 admission** (`assertions.py`). `_has_clean_settlement_id_key`
+  now requires whole-token reachability instead of substring containment.
+  `_has_intact_utr_direct_key` gained the same token check on top of its
+  existing template-equality requirement — the template match keeps T0
+  structurally distinct from T2's noisy-embed narrations, and the token
+  check keeps the usability claim honest. A T0 case whose supposed direct
+  key cannot survive as one usable token now **fails generation** with
+  `TierDisjointnessError` instead of being emitted.
+
+- **Token-safe split slugs** (`config.py`, `record_factory.py`). Split
+  *names* keep their hyphen — they remain the on-disk directory name, the
+  CLI argument and the manifest keys. Split *slugs* are what go inside
+  identifiers, and are an explicit committed mapping:
+
+  ```
+  dev          -> dev
+  frozen-eval  -> frozeneval
+  ```
+
+  The mapping is declared, not computed by stripping punctuation, so adding
+  a split is a deliberate decision about its identifier text. `RecordFactory`
+  validates its slug in `__post_init__`, making a delimiter-bearing slug
+  unrepresentable rather than merely discouraged.
+
+**The matcher was not touched.** Not the tokenizer, normalization, direct
+matcher, derived matcher, candidate generation, snapshots, ledger, audit or
+pipeline. The benchmark was made to satisfy the matcher's declared
+contract; the contract was not relaxed to admit the benchmark. Weakening
+the tokenizer to accept hyphens would have been the wrong fix twice over —
+it would have silently changed T2's `separator_altered` semantics, since
+`-` is exactly the separator that category manipulates.
+
+### What did not change
+
+- Seeds: `DEV_SEED = 42`, `FROZEN_EVAL_SEED = 1337`, unchanged since v1.
+- RNG streams: seeding is still keyed on the split *name*, not the slug, so
+  every amount, date, UTR, template choice and degradation on FROZEN-EVAL
+  is bit-for-bit what v2 produced.
+- Case counts: T0 = 350, T1 = 300, T2 = 200, T3 = 40, total 890, both splits.
+- Record counts: 4,580 per split — orders 1,190, payments 1,250,
+  settlements 1,190, refunds 60, bank records 890. Unchanged from v2.
+- **DEV artifacts are byte-identical to v2.** The `dev` slug was already
+  token-safe, so regeneration reproduced DEV exactly. Only the six
+  FROZEN-EVAL files changed.
+- T0/T1/T2/T3 semantics, archetypes, the corruption taxonomy, the UTR
+  degradation ladder, the narration library, the tier plan and shuffle,
+  serialization, and the hashing algorithm and hashed-file list.
+
+Because seeding and record counts are untouched, the entire v2 -> v3
+FROZEN-EVAL diff is *identifier text and the T0 narrations that embed a
+settlement ID*. Verified mechanically: normalizing `frozen-eval` and
+`frozeneval` to a common placeholder makes all five visible v2 and v3
+dataset files compare identical.
+
+### Frozen-eval SHA-256
+
+```
+f9eb8770be6cc216d1c8b5486a10b74005382141f7c079844e2748444a44fc5b
+```
+
+Computed by `finrecon.benchmark.generator.hashing.compute_fingerprint` over
+exactly the six files listed as `frozen_eval_hashed_files` in
+`manifests/v3.json`. Algorithm unchanged from v1.
+
+- Superseded hash (v2, retained):
+  `d130c42c4bb52b6dc6b88e24f89257f4586c72423a22fdc4606440e53545b897`
+- Superseded hash (v1, retained):
+  `cda267318d215040a401bc413296015296f0d720eda09d6cd12503085fe88243`
+- Frozen date: 2026-08-23.
+
+### Resulting rule distribution
+
+Both splits now resolve each tier by the mechanism the tier is defined by:
+
+| Tier | Cases | DEV | FROZEN-EVAL |
+|---|---:|---|---|
+| T0 | 350 | 350 `direct_key` | 350 `direct_key` |
+| T1 | 300 | 300 `derived` | 300 `derived` |
+| T2 | 200 | 200 unresolved, 2 candidates | 200 unresolved, 2 candidates |
+| T3 | 40 | 40 unresolved | 40 unresolved |
+
+Zero wrong auto-resolutions on either split. Both T0 archetypes
+(`utr_intact_direct_key`, `settlement_id_clean_direct_key`) resolve via
+`direct_key` on both splits, 175 each.
+
+Per DESIGN.md §5.1 the generator now stops changing again — and in
+particular does not change in response to Stage-3 performance.
+
+## v2.0.0 — 2026-08-23 — T2 construct correction
+
+**Status: SUPERSEDED by v3.0.0 (2026-08-23).** See the v3.0.0 entry above
+for why. Its manifest (`manifests/v2.json`), seeds, counts and frozen-eval
+SHA-256 are preserved verbatim and are not to be rewritten. v2's T2
+construct is carried forward into v3 unchanged; v2 was retired for an
+unrelated T0 identifier defect, not because anything below was wrong.
 
 ### Why v1 was superseded
 
