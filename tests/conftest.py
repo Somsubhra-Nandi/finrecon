@@ -78,3 +78,32 @@ def frozen_eval_tier_labels(benchmark_dir):
         }
         for e in entries
     }
+
+
+@pytest.fixture(scope="session")
+def dev_stage3_result(benchmark_dir, tmp_path_factory):
+    """One full Stage-3 pass over every DEV case Stage 2 left unresolved.
+
+    **DEV-only, and driven by a deterministic fake provider.** No model is
+    involved: :class:`tests.stage3_fakes.MechanicalInvestigator` enumerates
+    narration fragments mechanically because it cannot read. Anything
+    measured from this fixture is a statement about the *plumbing* -- the
+    loop, the tools, the validator, the policy gate and the ledger working
+    end to end -- and never about model capability. FROZEN-EVAL outcomes are
+    not touched anywhere in this file.
+    """
+    from finrecon.agent.cache import TrajectoryCache
+    from finrecon.agent.providers.chain import ProviderChain
+    from finrecon.stage3 import run_stage3
+    from tests.stage3_fakes import MechanicalInvestigator
+
+    store = LedgerStore(":memory:")
+    batch = process_batch(store=store, benchmark_dir=benchmark_dir, split="dev")
+    result = run_stage3(
+        store=store,
+        batch_result=batch,
+        chain=ProviderChain((MechanicalInvestigator(),)),
+        cache=TrajectoryCache(tmp_path_factory.mktemp("dev-trajectories")),
+    )
+    yield result, batch, store
+    store.close()
