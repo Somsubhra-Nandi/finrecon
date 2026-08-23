@@ -297,7 +297,10 @@ class TestDevCoverage:
         derived = [
             d for d in result.resolved() if d.rule_id == RULE_DERIVED_EXACT_SETTLEMENT_ACCOUNTING
         ]
-        assert len(derived) == 500
+        # Benchmark v2: the 300 T1 cases and nothing else. v1's 200 T2
+        # cases also landed here, which is precisely the benchmark-validity
+        # problem v2 corrects (notes/STAGE2-FINDINGS.md 1).
+        assert len(derived) == 300
 
         incorrect = [
             d.case_id
