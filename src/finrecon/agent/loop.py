@@ -14,15 +14,22 @@ The machine:
     step 1..N:
         model turn                      (via the provider chain)
           no tool calls   -> investigation_complete
-          tool call       -> validate
-                               invalid  -> tool_validation_failed  (stop)
-                               valid    -> execute, append result, next step
+          tool-call batch -> preflight every call
+                               any invalid -> tool_validation_failed (execute none)
+                               all valid   -> execute serially in request order
+                                              -> deterministic validator + policy
+                                                   resolvable -> deterministic stop
+                                                   otherwise  -> next model step
     fell out of the loop  -> step_budget_exhausted
 
-Four termination states, and only the first is ordinary:
+Declared termination states:
 
 ``investigation_complete``
     The model stopped asking for tools. Evidence goes to the validator.
+``deterministic_policy_resolved``
+    After a complete tool batch, the existing validator and policy already
+    resolve from raw evidence over the complete candidate set. The loop stops
+    before asking the model for redundant corroboration.
 ``step_budget_exhausted``
     A hard blocker. The case escalates. It is never a reason to pick the
     best-looking candidate -- DESIGN.md 4.3 lists budget exhaustion as a
@@ -41,16 +48,15 @@ from the exception type, not by this module. A malformed tool call is the
 model's behaviour, and re-rolling it elsewhere would be sampling for a
 result the system prefers.
 
-One tool call per step
-----------------------
+Tool batches
+------------
 
-The loop executes at most one call per model turn. Two reasons, both
-practical: Gemini correlates tool results by function *name* rather than by
-call ID, so two simultaneous calls to the same tool are ambiguous on one of
-the three supported providers; and a strictly linear trajectory is far
-easier to audit and to replay deterministically. Extra calls in one turn are
-recorded as requested and then ignored, which is visible in the trajectory
-rather than silent.
+One model turn may request a bounded batch of independent calls. The batch
+is preflight-atomic: every call is strictly decoded, schema-validated and
+authorized against the immutable snapshot before any handler runs. One bad
+call rejects the whole batch, records every failure, and stops without
+provider fallback. A valid batch executes serially in the provider's response
+order, so audit and replay never depend on scheduling.
 """
 
 from __future__ import annotations
@@ -68,8 +74,15 @@ from finrecon.agent.providers.base import (
     ToolCallRequest,
 )
 from finrecon.agent.providers.chain import AllProvidersFailedError, ChainResult, ProviderChain
-from finrecon.agent.tools import ToolContext, ToolValidationError, execute, tool_specs
+from finrecon.agent.tools import (
+    ToolContext,
+    ToolValidationError,
+    execute_prepared,
+    prepare_call,
+    tool_specs,
+)
 from finrecon.agent.trajectory import (
+    TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
     TERMINATION_INVESTIGATION_COMPLETE,
     TERMINATION_PROVIDER_CONFIGURATION_FAILURE,
     TERMINATION_PROVIDER_INFRASTRUCTURE_FAILURE,
@@ -85,10 +98,14 @@ from finrecon.agent.trajectory import (
 from finrecon.agent.version import (
     AGENT_LOOP_VERSION,
     CACHE_SCHEMA_VERSION,
+    POLICY_VERSION,
     PROMPT_VERSION,
     TOOL_SCHEMA_VERSION,
+    VALIDATOR_VERSION,
 )
 from finrecon.candidates.snapshot import CaseSnapshot
+from finrecon.decide.config import DEFAULT_POLICY, Stage3Policy
+from finrecon.decide.policy import adjudicate
 
 DEFAULT_MAX_STEPS = 8
 """Fixed step budget. Bounded, configurable, and asserted by the tests.
@@ -100,7 +117,14 @@ inviting a model to wander. Exhausting it escalates; it never degrades into
 a guess, so raising it buys coverage and can never buy an unsafe match.
 """
 
-MAX_TOOL_CALLS_PER_STEP = 1
+MAX_TOOL_CALLS_PER_STEP = 8
+"""Maximum calls admitted from one assistant turn.
+
+Eight is deliberately the same order as the model-step budget: large enough
+for the observed compare/lookup batches, small enough that one response
+cannot turn a bounded model loop into unbounded tool work. Exceeding it is a
+recorded semantic validation failure; extra calls are never silently ignored.
+"""
 
 
 @dataclass(frozen=True)
@@ -152,6 +176,7 @@ def run_investigation(
     snapshot: CaseSnapshot,
     chain: ProviderChain,
     config: LoopConfig | None = None,
+    policy: Stage3Policy = DEFAULT_POLICY,
     cache_key: str = "",
 ) -> Trajectory:
     """Run one bounded investigation over one immutable case snapshot.
@@ -163,6 +188,7 @@ def run_investigation(
     inconclusive" must both end in escalation and both be auditable.
     """
     config = config or LoopConfig()
+    investigation_started = time.perf_counter()
     context = ToolContext(snapshot=snapshot)
     specs = tool_specs()
 
@@ -178,7 +204,7 @@ def run_investigation(
         f"step budget of {config.max_steps} exhausted without a terminal model turn"
     )
 
-    def finish() -> Trajectory:
+    def build_trajectory(reason: str, detail: str | None) -> Trajectory:
         return Trajectory(
             case_id=snapshot.case_id,
             snapshot_hash=snapshot.content_hash,
@@ -187,15 +213,23 @@ def run_investigation(
             tool_schema_version=TOOL_SCHEMA_VERSION,
             agent_loop_version=AGENT_LOOP_VERSION,
             cache_schema_version=CACHE_SCHEMA_VERSION,
+            validator_version=VALIDATOR_VERSION,
+            policy_version=POLICY_VERSION,
+            policy_declaration=policy.describe(),
             max_steps=config.max_steps,
+            max_tool_calls_per_step=config.max_tool_calls_per_step,
             provider_chain=chain.describe(),
             steps=tuple(steps),
             tool_invocations=tuple(invocations),
-            termination_reason=termination,  # type: ignore[arg-type]
-            termination_detail=termination_detail,
+            termination_reason=reason,  # type: ignore[arg-type]
+            termination_detail=detail,
+            total_latency_ms=int((time.perf_counter() - investigation_started) * 1000),
             cache_key=cache_key,
             replayed=False,
         )
+
+    def finish() -> Trajectory:
+        return build_trajectory(termination, termination_detail)
 
     for step_index in range(1, config.max_steps + 1):
         try:
@@ -260,16 +294,46 @@ def run_investigation(
             ConversationMessage(
                 role="assistant",
                 content=response.text,
-                tool_calls=response.tool_calls[: config.max_tool_calls_per_step],
+                tool_calls=response.tool_calls,
             )
         )
 
-        for call_index, call in enumerate(
-            response.tool_calls[: config.max_tool_calls_per_step]
-        ):
+        if len(response.tool_calls) > config.max_tool_calls_per_step:
+            call_index = config.max_tool_calls_per_step
+            call = response.tool_calls[call_index]
+            detail = (
+                f"assistant requested {len(response.tool_calls)} tool calls; "
+                f"per-turn limit is {config.max_tool_calls_per_step}; batch executed none"
+            )
+            invocations.append(
+                ToolInvocationRecord(
+                    step_index=step_index,
+                    call_index=call_index,
+                    tool_name=call.tool_name,
+                    raw_arguments=call.raw_arguments,
+                    validated_arguments=None,
+                    validation_error_reason=(
+                        ToolValidationError.TOOL_CALL_BATCH_LIMIT_EXCEEDED
+                    ),
+                    validation_error_detail=detail,
+                    output=None,
+                    latency_ms=0,
+                )
+            )
+            termination = TERMINATION_TOOL_VALIDATION_FAILED
+            termination_detail = (
+                f"{ToolValidationError.TOOL_CALL_BATCH_LIMIT_EXCEEDED}: {detail}"
+            )
+            return finish()
+
+        prepared = []
+        validation_failures: list[tuple[int, ToolValidationError]] = []
+        for call_index, call in enumerate(response.tool_calls):
             started = time.perf_counter()
             try:
-                arguments, output = execute(context, call.tool_name, call.raw_arguments)
+                definition, arguments = prepare_call(
+                    context, call.tool_name, call.raw_arguments
+                )
             except ToolValidationError as exc:
                 invocations.append(
                     ToolInvocationRecord(
@@ -284,10 +348,22 @@ def run_investigation(
                         latency_ms=int((time.perf_counter() - started) * 1000),
                     )
                 )
-                termination = TERMINATION_TOOL_VALIDATION_FAILED
-                termination_detail = f"{exc.reason}: {exc.detail}"
-                return finish()
+                validation_failures.append((call_index, exc))
+                continue
+            prepared.append((call_index, call, definition, arguments))
 
+        if validation_failures:
+            termination = TERMINATION_TOOL_VALIDATION_FAILED
+            joined = "; ".join(
+                f"call {index}: {exc.reason}: {exc.detail}"
+                for index, exc in validation_failures
+            )
+            termination_detail = f"tool batch rejected before execution; {joined}"
+            return finish()
+
+        for call_index, call, definition, arguments in prepared:
+            started = time.perf_counter()
+            output = execute_prepared(context, definition, arguments)
             payload = output.model_dump(mode="json")
             invocations.append(
                 ToolInvocationRecord(
@@ -310,6 +386,24 @@ def run_investigation(
                     tool_name=call.tool_name,
                 )
             )
+
+        # This is the optimization's only authority check. It uses the same
+        # validator and policy the outer Stage-3 pipeline will run, with the
+        # same policy configuration, over the complete successful batch. The
+        # model's prose and finish reason are not inputs.
+        provisional = build_trajectory(
+            TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
+            f"existing validator/policy reached safe resolution after tool batch at step {step_index}",
+        )
+        _, provisional_decision = adjudicate(
+            snapshot=snapshot,
+            trajectory=provisional,
+            policy=policy,
+        )
+        if provisional_decision.resolved:
+            termination = TERMINATION_DETERMINISTIC_POLICY_RESOLVED
+            termination_detail = provisional.termination_detail
+            return finish()
 
     return finish()
 

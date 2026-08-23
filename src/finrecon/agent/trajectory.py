@@ -34,6 +34,14 @@ from finrecon.normalize.provenance import FrozenModel
 TERMINATION_INVESTIGATION_COMPLETE = "investigation_complete"
 """The model returned a turn with no tool calls. The normal ending."""
 
+TERMINATION_DETERMINISTIC_POLICY_RESOLVED = "deterministic_policy_resolved"
+"""Existing validator/policy predicates resolved after a complete tool batch.
+
+The model did not decide or announce completion. The loop stopped before a
+redundant next model turn because the deterministic decision layer already
+had sufficient raw evidence over the complete immutable candidate set.
+"""
+
 TERMINATION_STEP_BUDGET_EXHAUSTED = "step_budget_exhausted"
 """The loop hit its fixed maximum. A hard blocker -- never a reason to guess."""
 
@@ -48,6 +56,7 @@ TERMINATION_PROVIDER_CONFIGURATION_FAILURE = "provider_configuration_failure"
 
 TERMINATION_REASONS: tuple[str, ...] = (
     TERMINATION_INVESTIGATION_COMPLETE,
+    TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
     TERMINATION_STEP_BUDGET_EXHAUSTED,
     TERMINATION_TOOL_VALIDATION_FAILED,
     TERMINATION_PROVIDER_INFRASTRUCTURE_FAILURE,
@@ -56,6 +65,7 @@ TERMINATION_REASONS: tuple[str, ...] = (
 
 TerminationReason = Literal[
     "investigation_complete",
+    "deterministic_policy_resolved",
     "step_budget_exhausted",
     "tool_validation_failed",
     "provider_infrastructure_failure",
@@ -141,13 +151,19 @@ class Trajectory(FrozenModel):
     tool_schema_version: str
     agent_loop_version: str
     cache_schema_version: str
+    validator_version: str
+    policy_version: str
+    policy_declaration: dict
     max_steps: int
+    max_tool_calls_per_step: int
     provider_chain: tuple[str, ...]
     """``provider:model`` for each configured provider, in order."""
     steps: tuple[ModelStepRecord, ...]
     tool_invocations: tuple[ToolInvocationRecord, ...]
     termination_reason: TerminationReason
     termination_detail: str | None = None
+    total_latency_ms: int | None = None
+    """End-to-end live investigation latency, including model and tool time."""
     cache_key: str = ""
     replayed: bool = False
     """True when this trajectory was served from cache rather than a live run."""
@@ -165,6 +181,10 @@ class Trajectory(FrozenModel):
     @property
     def completed_normally(self) -> bool:
         return self.termination_reason == TERMINATION_INVESTIGATION_COMPLETE
+
+    @property
+    def deterministic_early_stop(self) -> bool:
+        return self.termination_reason == TERMINATION_DETERMINISTIC_POLICY_RESOLVED
 
     @property
     def had_validation_failure(self) -> bool:
@@ -201,11 +221,37 @@ class Trajectory(FrozenModel):
         values = [s.usage.total_tokens for s in self.steps if s.usage.total_tokens is not None]
         return sum(values) if values else None
 
+    def input_tokens(self) -> int | None:
+        values = [s.usage.input_tokens for s in self.steps if s.usage.input_tokens is not None]
+        return sum(values) if values else None
+
+    def output_tokens(self) -> int | None:
+        values = [s.usage.output_tokens for s in self.steps if s.usage.output_tokens is not None]
+        return sum(values) if values else None
+
+    def provider_latency_ms(self) -> int | None:
+        values = [s.latency_ms for s in self.steps if s.latency_ms is not None]
+        return sum(values) if values else None
+
+    @property
+    def provider_call_count(self) -> int:
+        """Transport attempts made across all model steps, including fallbacks."""
+        return sum(len(step.attempts) for step in self.steps)
+
+    @property
+    def tool_invocation_count(self) -> int:
+        return len(self.successful_tool_invocations())
+
+    @property
+    def requested_tool_call_count(self) -> int:
+        return sum(len(step.requested_tool_calls) for step in self.steps)
+
     def successful_tool_invocations(self) -> tuple[ToolInvocationRecord, ...]:
         return tuple(inv for inv in self.tool_invocations if inv.succeeded)
 
 
 __all__ = [
+    "TERMINATION_DETERMINISTIC_POLICY_RESOLVED",
     "TERMINATION_INVESTIGATION_COMPLETE",
     "TERMINATION_PROVIDER_CONFIGURATION_FAILURE",
     "TERMINATION_PROVIDER_INFRASTRUCTURE_FAILURE",

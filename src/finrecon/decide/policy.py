@@ -40,6 +40,7 @@ from __future__ import annotations
 from typing import Literal
 
 from finrecon.agent.trajectory import (
+    TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
     TERMINATION_INVESTIGATION_COMPLETE,
     TERMINATION_PROVIDER_CONFIGURATION_FAILURE,
     TERMINATION_PROVIDER_INFRASTRUCTURE_FAILURE,
@@ -151,7 +152,10 @@ def _investigation_blockers(trajectory: Trajectory) -> list[str]:
         TERMINATION_PROVIDER_CONFIGURATION_FAILURE,
     ):
         blockers.append(BLOCKER_PROVIDER_FAILURE)
-    elif reason != TERMINATION_INVESTIGATION_COMPLETE:
+    elif reason not in (
+        TERMINATION_INVESTIGATION_COMPLETE,
+        TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
+    ):
         blockers.append(BLOCKER_INVESTIGATION_INCOMPLETE)
     return blockers
 
