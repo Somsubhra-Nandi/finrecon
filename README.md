@@ -11,7 +11,8 @@ restate that document.
 
 ## Implementation status
 
-**Currently at Stage 2 (Deterministic core)** of the plan in `DESIGN.md` §9.
+**Currently at Stage 3 (Investigation agent and policy)** of the plan in
+`DESIGN.md` §9.
 
 Stage 0 delivered the foundations, reused as-is in Stage 1:
 
@@ -67,15 +68,48 @@ Stage 2 delivers the **deterministic reconciliation core**:
   persisted with its rule ID, matched IDs and exact-paise derivation.
   Reprocessing the same batch is a no-op.
 
-**No LLM, Gemini call, narration parser, investigation agent, validator,
-policy gate, evaluation harness, API or UI exists yet** — those belong to
-Stage 3+ in `DESIGN.md` §9. Nothing on the reconciliation path reads the
-hidden ground truth, which `tests/test_benchmark_isolation.py` asserts
-structurally.
+Stage 3 delivers the **bounded AI investigation layer** and the
+deterministic decision layer behind it:
+
+- **Read-only investigation tools** (`src/finrecon/agent/tools.py`) — four
+  of them, each a window onto the immutable case snapshot and nothing else,
+  with Pydantic-validated input and output. They report facts (break-up
+  lines, exact-paise residuals, mechanical reference comparisons) and never
+  a verdict. There is no `recover_correct_settlement()`.
+- **Provider-neutral model access** (`src/finrecon/agent/providers/`) —
+  OpenRouter primary, Groq and Gemini as fallbacks, over an interface the
+  agent loop can use without knowing any provider's wire format. Fallback
+  is restricted to *infrastructure* failure by the exception type itself.
+- **A bounded investigation loop** (`src/finrecon/agent/loop.py`) — an
+  explicit state machine with a fixed step budget and four termination
+  states, none of which can turn a failure into a choice.
+- **Full trajectory recording and deterministic replay**
+  (`src/finrecon/agent/trajectory.py`, `cache.py`) — every step, every
+  refused call, every fallback, keyed so a replay reproduces the same raw
+  evidence with zero provider calls.
+- **A deterministic validator** (`src/finrecon/decide/validator.py`) —
+  predicates over the *complete* Stage-2 candidate set plus raw tool
+  outputs. Agent prose is not an input, structurally.
+- **A deterministic policy gate** (`src/finrecon/decide/policy.py`) — hard
+  blockers, exact-paise accounting, and value-aware thresholds. Model
+  confidence is never consulted.
+
+**No evaluation harness, ablation, API or UI exists yet** — those are
+Stage 4+ in `DESIGN.md` §9. Nothing on the reconciliation *or* investigation
+path reads the hidden ground truth, which
+`tests/test_benchmark_isolation.py` and `tests/test_stage3_isolation.py`
+assert structurally.
 
 **No benchmark result is reported here.** Match rate, precision, coverage
 and value at risk require the Stage-4 evaluation harness, which does not
 exist. There is deliberately no `make eval` target.
+
+**No live model run has been performed.** No provider credential was
+available in the build environment, so Stage 3 is verified against
+deterministic fake providers and the committed trajectory corpus
+(`fixtures/trajectories/`) is empty. Every claim below about the
+architecture is tested; no claim is made about how a model performs on this
+benchmark, because that has not been measured.
 
 ### Record, case, batch (DESIGN.md §5.0)
 
@@ -281,6 +315,57 @@ under which rule, and how many produced candidate snapshots. It reports no
 accuracy: a production system has no ground truth, and accuracy belongs to
 the benchmark harness (`DESIGN.md` §7).
 
+### Running the investigation layer
+
+```bash
+make test-stage3             # every Stage-3 test, deterministic fake providers
+make investigate-dev         # LIVE, 4 DEV cases; needs a provider credential
+make investigate-dev-replay  # replay from fixtures; zero provider calls, no key
+```
+
+Credentials come from the environment only — see `.env.example`. Nothing in
+this repository writes a key to a trajectory, a fixture, a log line or an
+exception message, and `.env` is gitignored.
+
+`investigate-dev` prints the provider order, the exact model IDs and which
+credentials are present before it runs anything, because a run that quietly
+fell back to a different model is a run whose numbers mean something else.
+Like `reconcile-dev`, it reports no accuracy.
+
+#### The safety invariant, and how it is enforced
+
+> The agent may enrich the case. It may not shrink it. (`DESIGN.md` §4.1)
+
+This is structural, not a prompt instruction:
+
+| The agent cannot… | Because |
+|---|---|
+| delete, hide or replace a candidate | the snapshot is a frozen model of tuples; tools receive it and nothing writable |
+| rank or score candidates | no tool output has a score, rank, confidence or `is_match` field |
+| mark a winner or resolve a case | the gate's signature takes no agent input; its inputs are the snapshot, the policy and raw tool outputs |
+| investigate a settlement outside the case | candidate and settlement IDs are checked against the snapshot before any handler runs |
+| have its summary believed | the validator reads tool results only; the extraction function cannot return prose |
+| hide a contradicting candidate | the validator re-tests every fragment against **all** candidates, including ones the agent never asked about |
+| fabricate a reference | a fragment must be found in the immutable narration — re-checked by the validator, not taken from the tool's own boolean |
+| write anything | no tool imports sqlite3, the ledger, the loader or the pipeline |
+
+#### Value-aware policy (DESIGN.md §4.5)
+
+Two declared rungs, in `src/finrecon/decide/config.py`, both stated as
+configuration rather than attributed to a source they did not come from:
+
+| Rung | Threshold | Effect |
+|---|---|---|
+| ordinary | — | base evidence floor: 4 pinned reference characters |
+| elevated scrutiny | > ₹1,00,000 | floor doubles to 8 pinned characters |
+| above ceiling | > ₹5,00,000 | escalate regardless of evidence |
+
+**Neither threshold binds on this benchmark** — the synthetic data tops out
+in the tens of thousands of rupees — so the value gate is exercised by
+construction in `tests/test_policy.py`, not by the dataset, and no count
+anywhere is a product of it. Saying that is better than picking a ceiling
+that makes the mechanism look active.
+
 ### Methodological limitations (stated plainly, per DESIGN.md §5.1/§10)
 
 - This is synthetic data, authored by the same person building the system
@@ -306,6 +391,11 @@ the benchmark harness (`DESIGN.md` §7).
   reconciliation queues contain larger and messier contention sets; the
   benchmark does not model those, and `notes/STAGE2-FINDINGS.md` records
   the other archetypes deliberately left out of scope.
+- Stage 3 has never been run against a real model. Every Stage-3 number in
+  this repository comes from a deterministic fake provider and describes the
+  architecture, not model capability. `notes/STAGE3-FINDINGS.md` §1 says so
+  in more detail, including the one finding that would change how a T2
+  result should be read.
 
 ## Development setup
 
