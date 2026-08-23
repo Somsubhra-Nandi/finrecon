@@ -53,8 +53,26 @@ Frozen before any Stage-3 model exists, and not to be changed by one. If
 this fails, stop.
 """
 
-RECONCILIATION_PACKAGES = ("normalize", "matchers", "candidates", "ledger")
-RECONCILIATION_MODULES = ("pipeline.py", "loader.py", "reconcile_cli.py")
+RECONCILIATION_PACKAGES = (
+    "normalize",
+    "matchers",
+    "candidates",
+    "ledger",
+    # Stage 3 joins the same guarantee. The investigation agent, its tools,
+    # its providers and the deterministic decision layer are all on the path
+    # that decides whether money moves, so none of them may read the hidden
+    # answers either.
+    "agent",
+    "decide",
+    "evidence",
+)
+RECONCILIATION_MODULES = (
+    "pipeline.py",
+    "loader.py",
+    "reconcile_cli.py",
+    "stage3.py",
+    "investigate_cli.py",
+)
 
 
 def source_root() -> Path:
