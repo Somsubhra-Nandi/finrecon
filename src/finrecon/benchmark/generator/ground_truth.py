@@ -28,6 +28,14 @@ class DegradationInfo(BaseModel):
 
     category_id: str
     narration_template_id: str | None = None
+    surviving_evidence: str | None = None
+    """Exactly what survived of the reference in the narration (benchmark v2).
+
+    Recorded so evaluation can state *which* fragment a case turned on
+    rather than re-deriving it, and so the generator's own causal-necessity
+    assertions have a single declared subject. ``None`` wherever no
+    reference survives at all (T1's ``omitted``, T3's ``ambiguous``).
+    """
 
 
 class ReconciliationRelationship(BaseModel):
@@ -59,6 +67,14 @@ class GroundTruthCase(BaseModel):
     correct_relationship: ReconciliationRelationship | None
     true_reference: str | None
     degradation: DegradationInfo | None
+    distractor_settlement_ids: tuple[str, ...] = ()
+    """Settlements deliberately built to be structurally plausible but wrong (benchmark v2).
+
+    Populated for T2, where the construct requires at least one decoy that
+    every declared Stage-2 rule finds as compelling as the true
+    counterparty. Empty elsewhere. Hidden, like the rest of this file —
+    nothing on the reconciliation path may read it.
+    """
     value_at_stake_paise: int
 
     def to_json_dict(self) -> dict:
