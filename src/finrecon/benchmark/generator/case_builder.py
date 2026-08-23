@@ -12,7 +12,7 @@ passed in, which callers derive deterministically per case
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import datetime, time, timedelta
 
 from finrecon.models import OrderStatus, PaymentStatus
 
@@ -40,6 +40,12 @@ from finrecon.benchmark.generator.templates import (
     render_t2_noisy,
 )
 from finrecon.benchmark.generator.narration_library import get_narration_template
+from finrecon.benchmark.generator.t2_evidence import SurvivingReference
+from finrecon.benchmark.generator.t2_invariants import (
+    PlausibilityInputs,
+    T2ConstructError,
+    verify_t2_case,
+)
 from finrecon.benchmark.generator.utr_degradation import degrade, degrade_embedded_in_narration
 
 _GROSS_MIN = 50_000  # ₹500
@@ -447,39 +453,160 @@ T1_ARCHETYPE_NAMES = (
 # T2 — degraded reference
 # --------------------------------------------------------------------------
 
+_T2_DECOY_UTR_ATTEMPTS = 64
+"""Bounded, deterministic retries when a drawn decoy UTR would also fit the fragment.
 
-def build_t2_degraded_reference(case_id: str, rng, factory: RecordFactory, category_id: str) -> CaseBundle:
-    base_ts = case_base_timestamp(rng)
-    gross = rng.randint(_GROSS_MIN, _GROSS_MAX)
-    order = factory.make_order(amount=gross, created_at=base_ts, status=OrderStatus.PAID)
-    payment_ts = base_ts + timedelta(seconds=rng.randint(1, 600))
-    payment = factory.make_payment(order_id=order.order_id, amount=gross, created_at=payment_ts)
-    fee, gst, net = fee_breakup(gross)
-    settlement_ts = payment_ts + timedelta(days=rng.randint(1, 3))
-    utr = synthetic_utr(rng)
-    settlement = factory.make_settlement(
-        utr=utr,
-        net_amount=net,
-        created_at=settlement_ts,
-        breakup=(payment_line(gross, payment.payment_id), fee_line(fee), tax_line(gst)),
-    )
+A 4-character surviving suffix can coincidentally be a suffix of a freshly
+drawn UTR. Redrawing the *decoy* (never the true reference, never the
+degradation) keeps the case's difficulty exactly as the ladder category
+specifies while guaranteeing invariant 6. The bound is declared rather
+than open-ended so an exhausted search fails loudly instead of looping.
+"""
 
-    degrade_seed = rng.randint(0, 2**31 - 1)
+
+def _t2_surviving_reference(utr: str, category_id: str, degrade_seed: int, rng) -> SurvivingReference:
+    """Degrade ``utr`` per the ladder category and render the bank's narration around it.
+
+    Returns both halves of the T2 evidence contract: the exact fragment
+    that survived, and the narration it survived inside. For every
+    category except ``embedded_in_narration`` the fragment is the degraded
+    string itself, dropped into a noisy template. ``embedded_in_narration``
+    degrades *retrievability* rather than characters — the reference is
+    character-intact but glued to surrounding text inside a single token,
+    so no whole-token comparison can reach it.
+    """
     if category_id == "embedded_in_narration":
-        template_id = rng.choice(("design_doc_example_neft",))
+        template_id = "design_doc_example_neft"
         template = get_narration_template(template_id)
         result = degrade_embedded_in_narration(utr, degrade_seed, narration_template=template.template)
-        narration = result.value
+        return SurvivingReference(
+            category_id=category_id,
+            evidence=utr,
+            narration=result.value,
+            narration_template_id=template_id,
+        )
+
+    result = degrade(utr, category_id, degrade_seed)
+    narration, template_id = render_t2_noisy(result.value, rng)
+    return SurvivingReference(
+        category_id=category_id,
+        evidence=result.value,
+        narration=narration,
+        narration_template_id=template_id,
+    )
+
+
+def build_t2_degraded_reference(case_id: str, rng, factory: RecordFactory, category_id: str) -> CaseBundle:
+    """One degraded-reference case in which the degraded reference actually matters.
+
+    Benchmark v1 built T2 as a T1 case with a mangled narration bolted on:
+    a single settlement, uniquely pinned by amount and date, so the
+    deterministic core resolved all 200 of them without reading a
+    character of narration (``notes/STAGE2-FINDINGS.md`` §1). The
+    surviving reference was decorative.
+
+    v2 makes it load-bearing. Two settlements are built — the true one and
+    a structurally identical decoy — with the same gross, therefore the
+    same fee/GST/net, on the same settlement date, each with its own order
+    and captured payment and its own sound break-up. Both are equally
+    plausible under every declared Stage-2 rule, so structured evidence
+    alone cannot choose, and the deterministic core refuses. The only
+    thing separating them is the degraded UTR fragment in the narration,
+    which is drawn from the true settlement and verified inconsistent with
+    the decoy's.
+
+    Nothing here is tier-aware on the matcher's side; the case is simply
+    built so that the tier-blind rules cannot settle it.
+    """
+    base_ts = case_base_timestamp(rng)
+    gross = rng.randint(_GROSS_MIN, _GROSS_MAX)
+    fee, gst, net = fee_breakup(gross)
+
+    true_payment_ts = base_ts + timedelta(seconds=rng.randint(1, 600))
+    decoy_payment_ts = base_ts + timedelta(seconds=rng.randint(1, 600))
+
+    # Both settlements land on one calendar date at distinct times. Same
+    # date keeps them jointly in the declared value-date window; distinct
+    # times keep the case out of T3's "genuinely indistinguishable records"
+    # construct, which pins identical timestamps.
+    settlement_day = (max(true_payment_ts, decoy_payment_ts) + timedelta(days=rng.randint(1, 3))).date()
+    day_start = datetime.combine(settlement_day, time.min)
+    true_minute, decoy_minute = rng.sample(range(1440), 2)
+    true_settlement_ts = day_start + timedelta(minutes=true_minute)
+    decoy_settlement_ts = day_start + timedelta(minutes=decoy_minute)
+
+    true_utr = synthetic_utr(rng)
+    degrade_seed = rng.randint(0, 2**31 - 1)
+    surviving = _t2_surviving_reference(true_utr, category_id, degrade_seed, rng)
+
+    decoy_utr: str | None = None
+    for _ in range(_T2_DECOY_UTR_ATTEMPTS):
+        drawn = synthetic_utr(rng)
+        if drawn != true_utr and not surviving.recovers(drawn):
+            decoy_utr = drawn
+            break
+    if decoy_utr is None:
+        raise T2ConstructError(
+            f"T2 case {case_id!r}: could not draw a decoy UTR inconsistent with surviving "
+            f"evidence {surviving.evidence!r} in {_T2_DECOY_UTR_ATTEMPTS} attempts"
+        )
+
+    def _chain(utr: str, payment_ts, settlement_ts):
+        order = factory.make_order(amount=gross, created_at=base_ts, status=OrderStatus.PAID)
+        payment = factory.make_payment(order_id=order.order_id, amount=gross, created_at=payment_ts)
+        settlement = factory.make_settlement(
+            utr=utr,
+            net_amount=net,
+            created_at=settlement_ts,
+            breakup=(payment_line(gross, payment.payment_id), fee_line(fee), tax_line(gst)),
+        )
+        return order, payment, settlement
+
+    # Which chain is built first is randomised, so the true settlement's
+    # position in the sequential ID space carries no signal. Without this,
+    # "the lower settlement ID is the answer" would hold for all 200 cases.
+    true_first = rng.random() < 0.5
+    if true_first:
+        true_chain = _chain(true_utr, true_payment_ts, true_settlement_ts)
+        decoy_chain = _chain(decoy_utr, decoy_payment_ts, decoy_settlement_ts)
+        ordered = (true_chain, decoy_chain)
     else:
-        result = degrade(utr, category_id, degrade_seed)
-        narration, template_id = render_t2_noisy(result.value, rng)
+        decoy_chain = _chain(decoy_utr, decoy_payment_ts, decoy_settlement_ts)
+        true_chain = _chain(true_utr, true_payment_ts, true_settlement_ts)
+        ordered = (decoy_chain, true_chain)
+
+    _, _, true_settlement = true_chain
+    _, _, decoy_settlement = decoy_chain
 
     bank_record = factory.make_bank_record(
-        amount=net, narration=narration, value_date=(settlement_ts + timedelta(days=rng.randint(0, 1))).date()
+        amount=net,
+        narration=surviving.narration,
+        value_date=settlement_day + timedelta(days=rng.randint(0, 1)),
     )
+
     records = CaseRecords(
-        orders=(order,), payments=(payment,), settlements=(settlement,), refunds=(), bank_records=(bank_record,)
+        orders=tuple(chain[0] for chain in ordered),
+        payments=tuple(chain[1] for chain in ordered),
+        settlements=tuple(chain[2] for chain in ordered),
+        refunds=(),
+        bank_records=(bank_record,),
     )
+
+    # Independent re-derivation from the records just built. Case-local
+    # only here; the full-split check runs in `dataset.py` once every
+    # case exists, and a wider pool can only add candidates.
+    verify_t2_case(
+        case_id=case_id,
+        bank_record=bank_record,
+        pool=PlausibilityInputs(
+            settlements=records.settlements,
+            payments=records.payments,
+            refunds=records.refunds,
+        ),
+        true_settlement_id=true_settlement.settlement_id,
+        surviving_reference=surviving,
+    )
+
     return _finalize(
         case_id,
         "T2",
@@ -489,11 +616,16 @@ def build_t2_degraded_reference(case_id: str, rng, factory: RecordFactory, categ
             required_outcome="AUTO_RESOLVABLE",
             correct_relationship=ReconciliationRelationship(
                 bank_record_id=bank_record.bank_record_id,
-                settlement_ids=(settlement.settlement_id,),
+                settlement_ids=(true_settlement.settlement_id,),
                 relationship="one_to_one",
             ),
-            true_reference=utr,
-            degradation=DegradationInfo(category_id=category_id, narration_template_id=template_id),
+            true_reference=true_utr,
+            degradation=DegradationInfo(
+                category_id=category_id,
+                narration_template_id=surviving.narration_template_id,
+                surviving_evidence=surviving.evidence,
+            ),
+            distractor_settlement_ids=(decoy_settlement.settlement_id,),
             value_at_stake_paise=net,
         ),
     )
