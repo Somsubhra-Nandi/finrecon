@@ -158,7 +158,11 @@ class TestItIgnoresAgentProse:
             tool_schema_version="t",
             agent_loop_version="l",
             cache_schema_version="c",
+            validator_version="v",
+            policy_version="p",
+            policy_declaration={},
             max_steps=8,
+            max_tool_calls_per_step=8,
             provider_chain=("fake:fake",),
             steps=(
                 ModelStepRecord(
@@ -206,7 +210,11 @@ class TestItIgnoresAgentProse:
             tool_schema_version="t",
             agent_loop_version="l",
             cache_schema_version="c",
+            validator_version="v",
+            policy_version="p",
+            policy_declaration={},
             max_steps=8,
+            max_tool_calls_per_step=8,
             provider_chain=("fake:fake",),
             steps=(),
             tool_invocations=(

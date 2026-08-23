@@ -18,6 +18,7 @@ import json
 import pytest
 
 from finrecon.agent.trajectory import (
+    TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
     TERMINATION_INVESTIGATION_COMPLETE,
     TERMINATION_PROVIDER_INFRASTRUCTURE_FAILURE,
     TERMINATION_STEP_BUDGET_EXHAUSTED,
@@ -112,7 +113,11 @@ def trajectory_for(
         tool_schema_version="t",
         agent_loop_version="l",
         cache_schema_version="c",
+        validator_version="v",
+        policy_version="p",
+        policy_declaration={},
         max_steps=8,
+        max_tool_calls_per_step=8,
         provider_chain=("fake:fake",),
         steps=steps,
         tool_invocations=tuple(invocations),
@@ -214,6 +219,13 @@ class TestFinancialBlockers:
 
 
 class TestInvestigationBlockers:
+    def test_deterministic_early_stop_uses_the_same_resolution_predicates(self, snapshot):
+        _, decision = gate_case(
+            snapshot, termination=TERMINATION_DETERMINISTIC_POLICY_RESOLVED
+        )
+        assert decision.outcome == "RESOLVE"
+        assert decision.blockers == ()
+
     def test_step_budget_exhaustion_escalates_even_with_perfect_evidence(self, snapshot):
         _, decision = gate_case(snapshot, termination=TERMINATION_STEP_BUDGET_EXHAUSTED)
         assert decision.outcome == "ESCALATE"
