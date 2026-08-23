@@ -23,6 +23,8 @@ was allowed to do:
 ``tool_schema_version``      changing what a tool returns invalidates it
 ``agent_loop_version``       changing termination or call bounds does too
 ``max_steps``                a smaller budget is a different experiment
+``max_tool_calls_per_step``  changing the per-turn batch bound changes execution
+``validator`` / ``policy``   deterministic early-stop authority and configuration
 ``cache_schema_version``     the record format itself
 ===========================  =========================================
 
@@ -57,13 +59,21 @@ from pathlib import Path
 from finrecon.agent.version import (
     AGENT_LOOP_VERSION,
     CACHE_SCHEMA_VERSION,
+    POLICY_VERSION,
     PROMPT_VERSION,
     TOOL_SCHEMA_VERSION,
+    VALIDATOR_VERSION,
 )
-from finrecon.agent.loop import DEFAULT_MAX_STEPS, LoopConfig, run_investigation
+from finrecon.agent.loop import (
+    DEFAULT_MAX_STEPS,
+    MAX_TOOL_CALLS_PER_STEP,
+    LoopConfig,
+    run_investigation,
+)
 from finrecon.agent.providers.chain import ProviderChain
 from finrecon.agent.trajectory import Trajectory
 from finrecon.candidates.snapshot import CaseSnapshot
+from finrecon.decide.config import DEFAULT_POLICY, Stage3Policy
 
 DEFAULT_FIXTURE_DIR = Path("fixtures") / "trajectories"
 
@@ -80,7 +90,11 @@ class CacheKeyInputs:
     tool_schema_version: str
     agent_loop_version: str
     cache_schema_version: str
+    validator_version: str
+    policy_version: str
+    policy_declaration: dict[str, object]
     max_steps: int
+    max_tool_calls_per_step: int
 
     def canonical(self) -> str:
         return json.dumps(
@@ -89,11 +103,15 @@ class CacheKeyInputs:
                 "cache_schema_version": self.cache_schema_version,
                 "case_id": self.case_id,
                 "max_steps": self.max_steps,
+                "max_tool_calls_per_step": self.max_tool_calls_per_step,
                 "model": self.model,
+                "policy_declaration": self.policy_declaration,
+                "policy_version": self.policy_version,
                 "prompt_version": self.prompt_version,
                 "provider": self.provider,
                 "snapshot_hash": self.snapshot_hash,
                 "tool_schema_version": self.tool_schema_version,
+                "validator_version": self.validator_version,
             },
             sort_keys=True,
             separators=(",", ":"),
@@ -109,6 +127,8 @@ def cache_key_inputs(
     provider: str,
     model: str,
     max_steps: int = DEFAULT_MAX_STEPS,
+    max_tool_calls_per_step: int = MAX_TOOL_CALLS_PER_STEP,
+    policy: Stage3Policy = DEFAULT_POLICY,
 ) -> CacheKeyInputs:
     return CacheKeyInputs(
         case_id=snapshot.case_id,
@@ -119,7 +139,11 @@ def cache_key_inputs(
         tool_schema_version=TOOL_SCHEMA_VERSION,
         agent_loop_version=AGENT_LOOP_VERSION,
         cache_schema_version=CACHE_SCHEMA_VERSION,
+        validator_version=VALIDATOR_VERSION,
+        policy_version=POLICY_VERSION,
+        policy_declaration=policy.describe(),
         max_steps=max_steps,
+        max_tool_calls_per_step=max_tool_calls_per_step,
     )
 
 
@@ -129,9 +153,16 @@ def cache_key(
     provider: str,
     model: str,
     max_steps: int = DEFAULT_MAX_STEPS,
+    max_tool_calls_per_step: int = MAX_TOOL_CALLS_PER_STEP,
+    policy: Stage3Policy = DEFAULT_POLICY,
 ) -> str:
     return cache_key_inputs(
-        snapshot, provider=provider, model=model, max_steps=max_steps
+        snapshot,
+        provider=provider,
+        model=model,
+        max_steps=max_steps,
+        max_tool_calls_per_step=max_tool_calls_per_step,
+        policy=policy,
     ).key()
 
 
@@ -226,6 +257,7 @@ def investigate_case(
     replay_only: bool = False,
     provider_id: str | None = None,
     model: str | None = None,
+    policy: Stage3Policy = DEFAULT_POLICY,
     write_cache: bool = True,
 ) -> InvestigationOutcome:
     """Cache-first investigation of one case.
@@ -254,7 +286,12 @@ def investigate_case(
         model = model or head.model
 
     key = cache_key(
-        snapshot, provider=provider_id, model=model, max_steps=config.max_steps
+        snapshot,
+        provider=provider_id,
+        model=model,
+        max_steps=config.max_steps,
+        max_tool_calls_per_step=config.max_tool_calls_per_step,
+        policy=policy,
     )
 
     cached = cache.load(key)
@@ -268,7 +305,11 @@ def investigate_case(
         raise ValueError("a live investigation needs a provider chain")
 
     trajectory = run_investigation(
-        snapshot=snapshot, chain=chain, config=config, cache_key=key
+        snapshot=snapshot,
+        chain=chain,
+        config=config,
+        policy=policy,
+        cache_key=key,
     )
     if write_cache:
         cache.store(key, trajectory)
