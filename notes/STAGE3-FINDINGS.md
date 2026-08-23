@@ -235,3 +235,161 @@ fallback classification for every provider failure mode.
 
 The live gap is the one thing standing between this stage and a complete
 day-8 gate, and it is a credential away, not a rewrite away.
+
+---
+
+## 8. BASELINE — later live smoke tests and five-case diagnostic
+
+**Status: later observation. Section 7 remains the historical state when the
+original Stage-3 findings were recorded; it is no longer the current live-run
+state.**
+
+Subsequent live calls used OpenRouter model `stealth/ox-alpha`, with Groq and
+Gemini configured only as infrastructure fallbacks. Neither successful smoke
+test needed a fallback.
+
+- A genuinely ambiguous DEV-style case was investigated without a fabricated
+  reference and safely escalated.
+- A degraded-reference case with narration fragment `PF*******VQ` produced a
+  mask-consistent relation to exactly one candidate, and the unchanged
+  validator/policy safely resolved it.
+- Strict duplicate-key decoding was exercised live: an ambiguous tool argument
+  object with two `candidate_id` keys was rejected before execution and safely
+  escalated without fallback.
+
+The baseline five-case DEV T2 diagnostic used:
+
+```
+case:bnk_dev_000003
+case:bnk_dev_000005
+case:bnk_dev_000011
+case:bnk_dev_000018
+case:bnk_dev_000026
+```
+
+Aggregate baseline result:
+
+| Measure | Baseline |
+|---|---:|
+| investigated | 5 |
+| resolved | 1 |
+| escalated | 4 |
+| `investigation_complete` | 1 |
+| `step_budget_exhausted` | 3 |
+| `tool_validation_failed` | 1 |
+| fallbacks | 0 |
+| total tokens | approximately 91,153 |
+| mean tokens / case | approximately 18,231 |
+| mean model steps | 6 |
+| maximum model steps | 8 |
+| unsafe automatic matches observed | 0 |
+
+The three budget failures were orchestration waste rather than an absence of
+decisive evidence: the model had already found a fragment that mechanically
+separated the complete candidate set, then continued requesting arithmetic,
+record lookup, break-up, and additional fragment calls until the eight-step
+budget expired. The loop also executed only the first call from multi-call
+assistant turns, forcing later model turns to request discarded calls again.
+
+Per-case baseline step/token/latency rows were not retained in this repository;
+only the aggregate diagnostic above and the case IDs were available when the
+optimization branch began.
+
+---
+
+## 9. OPTIMIZED EXPERIMENT — bounded tool batches and deterministic early stop
+
+**Branch: `exp/stage3-orchestration-opt`. Experimental; not a replacement for
+the baseline.**
+
+The optimization changes orchestration only:
+
+1. One assistant turn may request up to eight independent read-only calls.
+   Every call is first decoded with duplicate-key rejection, Pydantic-validated,
+   and authorized against the immutable snapshot. If any call fails, the whole
+   batch executes no handler and terminates with the existing safe semantic
+   failure path. A valid batch executes serially in response order.
+2. After a complete successful tool batch, the loop passes accumulated raw
+   outputs and the complete immutable snapshot through the existing validator
+   and policy. If that unchanged layer already resolves, the loop terminates as
+   `deterministic_policy_resolved` without another model turn. Model prose and
+   confidence are not inputs.
+3. The prompt now identifies the displayed Stage-2 totals, deltas, and blocking
+   rules as trusted facts already held by the validator, discouraging routine
+   re-proof of exact totals while keeping all candidates and all tools visible.
+4. Trajectories now retain the per-turn tool bound, validator/policy identities
+   and declaration, end-to-end latency, aggregate token helpers, provider-call
+   count, requested-call count, executed-call count, and explicit early-stop
+   status. Cache keys cover every new control-flow input.
+
+Safety consequences are intentionally one-way:
+
+- no validator relation, financial predicate, value threshold, or blocker was
+  weakened;
+- no candidate can be added, removed, reordered, ranked, or scored;
+- malformed mixed batches execute nothing rather than partially succeeding;
+- semantic failures still do not trigger provider fallback;
+- the model still cannot resolve money, and its prose still cannot trigger the
+  early stop.
+
+Local verification on 2026-08-23:
+
+| Check | Result |
+|---|---:|
+| focused Stage-3 suite | 342 passed |
+| complete suite | 1,151 passed |
+| frozen benchmark | SHA-256 matches v3 manifest |
+| frozen SHA-256 | `f9eb8770be6cc216d1c8b5486a10b74005382141f7c079844e2748444a44fc5b` |
+
+The fresh optimized five-case live diagnostic was subsequently run outside the
+Desktop workspace, where the provider credentials were available. It used the
+same five DEV T2 IDs as the baseline, a fresh trajectory directory, and no
+cache replays. OpenRouter model `stealth/ox-alpha` served all five calls; no
+fallback provider was used.
+
+Aggregate baseline-to-optimized comparison:
+
+| Measure | Baseline | Optimized | Change |
+|---|---:|---:|---:|
+| investigated | 5 | 5 | 0 |
+| resolved | 1 | 3 | +2 |
+| escalated | 4 | 2 | -2 |
+| `investigation_complete` | 1 | 0 | -1 |
+| `step_budget_exhausted` | 3 | 0 | -3 |
+| `deterministic_policy_resolved` | 0 | 3 | +3 |
+| `tool_validation_failed` | 1 | 2 | +1 |
+| mean model steps | 6.00 | 1.00 | -83.3% |
+| maximum model steps | 8 | 1 | -87.5% |
+| total tokens | 91,153 | 10,444 | -80,709 (-88.5%) |
+| mean tokens / case | 18,231 | 2,089 | -16,142 (-88.5%) |
+| total investigation latency | not retained | 93,589 ms | not comparable |
+| fallbacks | 0 | 0 | 0 |
+| unsafe automatic matches observed | 0 | 0 | 0 |
+
+Optimized per-case trajectories:
+
+| Case | Outcome / termination | Model steps | Calls requested / executed / refused | Tokens | Total latency | Decisive evidence |
+|---|---|---:|---:|---:|---:|---|
+| `case:bnk_dev_000003` | resolved / `deterministic_policy_resolved` | 1 | 4 / 4 / 0 | 2,043 | 17,220 ms | `PF*******VQ` was mask-consistent only with `setl_dev_000005` (4 pinned characters) |
+| `case:bnk_dev_000005` | resolved / `deterministic_policy_resolved` | 1 | 4 / 4 / 0 | 1,979 | 15,447 ms | `SK************1R` was mask-consistent only with `setl_dev_000007` (4 pinned characters) |
+| `case:bnk_dev_000011` | resolved / `deterministic_policy_resolved` | 1 | 6 / 6 / 0 | 2,516 | 32,994 ms | `8MR7YNFHN` was a prefix only of `setl_dev_000015`'s UTR (9 pinned characters) |
+| `case:bnk_dev_000018` | escalated / `tool_validation_failed` | 1 | 4 / 0 / 2 invalid | 2,154 | 18,340 ms | none executed: two calls contained duplicate object keys, so the four-call batch failed atomically |
+| `case:bnk_dev_000026` | escalated / `tool_validation_failed` | 1 | 1 / 0 / 1 invalid | 1,752 | 9,588 ms | none executed: the call contained duplicate `candidate_id` and `fragment` keys |
+
+The refused-call count above is the number of invalid calls recorded in the
+trajectory. In `case:bnk_dev_000018`, the two otherwise valid batch members
+were also deliberately not executed because preflight is atomic. The DEV
+ground truth was consulted only after the live run for diagnostic scoring: all
+three optimized resolutions matched the expected settlements, so the observed
+unsafe-match count remained zero. Ground truth was not available to the
+provider, prompt, tools, validator, or policy.
+
+This run demonstrates the intended efficiency effect and the intended
+fail-closed behaviour, but five T2 cases from one model are not enough to
+promote the experiment. The duplicate-key termination count also rose from one
+to two: the model sometimes tried to encode multiple logical calls inside one
+argument object even though batching was available. That is a model-behaviour
+signal for broader measurement, not grounds for weakening strict decoding or
+changing code from this sample alone. Recommendation: **KEEP OPTIMIZED BRANCH
+FOR FURTHER TESTING**, including a broader fresh DEV T2/T3 diagnostic and
+provider-diverse sampling before any promotion decision.
