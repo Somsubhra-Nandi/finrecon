@@ -26,6 +26,13 @@ from finrecon.benchmark.generator.ground_truth import GroundTruthCase
 from finrecon.benchmark.generator.plan import PlannedCase, build_case_plan
 from finrecon.benchmark.generator.record_factory import RecordFactory
 from finrecon.benchmark.generator.seeding import case_rng
+from finrecon.benchmark.generator.t2_evidence import SurvivingReference
+from finrecon.benchmark.generator.t2_invariants import (
+    PlausibilityInputs,
+    T2ConstructError,
+    T2Verification,
+    verify_t2_case,
+)
 
 _T1_BUILDER_BY_NAME = dict(zip(T1_ARCHETYPE_NAMES, T1_BUILDERS))
 
@@ -82,6 +89,58 @@ def _build_case(planned: PlannedCase, case_index: int, seed: int, split: str, fa
     raise ValueError(f"unknown tier in plan: {planned.tier!r}")
 
 
+def verify_t2_invariants(bundle: DatasetBundle) -> dict[str, T2Verification]:
+    """Re-check every T2 case's causal-necessity invariants against the **whole split**.
+
+    The case builder already checks each T2 case against its own records.
+    That is not sufficient on its own: candidates are drawn from the entire
+    batch, so another case's settlement landing on the same amount and date
+    changes a T2 case's candidate set, and a coincidental UTR elsewhere in
+    the split could make the surviving fragment ambiguous where it was
+    unique case-locally. A wider pool can only add candidates, never remove
+    them, so invariants 2-4 survive widening by construction — invariants
+    1, 6 and 7 are the ones this pass actually re-earns.
+
+    Runs on every generated split before anything is written, so a
+    violation is a generation failure rather than a committed artifact.
+    Returns the per-case verification records, which the DEV diagnostics
+    and the test suite read.
+    """
+    pool = PlausibilityInputs(
+        settlements=tuple(bundle.settlements),
+        payments=tuple(bundle.payments),
+        refunds=tuple(bundle.refunds),
+    )
+    bank_by_id = {b.bank_record_id: b for b in bundle.bank_records}
+
+    verifications: dict[str, T2Verification] = {}
+    for gt in bundle.ground_truth:
+        if gt.tier != "T2":
+            continue
+        if gt.degradation is None or gt.degradation.surviving_evidence is None:
+            raise T2ConstructError(
+                f"T2 case {gt.case_id!r} records no surviving reference evidence in ground truth"
+            )
+        if gt.correct_relationship is None:
+            raise T2ConstructError(f"T2 case {gt.case_id!r} has no correct relationship")
+
+        bank_record = bank_by_id[gt.correct_relationship.bank_record_id]
+        surviving = SurvivingReference(
+            category_id=gt.degradation.category_id,
+            evidence=gt.degradation.surviving_evidence,
+            narration=bank_record.narration,
+            narration_template_id=gt.degradation.narration_template_id or "",
+        )
+        verifications[gt.case_id] = verify_t2_case(
+            case_id=gt.case_id,
+            bank_record=bank_record,
+            pool=pool,
+            true_settlement_id=gt.correct_relationship.settlement_ids[0],
+            surviving_reference=surviving,
+        )
+    return verifications
+
+
 def build_dataset(split: str, seed: int, tier_counts: dict[str, int]) -> DatasetBundle:
     plan = build_case_plan(seed, split, tier_counts)
     factory = RecordFactory(split=split)
@@ -97,4 +156,5 @@ def build_dataset(split: str, seed: int, tier_counts: dict[str, int]) -> Dataset
         bundle.bank_records.extend(records.bank_records)
         bundle.ground_truth.append(case_bundle.ground_truth)
 
+    verify_t2_invariants(bundle)
     return bundle
