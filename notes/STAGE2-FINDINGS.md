@@ -16,6 +16,10 @@ was "fixed" by changing them.
 > Findings 2 and 3 still describe v1 and were deliberately left alone; the
 > v2 pass was scoped to T2 only.
 
+> **Status update — 2026-08-23 (second).** Finding 4 below was found while
+> reviewing v2 and acted on as benchmark **v3.0.0**, again with no Stage-2
+> change. v2's T2 construct carries forward untouched.
+
 ---
 
 ## 1. T2's structural evidence is as strong as T1's, so a tier-blind rule resolves it
@@ -163,3 +167,79 @@ Checked explicitly against DEV, all clean:
   cases.
 - Tier disjointness holds: the exact-token direct-key test reaches exactly
   the 350 T0 cases and no T1/T2/T3 case.
+
+---
+
+## 4. FROZEN-EVAL resolved half of T0 by the wrong rule (fixed in benchmark v3)
+
+**Severity: benchmark-validity defect in the reporting split. Fixed.**
+
+### What was observed
+
+The two splits disagreed about which rule resolved T0:
+
+| Split | T0 by `direct_key` | T0 by `derived` |
+|---|---:|---:|
+| DEV | 350 / 350 | 0 |
+| **FROZEN-EVAL** | **175 / 350** | **175** |
+
+Accuracy was identical and perfect on both — zero wrong auto-resolutions
+either way — so no outcome-based assertion could see it. Only the
+*mechanism* differed, and T0's whole purpose is the mechanism: DESIGN.md
+§5.2 places it at the top of the reference-survival gradient precisely
+because an ID join settles it.
+
+### Why it happened
+
+Record identifiers interpolated the split name verbatim, so a FROZEN-EVAL
+settlement ID read `setl_frozen-eval_000042`. The declared tokenizer
+(`finrecon.normalize.tokens`) uses `[^A-Za-z0-9_]+` as its delimiter class,
+so `-` splits tokens:
+
+```
+narration: RZPY/SETL/setl_frozen-eval_000042 CREDIT
+tokens   : RZPY | SETL | setl_frozen | eval_000042 | CREDIT
+```
+
+No whole token equals the settlement ID, and the direct-key matcher requires
+whole-token equality. The cases fell through to derived reconciliation.
+
+The generator certified them T0 anyway because its admission test used
+**substring containment** — strictly weaker than the equality the matcher
+applies. `setl_frozen-eval_000042` is trivially a substring of its own
+narration.
+
+### Why the test suite was green
+
+DEV's slug is `dev`, which carries no delimiter. Every DEV-based coverage
+assertion — including the one asserting all 350 T0 cases resolve by direct
+key — passed truthfully. The defect existed *only* in the split reserved for
+reporting, which by design is the split nobody walks case by case.
+
+This is the transferable lesson, and worth more than the fix itself: a
+held-out split that is never compared against the development split can
+drift silently. The v3 pass therefore adds a cross-split rule-distribution
+test (`tests/test_benchmark_v3_direct_key.py`), not just a corrected slug.
+
+### What would have shipped
+
+No wrong auto-resolutions and no change to match rate. What would have been
+wrong is every mechanism claim: a per-rule breakdown in the Stage-4 results
+table would have understated direct-key coverage by 175 on the reported
+split, and T0 and T1 would have been measuring the same rule while the
+README asserted they measured different ones.
+
+### Fix
+
+Benchmark **v3.0.0** — see `benchmark/manifests/CHANGELOG.md`. Whole-token
+admission semantics in a new independent `token_contract.py`, an explicit
+token-safe split slug (`frozen-eval` -> `frozeneval`) validated at
+`RecordFactory` construction, and the cross-split test above. Seeds, RNG
+streams, case counts and record counts unchanged; DEV byte-identical to v2;
+the entire FROZEN-EVAL diff is identifier text and the T0 narrations that
+embed a settlement ID. No matcher code was touched.
+
+Note what was *not* done: the tokenizer was not taught to accept hyphens.
+That would have fixed T0 by silently changing T2's `separator_altered`
+semantics, since `-` is the separator that category manipulates — trading a
+real defect for a subtler one.
