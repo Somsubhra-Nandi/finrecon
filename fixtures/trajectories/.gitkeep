@@ -1,0 +1,14 @@
+Committed agent trajectory fixtures live here.
+
+Each file is one investigation, keyed by a SHA-256 over the case snapshot
+hash, the provider and model identity, the prompt / tool-schema / loop
+versions and the step budget (see src/finrecon/agent/cache.py). Replaying
+from this directory makes zero provider calls, which is what will let
+`make eval` reproduce the reported numbers from a clean clone with no API
+key (DESIGN.md 6.2).
+
+Empty as of Stage 3: no live model run has been performed, because no
+provider credential was available in the build environment. Trajectories
+produced by the deterministic test stand-in are NOT committed here -- they
+are plumbing artifacts, not model behaviour, and storing them would invite
+someone to mistake one for the other.
