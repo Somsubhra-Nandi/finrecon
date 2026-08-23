@@ -179,6 +179,106 @@ class TestMalformedCalls:
             ToolValidationError.MALFORMED_ARGUMENTS_JSON
         )
 
+    def test_a_duplicate_key_call_stops_the_loop_and_executes_no_tool(self, snapshot):
+        """{"candidate_id":"A","candidate_id":"B"} must never resolve to just B."""
+        trajectory = run_investigation(
+            snapshot=snapshot,
+            chain=chain_of(
+                turn(
+                    calls=[
+                        tool_call(
+                            "compute_expected_net",
+                            '{"candidate_id":"A","candidate_id":"B"}',
+                        )
+                    ]
+                ),
+                turn(text="never reached"),
+            ),
+        )
+        assert trajectory.termination_reason == TERMINATION_TOOL_VALIDATION_FAILED
+        assert trajectory.step_count == 1
+        assert trajectory.had_validation_failure
+        assert trajectory.tool_invocations[0].validation_error_reason == (
+            ToolValidationError.DUPLICATE_ARGUMENT_KEY
+        )
+        assert trajectory.tool_invocations[0].validated_arguments is None
+        assert trajectory.tool_invocations[0].output is None
+
+    def test_a_duplicate_nested_key_call_stops_the_loop(self, snapshot):
+        candidate = snapshot.candidate_ids()[0]
+        trajectory = run_investigation(
+            snapshot=snapshot,
+            chain=chain_of(
+                turn(
+                    calls=[
+                        tool_call(
+                            "compare_reference_fragment",
+                            (
+                                '{"candidate_id":"%s","fragment":"PF",'
+                                '"extra":{"nested":1,"nested":2}}'
+                            )
+                            % candidate,
+                        )
+                    ]
+                ),
+                turn(),
+            ),
+        )
+        assert trajectory.termination_reason == TERMINATION_TOOL_VALIDATION_FAILED
+        assert trajectory.tool_invocations[0].validation_error_reason == (
+            ToolValidationError.DUPLICATE_ARGUMENT_KEY
+        )
+
+    def test_duplicate_key_failure_does_not_trigger_provider_fallback(self, snapshot):
+        """No retry through a second provider -- this is the model's behaviour, not
+        an infrastructure fault, so re-rolling it elsewhere is never attempted."""
+        primary = ScriptedProvider(
+            [
+                turn(
+                    calls=[
+                        tool_call(
+                            "compute_expected_net",
+                            '{"candidate_id":"A","candidate_id":"B"}',
+                        )
+                    ]
+                )
+            ],
+            provider_id="openrouter",
+            model="o",
+        )
+        secondary = ScriptedProvider([turn()], provider_id="groq", model="g")
+        trajectory = run_investigation(
+            snapshot=snapshot, chain=ProviderChain((primary, secondary))
+        )
+        assert trajectory.termination_reason == TERMINATION_TOOL_VALIDATION_FAILED
+        assert secondary.call_count == 0
+        assert trajectory.steps[0].fallback_used is False
+
+    def test_duplicate_key_failure_is_recorded_without_any_provider_credential(
+        self, snapshot, monkeypatch
+    ):
+        """The failure is caught before a live provider is ever needed -- no
+        credential in the environment is required to detect or record it."""
+        for env_var in ("OPENROUTER_API_KEY", "GROQ_API_KEY", "GEMINI_API_KEY"):
+            monkeypatch.delenv(env_var, raising=False)
+        trajectory = run_investigation(
+            snapshot=snapshot,
+            chain=chain_of(
+                turn(
+                    calls=[
+                        tool_call(
+                            "compute_expected_net",
+                            '{"candidate_id":"A","candidate_id":"B"}',
+                        )
+                    ]
+                )
+            ),
+        )
+        assert trajectory.termination_reason == TERMINATION_TOOL_VALIDATION_FAILED
+        assert trajectory.tool_invocations[0].validation_error_reason == (
+            ToolValidationError.DUPLICATE_ARGUMENT_KEY
+        )
+
     def test_a_hallucinated_candidate_id_stops_the_loop(self, snapshot):
         trajectory = run_investigation(
             snapshot=snapshot,

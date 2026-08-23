@@ -93,6 +93,7 @@ class ToolValidationError(Exception):
 
     UNKNOWN_TOOL = "unknown_tool"
     MALFORMED_ARGUMENTS_JSON = "malformed_arguments_json"
+    DUPLICATE_ARGUMENT_KEY = "duplicate_argument_key"
     SCHEMA_VALIDATION_FAILED = "schema_validation_failed"
     UNKNOWN_CANDIDATE = "unknown_candidate"
     UNKNOWN_SETTLEMENT = "unknown_settlement"
@@ -337,6 +338,36 @@ def tool_specs() -> tuple[ToolSpec, ...]:
     return tuple(definition.spec() for definition in TOOL_DEFINITIONS)
 
 
+class _DuplicateKeyError(Exception):
+    """Internal signal from :func:`_reject_duplicate_keys`; never escapes this module."""
+
+    def __init__(self, key: str) -> None:
+        super().__init__(key)
+        self.key = key
+
+
+def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    """``object_pairs_hook`` that refuses a duplicate key at any nesting level.
+
+    The stdlib decoder calls this once per JSON object it parses -- the top
+    level and every nested one -- so raising here catches
+    ``{"candidate_id":"A","candidate_id":"B"}`` whether it is the whole
+    argument payload or buried inside one. Silently keeping the last value
+    (the standard library's default behaviour) would let a model's tool call
+    carry two different answers for one field and have Pydantic see only
+    the one that happened to be written last -- unsafe ambiguity, not a
+    valid call.
+    """
+    seen: set[str] = set()
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in seen:
+            raise _DuplicateKeyError(key)
+        seen.add(key)
+        result[key] = value
+    return result
+
+
 def validate_call(tool_name: str, raw_arguments: str) -> tuple[ToolDefinition, ToolInput]:
     """Parse and validate one requested call. Raises before anything executes."""
     definition = TOOLS_BY_NAME.get(tool_name)
@@ -348,11 +379,17 @@ def validate_call(tool_name: str, raw_arguments: str) -> tuple[ToolDefinition, T
 
     text = raw_arguments.strip() or "{}"
     try:
-        parsed = json.loads(text)
+        parsed = json.loads(text, object_pairs_hook=_reject_duplicate_keys)
     except json.JSONDecodeError as exc:
         raise ToolValidationError(
             ToolValidationError.MALFORMED_ARGUMENTS_JSON,
             f"arguments for {tool_name!r} are not valid JSON ({exc.msg})",
+        ) from None
+    except _DuplicateKeyError as exc:
+        raise ToolValidationError(
+            ToolValidationError.DUPLICATE_ARGUMENT_KEY,
+            f"arguments for {tool_name!r} contain duplicate key {exc.key!r}; "
+            "a tool call with ambiguous object keys is never executed",
         ) from None
     if not isinstance(parsed, dict):
         raise ToolValidationError(

@@ -117,6 +117,54 @@ class TestArgumentValidation:
         with pytest.raises(ToolValidationError):
             tools.execute(context, "compute_expected_net", '{"candidate_id": "nope"}')
 
+    def test_a_duplicate_top_level_key_is_refused(self, context):
+        """{"candidate_id":"A","candidate_id":"B"} must never resolve to just B."""
+        payload = '{"candidate_id":"A","candidate_id":"B"}'
+        with pytest.raises(ToolValidationError) as exc:
+            tools.execute(context, "compute_expected_net", payload)
+        assert exc.value.reason == ToolValidationError.DUPLICATE_ARGUMENT_KEY
+
+    def test_a_duplicate_nested_key_is_refused(self, context):
+        # A dict literal can't hold a duplicate key, so the duplicate is
+        # written directly as JSON text to reach the decoder unmodified.
+        payload = '{"candidate_id":{"nested":1,"nested":2}}'
+        with pytest.raises(ToolValidationError) as exc:
+            tools.execute(context, "compute_expected_net", payload)
+        assert exc.value.reason == ToolValidationError.DUPLICATE_ARGUMENT_KEY
+
+    def test_unique_keys_at_every_level_remain_valid(self, context, snapshot):
+        payload = json.dumps({"candidate_id": snapshot.candidate_ids()[0]})
+        arguments, _ = tools.execute(context, "compute_expected_net", payload)
+        assert arguments.candidate_id == snapshot.candidate_ids()[0]
+
+    def test_a_duplicate_key_call_executes_zero_tools(self, context, monkeypatch):
+        """The handler must never run -- not even partially -- on a rejected call."""
+        called = False
+        original = tools.TOOLS_BY_NAME["compute_expected_net"]
+
+        def _spy(*_args, **_kwargs):
+            nonlocal called
+            called = True
+            raise AssertionError("handler must not run for a duplicate-key call")
+
+        monkeypatch.setitem(
+            tools.TOOLS_BY_NAME,
+            "compute_expected_net",
+            tools.ToolDefinition(
+                name=original.name,
+                description=original.description,
+                input_model=original.input_model,
+                output_model=original.output_model,
+                handler=_spy,
+            ),
+        )
+        with pytest.raises(ToolValidationError) as exc:
+            tools.execute(
+                context, "compute_expected_net", '{"candidate_id":"A","candidate_id":"B"}'
+            )
+        assert exc.value.reason == ToolValidationError.DUPLICATE_ARGUMENT_KEY
+        assert called is False
+
 
 class TestCandidateAccessControl:
     def test_a_candidate_outside_the_snapshot_is_refused(self, context):
