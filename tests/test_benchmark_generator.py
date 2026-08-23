@@ -18,8 +18,19 @@ from finrecon.benchmark.generator.config import (
     FROZEN_EVAL_SEED,
     TARGET_TIER_COUNTS,
 )
-from finrecon.benchmark.generator.dataset import build_dataset
+from finrecon.benchmark.generator.dataset import (
+    DatasetBundle,
+    build_dataset,
+    verify_t2_invariants,
+)
 from finrecon.benchmark.generator.serialize import dataset_file_dicts, ground_truth_dicts
+from finrecon.benchmark.generator.t2_evidence import SurvivingReference
+from finrecon.benchmark.generator.t2_invariants import (
+    PlausibilityInputs,
+    T2ConstructError,
+    plausible_settlement_groups,
+)
+from finrecon.benchmark.generator.templates import REFERENCELESS_NARRATIONS
 
 SMALL_COUNTS = {"T0": 10, "T1": 10, "T2": 10, "T3": 4}
 
@@ -180,16 +191,188 @@ def test_t2_cases_carry_a_degraded_but_recoverable_reference():
         assert gt.true_reference is not None
         assert gt.degradation is not None
         assert gt.degradation.category_id != "intact"
-        (settlement_id,) = gt.record_ids["settlements"]
-        settlement = settlements_by_id[settlement_id]
-        assert settlement.utr == gt.true_reference
+        assert gt.degradation.surviving_evidence is not None
+
+        true_settlement_id = gt.correct_relationship.settlement_ids[0]
+        assert settlements_by_id[true_settlement_id].utr == gt.true_reference
+
         (bank_record_id,) = gt.record_ids["bank_records"]
         narration = bank_by_id[bank_record_id].narration
+        assert gt.degradation.surviving_evidence in narration
         if gt.degradation.category_id == "embedded_in_narration":
             assert gt.true_reference in narration
         else:
             assert gt.true_reference not in narration
     assert t2_found == SMALL_COUNTS["T2"]
+
+
+# --------------------------------------------------------------------------
+# 8b. Benchmark v2: the degraded reference is *causally necessary*
+#
+# v1's T2 cases were uniquely resolvable from structured evidence alone
+# (notes/STAGE2-FINDINGS.md §1), which made the degraded reference
+# decorative. These tests pin the corrected construct so it cannot silently
+# regress to v1's shape.
+# --------------------------------------------------------------------------
+
+
+def _t2_pool(bundle):
+    return PlausibilityInputs(
+        settlements=tuple(bundle.settlements),
+        payments=tuple(bundle.payments),
+        refunds=tuple(bundle.refunds),
+    )
+
+
+def _t2_surviving(gt, bank_record):
+    return SurvivingReference(
+        category_id=gt.degradation.category_id,
+        evidence=gt.degradation.surviving_evidence,
+        narration=bank_record.narration,
+        narration_template_id=gt.degradation.narration_template_id or "",
+    )
+
+
+@pytest.fixture(scope="module")
+def t2_bundle():
+    return build_dataset("dev", DEV_SEED, SMALL_COUNTS)
+
+
+def _t2_entries(bundle):
+    bank_by_id = {b.bank_record_id: b for b in bundle.bank_records}
+    for gt in bundle.ground_truth:
+        if gt.tier == "T2":
+            yield gt, bank_by_id[gt.correct_relationship.bank_record_id]
+
+
+def test_t2_has_no_usable_direct_key(t2_bundle):
+    """Invariant 1: no whole narration token equals any settlement's UTR or ID."""
+    checked = 0
+    for gt, bank_record in _t2_entries(t2_bundle):
+        checked += 1
+        surviving = _t2_surviving(gt, bank_record)
+        for settlement in t2_bundle.settlements:
+            for identifier in (settlement.settlement_id, settlement.utr):
+                if identifier:
+                    assert not surviving.is_directly_usable(identifier), gt.case_id
+    assert checked == SMALL_COUNTS["T2"]
+
+
+def test_t2_structured_evidence_alone_leaves_at_least_two_candidates(t2_bundle):
+    """Invariants 2-4: two or more plausible groups, the true one among them, no unique pick."""
+    pool = _t2_pool(t2_bundle)
+    for gt, bank_record in _t2_entries(t2_bundle):
+        groups = plausible_settlement_groups(bank_record, pool)
+        assert len(groups) >= 2, gt.case_id
+        assert (gt.correct_relationship.settlement_ids[0],) in groups, gt.case_id
+
+
+def test_t2_degraded_evidence_maps_to_exactly_the_true_candidate(t2_bundle):
+    """Invariants 5-6: the surviving fragment fits the true UTR and no competitor's."""
+    pool = _t2_pool(t2_bundle)
+    by_id = {s.settlement_id: s for s in t2_bundle.settlements}
+    for gt, bank_record in _t2_entries(t2_bundle):
+        surviving = _t2_surviving(gt, bank_record)
+        candidate_ids = {
+            sid for group in plausible_settlement_groups(bank_record, pool) for sid in group
+        }
+        recovered = {sid for sid in candidate_ids if surviving.recovers(by_id[sid].utr)}
+        assert recovered == {gt.correct_relationship.settlement_ids[0]}, gt.case_id
+
+
+def test_t2_stays_ambiguous_when_the_degraded_evidence_is_removed(t2_bundle):
+    """Invariant 7: delete the narration entirely and the case is still not decidable."""
+    pool = _t2_pool(t2_bundle)
+    for gt, bank_record in _t2_entries(t2_bundle):
+        stripped = bank_record.model_copy(update={"narration": ""})
+        assert len(plausible_settlement_groups(stripped, pool)) >= 2, gt.case_id
+
+
+def test_t2_and_t3_stay_semantically_distinct(t2_bundle):
+    """T2 = ambiguity plus one recoverable discriminator. T3 = ambiguity with none."""
+    by_id = {s.settlement_id: s for s in t2_bundle.settlements}
+    bank_by_id = {b.bank_record_id: b for b in t2_bundle.bank_records}
+
+    for gt in t2_bundle.ground_truth:
+        settlements = [by_id[i] for i in gt.record_ids["settlements"]]
+        if gt.tier == "T2":
+            assert gt.required_outcome == "AUTO_RESOLVABLE"
+            assert gt.correct_relationship is not None
+            assert gt.distractor_settlement_ids
+            assert all(s.utr is not None for s in settlements)
+            # distinct timestamps: T2's ambiguity comes from the declared
+            # window, not from T3's identical-record construct.
+            assert len({s.created_at for s in settlements}) == len(settlements)
+        elif gt.tier == "T3":
+            assert gt.required_outcome == "ESCALATE"
+            assert gt.correct_relationship is None
+            assert gt.distractor_settlement_ids == ()
+            assert all(s.utr is None for s in settlements)
+            narration = bank_by_id[gt.record_ids["bank_records"][0]].narration
+            assert narration in REFERENCELESS_NARRATIONS
+
+
+def test_t2_decoys_carry_no_accidental_distinguishing_structure(t2_bundle):
+    """The wrong candidate must look exactly as good as the right one, structurally."""
+    by_id = {s.settlement_id: s for s in t2_bundle.settlements}
+    for gt, _ in _t2_entries(t2_bundle):
+        true_settlement = by_id[gt.correct_relationship.settlement_ids[0]]
+        for decoy_id in gt.distractor_settlement_ids:
+            decoy = by_id[decoy_id]
+            assert decoy.amount == true_settlement.amount
+            assert decoy.created_at.date() == true_settlement.created_at.date()
+            assert decoy.utr is not None and decoy.utr != true_settlement.utr
+            assert [line.type for line in decoy.breakup] == [
+                line.type for line in true_settlement.breakup
+            ]
+            assert [int(line.amount) for line in decoy.breakup] == [
+                int(line.amount) for line in true_settlement.breakup
+            ]
+
+
+def test_the_true_t2_settlement_is_not_systematically_the_lower_id(t2_bundle):
+    """Record-ID order must carry no signal about which candidate is correct."""
+    bundle = build_dataset("dev", DEV_SEED, TARGET_TIER_COUNTS)
+    true_is_lower = 0
+    total = 0
+    for gt in bundle.ground_truth:
+        if gt.tier != "T2":
+            continue
+        total += 1
+        true_id = gt.correct_relationship.settlement_ids[0]
+        if true_id < min(gt.distractor_settlement_ids):
+            true_is_lower += 1
+    assert total == TARGET_TIER_COUNTS["T2"]
+    # Both orderings must actually occur; a constant would be a leak.
+    assert 0 < true_is_lower < total
+
+
+def test_generated_t2_cases_pass_the_batch_wide_invariant_check():
+    """`build_dataset` runs this itself; asserting it here makes the guard explicit."""
+    bundle = build_dataset("dev", DEV_SEED, SMALL_COUNTS)
+    verifications = verify_t2_invariants(bundle)
+    assert len(verifications) == SMALL_COUNTS["T2"]
+    for verification in verifications.values():
+        assert verification.candidate_count >= 2
+        assert len(verification.recovered_settlement_ids) == 1
+
+
+def test_a_t2_case_without_a_decoy_is_rejected():
+    """The invariant check must actually fail on v1's shape, not just pass on v2's."""
+    bundle = build_dataset("dev", DEV_SEED, SMALL_COUNTS)
+    doomed = next(gt for gt in bundle.ground_truth if gt.tier == "T2")
+    decoy_ids = set(doomed.distractor_settlement_ids)
+
+    stripped = DatasetBundle(split=bundle.split, seed=bundle.seed)
+    stripped.orders = list(bundle.orders)
+    stripped.payments = list(bundle.payments)
+    stripped.refunds = list(bundle.refunds)
+    stripped.bank_records = list(bundle.bank_records)
+    stripped.settlements = [s for s in bundle.settlements if s.settlement_id not in decoy_ids]
+    stripped.ground_truth = [doomed]
+
+    with pytest.raises(T2ConstructError, match="at least two"):
+        verify_t2_invariants(stripped)
 
 
 # --------------------------------------------------------------------------
@@ -483,11 +666,11 @@ def test_fingerprint_covers_the_complete_frozen_eval_artifact():
 
 
 def test_manifest_documents_exactly_what_is_hashed():
-    from finrecon.benchmark.generator.config import benchmark_dir
+    from finrecon.benchmark.generator.config import MANIFEST_FILENAME, benchmark_dir
     from finrecon.benchmark.generator.hashing import hashed_file_list
     from finrecon.benchmark.generator.manifest import read_manifest
 
-    manifest_path = benchmark_dir() / "manifests" / "v1.json"
+    manifest_path = benchmark_dir() / "manifests" / MANIFEST_FILENAME
     if not manifest_path.exists():
         pytest.skip("benchmark not yet generated on disk")
     manifest = read_manifest(benchmark_dir())
@@ -495,12 +678,12 @@ def test_manifest_documents_exactly_what_is_hashed():
 
 
 def test_committed_frozen_eval_matches_committed_manifest():
-    from finrecon.benchmark.generator.config import benchmark_dir
+    from finrecon.benchmark.generator.config import MANIFEST_FILENAME, benchmark_dir
     from finrecon.benchmark.generator.hashing import compute_fingerprint
     from finrecon.benchmark.generator.manifest import read_manifest
 
     bdir = benchmark_dir()
-    manifest_path = bdir / "manifests" / "v1.json"
+    manifest_path = bdir / "manifests" / MANIFEST_FILENAME
     if not manifest_path.exists():
         pytest.skip("benchmark not yet generated on disk")
     manifest = read_manifest(bdir)
