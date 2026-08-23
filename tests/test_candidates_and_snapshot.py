@@ -253,7 +253,8 @@ class TestSnapshotImmutability:
 class TestDevSnapshots:
     def test_every_unresolved_dev_case_has_a_verified_snapshot(self, dev_result):
         result, _ = dev_result
-        assert len(result.snapshots) == len(result.unresolved()) == 40
+        # 200 T2 + 40 T3 under benchmark v2; every refusal is snapshotted.
+        assert len(result.snapshots) == len(result.unresolved()) == 240
         for snapshot in result.snapshots:
             assert snapshot.verify_integrity()
             assert snapshot.candidates
