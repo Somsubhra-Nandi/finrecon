@@ -164,6 +164,37 @@ class TestOpenAICompatibleAdapters:
         assert call.tool_name == "compute_expected_net"
         assert call.raw_arguments == '{"candidate_id": "c1"}'
 
+    def test_multiple_tool_results_keep_call_ids_and_order(self):
+        transport = RecordingTransport(responses=[openai_body()])
+        provider = OpenRouterProvider(api_key=SECRET, transport=transport)
+        provider.complete(
+            MESSAGES
+            + (
+                ConversationMessage(
+                    role="assistant",
+                    tool_calls=(
+                        tool_call("compute_expected_net", {"candidate_id": "a"}, call_id="a"),
+                        tool_call("compute_expected_net", {"candidate_id": "b"}, call_id="b"),
+                    ),
+                ),
+                ConversationMessage(
+                    role="tool",
+                    content='{"candidate_id":"a"}',
+                    tool_call_id="a",
+                    tool_name="compute_expected_net",
+                ),
+                ConversationMessage(
+                    role="tool",
+                    content='{"candidate_id":"b"}',
+                    tool_call_id="b",
+                    tool_name="compute_expected_net",
+                ),
+            ),
+            (),
+        )
+        payload_messages = transport.requests[0]["payload"]["messages"]
+        assert [m.get("tool_call_id") for m in payload_messages[-2:]] == ["a", "b"]
+
     def test_malformed_tool_arguments_survive_to_the_loop_unrepaired(self):
         """The adapter must not fix them; the loop has to see the model's behaviour."""
         transport = RecordingTransport(
@@ -261,6 +292,42 @@ class TestGeminiAdapter:
         assert [c["role"] for c in contents] == ["user", "model", "user"]
         assert contents[1]["parts"][-1]["functionCall"]["name"] == "compute_expected_net"
         assert contents[2]["parts"][0]["functionResponse"]["name"] == "compute_expected_net"
+
+    def test_parallel_tool_results_are_grouped_in_deterministic_order(self):
+        transport = RecordingTransport(responses=[self.gemini_body()])
+        provider = GeminiProvider(api_key=SECRET, transport=transport)
+        provider.complete(
+            MESSAGES
+            + (
+                ConversationMessage(
+                    role="assistant",
+                    tool_calls=(
+                        tool_call("compute_expected_net", {"candidate_id": "b"}, call_id="b"),
+                        tool_call("compute_expected_net", {"candidate_id": "a"}, call_id="a"),
+                    ),
+                ),
+                ConversationMessage(
+                    role="tool",
+                    content='{"candidate_id":"b"}',
+                    tool_call_id="b",
+                    tool_name="compute_expected_net",
+                ),
+                ConversationMessage(
+                    role="tool",
+                    content='{"candidate_id":"a"}',
+                    tool_call_id="a",
+                    tool_name="compute_expected_net",
+                ),
+            ),
+            (),
+        )
+        contents = transport.requests[0]["payload"]["contents"]
+        assert [c["role"] for c in contents] == ["user", "model", "user"]
+        responses = contents[-1]["parts"]
+        assert len(responses) == 2
+        assert [
+            part["functionResponse"]["response"]["candidate_id"] for part in responses
+        ] == ["b", "a"]
 
     def test_the_key_travels_in_a_header_not_the_url(self):
         transport = RecordingTransport(responses=[self.gemini_body()])

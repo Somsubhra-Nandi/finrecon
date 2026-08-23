@@ -15,11 +15,11 @@ Neutral              Gemini
 tool specification   ``tools[0].functionDeclarations``
 ===================  ==================================================
 
-Gemini also has no tool-call identifier, so results are correlated by
-function *name*. The loop is bounded to one tool call per step
-(:mod:`finrecon.agent.loop`), which makes that correlation unambiguous;
-synthetic call IDs are generated so the neutral trajectory keeps the same
-shape it has for the other two providers.
+The Generate Content dialect used here may omit tool-call identifiers, so
+synthetic call IDs keep the neutral trajectory shape. For a multi-call turn,
+function responses are grouped into one user turn and kept in request order,
+matching Gemini's parallel-function-call history format. Execution remains
+serial and deterministic in the loop.
 
 The API key travels in the ``x-goog-api-key`` header rather than the
 documented ``?key=`` query parameter. Both work; a header keeps the secret
@@ -109,13 +109,17 @@ class GeminiProvider(ModelProvider):
         system_texts: list[str] = []
         contents: list[dict[str, Any]] = []
 
-        for message in messages:
+        index = 0
+        while index < len(messages):
+            message = messages[index]
             if message.role == "system":
                 if message.content:
                     system_texts.append(message.content)
+                index += 1
                 continue
             if message.role == "user":
                 contents.append({"role": "user", "parts": [{"text": message.content}]})
+                index += 1
                 continue
             if message.role == "assistant":
                 parts: list[dict[str, Any]] = []
@@ -131,21 +135,29 @@ class GeminiProvider(ModelProvider):
                         }
                     )
                 contents.append({"role": "model", "parts": parts or [{"text": ""}]})
+                index += 1
                 continue
             if message.role == "tool":
+                parts = []
+                while index < len(messages) and messages[index].role == "tool":
+                    tool_message = messages[index]
+                    parts.append(
+                        {
+                            "functionResponse": {
+                                "name": tool_message.tool_name or "tool",
+                                "response": _loads_or_wrap(tool_message.content),
+                            }
+                        }
+                    )
+                    index += 1
                 contents.append(
                     {
                         "role": "user",
-                        "parts": [
-                            {
-                                "functionResponse": {
-                                    "name": message.tool_name or "tool",
-                                    "response": _loads_or_wrap(message.content),
-                                }
-                            }
-                        ],
+                        "parts": parts,
                     }
                 )
+                continue
+            index += 1
 
         payload: dict[str, Any] = {
             "contents": contents,
