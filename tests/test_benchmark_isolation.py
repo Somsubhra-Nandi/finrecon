@@ -21,8 +21,25 @@ import pytest
 from finrecon.benchmark.generator.hashing import compute_fingerprint
 from finrecon.loader import VISIBLE_RECORD_FILES, load_visible_split, visible_split_dir
 
-FROZEN_EVAL_SHA256 = "cda267318d215040a401bc413296015296f0d720eda09d6cd12503085fe88243"
-"""The Stage-1 freeze. Stage 2 may not change it; if this fails, stop."""
+V1_FROZEN_EVAL_SHA256 = "cda267318d215040a401bc413296015296f0d720eda09d6cd12503085fe88243"
+"""Benchmark v1's frozen-eval fingerprint. Superseded, never erased.
+
+v1 was retired because Stage 2 showed its T2 cases were uniquely
+resolvable from structured evidence alone, so the degraded reference the
+tier exists to test was not causally necessary
+(``notes/STAGE2-FINDINGS.md`` §1). The correction has to stay auditable:
+``benchmark/manifests/v1.json`` keeps this hash, its seeds and its counts
+verbatim, and the tests below assert that it does. A v2 that quietly
+rewrote v1's record of itself would be exactly the retro-fit the finding
+warned against.
+"""
+
+FROZEN_EVAL_SHA256 = "d130c42c4bb52b6dc6b88e24f89257f4586c72423a22fdc4606440e53545b897"
+"""Benchmark v2's freeze — the current committed FROZEN-EVAL artifact.
+
+Frozen before any Stage-3 model exists, and not to be changed by one. If
+this fails, stop.
+"""
 
 RECONCILIATION_PACKAGES = ("normalize", "matchers", "candidates", "ledger")
 RECONCILIATION_MODULES = ("pipeline.py", "loader.py", "reconcile_cli.py")
@@ -114,10 +131,50 @@ class TestFrozenBenchmarkIntegrity:
         import json
 
         manifest = json.loads(
-            (benchmark_dir / "manifests" / "v1.json").read_text(encoding="utf-8")
+            (benchmark_dir / "manifests" / "v2.json").read_text(encoding="utf-8")
         )
         assert manifest["frozen_eval_sha256"] == FROZEN_EVAL_SHA256
-        assert manifest["generator_version"] == "1.0.0"
+        assert manifest["generator_version"] == "2.0.0"
+        assert manifest["dev_seed"] == 42
+        assert manifest["frozen_eval_seed"] == 1337
+        assert manifest["target_tier_counts"] == {"T0": 350, "T1": 300, "T2": 200, "T3": 40}
+
+    def test_the_v1_manifest_and_hash_are_preserved_unchanged(self, benchmark_dir):
+        """The superseded benchmark stays on the record, exactly as it was."""
+        import json
+
+        v1 = json.loads((benchmark_dir / "manifests" / "v1.json").read_text(encoding="utf-8"))
+        assert v1["generator_version"] == "1.0.0"
+        assert v1["frozen_eval_sha256"] == V1_FROZEN_EVAL_SHA256
+        assert v1["dev_seed"] == 42
+        assert v1["frozen_eval_seed"] == 1337
+        assert v1["actual_tier_counts"]["frozen-eval"] == {
+            "T0": 350,
+            "T1": 300,
+            "T2": 200,
+            "T3": 40,
+        }
+        assert V1_FROZEN_EVAL_SHA256 != FROZEN_EVAL_SHA256
+
+    def test_the_changelog_explains_why_v1_was_superseded(self, benchmark_dir):
+        changelog = (benchmark_dir / "manifests" / "CHANGELOG.md").read_text(encoding="utf-8")
+        assert V1_FROZEN_EVAL_SHA256 in changelog
+        assert FROZEN_EVAL_SHA256 in changelog
+        assert "v2.0.0" in changelog
+        assert "SUPERSEDED" in changelog
+
+    def test_the_v2_hash_is_reproducible_from_the_committed_configuration(self, tmp_path):
+        """Clean-room regeneration from the committed seeds must be byte-identical."""
+        from finrecon.benchmark.generator.config import (
+            FROZEN_EVAL_SEED,
+            TARGET_TIER_COUNTS,
+        )
+        from finrecon.benchmark.generator.dataset import build_dataset
+        from finrecon.benchmark.generator.serialize import write_dataset
+
+        bundle = build_dataset("frozen-eval", FROZEN_EVAL_SEED, TARGET_TIER_COUNTS)
+        write_dataset(bundle, tmp_path)
+        assert compute_fingerprint(tmp_path, "frozen-eval") == FROZEN_EVAL_SHA256
 
     def test_stage_two_processes_frozen_eval_without_reading_its_truth(
         self, benchmark_dir, monkeypatch
