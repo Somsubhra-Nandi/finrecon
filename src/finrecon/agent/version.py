@@ -16,16 +16,16 @@ from __future__ import annotations
 
 from typing import Final
 
-PROMPT_VERSION: Final = "investigator.v1"
+PROMPT_VERSION: Final = "investigator.v2"
 """Identity of the system prompt and case-briefing template."""
 
 TOOL_SCHEMA_VERSION: Final = "tools.v1"
 """Identity of the read-only tool registry: names, arguments, output shapes."""
 
-AGENT_LOOP_VERSION: Final = "loop.v1"
+AGENT_LOOP_VERSION: Final = "loop.v2"
 """Identity of the loop's control flow: termination states, call bounds."""
 
-CACHE_SCHEMA_VERSION: Final = "trajectory-cache.v1"
+CACHE_SCHEMA_VERSION: Final = "trajectory-cache.v2"
 """Identity of the on-disk trajectory record itself."""
 
 VALIDATOR_VERSION: Final = "validator.v1"
