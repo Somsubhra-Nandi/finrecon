@@ -61,8 +61,8 @@ class TestDevDiagnostic:
         result, _ = dev_result
         assert Counter(d.rule_id for d in result.decisions) == {
             RULE_DIRECT_KEY_EXACT_TOKEN: 350,
-            RULE_DERIVED_EXACT_SETTLEMENT_ACCOUNTING: 500,
-            "unresolved.multiple_derived_candidates": 40,
+            RULE_DERIVED_EXACT_SETTLEMENT_ACCOUNTING: 300,
+            "unresolved.multiple_derived_candidates": 240,
         }
 
     def test_no_dev_case_is_auto_resolved_incorrectly(self, dev_result, dev_ground_truth):
@@ -87,17 +87,59 @@ class TestDevDiagnostic:
         for case_id in must_escalate:
             assert by_case[case_id].status is DecisionStatus.UNRESOLVED, case_id
 
-    def test_unresolved_dev_cases_are_exactly_the_ones_requiring_escalation(
-        self, dev_result, dev_ground_truth
-    ):
+    def test_unresolved_dev_cases_are_exactly_t2_plus_t3(self, dev_result, dev_ground_truth):
+        """Benchmark v2's dividing line for a rules-only run.
+
+        v1's T2 cases resolved deterministically, so "unresolved" and
+        "requires escalation" coincided. v2 fixes the T2 construct
+        (``notes/STAGE2-FINDINGS.md`` §1, ``manifests/CHANGELOG.md``
+        v2.0.0): T2 now leaves two equally plausible settlements, so the
+        rules refuse it too. The two sets are therefore no longer the
+        same, and asserting the *right* difference is the point — T2 is
+        unresolved because a reference still has to be recovered, T3
+        because there is nothing left to recover.
+        """
         result, _ = dev_result
         unresolved = {d.case_id for d in result.unresolved()}
-        required = {
+        expected = {
+            case_id
+            for case_id, entry in dev_ground_truth.items()
+            if entry["tier"] in ("T2", "T3")
+        }
+        assert unresolved == expected
+
+        must_escalate = {
             case_id
             for case_id, entry in dev_ground_truth.items()
             if entry["required_outcome"] == "ESCALATE"
         }
-        assert unresolved == required
+        assert must_escalate <= unresolved
+        assert len(must_escalate) == 40
+
+    def test_no_dev_t2_case_is_resolved_by_the_deterministic_rules(
+        self, dev_result, dev_ground_truth
+    ):
+        """The v2 T2 construct's whole point: structured evidence alone must not decide."""
+        result, _ = dev_result
+        by_case = {d.case_id: d for d in result.decisions}
+        t2 = [c for c, e in dev_ground_truth.items() if e["tier"] == "T2"]
+        assert len(t2) == 200
+        for case_id in t2:
+            assert by_case[case_id].status is DecisionStatus.UNRESOLVED, case_id
+            assert by_case[case_id].rule_id == "unresolved.multiple_derived_candidates", case_id
+
+    def test_every_dev_t2_case_keeps_its_true_settlement_in_the_candidate_set(
+        self, dev_result, dev_ground_truth
+    ):
+        """Unresolved must mean "not chosen", never "not offered"."""
+        result, _ = dev_result
+        for case_id, entry in dev_ground_truth.items():
+            if entry["tier"] != "T2":
+                continue
+            candidates = result.candidates_by_case[case_id]
+            assert len(candidates) >= 2, case_id
+            offered = {sid for c in candidates for sid in c.settlement_ids}
+            assert set(entry["correct_relationship"]["settlement_ids"]) <= offered, case_id
 
     def test_dev_tier_breakdown(self, dev_result, dev_ground_truth):
         """Records what the deterministic core does per benchmark tier."""
@@ -117,6 +159,6 @@ class TestDevDiagnostic:
         assert dict(tally) == {
             ("T0", "resolved_correct"): 350,
             ("T1", "resolved_correct"): 300,
-            ("T2", "resolved_correct"): 200,
+            ("T2", "unresolved"): 200,
             ("T3", "unresolved_correct"): 40,
         }
