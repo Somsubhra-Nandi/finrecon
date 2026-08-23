@@ -1,8 +1,20 @@
 # Stage 2 — findings against the frozen benchmark
 
 Recorded, not acted on. The Stage-1 generator, seeds, taxonomy, case
-distribution and datasets are frozen; nothing below was "fixed" by
-changing them.
+distribution and datasets were frozen when this was written; nothing below
+was "fixed" by changing them.
+
+> **Status update — 2026-08-23.** Finding 1 was subsequently acted on, as
+> a *benchmark-validity* correction rather than a Stage-2 change. Benchmark
+> **v2.0.0** rebuilds the T2 construct so the degraded reference is
+> causally necessary; see `benchmark/manifests/CHANGELOG.md`. Everything
+> below describes benchmark **v1**, and is kept verbatim because it is the
+> evidence that motivated v2. **No Stage-2 rule, window, bound or tolerance
+> was changed** — the deterministic core that produced these numbers is
+> the same code that now leaves all 200 v2 T2 cases unresolved.
+>
+> Findings 2 and 3 still describe v1 and were deliberately left alone; the
+> v2 pass was scoped to T2 only.
 
 ---
 
@@ -87,6 +99,35 @@ Options, none of which are Stage-2 decisions:
 
 **Recommendation:** report it. Do not retro-fit the frozen benchmark to
 make the agent look necessary.
+
+### What was actually done (2026-08-23)
+
+The second option above, and only that one: *"add a T2 variant in a future
+generator version where amount and date blocking is genuinely
+insufficient"*. It was taken as a Stage-1 change with the manifest bump,
+CHANGELOG entry and new hash that option demanded.
+
+What it is **not**: a retro-fit to make the agent look necessary. The
+distinction is that v1's T2 did not measure what it claimed to measure —
+it graded reference survival while leaving structural evidence fully
+intact, so T2 and T1 were the same test with different narration. Fixing
+the instrument before reading it is not the same as tuning the instrument
+to the reading, and the ordering matters: this was done before any Stage-3
+model, agent or prompt existed, and the matcher was not touched.
+
+Under benchmark v2 the same rules-only baseline reports, on DEV:
+
+| Tier | Cases | Resolved correctly | Correctly refused | Wrong |
+|---|---:|---:|---:|---:|
+| T0 | 350 | 350 | — | 0 |
+| T1 | 300 | 300 | — | 0 |
+| T2 | 200 | 0 | — (200 refused, but recoverable) | 0 |
+| T3 | 40 | — | 40 | 0 |
+
+All 200 T2 refusals carry exactly two plausible candidates, both including
+the true settlement. The C-vs-D ablation delta of DESIGN.md §5.5 now has
+room to move on T2 — not because the rules were weakened, but because T2
+finally poses the question it was supposed to pose.
 
 ---
 
