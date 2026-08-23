@@ -34,8 +34,20 @@ rewrote v1's record of itself would be exactly the retro-fit the finding
 warned against.
 """
 
-FROZEN_EVAL_SHA256 = "d130c42c4bb52b6dc6b88e24f89257f4586c72423a22fdc4606440e53545b897"
-"""Benchmark v2's freeze — the current committed FROZEN-EVAL artifact.
+V2_FROZEN_EVAL_SHA256 = "d130c42c4bb52b6dc6b88e24f89257f4586c72423a22fdc4606440e53545b897"
+"""Benchmark v2's frozen-eval fingerprint. Superseded, never erased.
+
+v2 fixed v1's T2 construct and was itself retired for an unrelated T0
+defect: FROZEN-EVAL settlement IDs embedded the split name verbatim, so
+``setl_frozen-eval_000042`` contained a tokenizer delimiter and 175 of 350
+T0 cases could not be reached by the direct-key matcher at all. DEV was
+unaffected, so the whole suite stayed green
+(``benchmark/manifests/CHANGELOG.md`` v3.0.0). v2's T2 construct carries
+forward into v3 unchanged.
+"""
+
+FROZEN_EVAL_SHA256 = "f9eb8770be6cc216d1c8b5486a10b74005382141f7c079844e2748444a44fc5b"
+"""Benchmark v3's freeze — the current committed FROZEN-EVAL artifact.
 
 Frozen before any Stage-3 model exists, and not to be changed by one. If
 this fails, stop.
@@ -131,10 +143,10 @@ class TestFrozenBenchmarkIntegrity:
         import json
 
         manifest = json.loads(
-            (benchmark_dir / "manifests" / "v2.json").read_text(encoding="utf-8")
+            (benchmark_dir / "manifests" / "v3.json").read_text(encoding="utf-8")
         )
         assert manifest["frozen_eval_sha256"] == FROZEN_EVAL_SHA256
-        assert manifest["generator_version"] == "2.0.0"
+        assert manifest["generator_version"] == "3.0.0"
         assert manifest["dev_seed"] == 42
         assert manifest["frozen_eval_seed"] == 1337
         assert manifest["target_tier_counts"] == {"T0": 350, "T1": 300, "T2": 200, "T3": 40}
@@ -156,14 +168,42 @@ class TestFrozenBenchmarkIntegrity:
         }
         assert V1_FROZEN_EVAL_SHA256 != FROZEN_EVAL_SHA256
 
-    def test_the_changelog_explains_why_v1_was_superseded(self, benchmark_dir):
+    def test_the_v2_manifest_and_hash_are_preserved_unchanged(self, benchmark_dir):
+        """Two supersessions deep, both still auditable rather than overwritten."""
+        import json
+
+        v2 = json.loads((benchmark_dir / "manifests" / "v2.json").read_text(encoding="utf-8"))
+        assert v2["generator_version"] == "2.0.0"
+        assert v2["frozen_eval_sha256"] == V2_FROZEN_EVAL_SHA256
+        assert v2["dev_seed"] == 42
+        assert v2["frozen_eval_seed"] == 1337
+        assert v2["actual_tier_counts"]["frozen-eval"] == {
+            "T0": 350,
+            "T1": 300,
+            "T2": 200,
+            "T3": 40,
+        }
+        assert len({V1_FROZEN_EVAL_SHA256, V2_FROZEN_EVAL_SHA256, FROZEN_EVAL_SHA256}) == 3
+
+    def test_the_changelog_records_every_version_and_why_each_was_superseded(
+        self, benchmark_dir
+    ):
         changelog = (benchmark_dir / "manifests" / "CHANGELOG.md").read_text(encoding="utf-8")
-        assert V1_FROZEN_EVAL_SHA256 in changelog
-        assert FROZEN_EVAL_SHA256 in changelog
-        assert "v2.0.0" in changelog
+        for sha in (V1_FROZEN_EVAL_SHA256, V2_FROZEN_EVAL_SHA256, FROZEN_EVAL_SHA256):
+            assert sha in changelog
+        for version in ("v1.0.0", "v2.0.0", "v3.0.0"):
+            assert version in changelog
         assert "SUPERSEDED" in changelog
 
-    def test_the_v2_hash_is_reproducible_from_the_committed_configuration(self, tmp_path):
+    def test_the_changelog_records_that_v3_predates_any_stage_three_code(
+        self, benchmark_dir
+    ):
+        """The freeze protocol's credibility rests on this ordering being stated."""
+        changelog = (benchmark_dir / "manifests" / "CHANGELOG.md").read_text(encoding="utf-8")
+        v3_entry = changelog.split("## v2.0.0")[0]
+        assert "before any Stage-3" in v3_entry
+
+    def test_the_v3_hash_is_reproducible_from_the_committed_configuration(self, tmp_path):
         """Clean-room regeneration from the committed seeds must be byte-identical."""
         from finrecon.benchmark.generator.config import (
             FROZEN_EVAL_SEED,
@@ -175,6 +215,26 @@ class TestFrozenBenchmarkIntegrity:
         bundle = build_dataset("frozen-eval", FROZEN_EVAL_SEED, TARGET_TIER_COUNTS)
         write_dataset(bundle, tmp_path)
         assert compute_fingerprint(tmp_path, "frozen-eval") == FROZEN_EVAL_SHA256
+
+    def test_the_committed_dev_split_is_reproducible_byte_for_byte(
+        self, benchmark_dir, tmp_path
+    ):
+        """DEV is regenerated during tuning, so its byte-stability is worth pinning too.
+
+        It also documents a v3 property: the ``dev`` slug was already
+        token-safe, so the v3 correction left DEV byte-identical to v2 and
+        changed only the six FROZEN-EVAL files.
+        """
+        from finrecon.benchmark.generator.config import DEV_SEED, TARGET_TIER_COUNTS
+        from finrecon.benchmark.generator.dataset import build_dataset
+        from finrecon.benchmark.generator.serialize import dataset_file_names, write_dataset
+
+        bundle = build_dataset("dev", DEV_SEED, TARGET_TIER_COUNTS)
+        write_dataset(bundle, tmp_path)
+        for name in dataset_file_names():
+            regenerated = (tmp_path / "datasets" / "dev" / name).read_bytes()
+            committed = (benchmark_dir / "datasets" / "dev" / name).read_bytes()
+            assert regenerated == committed, name
 
     def test_stage_two_processes_frozen_eval_without_reading_its_truth(
         self, benchmark_dir, monkeypatch
