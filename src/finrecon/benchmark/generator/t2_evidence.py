@@ -34,36 +34,24 @@ Three things this module is not:
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
-from functools import lru_cache
 
-_TOKEN_DELIMITERS = re.compile(r"[^A-Za-z0-9_]+")
-"""Mirrors the delimiter class the Stage-2 tokenizer declares.
-
-Reimplemented here rather than imported so that the generator's
-"no direct key survives" assertion is an *independent* check of the
-production rule and not a restatement of the same code — if the two ever
-disagree, a T2 case fails to generate rather than silently becoming a T0.
-"""
+from finrecon.benchmark.generator.token_contract import (
+    fold as _fold,
+    is_usable_direct_key,
+    narration_tokens,
+)
 
 MASK_CHAR = "*"
 SEPARATOR = "-"
 
-
-@lru_cache(maxsize=4096)
-def narration_tokens(narration: str) -> tuple[str, ...]:
-    """Whole tokens of a narration. Cached: the batch-wide check re-splits the same strings."""
-    return tuple(t for t in _TOKEN_DELIMITERS.split(narration) if t)
-
-
-def _fold(value: str) -> str:
-    return value.upper()
-
-
-@lru_cache(maxsize=4096)
-def _folded_token_set(narration: str) -> frozenset[str]:
-    return frozenset(_fold(token) for token in narration_tokens(narration))
+__all__ = [
+    "MASK_CHAR",
+    "SEPARATOR",
+    "SurvivingReference",
+    "narration_tokens",
+    "recovery_is_consistent",
+]
 
 
 # --------------------------------------------------------------------------
@@ -151,8 +139,13 @@ class SurvivingReference:
         return self.evidence in self.narration
 
     def is_directly_usable(self, identifier: str) -> bool:
-        """True if some whole narration token already equals ``identifier`` — i.e. a T0 direct key."""
-        return _fold(identifier) in _folded_token_set(self.narration)
+        """True if some whole narration token already equals ``identifier`` — i.e. a T0 direct key.
+
+        Delegates to the shared token contract so T2's "no direct key
+        survives" invariant and T0's "a direct key survives" admission test
+        are the same predicate read in opposite directions.
+        """
+        return is_usable_direct_key(self.narration, identifier)
 
     def recovers(self, utr: str | None) -> bool:
         return recovery_is_consistent(self.category_id, self.evidence, utr)
