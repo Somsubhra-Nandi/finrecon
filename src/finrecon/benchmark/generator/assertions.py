@@ -12,6 +12,12 @@ generated records — never from the archetype label the case builder used
 ``assert_tier_disjoint`` compares that independently-derived tier against
 the tier a case builder declared and raises loudly on any mismatch,
 satisfying the hard requirement that each case belong to exactly one tier.
+
+"Direct key survives" is evaluated with *usable-token* semantics — see
+:mod:`finrecon.benchmark.generator.token_contract`. A reference merely
+*present* in a narration is not a surviving direct key if the declared
+tokenization cannot reach it; that is the difference between T0 and T2, and
+getting it wrong is what benchmark v3 fixed.
 """
 
 from __future__ import annotations
@@ -21,6 +27,7 @@ from dataclasses import dataclass
 from finrecon.models import BankRecord, Order, Payment, Refund, Settlement
 from finrecon.benchmark.generator.narration_library import get_narration_template
 from finrecon.benchmark.generator.templates import T0_CLEAN_TEMPLATE_IDS
+from finrecon.benchmark.generator.token_contract import is_usable_direct_key
 
 
 class TierDisjointnessError(AssertionError):
@@ -37,11 +44,21 @@ class CaseRecords:
 
 
 def _has_intact_utr_direct_key(case: CaseRecords) -> bool:
+    """A UTR rendered into a T0-clean template *and* reachable as one whole token.
+
+    Both halves are load-bearing. The template match keeps T0 structurally
+    distinct from T2's noisy-embed narrations (a character-intact UTR glued
+    into boilerplate is T2, per DESIGN.md §5.2). The token check keeps the
+    claim honest: a reference the declared tokenization cannot reach is not
+    a usable direct key, whatever template produced it.
+    """
     for settlement in case.settlements:
         if not settlement.utr:
             continue
         for bank_record in case.bank_records:
             if bank_record.narration == "" or settlement.utr not in bank_record.narration:
+                continue
+            if not is_usable_direct_key(bank_record.narration, settlement.utr):
                 continue
             for template_id in T0_CLEAN_TEMPLATE_IDS:
                 template = get_narration_template(template_id)
@@ -51,9 +68,20 @@ def _has_intact_utr_direct_key(case: CaseRecords) -> bool:
 
 
 def _has_clean_settlement_id_key(case: CaseRecords) -> bool:
+    """A settlement ID reachable from the narration as one whole token.
+
+    Benchmark v3 replaced substring containment here. Containment is
+    strictly weaker than the whole-token equality the direct-key matcher
+    applies, and the gap was not hypothetical: FROZEN-EVAL settlement IDs
+    read ``setl_frozen-eval_000042``, which is trivially a substring of its
+    own narration while tokenizing to ``setl_frozen`` + ``eval_000042``.
+    All 175 such cases were certified T0 and then resolved by derived
+    reconciliation instead, so T0 stopped measuring the ID join it exists
+    to measure. DEV's slug has no delimiter, so DEV never showed it.
+    """
     for settlement in case.settlements:
         for bank_record in case.bank_records:
-            if settlement.settlement_id in bank_record.narration:
+            if is_usable_direct_key(bank_record.narration, settlement.settlement_id):
                 return True
     return False
 
