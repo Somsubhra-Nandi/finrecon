@@ -28,10 +28,20 @@ Stage 1 delivered the synthetic benchmark generator and its output: a DEV
 dataset, a FROZEN-EVAL dataset, hidden ground truth for both, deterministic
 manifests, and a SHA-256 fingerprint for FROZEN-EVAL.
 
-The benchmark is now at **v2** (`benchmark/manifests/v2.json`). v1 was
-superseded by a benchmark-validity correction to the T2 tier, described
-under [Benchmark v1 finding, and why v2 exists](#benchmark-v1-finding-and-why-v2-exists)
-below. No Stage-2 code changed in that pass.
+The benchmark is now at **v3** (`benchmark/manifests/v3.json`), after two
+benchmark-validity corrections. v1 was superseded by a correction to the T2
+tier, described under
+[Benchmark v1 finding, and why v2 exists](#benchmark-v1-finding-and-why-v2-exists)
+below. v2 was superseded by a T0 correction: FROZEN-EVAL settlement IDs
+embedded the split name verbatim, so `setl_frozen-eval_000042` carried a
+tokenizer delimiter and 175 of 350 T0 cases could not be reached by the
+direct-key matcher at all — they resolved correctly, by the wrong rule. DEV
+was unaffected, which is why a green suite missed it. Full account in
+`benchmark/manifests/CHANGELOG.md` v3.0.0.
+
+**No Stage-2 code changed in either pass.** Both corrections made the
+benchmark satisfy the matcher's declared contract; neither relaxed the
+contract to admit the benchmark.
 
 Stage 2 delivers the **deterministic reconciliation core**:
 
@@ -80,8 +90,9 @@ exist. There is deliberately no `make eval` target.
 ```
 benchmark/
 ├── manifests/
-│   ├── v2.json          ← current: generator version, seeds, tier counts, frozen-eval SHA-256
-│   ├── v1.json          ← superseded, retained verbatim so the correction is auditable
+│   ├── v3.json          ← current: generator version, seeds, tier counts, frozen-eval SHA-256
+│   ├── v2.json          ← superseded, retained verbatim so the correction is auditable
+│   ├── v1.json          ← superseded, retained verbatim
 │   └── CHANGELOG.md      ← freeze record; generator changes are logged here, not silent
 ├── datasets/
 │   ├── dev/              ← system-visible inputs only: orders, payments, settlements, refunds, bank_records
@@ -215,7 +226,14 @@ seeds makes it plain none was chosen for a matcher outcome.
 
 ### Frozen-eval SHA-256
 
-Benchmark v2 (current):
+Benchmark v3 (current):
+
+```
+f9eb8770be6cc216d1c8b5486a10b74005382141f7c079844e2748444a44fc5b
+```
+
+Benchmark v2 (superseded, retained in `manifests/v2.json` and the
+CHANGELOG):
 
 ```
 d130c42c4bb52b6dc6b88e24f89257f4586c72423a22fdc4606440e53545b897
@@ -239,7 +257,7 @@ order — never ZIP metadata or filesystem timestamps. See
 ```bash
 make generate-dev       # writes benchmark/datasets/dev/, benchmark/ground_truth/dev.jsonl
 make generate-frozen    # writes benchmark/datasets/frozen-eval/, ground_truth/frozen-eval.jsonl, refreshes the hash
-make verify-frozen      # recomputes the FROZEN-EVAL hash and checks it against manifests/v2.json
+make verify-frozen      # recomputes the FROZEN-EVAL hash and checks it against manifests/v3.json
 ```
 
 Or directly:
