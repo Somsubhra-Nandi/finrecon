@@ -1,0 +1,84 @@
+{
+  "actual_tier_counts": {
+    "dev": {
+      "T0": 350,
+      "T1": 300,
+      "T2": 200,
+      "T3": 40
+    },
+    "frozen-eval": {
+      "T0": 350,
+      "T1": 300,
+      "T2": 200,
+      "T3": 40
+    }
+  },
+  "case_counts": {
+    "dev": 890,
+    "frozen-eval": 890
+  },
+  "corruption_taxonomy_ids": [
+    "separator_swap",
+    "separator_removal",
+    "whitespace_noise",
+    "case_folding",
+    "token_reordering",
+    "field_truncation",
+    "extraneous_prefix_suffix",
+    "reference_embedding",
+    "reference_omission",
+    "channel_code_substitution",
+    "numeric_id_noise"
+  ],
+  "dev_seed": 42,
+  "frozen_eval_hash_algorithm": "For each path listed in 'frozen_eval_hashed_files', in exactly that order, build the line '<relative_path>\\t<hex sha256 of that file's raw bytes>\\n' (paths are relative to benchmark/, forward-slash separated, and the order is the fixed lexicographic order emitted by finrecon.benchmark.generator.hashing.hashed_file_list). Concatenate those lines into one string and take sha256 of its UTF-8 encoding. The list covers the complete FROZEN-EVAL artifact: all five system-visible dataset files AND the hidden ground-truth file. DEV files are excluded (a separate split), and this manifest is excluded to avoid a circular self-reference, since the resulting digest is recorded in it. Depends only on file content plus a fixed path label -- never on mtimes, filesystem iteration order, or archive/ZIP metadata.",
+  "frozen_eval_hashed_files": [
+    "datasets/frozen-eval/bank_records.jsonl",
+    "datasets/frozen-eval/orders.jsonl",
+    "datasets/frozen-eval/payments.jsonl",
+    "datasets/frozen-eval/refunds.jsonl",
+    "datasets/frozen-eval/settlements.jsonl",
+    "ground_truth/frozen-eval.jsonl"
+  ],
+  "frozen_eval_seed": 1337,
+  "frozen_eval_sha256": "d130c42c4bb52b6dc6b88e24f89257f4586c72423a22fdc4606440e53545b897",
+  "generator_version": "2.0.0",
+  "record_counts": {
+    "dev": {
+      "bank_records": 890,
+      "orders": 1190,
+      "payments": 1250,
+      "refunds": 60,
+      "settlements": 1190
+    },
+    "frozen-eval": {
+      "bank_records": 890,
+      "orders": 1190,
+      "payments": 1250,
+      "refunds": 60,
+      "settlements": 1190
+    }
+  },
+  "target_tier_counts": {
+    "T0": 350,
+    "T1": 300,
+    "T2": 200,
+    "T3": 40
+  },
+  "target_total_cases": 890,
+  "total_record_counts": {
+    "dev": 4580,
+    "frozen-eval": 4580
+  },
+  "utr_degradation_ladder_ids": [
+    "intact",
+    "truncated_left",
+    "truncated_right",
+    "masked",
+    "separator_altered",
+    "reordered",
+    "embedded_in_narration",
+    "omitted",
+    "ambiguous"
+  ]
+}
