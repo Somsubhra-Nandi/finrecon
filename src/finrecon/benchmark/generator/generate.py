@@ -7,7 +7,7 @@
 
 Writes datasets/ground-truth for the requested split(s) under
 ``benchmark/`` at the repo root, and (when both splits are generated, or
-explicitly on a frozen-eval-only run) refreshes ``manifests/v1.json``
+explicitly on a frozen-eval-only run) refreshes ``manifests/v2.json``
 including the frozen-eval SHA-256 fingerprint.
 """
 
