@@ -81,8 +81,9 @@ deterministic decision layer behind it:
   agent loop can use without knowing any provider's wire format. Fallback
   is restricted to *infrastructure* failure by the exception type itself.
 - **A bounded investigation loop** (`src/finrecon/agent/loop.py`) — an
-  explicit state machine with a fixed step budget and four termination
-  states, none of which can turn a failure into a choice.
+  explicit state machine with a fixed model-step budget, a fixed per-turn
+  tool-call bound, deterministic serial tool batches, and a deterministic
+  early stop only when the existing validator/policy already resolves.
 - **Full trajectory recording and deterministic replay**
   (`src/finrecon/agent/trajectory.py`, `cache.py`) — every step, every
   refused call, every fallback, keyed so a replay reproduces the same raw
@@ -104,12 +105,13 @@ assert structurally.
 and value at risk require the Stage-4 evaluation harness, which does not
 exist. There is deliberately no `make eval` target.
 
-**No live model run has been performed.** No provider credential was
-available in the build environment, so Stage 3 is verified against
-deterministic fake providers and the committed trajectory corpus
-(`fixtures/trajectories/`) is empty. Every claim below about the
-architecture is tested; no claim is made about how a model performs on this
-benchmark, because that has not been measured.
+**Baseline live smoke tests and a five-case DEV diagnostic have now been
+performed.** They are engineering observations, not benchmark results; the
+provider/model, aggregate steps/tokens, safe failures, and the separate
+orchestration-optimization experiment are recorded in
+[`notes/STAGE3-FINDINGS.md`](./notes/STAGE3-FINDINGS.md) §§8–9. The committed
+trajectory corpus (`fixtures/trajectories/`) remains empty, and no hosted-model
+result is presented as reproducible fixture evidence.
 
 ### Record, case, batch (DESIGN.md §5.0)
 
@@ -391,11 +393,11 @@ that makes the mechanism look active.
   reconciliation queues contain larger and messier contention sets; the
   benchmark does not model those, and `notes/STAGE2-FINDINGS.md` records
   the other archetypes deliberately left out of scope.
-- Stage 3 has never been run against a real model. Every Stage-3 number in
-  this repository comes from a deterministic fake provider and describes the
-  architecture, not model capability. `notes/STAGE3-FINDINGS.md` §1 says so
-  in more detail, including the one finding that would change how a T2
-  result should be read.
+- Hosted-model Stage-3 runs so far are limited to smoke tests and one
+  five-case DEV diagnostic. They are not benchmark results, are not committed
+  as replay fixtures, and do not establish model capability over T2/T3. The
+  deterministic fake-provider diagnostics still describe plumbing only; see
+  `notes/STAGE3-FINDINGS.md` §§1 and 8–9.
 
 ## Development setup
 
