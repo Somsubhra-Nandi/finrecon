@@ -12,5 +12,17 @@ build/
 *.sqlite3
 .coverage
 htmlcov/
+
+# Secrets. `.env.example` is the committed template and holds only empty
+# placeholders; anything that could carry a real key stays out.
 .env
+.env.*
+!.env.example
+*.pem
+secrets.json
+# Raw provider request/response dumps, which can contain an Authorization
+# header. Trajectories under fixtures/ never do and are committed.
+provider-dumps/
+*.request.json
+
 .DS_Store
