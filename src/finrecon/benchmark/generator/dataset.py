@@ -22,6 +22,7 @@ from finrecon.benchmark.generator.case_builder import (
     build_t2_degraded_reference,
     build_t3_ambiguous,
 )
+from finrecon.benchmark.generator.config import split_id_slug
 from finrecon.benchmark.generator.ground_truth import GroundTruthCase
 from finrecon.benchmark.generator.plan import PlannedCase, build_case_plan
 from finrecon.benchmark.generator.record_factory import RecordFactory
@@ -68,8 +69,13 @@ class DatasetBundle:
 
 
 def _build_case(planned: PlannedCase, case_index: int, seed: int, split: str, factory: RecordFactory):
+    # Seeded on the split *name*, not the slug: the RNG stream is part of
+    # the frozen construct, and v3 changes identifier text only. Keeping the
+    # seeding input untouched means every amount, date, UTR and degradation
+    # on FROZEN-EVAL is bit-for-bit what v2 produced, so the v2->v3 diff is
+    # auditable as "IDs and the T0 narrations that embed them, nothing else".
     rng = case_rng(seed, split, case_index)
-    case_id = f"case-{split}-{case_index:05d}"
+    case_id = f"case-{split_id_slug(split)}-{case_index:05d}"
 
     if planned.tier == "T0":
         if planned.archetype == "utr_intact":
@@ -143,7 +149,7 @@ def verify_t2_invariants(bundle: DatasetBundle) -> dict[str, T2Verification]:
 
 def build_dataset(split: str, seed: int, tier_counts: dict[str, int]) -> DatasetBundle:
     plan = build_case_plan(seed, split, tier_counts)
-    factory = RecordFactory(split=split)
+    factory = RecordFactory(id_slug=split_id_slug(split))
     bundle = DatasetBundle(split=split, seed=seed)
 
     for case_index, planned in enumerate(plan):
