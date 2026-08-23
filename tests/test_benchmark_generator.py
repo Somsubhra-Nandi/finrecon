@@ -106,7 +106,7 @@ def test_tier_disjointness_detector_rejects_a_broken_t1_case():
     from finrecon.benchmark.generator.record_factory import RecordFactory
     from finrecon.benchmark.generator.seeding import case_rng
 
-    factory = RecordFactory(split="test")
+    factory = RecordFactory(id_slug="test")
     rng = case_rng(1, "test", 0)
     bundle = build_t0_utr_intact("case-test-0", rng, factory)
 
