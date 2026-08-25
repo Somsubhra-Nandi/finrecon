@@ -19,6 +19,8 @@ from finrecon.agent.providers.chain import ProviderChain
 from finrecon.agent.prompt import case_briefing, system_prompt
 from finrecon.agent.tools import ToolValidationError
 from finrecon.agent.trajectory import (
+    INVOCATION_SKIPPED_BATCH_REJECTED,
+    INVOCATION_VALIDATION_FAILED,
     TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
     TERMINATION_INVESTIGATION_COMPLETE,
     TERMINATION_PROVIDER_INFRASTRUCTURE_FAILURE,
@@ -57,13 +59,16 @@ def chain_of(*turns, repeat_last=False):
     )
 
 
-def compare_turn(candidate_id, fragment, call_id="call_1"):
+def compare_turn(fragment, call_id="call_1"):
+    """One comparison call. The tool takes the fragment alone -- there is no
+    candidate argument to supply, because the controller fans the fragment
+    across the complete snapshot itself."""
     return turn(
         text=f"testing {fragment}",
         calls=[
             tool_call(
                 "compare_reference_fragment",
-                {"candidate_id": candidate_id, "fragment": fragment},
+                {"fragment": fragment},
                 call_id=call_id,
             )
         ],
@@ -75,7 +80,7 @@ class TestOrdinaryCompletion:
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
-                compare_turn(snapshot.candidate_ids()[1], "RTGS"),
+                compare_turn("RTGS"),
                 turn(text="tested one fragment; I make no claim"),
             ),
         )
@@ -87,16 +92,13 @@ class TestOrdinaryCompletion:
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
-                compare_turn(snapshot.candidate_ids()[1], "PF*******VQ"), turn(text="done")
+                compare_turn("PF*******VQ"), turn(text="done")
             ),
         )
         invocation = trajectory.tool_invocations[0]
         assert invocation.output["fragment"] == "PF*******VQ"
         assert invocation.output["fragment_present_in_narration"] is True
-        assert invocation.validated_arguments == {
-            "candidate_id": snapshot.candidate_ids()[1],
-            "fragment": "PF*******VQ",
-        }
+        assert invocation.validated_arguments == {"fragment": "PF*******VQ"}
 
     def test_provider_and_model_are_recorded_on_every_step(self, snapshot):
         trajectory = run_investigation(snapshot=snapshot, chain=chain_of(turn(text="nothing")))
@@ -118,7 +120,7 @@ class TestOrdinaryCompletion:
     def test_token_usage_is_totalled_when_the_provider_reports_it(self, snapshot):
         trajectory = run_investigation(
             snapshot=snapshot,
-            chain=chain_of(compare_turn(snapshot.candidate_ids()[0], "RTGS"), turn()),
+            chain=chain_of(compare_turn("RTGS"), turn()),
         )
         assert trajectory.total_tokens() == 240
         assert trajectory.input_tokens() == 200
@@ -134,7 +136,7 @@ class TestStepBudget:
         assert 1 < DEFAULT_MAX_STEPS <= 12
 
     def test_a_model_that_never_stops_is_stopped(self, snapshot):
-        endless = compare_turn(snapshot.candidate_ids()[0], "RTGS")
+        endless = compare_turn("RTGS")
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(endless, repeat_last=True),
@@ -146,7 +148,7 @@ class TestStepBudget:
 
     def test_budget_exhaustion_never_produces_a_choice(self, snapshot):
         """The trajectory carries evidence and a stop reason, never a winner."""
-        endless = compare_turn(snapshot.candidate_ids()[0], "RTGS")
+        endless = compare_turn("RTGS")
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(endless, repeat_last=True),
@@ -159,7 +161,7 @@ class TestStepBudget:
     def test_a_budget_of_one_step_is_legal_and_bounded(self, snapshot):
         trajectory = run_investigation(
             snapshot=snapshot,
-            chain=chain_of(compare_turn(snapshot.candidate_ids()[0], "RTGS"), repeat_last=True),
+            chain=chain_of(compare_turn("RTGS"), repeat_last=True),
             config=LoopConfig(max_steps=1),
         )
         assert trajectory.step_count == 1
@@ -223,7 +225,6 @@ class TestMalformedCalls:
         assert trajectory.tool_invocations[0].output is None
 
     def test_a_duplicate_nested_key_call_stops_the_loop(self, snapshot):
-        candidate = snapshot.candidate_ids()[0]
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
@@ -231,11 +232,7 @@ class TestMalformedCalls:
                     calls=[
                         tool_call(
                             "compare_reference_fragment",
-                            (
-                                '{"candidate_id":"%s","fragment":"PF",'
-                                '"extra":{"nested":1,"nested":2}}'
-                            )
-                            % candidate,
+                            '{"fragment":"PF","extra":{"nested":1,"nested":2}}',
                         )
                     ]
                 ),
@@ -298,14 +295,20 @@ class TestMalformedCalls:
         )
 
     def test_a_hallucinated_candidate_id_stops_the_loop(self, snapshot):
+        """Access control lives on the tools that still name a record.
+
+        ``compare_reference_fragment`` has no candidate argument to forge any
+        more; ``lookup_candidate_records`` does, and it is still checked
+        against the immutable snapshot before any handler runs.
+        """
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
                 turn(
                     calls=[
                         tool_call(
-                            "compare_reference_fragment",
-                            {"candidate_id": "setl_invented", "fragment": "PF*******VQ"},
+                            "lookup_candidate_records",
+                            {"candidate_id": "setl_invented"},
                         )
                     ]
                 ),
@@ -342,12 +345,11 @@ class TestMalformedCalls:
 
 class TestRepeatedAndExcessCalls:
     def test_the_same_call_twice_is_executed_and_recorded_twice(self, snapshot):
-        target = snapshot.candidate_ids()[1]
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
-                compare_turn(target, "RTGS", call_id="a"),
-                compare_turn(target, "RTGS", call_id="b"),
+                compare_turn("RTGS", call_id="a"),
+                compare_turn("RTGS", call_id="b"),
                 turn(text="done"),
             ),
         )
@@ -424,10 +426,19 @@ class TestRepeatedAndExcessCalls:
         )
         assert trajectory.termination_reason == TERMINATION_TOOL_VALIDATION_FAILED
         assert trajectory.successful_tool_invocations() == ()
-        assert trajectory.tool_invocations[0].call_index == 1
-        assert trajectory.tool_invocations[0].validation_error_reason == (
+        # Every requested call is written down, in request order: the valid
+        # one as skipped, the malformed one as the failure that rejected the
+        # batch. Neither executed.
+        assert [inv.call_index for inv in trajectory.tool_invocations] == [0, 1]
+        assert [inv.status for inv in trajectory.tool_invocations] == [
+            INVOCATION_SKIPPED_BATCH_REJECTED,
+            INVOCATION_VALIDATION_FAILED,
+        ]
+        assert trajectory.tool_invocations[1].validation_error_reason == (
             ToolValidationError.DUPLICATE_ARGUMENT_KEY
         )
+        assert trajectory.tool_invocations[0].validated_arguments == {"candidate_id": a}
+        assert trajectory.tool_invocations[0].output is None
 
     def test_a_batch_over_the_bound_is_rejected_not_partially_executed(self, snapshot):
         a, b = snapshot.candidate_ids()
@@ -445,27 +456,32 @@ class TestRepeatedAndExcessCalls:
         )
         assert trajectory.termination_reason == TERMINATION_TOOL_VALIDATION_FAILED
         assert trajectory.successful_tool_invocations() == ()
-        assert trajectory.tool_invocations[0].validation_error_reason == (
+        assert [inv.call_index for inv in trajectory.tool_invocations] == [0, 1]
+        assert [inv.status for inv in trajectory.tool_invocations] == [
+            INVOCATION_SKIPPED_BATCH_REJECTED,
+            INVOCATION_VALIDATION_FAILED,
+        ]
+        assert trajectory.tool_invocations[1].validation_error_reason == (
             ToolValidationError.TOOL_CALL_BATCH_LIMIT_EXCEEDED
         )
 
 
 class TestDeterministicEarlyStop:
     def test_existing_validator_and_policy_stop_before_an_extra_model_turn(self, snapshot):
-        a, b = snapshot.candidate_ids()
+        """One comparison call is now enough to reach a deterministic resolution.
+
+        Under the old per-candidate signature this took two calls for a
+        two-candidate case. The second added nothing the validator used, and
+        it is no longer expressible.
+        """
         provider = ScriptedProvider(
             [
                 turn(
                     calls=[
                         tool_call(
                             "compare_reference_fragment",
-                            {"candidate_id": a, "fragment": "PF*******VQ"},
+                            {"fragment": "PF*******VQ"},
                             call_id="a",
-                        ),
-                        tool_call(
-                            "compare_reference_fragment",
-                            {"candidate_id": b, "fragment": "PF*******VQ"},
-                            call_id="b",
                         ),
                     ]
                 ),
@@ -479,13 +495,13 @@ class TestDeterministicEarlyStop:
         assert trajectory.deterministic_early_stop
         assert trajectory.step_count == 1
         assert provider.call_count == 1
-        assert trajectory.tool_invocation_count == 2
+        assert trajectory.tool_invocation_count == 1
         _, decision = adjudicate(snapshot=snapshot, trajectory=trajectory)
         assert decision.outcome == "RESOLVE"
 
     def test_ambiguous_evidence_does_not_early_stop(self, snapshot):
         provider = ScriptedProvider(
-            [compare_turn(snapshot.candidate_ids()[0], "RTGS"), turn(text="ambiguous")]
+            [compare_turn("RTGS"), turn(text="ambiguous")]
         )
         trajectory = run_investigation(
             snapshot=snapshot, chain=ProviderChain((provider,))
@@ -503,7 +519,6 @@ class TestDeterministicEarlyStop:
                 settlement_facts(TRUE_SETTLEMENT_ID, TRUE_UTR),
             ),
         )
-        a, b = snapshot.candidate_ids()
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
@@ -511,12 +526,12 @@ class TestDeterministicEarlyStop:
                     calls=[
                         tool_call(
                             "compare_reference_fragment",
-                            {"candidate_id": a, "fragment": TRUE_UTR},
+                            {"fragment": TRUE_UTR},
                             call_id="a",
                         ),
                         tool_call(
                             "compare_reference_fragment",
-                            {"candidate_id": b, "fragment": DECOY_UTR},
+                            {"fragment": DECOY_UTR},
                             call_id="b",
                         ),
                     ]
@@ -534,7 +549,7 @@ class TestDeterministicEarlyStop:
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
-                compare_turn(snapshot.candidate_ids()[0], "SETTLEMENT"),
+                compare_turn("SETTLEMENT"),
                 turn(text="nothing distinguishes them"),
             ),
         )
@@ -606,12 +621,11 @@ class TestImmutability:
         assert snapshot.verify_integrity()
 
     def test_a_model_cannot_shrink_the_candidate_set(self, snapshot):
-        """Investigating one candidate exhaustively leaves the other in place."""
-        only = snapshot.candidate_ids()[1]
+        """A comparison cannot even name a candidate, let alone drop one."""
         run_investigation(
             snapshot=snapshot,
             chain=chain_of(
-                compare_turn(only, "PF*******VQ"),
+                compare_turn("PF*******VQ"),
                 turn(text="candidate B is irrelevant, ignore it"),
             ),
         )

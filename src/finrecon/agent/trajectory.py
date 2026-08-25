@@ -29,6 +29,8 @@ from __future__ import annotations
 
 from typing import Literal
 
+from pydantic import model_validator
+
 from finrecon.normalize.provenance import FrozenModel
 
 TERMINATION_INVESTIGATION_COMPLETE = "investigation_complete"
@@ -120,24 +122,92 @@ class ModelStepRecord(FrozenModel):
     requested_tool_calls: tuple[RequestedToolCall, ...]
 
 
+INVOCATION_SUCCEEDED = "succeeded"
+"""Preflight passed, the handler ran, and its output is validator input."""
+
+INVOCATION_VALIDATION_FAILED = "validation_failed"
+"""The call was refused by preflight. No handler ran; there is no output."""
+
+INVOCATION_SKIPPED_BATCH_REJECTED = "skipped_due_to_batch_rejection"
+"""The call passed preflight but a *sibling* call in the same batch did not.
+
+Batch preflight is atomic: one invalid call means zero handlers execute
+(DESIGN.md 4.1). Before this state existed, the calls that lost their batch
+this way left no record at all, so a rejected turn looked in the audit trail
+like a turn that had only ever asked for the one malformed call. That is a
+false account of what the model did. The evidence such a call would have
+produced is still never gathered -- ``output`` stays ``None``, so it can
+never reach :func:`finrecon.decide.validator.raw_tool_evidence` -- but the
+request is now visible.
+"""
+
+INVOCATION_STATUSES: tuple[str, ...] = (
+    INVOCATION_SUCCEEDED,
+    INVOCATION_VALIDATION_FAILED,
+    INVOCATION_SKIPPED_BATCH_REJECTED,
+)
+
+InvocationStatus = Literal[
+    "succeeded",
+    "validation_failed",
+    "skipped_due_to_batch_rejection",
+]
+
+
 class ToolInvocationRecord(FrozenModel):
-    """One tool call: what was asked, whether it was allowed, and what came back."""
+    """One tool call: what was asked, whether it was allowed, and what came back.
+
+    Every call the model requested gets one of these, including calls that
+    were never executed. ``status`` is stored rather than derived so replay
+    reproduces the exact disposition of each call instead of re-inferring it
+    from the presence of an output.
+    """
 
     step_index: int
     call_index: int
     tool_name: str
     raw_arguments: str
+    status: InvocationStatus
+    """Which of the three declared dispositions this call reached."""
     validated_arguments: dict | None
-    """Present only when validation passed. ``None`` for a refused call."""
+    """Present when preflight passed -- including for a call later skipped
+    because its batch was rejected. ``None`` for a refused call."""
     validation_error_reason: str | None
     validation_error_detail: str | None
     output: dict | None
     """The tool's raw output payload. This, and only this, is validator input."""
     latency_ms: int | None = None
 
+    @model_validator(mode="after")
+    def _status_matches_the_record(self) -> "ToolInvocationRecord":
+        """The three states are mutually exclusive, and the record must say so.
+
+        Enforced rather than trusted: a ``skipped`` record carrying an output
+        would be evidence the controller never gathered, and a ``succeeded``
+        record carrying a validation error would be a refused call counted as
+        a fact. Both are caught here, at construction, rather than downstream.
+        """
+        failed = self.validation_error_reason is not None
+        has_output = self.output is not None
+        expected = {
+            INVOCATION_SUCCEEDED: (False, True),
+            INVOCATION_VALIDATION_FAILED: (True, False),
+            INVOCATION_SKIPPED_BATCH_REJECTED: (False, False),
+        }[self.status]
+        if (failed, has_output) != expected:
+            raise ValueError(
+                f"tool invocation status {self.status!r} is inconsistent with the "
+                f"record: validation_error_reason set={failed}, output set={has_output}"
+            )
+        return self
+
     @property
     def succeeded(self) -> bool:
-        return self.validation_error_reason is None and self.output is not None
+        return self.status == INVOCATION_SUCCEEDED
+
+    @property
+    def skipped(self) -> bool:
+        return self.status == INVOCATION_SKIPPED_BATCH_REJECTED
 
 
 class Trajectory(FrozenModel):
@@ -249,8 +319,16 @@ class Trajectory(FrozenModel):
     def successful_tool_invocations(self) -> tuple[ToolInvocationRecord, ...]:
         return tuple(inv for inv in self.tool_invocations if inv.succeeded)
 
+    def skipped_tool_invocations(self) -> tuple[ToolInvocationRecord, ...]:
+        """Calls that passed preflight but lost their batch to a sibling failure."""
+        return tuple(inv for inv in self.tool_invocations if inv.skipped)
+
 
 __all__ = [
+    "INVOCATION_SKIPPED_BATCH_REJECTED",
+    "INVOCATION_STATUSES",
+    "INVOCATION_SUCCEEDED",
+    "INVOCATION_VALIDATION_FAILED",
     "TERMINATION_DETERMINISTIC_POLICY_RESOLVED",
     "TERMINATION_INVESTIGATION_COMPLETE",
     "TERMINATION_PROVIDER_CONFIGURATION_FAILURE",
@@ -258,6 +336,7 @@ __all__ = [
     "TERMINATION_REASONS",
     "TERMINATION_STEP_BUDGET_EXHAUSTED",
     "TERMINATION_TOOL_VALIDATION_FAILED",
+    "InvocationStatus",
     "ModelStepRecord",
     "ProviderAttemptRecord",
     "RequestedToolCall",

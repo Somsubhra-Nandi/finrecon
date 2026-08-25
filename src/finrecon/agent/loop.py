@@ -38,7 +38,8 @@ Declared termination states:
     A call that could not be executed: unknown tool, unparsable arguments,
     a field that fails the schema, or an identifier outside the immutable
     candidate set. The loop stops immediately rather than letting a model
-    flail against the schema, records the reason, and escalates.
+    flail against the schema, records the reason for the offending call and
+    a skipped record for every sibling call in the batch, and escalates.
 ``provider_infrastructure_failure`` / ``provider_configuration_failure``
     No answer was obtained. Escalate; the evidence was never gathered.
 
@@ -57,6 +58,16 @@ authorized against the immutable snapshot before any handler runs. One bad
 call rejects the whole batch, records every failure, and stops without
 provider fallback. A valid batch executes serially in the provider's response
 order, so audit and replay never depend on scheduling.
+
+Every requested call is written down, including the ones that never ran. A
+call that passed preflight but lost its batch to a sibling failure is
+recorded as ``skipped_due_to_batch_rejection``: raw arguments, validated
+arguments, and no output. It carries no output precisely because it was never
+executed, which is also what keeps it out of
+:func:`finrecon.decide.validator.raw_tool_evidence` -- a skipped call is
+visible to a reviewer and invisible to the decision. Before this, such calls
+left no trace at all, and a rejected turn read in the audit trail as though
+the model had asked for nothing but the malformed call.
 """
 
 from __future__ import annotations
@@ -82,6 +93,9 @@ from finrecon.agent.tools import (
     tool_specs,
 )
 from finrecon.agent.trajectory import (
+    INVOCATION_SKIPPED_BATCH_REJECTED,
+    INVOCATION_SUCCEEDED,
+    INVOCATION_VALIDATION_FAILED,
     TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
     TERMINATION_INVESTIGATION_COMPLETE,
     TERMINATION_PROVIDER_CONFIGURATION_FAILURE,
@@ -105,7 +119,6 @@ from finrecon.agent.version import (
 )
 from finrecon.candidates.snapshot import CaseSnapshot
 from finrecon.decide.config import DEFAULT_POLICY, Stage3Policy
-from finrecon.decide.policy import adjudicate
 
 DEFAULT_MAX_STEPS = 8
 """Fixed step budget. Bounded, configurable, and asserted by the tests.
@@ -299,34 +312,54 @@ def run_investigation(
         )
 
         if len(response.tool_calls) > config.max_tool_calls_per_step:
-            call_index = config.max_tool_calls_per_step
-            call = response.tool_calls[call_index]
+            # The whole batch is refused. The first call past the bound names
+            # the failure; every other requested call -- before it and after
+            # it -- is recorded as skipped, so the audit trail shows the turn
+            # the model actually took rather than only the call that tripped
+            # the bound.
+            offending_index = config.max_tool_calls_per_step
             detail = (
                 f"assistant requested {len(response.tool_calls)} tool calls; "
                 f"per-turn limit is {config.max_tool_calls_per_step}; batch executed none"
             )
-            invocations.append(
-                ToolInvocationRecord(
-                    step_index=step_index,
-                    call_index=call_index,
-                    tool_name=call.tool_name,
-                    raw_arguments=call.raw_arguments,
-                    validated_arguments=None,
-                    validation_error_reason=(
-                        ToolValidationError.TOOL_CALL_BATCH_LIMIT_EXCEEDED
-                    ),
-                    validation_error_detail=detail,
-                    output=None,
-                    latency_ms=0,
+            for call_index, call in enumerate(response.tool_calls):
+                failed = call_index == offending_index
+                invocations.append(
+                    ToolInvocationRecord(
+                        step_index=step_index,
+                        call_index=call_index,
+                        tool_name=call.tool_name,
+                        raw_arguments=call.raw_arguments,
+                        status=(
+                            INVOCATION_VALIDATION_FAILED
+                            if failed
+                            else INVOCATION_SKIPPED_BATCH_REJECTED
+                        ),
+                        validated_arguments=None,
+                        validation_error_reason=(
+                            ToolValidationError.TOOL_CALL_BATCH_LIMIT_EXCEEDED
+                            if failed
+                            else None
+                        ),
+                        validation_error_detail=detail if failed else None,
+                        output=None,
+                        latency_ms=0,
+                    )
                 )
-            )
             termination = TERMINATION_TOOL_VALIDATION_FAILED
             termination_detail = (
                 f"{ToolValidationError.TOOL_CALL_BATCH_LIMIT_EXCEEDED}: {detail}"
             )
             return finish()
 
-        prepared = []
+        # Preflight every call before any handler runs, keeping each outcome.
+        # Records are written afterwards, in call order, so a rejected batch
+        # and an executed batch produce the same shape of audit trail: one
+        # record per requested call, in the order the model requested it.
+        # (call_index, call, prepared-or-None, error-or-None, preflight ms)
+        preflighted: list[
+            tuple[int, ToolCallRequest, tuple | None, ToolValidationError | None, int]
+        ] = []
         validation_failures: list[tuple[int, ToolValidationError]] = []
         for call_index, call in enumerate(response.tool_calls):
             started = time.perf_counter()
@@ -335,24 +368,39 @@ def run_investigation(
                     context, call.tool_name, call.raw_arguments
                 )
             except ToolValidationError as exc:
+                elapsed = int((time.perf_counter() - started) * 1000)
+                preflighted.append((call_index, call, None, exc, elapsed))
+                validation_failures.append((call_index, exc))
+                continue
+            elapsed = int((time.perf_counter() - started) * 1000)
+            preflighted.append((call_index, call, (definition, arguments), None, elapsed))
+
+        if validation_failures:
+            # Atomic reject-all, unchanged: zero handlers run. What changes is
+            # only that the calls which passed preflight are now visible as
+            # skipped rather than absent. They carry no output, so they can
+            # never become RawToolEvidence.
+            for call_index, call, passed, exc, elapsed in preflighted:
                 invocations.append(
                     ToolInvocationRecord(
                         step_index=step_index,
                         call_index=call_index,
                         tool_name=call.tool_name,
                         raw_arguments=call.raw_arguments,
-                        validated_arguments=None,
-                        validation_error_reason=exc.reason,
-                        validation_error_detail=exc.detail,
+                        status=(
+                            INVOCATION_VALIDATION_FAILED
+                            if exc is not None
+                            else INVOCATION_SKIPPED_BATCH_REJECTED
+                        ),
+                        validated_arguments=(
+                            None if passed is None else passed[1].model_dump(mode="json")
+                        ),
+                        validation_error_reason=exc.reason if exc is not None else None,
+                        validation_error_detail=exc.detail if exc is not None else None,
                         output=None,
-                        latency_ms=int((time.perf_counter() - started) * 1000),
+                        latency_ms=elapsed,
                     )
                 )
-                validation_failures.append((call_index, exc))
-                continue
-            prepared.append((call_index, call, definition, arguments))
-
-        if validation_failures:
             termination = TERMINATION_TOOL_VALIDATION_FAILED
             joined = "; ".join(
                 f"call {index}: {exc.reason}: {exc.detail}"
@@ -360,6 +408,12 @@ def run_investigation(
             )
             termination_detail = f"tool batch rejected before execution; {joined}"
             return finish()
+
+        prepared = [
+            (call_index, call, passed[0], passed[1])
+            for call_index, call, passed, _exc, _elapsed in preflighted
+            if passed is not None
+        ]
 
         for call_index, call, definition, arguments in prepared:
             started = time.perf_counter()
@@ -371,6 +425,7 @@ def run_investigation(
                     call_index=call_index,
                     tool_name=call.tool_name,
                     raw_arguments=call.raw_arguments,
+                    status=INVOCATION_SUCCEEDED,
                     validated_arguments=arguments.model_dump(mode="json"),
                     validation_error_reason=None,
                     validation_error_detail=None,
@@ -395,6 +450,12 @@ def run_investigation(
             TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
             f"existing validator/policy reached safe resolution after tool batch at step {step_index}",
         )
+        # Imported only at the early-adjudication boundary.  Keeping the
+        # policy module out of this module's import-time dependencies lets a
+        # fresh ``import finrecon.decide.policy`` complete while the agent
+        # package initializes its cache and loop exports.
+        from finrecon.decide.policy import adjudicate
+
         _, provisional_decision = adjudicate(
             snapshot=snapshot,
             trajectory=provisional,

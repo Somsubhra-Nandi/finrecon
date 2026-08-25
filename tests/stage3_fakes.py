@@ -225,10 +225,10 @@ class MechanicalInvestigator(ModelProvider):
 
     Plan: one ``lookup_candidate_records`` to see what the candidates carry,
     then one ``compare_reference_fragment`` per plausible fragment, then
-    stop. It always compares against the *first* candidate, which is not a
-    shortcut but the architecture working as designed -- the validator tests
-    every fragment against every candidate itself, so surfacing a fragment
-    is the whole of the agent's contribution.
+    stop. One call per fragment, not one per fragment per candidate: the
+    comparison tool takes the fragment alone and fans it across the complete
+    snapshot itself, so surfacing a fragment is the whole of the agent's
+    contribution.
     """
 
     provider_id = "mechanical"
@@ -281,7 +281,7 @@ class MechanicalInvestigator(ModelProvider):
                 calls=[
                     tool_call(
                         "compare_reference_fragment",
-                        {"candidate_id": candidate_ids[0], "fragment": fragments[index]},
+                        {"fragment": fragments[index]},
                         call_id=f"call_{self.call_count}",
                     )
                 ],
