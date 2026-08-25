@@ -652,8 +652,17 @@ class TestNoFallbackWhenTheProviderAnswered:
 
 class TestConfiguration:
     def test_the_default_order_is_openrouter_then_groq_then_gemini(self):
-        assert provider_config.DEFAULT_PROVIDER_ORDER == ("openrouter", "groq", "gemini")
-        assert provider_config.provider_order({}) == ("openrouter", "groq", "gemini")
+        """The original three keep their original positions, in front.
+
+        Asserted as a prefix rather than as the whole tuple: adding a provider
+        must never be able to change which one answers first, and stating the
+        prefix separately is what makes that the tested invariant instead of an
+        incidental property of a literal.
+        """
+        expected = ("openrouter", "groq", "gemini", "gorouter")
+        assert provider_config.DEFAULT_PROVIDER_ORDER == expected
+        assert provider_config.provider_order({}) == expected
+        assert provider_config.DEFAULT_PROVIDER_ORDER[:3] == ("openrouter", "groq", "gemini")
 
     def test_the_order_is_configurable(self):
         env = {"FINRECON_PROVIDER_ORDER": "gemini, groq"}

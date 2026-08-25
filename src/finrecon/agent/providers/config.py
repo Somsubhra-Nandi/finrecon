@@ -26,16 +26,25 @@ import os
 from dataclasses import dataclass
 from typing import Callable
 
-from finrecon.agent.providers import gemini, groq, openrouter
+from finrecon.agent.providers import gemini, gorouter, groq, openrouter
 from finrecon.agent.providers.base import ModelProvider, ProviderConfigurationError
 from finrecon.agent.providers.chain import DEFAULT_TRANSPORT_RETRIES, ProviderChain
 from finrecon.agent.providers.transport import DEFAULT_TIMEOUT_SECONDS
 
-DEFAULT_PROVIDER_ORDER: tuple[str, ...] = ("openrouter", "groq", "gemini")
-"""Operational order: OpenRouter primary, Groq then Gemini as infra fallbacks.
+DEFAULT_PROVIDER_ORDER: tuple[str, ...] = ("openrouter", "groq", "gemini", "gorouter")
+"""Operational order: OpenRouter primary, then Groq, Gemini and GoRouter.
 
 Order is availability policy, not a quality ranking. Override with
 ``FINRECON_PROVIDER_ORDER`` as a comma-separated list.
+
+GoRouter was appended rather than inserted. The first three keep the exact
+positions they had, so no existing deployment changes which provider answers
+first; and a provider with no credential is skipped before the run starts, so
+adding a fourth slot is inert until ``GOROUTER_API_KEY`` is set. It is in the
+default order at all -- rather than reachable only through
+``FINRECON_PROVIDER_ORDER`` -- because a first-class provider whose credential
+alone is configured must produce a run, not a "no provider credentials found"
+refusal.
 """
 
 ENV_PROVIDER_ORDER = "FINRECON_PROVIDER_ORDER"
@@ -83,6 +92,15 @@ PROVIDER_SLOTS: dict[str, ProviderSlot] = {
         default_model=gemini.DEFAULT_MODEL,
         default_base_url=gemini.DEFAULT_BASE_URL,
         factory=gemini.GeminiProvider,
+    ),
+    "gorouter": ProviderSlot(
+        provider_id="gorouter",
+        api_key_env="GOROUTER_API_KEY",
+        model_env="GOROUTER_MODEL",
+        base_url_env="GOROUTER_BASE_URL",
+        default_model=gorouter.DEFAULT_MODEL,
+        default_base_url=gorouter.DEFAULT_BASE_URL,
+        factory=gorouter.GoRouterProvider,
     ),
 }
 
