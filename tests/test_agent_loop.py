@@ -16,6 +16,7 @@ import pytest
 from finrecon.agent.loop import DEFAULT_MAX_STEPS, LoopConfig, run_investigation
 from finrecon.agent.providers.base import ProviderInfrastructureError
 from finrecon.agent.providers.chain import ProviderChain
+from finrecon.agent.providers.config import PROVIDER_SLOTS
 from finrecon.agent.prompt import case_briefing, system_prompt
 from finrecon.agent.tools import ToolValidationError
 from finrecon.agent.trajectory import (
@@ -273,9 +274,12 @@ class TestMalformedCalls:
         self, snapshot, monkeypatch
     ):
         """The failure is caught before a live provider is ever needed -- no
-        credential in the environment is required to detect or record it."""
-        for env_var in ("OPENROUTER_API_KEY", "GROQ_API_KEY", "GEMINI_API_KEY"):
-            monkeypatch.delenv(env_var, raising=False)
+        credential in the environment is required to detect or record it.
+
+        Cleared from :data:`PROVIDER_SLOTS` rather than from a typed list, so
+        the claim in the test's name stays true as providers are added."""
+        for slot in PROVIDER_SLOTS.values():
+            monkeypatch.delenv(slot.api_key_env, raising=False)
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(

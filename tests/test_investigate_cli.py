@@ -16,6 +16,7 @@ from __future__ import annotations
 import pytest
 
 from finrecon import investigate_cli
+from finrecon.agent.providers.config import PROVIDER_SLOTS
 
 SECRET = "sk-cli-must-not-print-0123456789"
 
@@ -40,8 +41,15 @@ class TestArguments:
 
 class TestFailsLoudly:
     def test_a_live_run_without_a_credential_exits_non_zero(self, monkeypatch, capsys):
-        for name in ("OPENROUTER_API_KEY", "GROQ_API_KEY", "GEMINI_API_KEY"):
-            monkeypatch.delenv(name, raising=False)
+        """Every provider credential, from the registry -- never a typed list.
+
+        This assertion is only meaningful if *no* provider is configured, so
+        the set it clears has to be the set the chain builds from. Naming
+        three of them by hand is what let a fourth provider turn this into a
+        real billed request against GoRouter.
+        """
+        for slot in PROVIDER_SLOTS.values():
+            monkeypatch.delenv(slot.api_key_env, raising=False)
         code = investigate_cli.main(["--split", "dev", "--limit", "1"])
         out = capsys.readouterr().out
         assert code == 2
