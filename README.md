@@ -11,8 +11,9 @@ restate that document.
 
 ## Implementation status
 
-**Currently at Stage 3 (Investigation agent and policy)** of the plan in
-`DESIGN.md` §9.
+**Currently at Stage 4 (Offline benchmark evaluation)** of the plan in
+`DESIGN.md` §9. Stages 0-3 are complete; the Stage-4 evaluator lives in
+`benchmark/eval/` and is the only layer that reads hidden ground truth.
 
 Stage 0 delivered the foundations, reused as-is in Stage 1:
 
@@ -98,15 +99,19 @@ deterministic decision layer behind it:
   blockers, exact-paise accounting, and value-aware thresholds. Model
   confidence is never consulted.
 
-**No evaluation harness, ablation, API or UI exists yet** — those are
-Stage 4+ in `DESIGN.md` §9. Nothing on the reconciliation *or* investigation
-path reads the hidden ground truth, which
-`tests/test_benchmark_isolation.py` and `tests/test_stage3_isolation.py`
-assert structurally.
+**The Stage-4 offline evaluation harness now exists** (`benchmark/eval/`,
+`make eval`); ablation, API and UI remain Stage 5+ in `DESIGN.md` §9. Nothing
+on the reconciliation *or* investigation path reads the hidden ground truth,
+which `tests/test_benchmark_isolation.py` and `tests/test_stage3_isolation.py`
+assert structurally. The evaluator reads it, and the evaluator is outside
+`src/` and cannot decide anything or call a model — see
+[Stage 4](#stage-4--offline-benchmark-evaluation).
 
-**No benchmark result is reported here.** Match rate, precision, coverage
-and value at risk require the Stage-4 evaluation harness, which does not
-exist. There is deliberately no `make eval` target.
+**No FROZEN-EVAL benchmark result is reported here.** The headline table —
+match rate, precision, coverage and value at risk on the held-out split —
+requires a frozen run against a frozen system, which has not been made. What
+*has* been measured is a DEV cohort, reported as a DEV engineering result and
+never as a benchmark headline (`notes/STAGE3-FINDINGS.md` §11).
 
 **Baseline live smoke tests and a five-case DEV diagnostic have now been
 performed.** They are engineering observations, not benchmark results; the
@@ -402,6 +407,60 @@ that makes the mechanism look active.
   deterministic fake-provider diagnostics still describe plumbing only; see
   `notes/STAGE3-FINDINGS.md` §§1 and 8–9.
 
+### Stage 4 — offline benchmark evaluation
+
+Accuracy lives in exactly one place, and it is not the shipped system.
+
+```bash
+make test-stage4                                  # the evaluator's own tests
+make eval TRAJECTORIES=fixtures/trajectories      # score a recorded corpus
+make eval-compare A=report-a.json B=report-b.json # same-cohort comparison
+```
+
+Full documentation: [`benchmark/eval/README.md`](benchmark/eval/README.md).
+
+| Layer | Reads ground truth? | Reports accuracy? | Can call a model? | Decides? |
+|---|---|---|---|---|
+| Stage 2 — deterministic core | no (structurally) | **no** | no | yes |
+| Stage 3 — investigation agent | no (structurally) | **no** | yes | yes |
+| **Stage 4 — `benchmark/eval/`** | **yes** | **yes** | **no** | **no** |
+
+Four properties hold that table up:
+
+- **Stage 3 itself has no ground truth.** `tests/test_benchmark_isolation.py`
+  parses every module on the reconciliation path and fails if any of them
+  names `ground_truth` in an import, a string literal or a path expression.
+- **The production controller reports no accuracy.** `reconcile-dev` and
+  `investigate-dev` print resolution counts, blockers, steps and models, and
+  no correctness number at all — a production controller has no answer key.
+- **Accuracy exists only in the offline evaluation layer.** `benchmark/eval/`
+  sits outside `src/`, so it is never installed with the package. The
+  dependency arrow runs one way: the evaluator imports `finrecon`, and nothing
+  under `src/finrecon` imports the evaluator.
+- **Evaluation can never influence a reconciliation decision.** It runs after
+  the fact over recorded artifacts and hands numbers to a human. It has no
+  provider, no write path into the ledger's decision columns, and no way to
+  feed a score back into the gate that decides whether money moves.
+
+The evaluator is **offline by construction**: it replays recorded trajectories
+through the real validator and policy with `replay_only=True` and
+`chain=None`, and a missing trajectory fails the run rather than triggering a
+live one. That is asserted three ways — structurally (no provider module is
+imported anywhere in the package), at runtime (`provider_calls_made()` stays
+false), and with a provider that raises if it is ever contacted.
+
+Cohorts are pinned explicitly. `--limit` ordering is not a cohort: two runs
+that both say "50 cases" can cover different fifties. Before scoring, the
+evaluator reconciles requested against found and reports duplicates, missing,
+extra, tier counts and contamination; an incomplete exact cohort aborts rather
+than scoring the subset that happened to be present.
+
+Comparison mode verifies identical case IDs and identical tier composition
+before emitting a delta, then counts how many configuration dimensions differ
+— provider/model, prompt, tools, loop, validator, policy — and **withholds
+causal attribution whenever more than one moved**. See
+`notes/STAGE3-FINDINGS.md` §11 for the worked example.
+
 ## Development setup
 
 Requires Python 3.11+.
@@ -415,5 +474,8 @@ make install
 ## Running tests
 
 ```bash
-make test
+make test          # full suite
+make test-stage3   # investigation layer, deterministic fake providers
+make test-stage4   # offline evaluator
+make verify-frozen # FROZEN-EVAL SHA-256 against the manifest
 ```
