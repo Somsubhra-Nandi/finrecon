@@ -77,9 +77,12 @@ deterministic decision layer behind it:
   lines, exact-paise residuals, mechanical reference comparisons) and never
   a verdict. There is no `recover_correct_settlement()`.
 - **Provider-neutral model access** (`src/finrecon/agent/providers/`) —
-  OpenRouter primary, Groq and Gemini as fallbacks, over an interface the
-  agent loop can use without knowing any provider's wire format. Fallback
-  is restricted to *infrastructure* failure by the exception type itself.
+  OpenRouter primary, Groq, Gemini and GoRouter as fallbacks, over an
+  interface the agent loop can use without knowing any provider's wire
+  format. Fallback is restricted to *infrastructure* failure by the exception
+  type itself. Each step records the model requested and the model the
+  provider reported answering, which a routing gateway can resolve to
+  something else.
 - **A bounded investigation loop** (`src/finrecon/agent/loop.py`) — an
   explicit state machine with a fixed model-step budget, a fixed per-turn
   tool-call bound, deterministic serial tool batches, and a deterministic
