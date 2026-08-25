@@ -7,12 +7,13 @@ it names can reconstruct exactly what happened, in order, without access to
 the process that produced it.
 
 Recorded: the snapshot hash the run was pinned to, the provider chain, the
-provider and exact model ID that answered each step, prompt / tool-schema /
-loop versions, the step budget, every model turn with its text and requested
+provider, the model ID requested for each step and the one the provider
+reported answering it, prompt / tool-schema / loop versions, the step budget, every model turn with its text and requested
 calls, every tool call with its *validated* arguments and *raw* output,
 every validation failure with a machine-readable reason, per-attempt
 provider outcomes including fallbacks, latency, token usage where the
-provider reports it, and the reason the investigation ended.
+provider reports it -- normalized and verbatim -- and the reason the
+investigation ended.
 
 Never recorded: API keys, authorization headers, or request payloads that
 could carry one. The transport layer builds credentials inside the call and
@@ -76,9 +77,28 @@ TerminationReason = Literal[
 
 
 class UsageRecord(FrozenModel):
+    """Normalized token counts, plus what the provider actually said.
+
+    The three counts are selected from a provider's usage block by a declared
+    rule, never computed -- see
+    :func:`finrecon.agent.providers.openai_compatible.normalize_usage`. A
+    routing gateway may report two disagreeing names for the same quantity, so
+    ``raw`` keeps its block verbatim and the selection stays auditable instead
+    of being an unrecorded judgement.
+
+    Both trailing fields default to ``None``, which is what keeps the
+    ``trajectory-cache.v3`` identity honest: a v3 fixture written before they
+    existed still validates against this model unchanged, so no cached
+    trajectory is invalidated and no version needed bumping.
+    """
+
     input_tokens: int | None = None
     output_tokens: int | None = None
     total_tokens: int | None = None
+    usage_source: str | None = None
+    """The provider's own attribution for the counts, e.g. ``anthropic``."""
+    raw: dict | None = None
+    """The provider's usage block as it arrived. Never an input to adjudication."""
 
 
 class ProviderAttemptRecord(FrozenModel):
@@ -107,6 +127,16 @@ class ModelStepRecord(FrozenModel):
     index: int
     provider: str
     model: str
+    """The model identifier that was *requested* for this turn."""
+    reported_model: str | None = None
+    """The model identifier the provider's response body named, if any.
+
+    Kept apart from ``model`` because a routing gateway may resolve an alias:
+    ``claude-opus-5-thinking`` requested, ``claude-opus-5`` returned. A
+    trajectory holding only the request would attribute the run to a model
+    that never answered it. ``None`` means the provider reported none -- it is
+    never back-filled from the request.
+    """
     fallback_used: bool
     """True when the first provider in the chain did not produce this turn."""
     fallback_reason: str | None
@@ -283,6 +313,24 @@ class Trajectory(FrozenModel):
         seen: list[str] = []
         for step in self.steps:
             key = f"{step.provider}:{step.model}"
+            if key not in seen:
+                seen.append(key)
+        return tuple(seen)
+
+    @property
+    def models_reported(self) -> tuple[str, ...]:
+        """``provider:model`` for each model a provider *said* answered a step.
+
+        Only steps where the provider reported one appear. Compare against
+        :attr:`models_used` to see an alias resolution: a run can legitimately
+        request one ID and be answered by another, and that difference is a
+        fact about the run rather than a discrepancy to reconcile.
+        """
+        seen: list[str] = []
+        for step in self.steps:
+            if step.reported_model is None:
+                continue
+            key = f"{step.provider}:{step.reported_model}"
             if key not in seen:
                 seen.append(key)
         return tuple(seen)

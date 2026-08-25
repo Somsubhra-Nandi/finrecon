@@ -178,7 +178,14 @@ def main(argv: list[str] | None = None) -> int:
             terminations = Counter(o.trajectory.termination_reason for o in result.outcomes)
             print(f"  termination: {dict(sorted(terminations.items()))}")
             models = Counter(m for o in result.outcomes for m in o.trajectory.models_used)
-            print(f"  models used: {dict(sorted(models.items()))}")
+            print(f"  models requested: {dict(sorted(models.items()))}")
+            reported = Counter(
+                m for o in result.outcomes for m in o.trajectory.models_reported
+            )
+            # Printed separately, not merged: a gateway that resolved an alias
+            # ran a different model than the one asked for, and a run whose
+            # numbers came from a substituted model means something else.
+            print(f"  models answered:  {dict(sorted(reported.items())) or 'not reported'}")
             fallbacks = Counter(
                 r for o in result.outcomes for r in o.trajectory.fallback_reasons
             )

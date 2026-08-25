@@ -158,6 +158,8 @@ def _usage_record(chain_result: ChainResult) -> UsageRecord:
         input_tokens=usage.input_tokens,
         output_tokens=usage.output_tokens,
         total_tokens=usage.total_tokens,
+        usage_source=usage.usage_source,
+        raw=dict(usage.raw) if usage.raw is not None else None,
     )
 
 
@@ -284,6 +286,7 @@ def run_investigation(
                 index=step_index,
                 provider=response.provider,
                 model=response.model,
+                reported_model=response.reported_model,
                 fallback_used=chain_result.provider_fallback_used,
                 fallback_reason=chain_result.fallback_reason
                 if chain_result.provider_fallback_used

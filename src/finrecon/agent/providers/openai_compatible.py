@@ -31,6 +31,28 @@ may be served through a path that does not support it. Arguments still arrive
 as raw text, the strict duplicate-key decoder in
 :mod:`finrecon.agent.tools` still runs on every call, and batch preflight is
 unchanged. The local distrust boundary is the one that decides.
+
+Gateway telemetry
+-----------------
+
+Two facts a routing gateway reports that a first-party endpoint does not, both
+handled here once rather than per adapter:
+
+**The model that actually answered.** ``body["model"]`` is lifted into
+``ModelResponse.reported_model`` and kept separate from the requested ID. A
+gateway may resolve an alias -- ``claude-opus-5-thinking`` in,
+``claude-opus-5`` out -- and a trajectory that recorded only the request would
+name a model that never ran.
+
+**Disagreeing usage names.** The OpenAI dialect names token counts
+``prompt_tokens`` / ``completion_tokens``; some gateways emit an
+``input_tokens`` / ``output_tokens`` pair alongside, and the two pairs are
+observed to *disagree* (GoRouter live: ``completion_tokens: 8`` beside
+``output_tokens: 0``). :func:`normalize_usage` therefore selects rather than
+reconciles -- canonical name first, alias only as a fallback for an absent
+one -- and keeps the provider's block verbatim so the choice is auditable.
+Nothing is summed, averaged or back-filled: an invented token count is worse
+than a missing one, because it looks like a measurement.
 """
 
 from __future__ import annotations
@@ -73,6 +95,52 @@ def supports_strict_tool_schema(schema: dict[str, Any]) -> bool:
     if not isinstance(required, list):
         return False
     return set(required) == set(properties)
+
+
+USAGE_FIELD_ALIASES: dict[str, tuple[str, ...]] = {
+    "input_tokens": ("prompt_tokens", "input_tokens"),
+    "output_tokens": ("completion_tokens", "output_tokens"),
+    "total_tokens": ("total_tokens",),
+}
+"""Normalized field -> the wire names that may carry it, in precedence order.
+
+The OpenAI-canonical name wins. The alias is a fallback for a canonical name
+that is *absent*, never a tie-breaker for one that is present and disagrees:
+picking by a fixed rule keeps the normalized number traceable to a single
+reported value, and ``TokenUsage.raw`` carries the rest.
+"""
+
+
+def normalize_usage(body: dict[str, Any]) -> TokenUsage:
+    """Translate a chat-completions ``usage`` block into neutral token counts.
+
+    Selects by :data:`USAGE_FIELD_ALIASES`, preserves the block verbatim, and
+    lifts a ``usage_source`` attribution when the provider reports one. An
+    absent or non-object block is an empty :class:`TokenUsage`, not an error:
+    a provider that does not meter is not a provider that failed.
+    """
+    usage = body.get("usage")
+    if not isinstance(usage, dict):
+        return TokenUsage()
+
+    def selected(names: tuple[str, ...]) -> int | None:
+        for name in names:
+            value = usage.get(name)
+            # ``isinstance(value, int)`` only: a float or a numeric string is
+            # a shape this layer does not recognise, and coercing one would
+            # be the adapter deciding what the provider meant.
+            if isinstance(value, int) and not isinstance(value, bool):
+                return value
+        return None
+
+    source = usage.get("usage_source")
+    return TokenUsage(
+        input_tokens=selected(USAGE_FIELD_ALIASES["input_tokens"]),
+        output_tokens=selected(USAGE_FIELD_ALIASES["output_tokens"]),
+        total_tokens=selected(USAGE_FIELD_ALIASES["total_tokens"]),
+        usage_source=source if isinstance(source, str) else None,
+        raw=dict(usage),
+    )
 
 
 class OpenAICompatibleProvider(ModelProvider):
@@ -232,19 +300,19 @@ class OpenAICompatibleProvider(ModelProvider):
         return text, tuple(calls), finish if isinstance(finish, str) else None
 
     def parse_usage(self, body: dict[str, Any]) -> TokenUsage:
-        usage = body.get("usage")
-        if not isinstance(usage, dict):
-            return TokenUsage()
+        return normalize_usage(body)
 
-        def as_int(key: str) -> int | None:
-            value = usage.get(key)
-            return int(value) if isinstance(value, int) else None
+    def parse_reported_model(self, body: dict[str, Any]) -> str | None:
+        """The model the response body names, or ``None`` if it names none.
 
-        return TokenUsage(
-            input_tokens=as_int("prompt_tokens"),
-            output_tokens=as_int("completion_tokens"),
-            total_tokens=as_int("total_tokens"),
-        )
+        Never defaulted to the requested ID. See
+        :attr:`finrecon.agent.providers.base.ModelResponse.reported_model`.
+        """
+        reported = body.get("model")
+        if not isinstance(reported, str):
+            return None
+        reported = reported.strip()
+        return reported or None
 
     # --- the one public call ---------------------------------------------
 
@@ -273,7 +341,13 @@ class OpenAICompatibleProvider(ModelProvider):
             usage=self.parse_usage(body),
             latency_ms=latency_ms,
             finish_reason=finish_reason,
+            reported_model=self.parse_reported_model(body),
         )
 
 
-__all__ = ["OpenAICompatibleProvider", "supports_strict_tool_schema"]
+__all__ = [
+    "USAGE_FIELD_ALIASES",
+    "OpenAICompatibleProvider",
+    "normalize_usage",
+    "supports_strict_tool_schema",
+]
