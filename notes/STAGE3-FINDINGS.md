@@ -547,3 +547,122 @@ but no provider is assumed to honour it, and the local decoder is unchanged.
 **The same 50 DEV T2 cases must be re-run live, with fresh trajectory
 storage, before any reliability claim is made.** Batches 2–4 stay paused
 until that run lands.
+
+---
+
+## 11. VERIFIED EXACT-COHORT RESULT — the same 50 DEV T2 cases, offline-scored
+
+§10 ended by requiring that the same 50 DEV T2 cases be re-run before any
+reliability claim. That run has landed, and both sides have now been scored
+offline against DEV ground truth by the Stage-4 evaluator
+(`benchmark/eval/`), not by reading a run summary.
+
+### The cohort
+
+The comparison cohort is the **exact 50 case IDs** of the historical Ox Alpha
+batch — which is precisely the first 50 sorted DEV T2 cases. Verified:
+
+- **50/50 are T2.** No T0, T1 or T3 contamination.
+- The new run's transcript covered the first 50 of *all 240* Stage-2
+  unresolved cases, so it held 38 of the cohort plus 12 T3 cases. The 12 T3
+  cases escalated, correctly, and are **excluded** from the comparison; the
+  12 cohort cases it did not cover were run separately and supplied from that
+  second transcript. 38 + 12 = 50, set-equal to the Ox cohort, no overlap.
+
+That exclusion is worth stating precisely, because "the excluded cases are
+exactly the failures" is the shape of a success-correlated filter. It is not
+one: the excluded cases were excluded for being T3, and a T3 case escalating
+is the correct outcome, not a failure.
+
+### Results
+
+| | Ox Alpha · investigator.v2 · tools.v1 | Claude Opus 5 · investigator.v4 · tools.v3 |
+|---|---:|---:|
+| investigated | 50 | 50 |
+| resolved | 32 | **50** |
+| escalated | 18 | **0** |
+| correct auto-resolutions | — (see below) | **50** |
+| **wrong auto-resolutions** | **0** | **0** |
+| tool-validation-failed cases | 17 | **0** |
+| `duplicate_argument_key` rejections | 18 | **0** |
+| `unknown_candidate` | 0 | **0** |
+| provider failures in cohort | 0 | 0 |
+| mean tokens per case | ~2,619 | ~11,371 |
+| mean steps per case | ~1.10 | ~1.12 |
+
+The Opus side was scored by replaying its recorded trajectories through the
+real validator and policy: 50 cache hits, zero provider calls, zero soundness
+violations (exact-paise reconciliation, fragment genuinely present in the
+narration, only policy-declared relations, candidate from the deterministic
+set).
+
+The Ox side is reported in **recorded-only** mode. Its trajectories were
+produced under `tools.v1` / `trajectory-cache.v2`, which the current validator
+cannot parse and the current cache key cannot address, so the evaluator
+refuses to replay them rather than attribute an old contract's behaviour to
+today's code. Its termination and tool-validation counts above are read
+directly from the recording; its 32/18 resolved/escalated split comes from
+that run's own CLI summary. **Its correctness was never scored**, which is why
+the correct-auto-resolutions cell is blank rather than zero. Its `0 wrong` is
+the figure that run reported, on the same deterministic gate.
+
+The model requested was `claude-opus-5-thinking`; the gateway reported
+`claude-opus-5` on all 56 steps. Requested and reported are recorded
+separately and never merged — a run whose numbers came from a substituted
+model means something else.
+
+### MANDATORY INTERPRETATION CAVEAT
+
+**Do not claim tools.v3 caused the 32 → 50 improvement.** Three things
+changed together between the two runs:
+
+1. Ox Alpha → Claude Opus 5
+2. `tools.v1` → `tools.v3`
+3. `investigator.v2` → `investigator.v4`
+
+An experiment whose treatment moved three axes at once has no identified
+effect on any one of them. The evaluator enforces this mechanically: its
+comparison mode counts differing configuration dimensions and emits
+`causal_claim: null` whenever more than one moved.
+
+The defensible conclusions are exactly these four:
+
+- **A.** The corrected `tools.v3` contract operated successfully with a strong
+  reasoning model across the entire historical 50-case T2 cohort.
+- **B.** The old `duplicate_argument_key` failure mode disappeared in the new
+  run — 18 rejections across 17 cases became 0.
+- **C.** The deterministic validator and policy maintained **0 wrong automatic
+  resolutions**, which is the metric DESIGN.md §1 says matters most.
+- **D.** **Architecture-only causality remains unproven** without a same-model
+  A/B. Isolating the tools.v3 effect requires Opus on `tools.v1`, or Ox Alpha
+  on `tools.v3`.
+
+A fourth confound belongs on the record next to the caveat: on the identical
+cohort, mean token spend rose roughly 4.3× (~2,619 → ~11,371 per case). Some
+of the gain is bought with compute, not with architecture.
+
+### Reproducing it
+
+Both sides are reproducible offline, with no API key:
+
+```bash
+# A — historical baseline, recorded-only (its contract is superseded)
+python -m benchmark.eval evaluate --split dev --no-replay \
+  --run-dump <ox-batch-transcript> \
+  --cohort-from-dump <ox-batch-transcript> \
+  --expected-tier T2 --provider openrouter --model stealth/ox-alpha \
+  --json-out report-oldox.json
+
+# B — new run, replayed through the real validator and policy
+python -m benchmark.eval evaluate --split dev \
+  --run-dump <opus-batch-transcript> --run-dump <opus-followup-transcript> \
+  --cohort-from-dump <ox-batch-transcript> \
+  --expected-tier T2 --provider gorouter --model claude-opus-5-thinking \
+  --json-out report-opus.json
+
+python -m benchmark.eval compare report-oldox.json report-opus.json
+```
+
+`--cohort-from-dump` pointing at the Ox transcript in *both* invocations is
+what pins the comparison to one exact cohort. `--limit` ordering would not
+have: the two runs' first-50 windows cover different cases.
