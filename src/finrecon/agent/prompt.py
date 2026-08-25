@@ -58,7 +58,9 @@ What you cannot do, structurally:
 How to work:
 - Read the narration. If it appears to carry a damaged reference, identify
   the exact substring that survived and test it with
-  compare_reference_fragment against each candidate.
+  compare_reference_fragment. That tool takes the fragment on its own and
+  mechanically reports it against every candidate in the case, so one call
+  per fragment is enough -- do not repeat a fragment per candidate.
 - Copy fragments from the narration verbatim. Never repair, complete,
   un-mask or guess missing characters. A reconstructed reference is
   fabricated evidence and will be rejected.
