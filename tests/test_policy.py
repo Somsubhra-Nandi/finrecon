@@ -18,6 +18,8 @@ import json
 import pytest
 
 from finrecon.agent.trajectory import (
+    INVOCATION_SUCCEEDED,
+    INVOCATION_VALIDATION_FAILED,
     TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
     TERMINATION_INVESTIGATION_COMPLETE,
     TERMINATION_PROVIDER_INFRASTRUCTURE_FAILURE,
@@ -66,6 +68,7 @@ def trajectory_for(
             call_index=0,
             tool_name=item.tool_name,
             raw_arguments=json.dumps(item.arguments),
+            status=INVOCATION_SUCCEEDED,
             validated_arguments=item.arguments,
             validation_error_reason=None,
             validation_error_detail=None,
@@ -80,6 +83,7 @@ def trajectory_for(
                 call_index=0,
                 tool_name="compute_expected_net",
                 raw_arguments="{oops",
+                status=INVOCATION_VALIDATION_FAILED,
                 validated_arguments=None,
                 validation_error_reason="malformed_arguments_json",
                 validation_error_detail="not JSON",
