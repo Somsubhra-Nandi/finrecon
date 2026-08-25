@@ -37,6 +37,42 @@ purely lexical strategy can extract.
 Both rows are pinned as tests in `tests/test_stage3_dev_diagnostic.py` so
 the finding cannot quietly stop being true.
 
+#### The T3 half, measured later
+
+The rows above say what the model-free arm *recovers*. They do not say what
+it does when there is nothing to recover, and that is the half that decides
+whether the arm is a usable baseline or merely a lucky one. Re-running both
+strategies across all 240 DEV cases Stage 2 leaves unresolved, through the
+unmodified validator and policy gate:
+
+| Strategy | T2 (200) | T3 (40) | Unsafe auto-resolutions |
+|---|---|---|---:|
+| Separator-token split, length ≥ 4 | 171 correct, 29 escalate | 40 escalate | **0** |
+| Exhaustive substring enumeration | 200 correct, 0 escalate | 40 escalate | **0** |
+
+T3 escalates under brute force for a structural reason rather than a lucky
+one: a T3 narration carries no fragment standing in a declared relation to
+either candidate, so no fragment is discriminating and `no_reference_link`
+fires. It is the *same* predicate that protects the model arm. Enumerating
+harder cannot manufacture a link that is not there.
+
+This makes finding 1 stronger, not weaker, and it cuts against the model
+arm: on this benchmark the deterministic arm is not merely competitive, it
+saturates T2 at zero risk. Any Arm-C-versus-Arm-D number reported from
+benchmark v3 has to be read with that ceiling stated next to it.
+
+Two things this is **not** licence to do. It is not licence to weaken the
+validator so brute force fails — finding 1 already rules that out, and it
+would trade correctly reconciled money for a better-looking ablation. And it
+is not licence to make exhaustive enumeration the production Stage-3
+behaviour: the model selects the fragment, and the controller fans that
+selected fragment across the candidate set (finding 10). The distinction is
+what keeps the later ablation meaningful, because an arm that enumerates
+every substring is measuring the search space, not the investigation.
+
+A T2 construction the search space cannot exhaust is a benchmark v4
+question, not a Stage-3 one.
+
 ### Why it happens
 
 The search space is tiny. A T2 narration is ~30–45 characters, giving a few
@@ -138,6 +174,13 @@ Observed cost on DEV with the deterministic stand-in: **zero cases**, because
 it cannot emit a malformed call. Under a real model this will be non-zero,
 and the trajectory records every instance, so the rate is measurable rather
 than assumed.
+
+Updated by finding 10: the execution rule is unchanged, but the *record* of
+it was incomplete. Calls that passed preflight and lost their batch to a
+sibling failure used to leave no trajectory entry at all; they now carry an
+explicit `skipped_due_to_batch_rejection` status. What the rule costs is
+therefore now visible in the audit trail rather than only inferable from the
+gap between requested and recorded calls.
 
 ---
 
@@ -393,3 +436,114 @@ signal for broader measurement, not grounds for weakening strict decoding or
 changing code from this sample alone. Recommendation: **KEEP OPTIMIZED BRANCH
 FOR FURTHER TESTING**, including a broader fresh DEV T2/T3 diagnostic and
 provider-diverse sampling before any promotion decision.
+
+---
+
+## 10. The comparison tool was asking the model to enumerate candidates for nothing
+
+**Severity: material. Fixed on `exp/stage3-orchestration-opt`; not yet
+measured live.**
+
+### What was observed
+
+In the 50-case optimized DEV T2 diagnostic (finding 9), 17 of 50 cases
+terminated `tool_validation_failed`. Every one of the 18 malformed calls
+behind them was the same shape: two logical operations fused into a single
+arguments object with a duplicated key.
+
+```json
+{"candidate_id": "A", "fragment": "X", "candidate_id": "B", "fragment": "X"}
+```
+
+All 18 duplicated `candidate_id`; 10 also duplicated `fragment`. The prose in
+those turns was correct — the model had identified the right fragment and
+said so — and the batch shape made the mechanism visible: **16 of 16
+odd-sized batches contained a fused call, against 1 of 38 even-sized ones.**
+An even plan (k fragments × 2 candidates) emerging as an odd batch is the
+arithmetic shadow of exactly one fusion event. The per-operation fusion rate
+was ~7.9%, and the per-case failure probability followed the operation count.
+
+### Why it happened
+
+`compare_reference_fragment(candidate_id, fragment)` required a cross-product
+the decision layer then discarded.
+
+`decide/validator.py` harvests only the top-level `fragment` from a
+comparison output (`_fragments_from`) and re-evaluates it against **every**
+candidate in the immutable snapshot itself. The `candidate_id` a call named
+never reached a predicate. Measured across the DEV residual, the validator's
+result is byte-identical whichever candidate a comparison was aimed at.
+
+So the model was made to spell out an axis with no consumer, at a cost of one
+Bernoulli trial per redundant operation. In the 50-case run, 65 of 140
+comparison calls (46%) merely repeated an already-tested fragment against the
+other candidate, and a further 70 calls were record reads the validator never
+consumes at all.
+
+An earlier attempt to fix this with wording — telling the model explicitly
+that one invocation is one operation, that 1×2 is two calls and 2×2 is four —
+was run against the same 50 cases and **failed**: 17 → 18 failures, resolved
+32 → 31, mean tokens 2,619 → 3,304. Instruction does not reach the sampler.
+That wording has been reverted.
+
+### What changed
+
+The candidate axis is gone from the interface:
+
+```
+compare_reference_fragment(candidate_id, fragment)   ->   compare_reference_fragment(fragment)
+```
+
+The tool now walks `snapshot.candidates` itself and returns one entry per
+candidate, in snapshot order, with no filter, no ranking and no early exit. A
+candidate whose settlements carry nothing comparable still appears with an
+empty comparison tuple, so "evaluated and nothing held" cannot be confused
+with "omitted".
+
+This moves **no judgement** into the model and none out of it. The fan-out was
+already happening deterministically one layer down; it now happens once
+instead of twice, and the model no longer has to encode it. Decision
+invariance is asserted directly, over the whole 240-case DEV residual, by
+feeding the validator the old per-candidate evidence and the new
+snapshot-wide evidence for the same fragment set and requiring identical
+`validate_case` and `decide` results
+(`tests/test_validator.py::TestDecisionInvarianceAcrossTheContractChange`).
+
+The other three tools keep their scalar `candidate_id` / `settlement_id`.
+They are targeted record reads — choosing which record to open is real
+investigation — and they are where hallucinated-identifier access control
+still has something to check.
+
+### What did not change
+
+Atomic reject-all, batch preflight, duplicate-key rejection, the validator's
+predicates, the policy gate's blockers and thresholds, and the step budget.
+The offline replay in the architecture review showed that 10 of the 17
+rejected batches already held sufficient and correct evidence, and that
+executing the valid subset would have resolved them correctly. **That was
+deliberately not implemented.** Whether a malformed sibling should forfeit a
+batch is a separate question about `BLOCKER_TOOL_VALIDATION`, and it is a
+policy relaxation, so it does not ride along with an interface correction.
+
+What was fixed instead is that those calls are no longer invisible. Across
+the 17 failures, 40 otherwise-valid calls had produced no trajectory record
+at all, so a rejected turn read in the audit trail as though the model had
+asked for nothing but the malformed call. Every requested call now carries an
+explicit status — `succeeded`, `validation_failed`, or
+`skipped_due_to_batch_rejection` — with its raw and validated arguments and
+no output. No output is what keeps a skipped call out of `raw_tool_evidence`,
+so the audit gains a record and the decision gains nothing.
+
+### What is not yet known
+
+Nothing here has been measured live. The predicted effect is arithmetic, not
+observed: mean comparison operations per case fall from 4.56 to 1.50 on the
+50-case trajectories, which at the measured 7.9% per-operation fusion rate
+predicts a per-case failure probability of ~12% against ~31%. `strict: true`
+is now also sent on OpenAI-dialect tool declarations, where a provider that
+honours it makes a duplicate key ungrammatical rather than merely refused —
+but no provider is assumed to honour it, and the local decoder is unchanged.
+
+**The same 50 DEV T2 cases must be re-run live, with fresh trajectory
+storage, before any reliability claim is made.** Batches 2–4 stay paused
+until that run lands.
