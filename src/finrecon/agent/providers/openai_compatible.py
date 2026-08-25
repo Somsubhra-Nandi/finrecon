@@ -15,6 +15,22 @@ useless -- an empty answer, a nonsense tool name, arguments that will not
 parse -- is returned normally and handled by the loop as model behaviour.
 That is the line DESIGN.md 4.2 draws, and it is drawn here rather than at
 the call site so no adapter can quietly move it.
+
+Strict tool schemas
+-------------------
+
+Function declarations are sent with ``"strict": true`` when the provider
+speaks that dialect and the tool's schema qualifies for it. Where a provider
+honours it, argument generation is constrained to the declared grammar, and
+a duplicate object key -- the dominant observed malformed-call shape -- stops
+being expressible rather than merely being rejected afterwards.
+
+It is defence in depth and nothing more. Nothing downstream may assume it
+worked: the provider may ignore the flag, a gateway may strip it, and a model
+may be served through a path that does not support it. Arguments still arrive
+as raw text, the strict duplicate-key decoder in
+:mod:`finrecon.agent.tools` still runs on every call, and batch preflight is
+unchanged. The local distrust boundary is the one that decides.
 """
 
 from __future__ import annotations
@@ -35,11 +51,44 @@ from finrecon.agent.providers.base import (
 from finrecon.agent.providers.transport import DEFAULT_TIMEOUT_SECONDS, post_json
 
 
+def supports_strict_tool_schema(schema: dict[str, Any]) -> bool:
+    """Whether one JSON schema qualifies for OpenAI-dialect strict mode.
+
+    Strict mode is only valid for a closed object schema in which every
+    declared property is required. Sending ``strict: true`` beside a schema
+    that does not satisfy that is a request error, so an unqualified schema
+    is sent *without* the flag rather than with a claim the provider will
+    reject. Every current tool input qualifies; this check exists so that
+    adding one which does not degrades to ordinary tool calling instead of
+    breaking every live run.
+    """
+    if schema.get("type") != "object":
+        return False
+    if schema.get("additionalProperties") is not False:
+        return False
+    properties = schema.get("properties")
+    if not isinstance(properties, dict):
+        return False
+    required = schema.get("required")
+    if not isinstance(required, list):
+        return False
+    return set(required) == set(properties)
+
+
 class OpenAICompatibleProvider(ModelProvider):
     """Shared translation for the OpenAI chat-completions tool-call dialect."""
 
     provider_id = "openai-compatible"
     default_endpoint = "/chat/completions"
+
+    strict_tool_schema_supported: bool = True
+    """Whether this dialect accepts ``strict`` on a function declaration.
+
+    A class-level capability, not a runtime probe. Both subclasses here speak
+    the OpenAI dialect; a future adapter whose gateway rejects the field sets
+    this to ``False`` and keeps working. Gemini does not inherit from this
+    class at all, so its payload is untouched by anything in this module.
+    """
 
     def __init__(
         self,
@@ -50,6 +99,7 @@ class OpenAICompatibleProvider(ModelProvider):
         timeout_seconds: float = DEFAULT_TIMEOUT_SECONDS,
         temperature: float = 0.0,
         extra_headers: dict[str, str] | None = None,
+        strict_tool_schema: bool | None = None,
         transport=post_json,
     ) -> None:
         self._api_key = api_key
@@ -58,6 +108,11 @@ class OpenAICompatibleProvider(ModelProvider):
         self._timeout_seconds = timeout_seconds
         self._temperature = temperature
         self._extra_headers = dict(extra_headers or {})
+        self._strict_tool_schema = (
+            self.strict_tool_schema_supported
+            if strict_tool_schema is None
+            else strict_tool_schema
+        )
         # Injected so tests can drive the adapter's *translation* without a
         # network, and without monkeypatching a module global.
         self._transport = transport
@@ -95,14 +150,16 @@ class OpenAICompatibleProvider(ModelProvider):
         return payload
 
     def _tool_payload(self, tool: ToolSpec) -> dict[str, Any]:
-        return {
-            "type": "function",
-            "function": {
-                "name": tool.name,
-                "description": tool.description,
-                "parameters": tool.parameters_json_schema,
-            },
+        function: dict[str, Any] = {
+            "name": tool.name,
+            "description": tool.description,
+            "parameters": tool.parameters_json_schema,
         }
+        if self._strict_tool_schema and supports_strict_tool_schema(
+            tool.parameters_json_schema
+        ):
+            function["strict"] = True
+        return {"type": "function", "function": function}
 
     def build_payload(
         self, messages: tuple[ConversationMessage, ...], tools: tuple[ToolSpec, ...]
@@ -219,4 +276,4 @@ class OpenAICompatibleProvider(ModelProvider):
         )
 
 
-__all__ = ["OpenAICompatibleProvider"]
+__all__ = ["OpenAICompatibleProvider", "supports_strict_tool_schema"]
