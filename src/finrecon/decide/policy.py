@@ -185,8 +185,14 @@ def decide(
     if not validator_result.snapshot_integrity_ok:
         blockers.append(BLOCKER_SNAPSHOT_INTEGRITY)
 
-    # Only fragments that *separated* the candidate set count. A fragment
-    # reaching every candidate at once is not ambiguity, it is silence.
+    # Since validator.v2 this is the candidate set the deterministic reference
+    # closure identified -- one candidate when the closure isolates one, the
+    # surviving set when several survive, and the *contradicting* set when none
+    # does. The gate needs only "is this exactly one", so a contradiction
+    # arrives here as a set of size two or more and fires
+    # ``ambiguous_reference_link``: evidence pointing at more than one
+    # candidate, and therefore at none. That is why v2 needed no new blocker
+    # and this module is still ``policy.v1``.
     matched = validator_result.reference_identified_candidate_ids
     survivors = validator_result.surviving_candidate_ids
 

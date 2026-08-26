@@ -59,11 +59,51 @@ the skipped records that make a rejected batch fully auditable. A ``v2``
 fixture cannot be validated against the new model, so the key must differ.
 """
 
-VALIDATOR_VERSION: Final = "validator.v1"
-"""Identity of the deterministic evidence predicates."""
+VALIDATOR_VERSION: Final = "validator.v2"
+"""Identity of the deterministic evidence predicates.
+
+``v2`` replaces the reference-identification rule. ``v1`` resolved a case when
+some one fragment *the agent tested* reached exactly one candidate; ``v2``
+resolves it when one candidate is the only one consistent with **every**
+informative claim in the narration's complete deterministic closure
+(:mod:`finrecon.evidence.closure`).
+
+A semantic change in both directions, which is why it is a version rather than
+a refactor:
+
+* it **resolves** cases v1 could not, where two clues that are each ambiguous
+  are jointly conclusive;
+* it **refuses** cases v1 resolved, where a clue the agent did not test
+  contradicts one it did.
+
+The second is the safety half. Under v1, intersecting only what the agent
+surfaced would let one narration prove three different candidates depending on
+which pair of clues the agent happened to test -- the fishing-by-omission
+channel of DESIGN.md 4.1, reappearing inside the conjunction. Proving over the
+closure closes it, because a closed evidence set has nothing to leave out.
+
+Because this constant is part of the trajectory cache key, the bump invalidates
+every cached trajectory. That is the intended behaviour and not a cost to be
+worked around: a v1 fixture was recorded against a different decision contract,
+and serving it as a v2 result would attribute this rule's numbers to a run that
+never met it.
+"""
 
 POLICY_VERSION: Final = "policy.v1"
-"""Identity of the deterministic policy gate and its declared thresholds."""
+"""Identity of the deterministic policy gate and its declared thresholds.
+
+Deliberately unchanged by ``validator.v2``. The gate's rule is what it was --
+exactly one surviving candidate, exact paise, no hard blocker, value policy
+permits -- and its blocker vocabulary is unchanged too. What changed is how the
+validator computes the candidate set the gate reads, which is the validator's
+version to carry.
+
+Keeping it at ``v1`` was a design constraint on v2, not an accident: the
+contradictory case is reported to the gate as the *union* of the contradicting
+claims, so it fires the existing ``ambiguous_reference_link`` rather than
+needing a new blocker id. Evidence pointing at more than one candidate, and
+therefore at none, is what that blocker already means.
+"""
 
 __all__ = [
     "AGENT_LOOP_VERSION",
