@@ -271,6 +271,48 @@ def compare(
     )
 
 
+def relation_holds_admissibly(
+    folded_fragment: str,
+    folded_reference: str,
+    *,
+    accepted_relation_ids: frozenset[str],
+    min_pinned_reference_characters: int,
+) -> bool:
+    """Does *some* accepted relation hold and clear the floor? A boolean shadow.
+
+    Exactly equivalent to::
+
+        strongest_admissible_relation(
+            compare(fragment, reference, kind), ...
+        ) is not None
+
+    and deliberately not a second statement of the relations: it walks the same
+    ``_RELATIONS`` table in the same declared order. What it skips is building
+    :class:`ReferenceComparison` and its seven
+    :class:`ReferenceRelation` members, which is the entire cost when the
+    question is only "yes or no".
+
+    That cost matters in exactly one place. :mod:`finrecon.evidence.closure`
+    tests *every* narration substring against *every* candidate reference, and
+    at that fan-out the model construction dominates by two orders of
+    magnitude -- measured at 640 ms per case against 7 ms. The equivalence is
+    asserted over the whole DEV and v4-pilot corpus in
+    ``tests/test_evidence_closure.py`` rather than argued for here.
+
+    **Both arguments must already be folded** (:func:`fold`). Folding is the
+    caller's job because the closure folds each fragment once and reuses it
+    across every reference, and a signature that folded internally would make
+    that impossible to express.
+    """
+    for relation_id in DECLARED_RELATION_IDS:
+        if relation_id not in accepted_relation_ids:
+            continue
+        holds, pinned = _RELATIONS[relation_id](folded_fragment, folded_reference)
+        if holds and pinned >= min_pinned_reference_characters:
+            return True
+    return False
+
+
 def strongest_admissible_relation(
     comparison: ReferenceComparison,
     *,
@@ -317,6 +359,7 @@ __all__ = [
     "compare",
     "count_alphanumeric",
     "fold",
+    "relation_holds_admissibly",
     "strip_separators",
     "strongest_admissible_relation",
 ]
