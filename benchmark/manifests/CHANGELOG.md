@@ -7,9 +7,84 @@ to the generator, the taxonomy, or the tier recipes gets a new entry below
 with a stated rationale, and — if it changes frozen-eval's content — a new
 frozen-eval hash recorded in the manifest for that version and here.
 
-**Current version: v3.0.0** (`manifests/v3.json`). Superseded versions keep
-their own manifest file, unchanged, so a correction is auditable rather
+**Current frozen version: v3.0.0** (`manifests/v3.json`). Superseded versions
+keep their own manifest file, unchanged, so a correction is auditable rather
 than a silent rewrite.
+
+**Current pilot: v4.0.0-pilot** (`manifests/v4-pilot.json`), which is **not**
+frozen and is not part of the v1→v2→v3 lineage. It supersedes nothing, changes
+nothing, and its fingerprint is a reproducibility marker rather than a freeze.
+Entry below.
+
+## v4.0.0-pilot — 2026-08-26 — compositional-evidence pilot (NOT FROZEN)
+
+**Status: PILOT.** No match rate, precision, coverage or value-at-risk figure
+from the `v4-pilot` split may be presented as a benchmark result. A freeze
+decision, if taken, gets its own generator version, its own seed, its own
+manifest and its own entry here.
+
+**Nothing about v1, v2 or v3 changed.** This is a new split
+(`datasets/v4-pilot/`, `ground_truth/v4-pilot.jsonl`), a new manifest
+(`manifests/v4-pilot.json`) and a new generator package
+(`finrecon.benchmark.generator_v4`). The v3 generator, its seeds, its target
+tier counts, its `MANIFEST_FILENAME` and its `GroundTruthCase` model were not
+touched — the last of those matters, because that model's `model_dump` feeds
+the v3 fingerprint, so v4 states its own ground-truth schema rather than
+extending v3's. FROZEN-EVAL's SHA-256 is unchanged:
+`f9eb8770be6cc216d1c8b5486a10b74005382141f7c079844e2748444a44fc5b`.
+
+### Why a v4 pilot exists
+
+`notes/STAGE3-FINDINGS.md` §1 recorded that exhaustive substring enumeration,
+with no model in the loop, identifies the correct settlement in 200 of 200 DEV
+T2 cases. v3 T2's degraded reference is causally necessary — v2 established
+that — but necessary did not imply hard to recover, so v3 T2 does not
+establish that a model contributes anything a substring loop does not.
+
+v3 keeps three uses, stated in `benchmark/V4-PILOT.md` §1: safety regression,
+deterministic validator/policy regression, and tool-contract regression. It
+loses one: it is not evidence of unique AI reasoning value.
+
+### What the pilot is
+
+64 cases, 778 records, seed 4242, nine archetypes, three to five candidates
+each. Resolvable cases require *composing* evidence: a reference head in one
+narration field and its tail in another, a reference reach set intersected with
+a break-up line amount, a reference reach set intersected with a settlement
+date. 16 of the 64 are intentionally unresolvable, split between "more than one
+candidate is consistent with everything" and "no candidate is".
+
+Full design, family taxonomy, baseline results, leakage audit and known
+limitations: `benchmark/V4-PILOT.md`. Findings:
+`notes/BENCHMARK-V4-FINDINGS.md`.
+
+### The two results that matter
+
+**The shipped decision layer cannot express a conjunction.** Its resolution
+predicate is one discriminating fragment plus financial exactness, and
+financial exactness is uniform across a case because Stage 2's candidate
+generator has already filtered on it. So every compositional case escalates
+today, with `no_reference_link` as the blocker, and the pilot's match rate
+under the shipped architecture is 8/48. **No validator, policy, tool or prompt
+change was made to alter that** — the gap is the measurement.
+
+**The pilot is nonetheless fully solvable deterministically.** A baseline
+composing the same declared feature vocabulary the generator uses to define
+its cases resolves 48 of 48, correctly, with zero at risk. That is close to a
+tautology and is reported as one. It is why the recommendation in
+`notes/BENCHMARK-V4-FINDINGS.md` §5 is *not* to freeze a full v4 yet.
+
+### Pilot fingerprint
+
+```
+38e7e67eb79f51f946f2a0042f5ee2f0edd9497dea24d83f067bd0082bee1e1c
+```
+
+Computed by the same algorithm as `frozen_eval_sha256` — same file ordering,
+same git-tree-hash construction — so a later freeze needs no new scheme. The
+field is named `pilot_sha256` and the manifest says `frozen: false`, because a
+pilot whose manifest looked frozen would invite exactly the mistake the
+protocol exists to prevent.
 
 ## v3.0.0 — 2026-08-23 — T0 usable-direct-key correction
 
