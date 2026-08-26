@@ -143,6 +143,54 @@ and that test is left untouched. `tests/test_stage4_evaluator.py` re-derives
 the test's predicate inline and asserts the two agree case-for-case across a
 full DEV Stage-3 run, so a second, drifting definition cannot appear silently.
 
+### Sliced views
+
+The same verdicts are re-reported five ways, in `metrics_by_tier`,
+`metrics_by_archetype`, `metrics_by_family`, `metrics_by_required_composition`
+and `metrics_by_candidate_count`. A slice carries counts, the two rates whose
+denominators it actually owns (match rate and auto-resolution accuracy) and
+value at risk — deliberately narrower than the headline block, because quoting
+a six-case slice's escalation recall next to a cohort's invites reading one
+denominator as the other.
+
+Two shapes worth knowing before reading one:
+
+- **Families overlap; compositions partition.** A benchmark v4 case carries
+  several family tags and exactly one required composition, so the family
+  counts do not sum to the cohort size and the composition counts do.
+- **A benchmark v1–v3 cohort reports `{}` for families and compositions, not
+  zeros.** Those generations have no families. An absent key would read as "not
+  measured"; a zero would read as "measured, none found". Empty is the only
+  honest rendering, and `tests/test_v4_stage4_integration.py` pins it.
+
+`metrics_by_candidate_count` reports an `unknown` bucket for splits whose
+ground truth records no candidate count, which is every split before v4.
+
+### Conjunctive provenance
+
+`validator.v2` resolves a case when one candidate is the only one consistent
+with every informative claim in the narration's deterministic closure, so a
+resolution can rest on several clues none of which is conclusive alone. The
+report describes that shape rather than leaving a reader to infer it, in a
+`conjunction` block: how many resolutions needed composition and how many did
+not, the distribution of informative claims and disjoint narration spans per
+case, the final intersection size, and the reference-evidence state of every
+case (identified / ambiguous / contradictory / no informative evidence / no
+admissible agent evidence / closure incomplete).
+
+`agent_atom_coverage` is the one to read for the C-vs-D question. Since v2 the
+decision does not depend on which claims the agent surfaced, so how many it
+surfaced is free to measure — and it is the honest form of "did the
+investigation earn its tokens?", now that it cannot be confused with "did the
+investigation decide?".
+
+`accepted_relations_for` reports one row per clue a resolution rested on, each
+carrying the fragment, its narration offsets and span, the atom identity, the
+declared relation, the reference it matched and how many candidates that clue
+reached. Reading the agent's own findings instead would make a conjunctive
+resolution look unevidenced — none of its clues discriminates alone, which is
+the point of it.
+
 ### Soundness
 
 Correctness says a resolution was right; soundness says it was reached the
@@ -175,3 +223,18 @@ The gate is a speed bump, not security: it makes reading held-out answers a
 deliberate act someone can be asked about. It cannot leak frozen truth into a
 live investigation, because this package has no provider and never decides
 anything.
+
+`v4-pilot` sits beside `dev` on the ungated side, for the same reason `dev` is
+there: it is a development artifact with no held-out status to protect. A
+frozen v4, if one is ever cut, would be a different split name on the gated
+side.
+
+## The deterministic baselines are a different package
+
+`benchmark/baselines/` answers a different question — *how much of a benchmark
+needs no model at all?* — and it has to decide things to answer it, which this
+package must never do. So it lives separately, and the separation is enforced
+the same way this one is: nothing there imports a provider, `arms.py` and
+`features.py` cannot name ground truth, and truth is loaded only in
+`report.py`, strictly after every arm has returned. See
+`benchmark/V4-PILOT.md` §5 for what the arms are and what they measured.

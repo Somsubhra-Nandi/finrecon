@@ -92,9 +92,15 @@ deterministic decision layer behind it:
   (`src/finrecon/agent/trajectory.py`, `cache.py`) — every step, every
   refused call, every fallback, keyed so a replay reproduces the same raw
   evidence with zero provider calls.
-- **A deterministic validator** (`src/finrecon/decide/validator.py`) —
-  predicates over the *complete* Stage-2 candidate set plus raw tool
-  outputs. Agent prose is not an input, structurally.
+- **A deterministic validator** (`src/finrecon/decide/validator.py`,
+  `validator.v2`) — predicates over the *complete* Stage-2 candidate set
+  plus the **complete deterministic reference closure** of the bank narration
+  (`src/finrecon/evidence/closure.py`). A candidate is identified when it is
+  the only one consistent with every informative claim the narration supports,
+  which admits *conjunctive* evidence: two clues that are each inconclusive can
+  jointly identify one counterparty. Agent prose is not an input, structurally,
+  and since v2 neither is the agent's choice of which clue to test — see
+  [Validator v2](#validator-v2--safe-conjunctive-reference-evidence).
 - **A deterministic policy gate** (`src/finrecon/decide/policy.py`) — hard
   blockers, exact-paise accounting, and value-aware thresholds. Model
   confidence is never consulted.
@@ -106,6 +112,14 @@ which `tests/test_benchmark_isolation.py` and `tests/test_stage3_isolation.py`
 assert structurally. The evaluator reads it, and the evaluator is outside
 `src/` and cannot decide anything or call a model — see
 [Stage 4](#stage-4--offline-benchmark-evaluation).
+
+**A benchmark v4 pilot now exists**, additively, as the `v4-pilot` split with
+its own generator package (`finrecon.benchmark.generator_v4`), its own
+ground-truth schema and its own unfrozen manifest. It supersedes nothing: v3's
+generator, seeds, datasets, manifests and FROZEN-EVAL fingerprint are
+untouched, and `make verify-frozen` passes before and after. See
+[Benchmark v4 — the compositional-evidence pilot](#benchmark-v4--the-compositional-evidence-pilot)
+below, and `benchmark/V4-PILOT.md` for the design.
 
 **No FROZEN-EVAL benchmark result is reported here.** The headline table —
 match rate, precision, coverage and value at risk on the held-out split —
@@ -134,16 +148,22 @@ result is presented as reproducible fixture evidence.
 ```
 benchmark/
 ├── manifests/
-│   ├── v3.json          ← current: generator version, seeds, tier counts, frozen-eval SHA-256
+│   ├── v3.json          ← current frozen: generator version, seeds, tier counts, frozen-eval SHA-256
 │   ├── v2.json          ← superseded, retained verbatim so the correction is auditable
 │   ├── v1.json          ← superseded, retained verbatim
+│   ├── v4-pilot.json    ← NOT frozen; a separate lineage, supersedes nothing
 │   └── CHANGELOG.md      ← freeze record; generator changes are logged here, not silent
 ├── datasets/
 │   ├── dev/              ← system-visible inputs only: orders, payments, settlements, refunds, bank_records
-│   └── frozen-eval/       (same five files)
-└── ground_truth/
-    ├── dev.jsonl          ← hidden: tier, correct relationship, true reference, value at stake
-    └── frozen-eval.jsonl
+│   ├── frozen-eval/       (same five files)
+│   └── v4-pilot/          (same five files)
+├── ground_truth/
+│   ├── dev.jsonl          ← hidden: tier, correct relationship, true reference, value at stake
+│   ├── frozen-eval.jsonl
+│   └── v4-pilot.jsonl     ← hidden: plus families, required composition, clue reach sets
+├── baselines/            ← deterministic diagnostic arms; zero provider calls
+├── eval/                 ← Stage 4, the only layer that scores anything
+└── V4-PILOT.md           ← the v4 pilot's design, results and limitations
 ```
 
 DEV and FROZEN-EVAL are generated from the same taxonomy and the same tier
@@ -267,6 +287,187 @@ now needs a second order, payment and settlement.
 Seeds are unchanged from v1 — `DEV_SEED = 42`, `FROZEN_EVAL_SEED = 1337`.
 The generator-version bump already separates the artifacts, and keeping the
 seeds makes it plain none was chosen for a matcher outcome.
+
+### Benchmark v4 — the compositional-evidence pilot
+
+**Not frozen. Not a reporting artifact.** Full account in
+[`benchmark/V4-PILOT.md`](benchmark/V4-PILOT.md); findings in
+[`notes/BENCHMARK-V4-FINDINGS.md`](notes/BENCHMARK-V4-FINDINGS.md).
+
+Benchmark v3's T2 tier turned out not to be a strong test of AI reasoning.
+Exhaustive enumeration of every narration substring of length ≥ 4, with no
+model anywhere in the loop, identifies the correct settlement in **200 of 200**
+DEV T2 cases and misidentifies none. The degraded reference is causally
+necessary — v2 established that, and structured evidence alone still resolves
+none of them — but necessary did not imply hard to recover.
+
+So v3 keeps three uses and loses one. It remains a safety-regression
+benchmark, a deterministic validator/policy regression benchmark, and a
+tool-contract regression benchmark. It **must not** be presented as evidence
+that a language model contributes reasoning a substring loop does not.
+
+The v4 pilot (`v4-pilot` split, 64 cases, 778 records, seed 4242) builds cases
+whose resolvable answers require *composing* evidence — a reference head in one
+narration field and its tail in another; a reference reach set intersected with
+a break-up line amount or a settlement date — with 16 of 64 intentionally
+unresolvable. Two results came out of it, both deterministic and both for zero
+tokens:
+
+**The Stage-3 decision layer could not express a conjunction.** Under
+`validator.v1` the resolution predicate was one discriminating fragment plus
+financial exactness, and financial exactness is uniform within a case because
+Stage 2's candidate generator has already filtered on it. So every
+compositional case escalated, and the pilot's match rate under v1 was 8/48. The
+pilot was built without touching the validator, the gate, the tools or the
+prompt — the gap was measured first. It has since been closed by
+`validator.v2`; see
+[Validator v2](#validator-v2--safe-conjunctive-reference-evidence).
+
+**The pilot is nonetheless fully solvable without a model.** Five deterministic
+arms, zero provider calls:
+
+| Arm | Resolved | Correct | **Wrong** | Match rate |
+|---|---:|---:|---:|---:|
+| A · Stage-2 rules only | 0 | 0 | 0 | 0.000 |
+| B1 · `validator.v1` semantics (the before-column) | 12 | 8 | **4** | 0.167 |
+| B · the shipped gate, exhaustively fed (`validator.v2`) | 38 | 34 | **4** | 0.708 |
+| C1 · lexical composition | 38 | 34 | **4** | 0.708 |
+| C2 · lexical + structural composition | 48 | 48 | 0 | 1.000 |
+| C3 · first subset that isolates | 52 | 48 | **4** | 1.000 |
+
+`B1` is the rule that saturated v3 T2; on v4 it reaches only the 8-case
+positive control, which is the measurement that justified `validator.v2`. `B`
+is the shipped gate, and the `B1`-to-`B` gap is what v2 bought. But arm C2
+still solves the pilot completely — which is close to a tautology, because
+C2 composes exactly the feature vocabulary the generator uses to *define* its
+cases. Raising the conjunction arity raises an exponent, not a complexity
+class. That is reported rather than hidden, and it is why the recommendation is
+not to freeze a full v4 yet.
+
+Every wrong resolution in that table comes from one four-case archetype whose
+correct outcome is escalation: a stale reference from a different settlement
+plus a contradicting value-date field. Only C2's "exactly one candidate is
+consistent with *everything*" rule escapes it — C3 has identical features and
+resolves all four wrongly. Adding composition without a consistency rule made
+the arms broader, not safer.
+
+```bash
+make generate-v4-pilot   # build and write the pilot (verifies every case twice)
+make verify-v4-pilot     # recompute its fingerprint against its manifest
+make baselines-v4-pilot  # the five arms; zero provider calls
+make test-v4             # the pilot's own tests
+make verify-frozen       # benchmark v3, still frozen
+```
+
+### Validator v2 — safe conjunctive reference evidence
+
+Full account: [`notes/VALIDATOR-V2-FINDINGS.md`](notes/VALIDATOR-V2-FINDINGS.md).
+
+The v4 pilot found that the decision layer could not combine evidence: it
+resolved a case only when some *one* narration fragment reached exactly one
+candidate. Two clues that were each inconclusive but jointly decisive were
+unreachable, and — worse — a clue reaching two candidates could
+*contradict* a discriminating one and was silently discarded. `validator.v2`
+fixes both.
+
+**The unsafe version of this fix, and why it was rejected.** Intersecting the
+reach sets of the fragments *the agent tested* looks obvious and is not safe.
+With three references arranged the way same-bank same-day references actually
+are:
+
+```
+"AXISCN11" -> {A, B}      "863727" -> {A, C}      "Q7K4" -> {B, C}
+```
+
+one narration carrying all three spans proves **A** (head + tail), **B** (head
++ hinge) or **C** (tail + hinge) depending on which pair the agent happened to
+test, and proves nothing when read completely. That is the model choosing the
+winner by choosing where not to look — the fishing-by-omission channel
+`DESIGN.md` §4.1 exists to close, reappearing inside the conjunction. It is a
+fixture in `benchmark/baselines/adversarial.py`, not a hypothesis: the rule
+resolves all three ways on the same snapshot.
+
+**What shipped instead.** A candidate is identified when it is the only one
+consistent with **every** informative claim in the narration's *deterministic
+closure* — every substring standing in a declared relation to any candidate
+reference, whether the agent asked about it or not
+(`src/finrecon/evidence/closure.py`). Under a closed evidence set, looking away
+cannot help, because nothing can be left out.
+
+The agent's evidence is a **seed**, not the proof: the closure is consulted only
+once the investigation has surfaced at least one admissible fragment. *Which*
+fragment does not change the conclusion; only *whether* one exists changes
+whether the path runs. So the omission attack has nothing to work with, while a
+case nobody investigated still cannot move money — an invariant this repository
+already asserted at two layers, and the criterion that ruled out the
+unconditional-closure variant.
+
+Four properties come free from the rule being a set intersection rather than a
+vote, and are tested anyway: **order invariance**, **duplicate invariance**,
+**overlap invariance** (`"ABC123"`, `"BC12"` and `"C123"` are one claim read
+three ways, grouped into one evidence atom), and **contradiction monotonicity**
+(adding a claim can only shrink an intersection, so valid contradicting
+evidence can never leave a match standing).
+
+**Results.** 14 adversarial fixtures, the v4 pilot, and the 240-case DEV
+residual:
+
+| | `validator.v1` | **`validator.v2`** |
+|---|---:|---:|
+| Adversarial fixtures passed | 11 / 14 | **14 / 14** |
+| v4 pilot resolved / correct / **wrong** | 12 / 8 / **4** | 38 / 34 / **4** |
+| v4 pilot match rate | 0.167 | **0.708** |
+| DEV correct / **wrong** | 171 / **0** | 171 / **0** |
+| DEV T3 resolved | 0 | **0** |
+
+**+26 correct resolutions on the pilot, zero new wrong ones, and no benchmark
+v3 regression.** All 26 are conjunctive by the strict definition — no single
+claim would have sufficed. v2 also *closes* two v1 safety failures that only
+the adversarial suite made visible.
+
+**What v2 does not fix, stated plainly.** The four `conflict_stale_reference`
+cases still resolve wrongly, exactly as under v1, and the ₹1.34 crore of
+value at risk on the pilot is entirely theirs. Their reference closure contains
+one informative claim and nothing contradicts it, because what refutes them is
+a *value date*. **No reference-only rule can escalate them** — requiring
+otherwise would require the impossible, so the harness records it as explicitly
+not a shipping criterion. Fixing them needs the second capability
+`benchmark/V4-PILOT.md` §9 names: a declared narration-date-to-settlement-date
+relation. That is the strongest remaining argument for it.
+
+**What it cost.** Only the validator moved:
+
+```
+investigator.v4   tools.v3   loop.v2   trajectory-cache.v3   validator.v2   policy.v1
+```
+
+The prompt, the tools, the loop, the trajectory record format, the candidate
+generator and every integer-paise rule are untouched. The policy gate keeps
+`policy.v1` and its exact blocker vocabulary — a contradiction reaches it as the
+*union* of the contradicting claims, firing the existing
+`ambiguous_reference_link`, which is what that blocker already means. Because
+`validator_version` is part of the trajectory cache key, every v1 artifact now
+**fails replay closed** with the versions named rather than being silently
+rescored, and `validator_version` is already a `compare` dimension so a
+v1-vs-v2 comparison is attributed to the validator and not to a model.
+
+The closure is exhaustive over every substring, with no sampling: 1.4 ms per
+DEV case, 4.3 ms per pilot case. Above a declared 240-character narration bound
+it refuses rather than truncating, because a partially searched narration
+cannot support a claim about what the narration does *not* contain.
+
+**This is a deterministic decision-layer capability, not an LLM-accuracy
+feature.** The numbers above were produced by a non-linguistic fake; no model
+has run against the pilot. The trade is deliberate and worth naming: the agent
+no longer selects the reference evidence, and its fragment selection is now a
+*measured* quantity (`agent_atom_coverage` in the Stage-4 report) rather than an
+input to any predicate. There is no reason to let an untrusted component choose
+the evidence when the complete evidence costs four milliseconds.
+
+```bash
+make conjunction-rules    # the five-rule comparison that chose the rule
+make test-validator-v2    # the closure's equivalence claims + the safety suite
+```
 
 ### Frozen-eval SHA-256
 
@@ -406,6 +607,40 @@ that makes the mechanism look active.
   as replay fixtures, and do not establish model capability over T2/T3. The
   deterministic fake-provider diagnostics still describe plumbing only; see
   `notes/STAGE3-FINDINGS.md` §§1 and 8–9.
+- Benchmark v3's T2 tier is not a strong test of AI reasoning: a model-free
+  exhaustive substring matcher solves all 200 DEV T2 cases at zero risk. v3 is
+  a safety and regression benchmark, and saying otherwise would overclaim. See
+  `benchmark/V4-PILOT.md` §1.
+- The v4 pilot is a pilot. It is not frozen, no number from it is a benchmark
+  result, and no model has run against it. Its resolvable families are
+  unreachable by the shipped decision layer *by construction*, so its 8/48
+  match rate is a statement about a missing capability rather than about
+  reconciliation quality.
+- The v4 pilot is also fully solvable by a deterministic composition baseline
+  (48/48, zero at risk), because its difficulty is assembled from the same
+  declared feature vocabulary such a baseline can enumerate. A benchmark on
+  which a model beats a deterministic composer would need evidence drawn from
+  outside an author's declared vocabulary — real narrations with real
+  degradations — which is a data-sourcing problem, not a generator problem.
+- Three of the v4 pilot's narration shapes appear only in resolvable cases, so
+  "this line has a refund-amount field, therefore this case has an answer" is
+  true over 24 of its 64 cases. It scores nothing — every metric requires
+  naming a settlement — but it is a real correlation and it is measured in the
+  leakage audit rather than omitted.
+- `DESIGN.md` is frozen at v4 and its §4.3 states the resolution predicate as
+  "a strong reference link exists". `validator.v2` implements that as *exactly
+  one candidate consistent with every informative claim in the narration's
+  deterministic closure*, which is narrower than v1's reading in the safety
+  direction and wider in the coverage direction. The design document was not
+  edited to match; the divergence is recorded here and in
+  `notes/VALIDATOR-V2-FINDINGS.md` §10, because rewriting a frozen design
+  document to agree with later code is how a design document stops being
+  evidence of anything.
+- `validator.v2`'s reference path is fully deterministic. The agent seeds it and
+  cannot select within it, so on the reference families the model contributes
+  investigation efficiency and nothing to correctness. That is measured
+  (`agent_atom_coverage`) rather than claimed either way, and it is a
+  continuation of `notes/STAGE3-FINDINGS.md` §1 rather than a new finding.
 
 ### Stage 4 — offline benchmark evaluation
 
@@ -424,6 +659,19 @@ Full documentation: [`benchmark/eval/README.md`](benchmark/eval/README.md).
 | Stage 2 — deterministic core | no (structurally) | **no** | no | yes |
 | Stage 3 — investigation agent | no (structurally) | **no** | yes | yes |
 | **Stage 4 — `benchmark/eval/`** | **yes** | **yes** | **no** | **no** |
+| `benchmark/baselines/` | yes, **after** deciding | yes | **no** | for measurement only |
+
+The baselines row is the one that needs a sentence. Those arms do decide, and
+they do read truth — but never in the same call frame: `arms.py` and
+`features.py` see a case snapshot and nothing else, and `report.py` loads truth
+only once every arm has returned. Both halves are asserted by parsing the
+package (`tests/test_v4_baselines.py`), and nothing there is installed with
+`finrecon` or can reach a provider.
+
+Reports are sliced by tier, archetype, family, required composition and
+candidate-set size. A v1–v3 cohort has no families, so its family block comes
+back empty rather than zero-filled — an absent key would read as "not
+measured", and a zero as "measured, none found".
 
 Four properties hold that table up:
 
@@ -474,8 +722,10 @@ make install
 ## Running tests
 
 ```bash
-make test          # full suite
-make test-stage3   # investigation layer, deterministic fake providers
-make test-stage4   # offline evaluator
-make verify-frozen # FROZEN-EVAL SHA-256 against the manifest
+make test            # full suite
+make test-stage3     # investigation layer, deterministic fake providers
+make test-stage4     # offline evaluator
+make test-v4         # benchmark v4 pilot, its leakage audit and its baselines
+make verify-frozen   # FROZEN-EVAL SHA-256 against the manifest
+make verify-v4-pilot # v4 pilot fingerprint against its own manifest
 ```
