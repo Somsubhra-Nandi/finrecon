@@ -113,7 +113,14 @@ class TestGroundTruthIsolation:
                     pytest.fail(f"{path.name} embeds a ground_truth string literal")
 
     def test_no_reconciliation_module_imports_the_benchmark_generator(self):
-        """Except the isolation test itself, which needs the frozen hash."""
+        """Except the isolation test itself, which needs the frozen hash.
+
+        Covers ``benchmark.generator`` and ``benchmark.generator_v4`` alike:
+        the substring below matches both, so a v4 generator import on the
+        reconciliation path fails here without anything being added. The v4
+        package is the more dangerous of the two to import, because its
+        ``families`` module *is* the answer key for a v4 case.
+        """
         for path in reconciliation_sources():
             tree = ast.parse(path.read_text(encoding="utf-8"))
             for node in ast.walk(tree):
@@ -124,6 +131,61 @@ class TestGroundTruthIsolation:
                     module = node.names[0].name
                 if module and "benchmark.generator" in module:
                     pytest.fail(f"{path.name} imports the benchmark generator: {module}")
+
+    def test_no_reconciliation_module_names_a_v4_benchmark_label(self):
+        """v4's family, archetype and composition names are hidden ground truth.
+
+        A tier label was already forbidden here by
+        ``test_the_pipeline_result_exposes_no_tier_or_expected_outcome``, but v4
+        replaces tiers with families and compositions, and those carry strictly
+        more information: ``required_composition`` states which capability a
+        case needs, and ``none`` states that the answer is escalation. None of
+        it may appear anywhere on the path that decides whether money moves.
+        """
+        forbidden = (
+            "multi_fragment",
+            "true_ambiguity",
+            "amount_reference",
+            "multi_hop",
+            "required_composition",
+            "fragment_pair",
+            "fragment_triple",
+            "conjunction_pair",
+            "conjunction_wide",
+            "conjunction_triple",
+            "single_fragment_control",
+            "conflict_stale_reference",
+            "conflict_context_resolves",
+            "ambiguity_no_discriminator",
+            "expected_candidate_count",
+        )
+        for path in reconciliation_sources():
+            source = path.read_text(encoding="utf-8")
+            for label in forbidden:
+                assert label not in source, (path.name, label)
+
+    def test_the_v4_pilot_split_is_reconciled_without_reading_its_truth(
+        self, benchmark_dir, monkeypatch
+    ):
+        """The pilot is a dataset like any other: the loader reaches five files."""
+        from finrecon.ledger.store import LedgerStore
+        from finrecon.pipeline import process_batch
+
+        opened: list[str] = []
+        real_open = Path.open
+
+        def spy(self, *args, **kwargs):
+            opened.append(str(self))
+            return real_open(self, *args, **kwargs)
+
+        monkeypatch.setattr(Path, "open", spy)
+        with LedgerStore(":memory:") as store:
+            result = process_batch(
+                store=store, benchmark_dir=benchmark_dir, split="v4-pilot"
+            )
+
+        assert len(result.decisions) == 64
+        assert not any("ground_truth" in path for path in opened)
 
     def test_the_loader_reads_only_the_five_visible_files(self, benchmark_dir, monkeypatch):
         opened: list[str] = []
