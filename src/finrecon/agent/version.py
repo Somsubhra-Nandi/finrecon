@@ -59,10 +59,10 @@ the skipped records that make a rejected batch fully auditable. A ``v2``
 fixture cannot be validated against the new model, so the key must differ.
 """
 
-VALIDATOR_VERSION: Final = "validator.v2"
+VALIDATOR_VERSION: Final = "validator.v3"
 """Identity of the deterministic evidence predicates.
 
-``v2`` replaces the reference-identification rule. ``v1`` resolved a case when
+``v2`` replaced the reference-identification rule. ``v1`` resolved a case when
 some one fragment *the agent tested* reached exactly one candidate; ``v2``
 resolves it when one candidate is the only one consistent with **every**
 informative claim in the narration's complete deterministic closure
@@ -82,17 +82,25 @@ which pair of clues the agent happened to test -- the fishing-by-omission
 channel of DESIGN.md 4.1, reappearing inside the conjunction. Proving over the
 closure closes it, because a closed evidence set has nothing to leave out.
 
+``v3`` adds a second closed evidence set for narrowly labelled structural
+assertions: an explicit ``VALDT`` field verified against the normalized bank
+value date and exact candidate settlement dates, and an explicit ``RFND``
+field verified against signed refund breakup lines in integer paise.  All such
+fields and all candidates are evaluated; the model selects neither axis.
+Structural evidence is gated by v2's admissible reference seed, so date or
+amount alone cannot turn an evidence-free investigation into a match.
+
 Because this constant is part of the trajectory cache key, the bump invalidates
 every cached trajectory. That is the intended behaviour and not a cost to be
 worked around: a v1 fixture was recorded against a different decision contract,
-and serving it as a v2 result would attribute this rule's numbers to a run that
+and serving it as a v3 result would attribute this rule's numbers to a run that
 never met it.
 """
 
 POLICY_VERSION: Final = "policy.v1"
 """Identity of the deterministic policy gate and its declared thresholds.
 
-Deliberately unchanged by ``validator.v2``. The gate's rule is what it was --
+Deliberately unchanged by ``validator.v2`` and ``validator.v3``. The gate's rule is what it was --
 exactly one surviving candidate, exact paise, no hard blocker, value policy
 permits -- and its blocker vocabulary is unchanged too. What changed is how the
 validator computes the candidate set the gate reads, which is the validator's

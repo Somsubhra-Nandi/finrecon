@@ -24,8 +24,9 @@ constructing coherent stories is what it is optimized for. So the decision
 layer reads the primary evidence instead.
 
 And an agent that cannot lie about evidence can still *select* it -- the
-fishing-by-omission channel. Closing that is what ``validator.v2`` is about,
-and the closing is more thorough than v1's.
+fishing-by-omission channel. ``validator.v2`` closed that for reference
+evidence; ``validator.v3`` extends the same closed-set discipline to narrowly
+declared structural assertions.
 
 Why v1's rule was not enough
 ----------------------------
@@ -172,6 +173,7 @@ from finrecon.evidence.closure import (
     build_reference_closure,
     fragment_reach,
 )
+from finrecon.evidence.structural import StructuralClosure, build_structural_closure
 from finrecon.normalize.provenance import FrozenModel
 
 SUCCESSFUL_PAYMENT_STATUS = "captured"
@@ -322,13 +324,12 @@ class ValidatorResult(FrozenModel):
     is precisely a case v1 could not have reached.
     """
     reference_identified_candidate_ids: tuple[str, ...]
-    """The decision input. Derived from the closure, never from agent selection.
+    """The policy-compatible decision input, never from agent selection.
 
-    One candidate when the closure isolates one; the surviving set when several
-    survive; the contradicting set when none do; empty when nothing separates
-    the candidates. The policy gate needs only "is this exactly one", so the
-    non-singleton cases are reported in whichever form makes the escalation
-    blocker accurate.
+    Since v3 this is derived from the intersection of the reference and
+    structural closures. One candidate when the combined evidence isolates
+    one; the surviving set when several survive; a non-singleton contradicting
+    union (or empty) when none do. This shape keeps policy.v1 fail-closed.
     """
     reference_evidence_state: str
     """One of :data:`REFERENCE_STATES`. Why the reference path ended as it did."""
@@ -348,6 +349,11 @@ class ValidatorResult(FrozenModel):
     and reporting it is how "did the investigation earn its tokens?" stays
     answerable without the answer being able to move money.
     """
+    structural_closure: StructuralClosure
+    structural_intersection_candidate_ids: tuple[str, ...]
+    combined_consistent_candidate_ids: tuple[str, ...]
+    structural_evidence_state: str
+    resolution_evidence_basis: str
     financial_assessments: tuple[CandidateFinancialAssessment, ...]
     financially_exact_candidate_ids: tuple[str, ...]
     surviving_candidate_ids: tuple[str, ...]
@@ -359,7 +365,7 @@ class ValidatorResult(FrozenModel):
 
     @property
     def resolved_conjunctively(self) -> bool:
-        """True when *no single claim* would have sufficed. The v2-only case.
+        """True for a reference-only result where no single claim sufficed.
 
         Not "more than one claim exists" -- a case can carry several claims and
         still be resolved by one of them alone, which is what ``validator.v1``
@@ -368,7 +374,10 @@ class ValidatorResult(FrozenModel):
         candidate by itself; if none does, the intersection is what identified
         it and the resolution is one v1 could not have reached.
         """
-        if self.reference_evidence_state != REFERENCE_STATE_IDENTIFIED:
+        if (
+            self.reference_evidence_state != REFERENCE_STATE_IDENTIFIED
+            or self.resolution_evidence_basis != "reference-only"
+        ):
             return False
         return not any(
             len(atom.reach) == 1 for atom in self.reference_closure.informative_atoms()
@@ -606,6 +615,60 @@ def validate_case(
         state = REFERENCE_STATE_CONTRADICTORY
         identified = tuple(sorted(union))
 
+    # Structural evidence is a second closed evidence set.  It is enumerated
+    # from the immutable narration and complete snapshot, never from whichever
+    # candidate or breakup line the agent chose to inspect.  It remains gated
+    # by the same admissible reference seed: structure alone cannot resolve.
+    structural = build_structural_closure(snapshot)
+    structurally_consistent = set(structural.intersection_candidate_ids)
+    combined = set(intersection) & structurally_consistent
+    structural_state = (
+        "none"
+        if not structural.has_evidence
+        else "contradictory"
+        if structural.is_contradictory
+        else "consistent"
+    )
+
+    if (
+        closure.is_complete
+        and agent_gathered_evidence
+        and closure.has_informative_evidence()
+        and structural.has_evidence
+    ):
+        if len(combined) == 1:
+            state = REFERENCE_STATE_IDENTIFIED
+            identified = tuple(sorted(combined))
+        elif combined:
+            state = REFERENCE_STATE_AMBIGUOUS
+            identified = tuple(sorted(combined))
+        else:
+            state = REFERENCE_STATE_CONTRADICTORY
+            contradiction_union = set(union) | set(structural.union_candidate_ids)
+            # The unchanged policy reads this legacy field.  A contradiction
+            # must therefore never masquerade as a singleton merely because
+            # one side of it reaches nobody.
+            identified = (
+                tuple(sorted(contradiction_union))
+                if len(contradiction_union) > 1
+                else ()
+            )
+
+    has_date = bool(structural.value_date_facts)
+    has_amount = bool(structural.breakup_amount_facts)
+    if state == REFERENCE_STATE_CONTRADICTORY and structural.has_evidence:
+        basis = "structural_contradiction"
+    elif state == REFERENCE_STATE_IDENTIFIED and has_date and has_amount:
+        basis = "reference+date+amount"
+    elif state == REFERENCE_STATE_IDENTIFIED and has_date:
+        basis = "reference+date"
+    elif state == REFERENCE_STATE_IDENTIFIED and has_amount:
+        basis = "reference+amount"
+    elif state == REFERENCE_STATE_IDENTIFIED:
+        basis = "reference-only"
+    else:
+        basis = "unresolved"
+
     # Which informative claims the agent's own fragments landed on. Measured,
     # never an input to the decision above.
     agent_atom_ids: list[str] = []
@@ -626,9 +689,9 @@ def validate_case(
         sorted(a.candidate_id for a in assessments if a.is_financially_exact)
     )
 
-    # Survival needs the reference evidence to have isolated *one* candidate and
-    # that candidate's money to add up. Unchanged from v1 in form; what changed
-    # is where ``identified`` comes from.
+    # Survival needs the combined closed evidence to have isolated *one*
+    # candidate and that candidate's money to add up.  The policy interface is
+    # unchanged; what changed is where ``identified`` comes from.
     survivors = tuple(sorted(set(identified) & set(financially_exact)))
 
     return ValidatorResult(
@@ -651,6 +714,11 @@ def validate_case(
         reference_union_candidate_ids=tuple(sorted(union)),
         informative_atom_ids=closure.informative_atom_ids,
         agent_surfaced_atom_ids=tuple(agent_atom_ids),
+        structural_closure=structural,
+        structural_intersection_candidate_ids=structural.intersection_candidate_ids,
+        combined_consistent_candidate_ids=tuple(sorted(combined)),
+        structural_evidence_state=structural_state,
+        resolution_evidence_basis=basis,
         financial_assessments=assessments,
         financially_exact_candidate_ids=financially_exact,
         surviving_candidate_ids=survivors,

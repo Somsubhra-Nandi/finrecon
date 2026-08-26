@@ -100,8 +100,8 @@ def resolved_candidate(snapshot, fragments, **kwargs):
 
 
 class TestVersionIdentity:
-    def test_the_validator_declares_v2(self):
-        assert VALIDATOR_VERSION == "validator.v2"
+    def test_the_validator_declares_v3(self):
+        assert VALIDATOR_VERSION == "validator.v3"
 
     def test_the_policy_gate_is_unchanged(self):
         """v2 was constrained to need no new blocker. This is that constraint."""
@@ -571,7 +571,7 @@ class TestProvenance:
 class TestBenchmarkV3IsNotRegressed:
     """The 200 DEV T2 cases are the coverage v2 must not cost."""
 
-    def test_v2_resolves_the_same_dev_cases_v1_did_and_no_others_wrongly(
+    def test_v3_preserves_the_171_safe_dev_resolutions(
         self, dev_stage3_result, dev_ground_truth
     ):
         result, _batch, _store = dev_stage3_result
@@ -586,6 +586,7 @@ class TestBenchmarkV3IsNotRegressed:
             ):
                 wrong.append((outcome.case_id, "wrong settlement"))
         assert wrong == []
+        assert len(result.resolved()) == 171
 
     def test_every_t3_case_still_escalates(self, dev_stage3_result, dev_ground_truth):
         result, _batch, _store = dev_stage3_result
