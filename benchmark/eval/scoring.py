@@ -94,12 +94,20 @@ class CaseVerdict:
     is_uniquely_resolvable: bool
     escalation_correct: bool | None
     """For escalations: True when the case genuinely had no unique answer."""
+    families: tuple[str, ...] = ()
+    """Benchmark v4 analysis tags. Empty on v1-v3 cohorts, which have no families."""
+    required_composition: str = ""
+    """The evidence combination v4 says this case needs. Empty on v1-v3 cohorts."""
+    candidate_count_bucket: str = "unknown"
 
     def as_dict(self) -> dict:
         return {
             "case_id": self.case_id,
             "tier": self.tier,
             "archetype": self.archetype,
+            "families": list(self.families),
+            "required_composition": self.required_composition,
+            "candidate_count_bucket": self.candidate_count_bucket,
             "resolved": self.resolved,
             "correct": self.correct,
             "wrong_reason": self.wrong_reason,
@@ -117,25 +125,39 @@ class CaseVerdict:
 
 
 def accepted_relations_for(outcome: CaseOutcome) -> tuple[dict, ...]:
-    """The discriminating evidence that reached the *resolved* candidate.
+    """The evidence that allowed the resolution, with full source provenance.
 
-    Only discriminating findings are returned, and only those whose match is
-    the candidate the gate actually chose: that is the evidence which allowed
-    the resolution, as distinct from everything the agent happened to look at.
+    Since ``validator.v2`` this reads the deterministic reference *closure*
+    rather than the agent's own findings, because the closure is what the
+    decision was made over. Every informative claim in a resolved case is
+    consistent with the chosen candidate -- that is what "the intersection is
+    this candidate" means -- so each contributes exactly one row, and a
+    conjunctive resolution reports one row per clue it needed.
+
+    Reading the agent's findings instead would have made a conjunctive
+    resolution look unevidenced: none of its clues is discriminating on its
+    own, which is the whole point of it.
+
+    Each row carries the narration offsets and the atom identity alongside the
+    relation, so a reader can point at the characters a resolution rests on
+    without trusting anything a model wrote.
     """
-    relations: list[dict] = []
     chosen = outcome.decision.resolved_candidate_id
     if chosen is None:
         return ()
-    for finding in outcome.validator_result.findings:
-        if not finding.is_discriminating:
-            continue
-        for match in finding.matches:
+    relations: list[dict] = []
+    for atom in outcome.validator_result.reference_closure.informative_atoms():
+        for match in atom.matches:
             if match.candidate_id != chosen:
                 continue
             relations.append(
                 {
-                    "fragment": finding.fragment,
+                    "atom_id": atom.atom_id,
+                    "fragment": atom.fragment,
+                    "narration_span": list(atom.span),
+                    "narration_offsets": list(atom.occurrences),
+                    "member_fragment_count": atom.member_fragment_count,
+                    "candidates_reached": len(atom.reach),
                     "relation_id": match.relation_id,
                     "reference_kind": match.reference_kind,
                     "reference_value": match.reference_value,
@@ -185,6 +207,9 @@ def verdict_for(outcome: CaseOutcome, entry: GroundTruthEntry) -> CaseVerdict:
         value_at_stake_paise=entry.value_at_stake_paise,
         is_uniquely_resolvable=entry.is_uniquely_resolvable,
         escalation_correct=escalation_correct,
+        families=entry.families,
+        required_composition=entry.required_composition,
+        candidate_count_bucket=entry.candidate_count_bucket,
     )
 
 
@@ -227,6 +252,140 @@ def aggregate_scores(verdicts: Iterable[CaseVerdict]) -> dict:
         "match_rate_numerator": "correct automatic reconciliations only",
         "scoring_available": True,
         "scoring_unavailable_reason": None,
+    }
+
+
+def _slice_metrics(items: list[CaseVerdict]) -> dict:
+    """The subset of the section 5.3 block that survives being sliced.
+
+    Deliberately narrower than :func:`aggregate_scores`. A slice of six cases
+    has a match rate, but quoting its escalation recall next to the cohort's
+    invites reading one small denominator as if it were the other. So a slice
+    reports counts, the two rates whose denominators it actually owns, and
+    value at risk -- and nothing that would be mistaken for a headline.
+    """
+    resolvable = sum(1 for v in items if v.is_uniquely_resolvable)
+    auto = sum(1 for v in items if v.resolved)
+    correct = sum(1 for v in items if v.resolved and v.correct)
+    wrong = sum(1 for v in items if v.resolved and v.correct is False)
+    correctly_escalated = sum(1 for v in items if not v.resolved and v.escalation_correct)
+    return {
+        "cases": len(items),
+        "uniquely_resolvable": resolvable,
+        "truly_ambiguous": len(items) - resolvable,
+        "auto_resolved": auto,
+        "correct_auto_resolutions": correct,
+        "wrong_auto_resolutions": wrong,
+        "escalated": len(items) - auto,
+        "correctly_escalated": correctly_escalated,
+        "match_rate": _ratio(correct, resolvable),
+        "auto_resolution_accuracy": _ratio(correct, auto),
+        "value_at_risk_paise": sum(
+            v.value_at_stake_paise for v in items if v.correct is False
+        ),
+    }
+
+
+def _group_metrics(
+    verdicts: Iterable[CaseVerdict], key
+) -> dict:
+    grouped: dict[str, list[CaseVerdict]] = {}
+    for verdict in verdicts:
+        for label in key(verdict):
+            grouped.setdefault(label, []).append(verdict)
+    return {label: _slice_metrics(items) for label, items in sorted(grouped.items())}
+
+
+def metrics_by_family(verdicts: Iterable[CaseVerdict]) -> dict:
+    """Per-family metrics. A case in several families is counted in each.
+
+    Overlapping by design: v4's families are descriptive tags, not a partition,
+    so the family counts deliberately do not sum to the cohort size. The block
+    is empty for a v1-v3 cohort, which is the honest rendering of "this
+    benchmark generation has no families" -- distinct from a family with zero
+    cases.
+    """
+    return _group_metrics(verdicts, lambda v: v.families)
+
+
+def metrics_by_required_composition(verdicts: Iterable[CaseVerdict]) -> dict:
+    """Per-composition metrics. Exactly one composition per case, so this partitions."""
+    return _group_metrics(
+        verdicts, lambda v: (v.required_composition,) if v.required_composition else ()
+    )
+
+
+def metrics_by_candidate_count(verdicts: Iterable[CaseVerdict]) -> dict:
+    """Per-candidate-set-size metrics. ``unknown`` for splits that record no count."""
+    return _group_metrics(verdicts, lambda v: (v.candidate_count_bucket,))
+
+
+def metrics_by_tier(verdicts: Iterable[CaseVerdict]) -> dict:
+    """Per-tier metrics -- the DESIGN.md 5.4 results table, as data."""
+    return _group_metrics(verdicts, lambda v: (v.tier,))
+
+
+def metrics_by_archetype(verdicts: Iterable[CaseVerdict]) -> dict:
+    return _group_metrics(verdicts, lambda v: (v.archetype,))
+
+
+def conjunction_metrics(outcomes: Iterable[CaseOutcome]) -> dict:
+    """How much of the cohort needed conjunctive reference evidence, and how.
+
+    New with ``validator.v2``. Every figure is provenance rather than accuracy:
+    it describes the *shape* of the evidence a decision rested on, which is the
+    thing a reader of an audit trail wants and the thing a version bump makes
+    incomparable across runs if it is not reported.
+
+    ``agent_atom_coverage`` is the one to read for the C-vs-D question. Since v2
+    the decision does not depend on which claims the agent surfaced, so how many
+    it surfaced is free to measure -- and it is the honest form of "did the
+    investigation earn its tokens?", now that it cannot be confused with "did
+    the investigation decide?".
+    """
+    items = list(outcomes)
+    resolved = [o for o in items if o.decision.resolved]
+    conjunctive = [o for o in resolved if o.validator_result.resolved_conjunctively]
+
+    states: Counter = Counter()
+    atom_counts: Counter = Counter()
+    span_counts: Counter = Counter()
+    intersection_sizes: Counter = Counter()
+    surfaced = 0
+    informative_total = 0
+    incomplete_closures = 0
+
+    for outcome in items:
+        validator = outcome.validator_result
+        closure = validator.reference_closure
+        states[validator.reference_evidence_state] += 1
+        if not closure.is_complete:
+            incomplete_closures += 1
+            continue
+        atom_counts[str(len(validator.informative_atom_ids))] += 1
+        span_counts[str(closure.independent_span_count())] += 1
+        intersection_sizes[str(len(validator.reference_intersection_candidate_ids))] += 1
+        informative_total += len(validator.informative_atom_ids)
+        surfaced += len(validator.agent_surfaced_atom_ids)
+
+    return {
+        "resolutions_total": len(resolved),
+        "resolutions_needing_conjunction": len(conjunctive),
+        "resolutions_from_a_single_claim": len(resolved) - len(conjunctive),
+        "reference_evidence_states": dict(sorted(states.items())),
+        "informative_atoms_per_case": dict(sorted(atom_counts.items())),
+        "independent_narration_spans_per_case": dict(sorted(span_counts.items())),
+        "final_intersection_size": dict(sorted(intersection_sizes.items())),
+        "informative_atoms_total": informative_total,
+        "informative_atoms_surfaced_by_agent": surfaced,
+        "agent_atom_coverage": _ratio(surfaced, informative_total),
+        "cases_with_incomplete_closure": incomplete_closures,
+        "closure_is_the_decision_input": True,
+        "note": (
+            "The agent seeds the reference path and does not select within it, so "
+            "agent_atom_coverage measures investigation efficiency and nothing "
+            "about correctness. See src/finrecon/decide/validator.py."
+        ),
     }
 
 
@@ -319,14 +478,58 @@ def soundness_violations(outcomes: Iterable[CaseOutcome]) -> list[SoundnessViola
                     "candidate set",
                 )
             )
-        if not validator.discriminating_fragments:
+        # validator.v2: a resolution rests on the deterministic closure, not on
+        # a single discriminating fragment. Three things have to hold, and the
+        # v1 check ("some fragment reached this candidate alone") holds for none
+        # of them in a conjunctive case -- which is why it was replaced rather
+        # than kept alongside.
+        closure = validator.reference_closure
+        if not closure.is_complete:
             violations.append(
                 SoundnessViolation(
                     outcome.case_id,
                     CHECK_NO_FABRICATION,
-                    "resolved with no discriminating fragment",
+                    "resolved on an incomplete reference closure",
                 )
             )
+        if not closure.informative_atom_ids:
+            violations.append(
+                SoundnessViolation(
+                    outcome.case_id,
+                    CHECK_NO_FABRICATION,
+                    "resolved with no informative reference evidence",
+                )
+            )
+        if tuple(sorted(closure.intersection())) != (chosen,):
+            violations.append(
+                SoundnessViolation(
+                    outcome.case_id,
+                    CHECK_NO_FABRICATION,
+                    f"resolved {chosen!r} but the closure isolates "
+                    f"{sorted(closure.intersection())}",
+                )
+            )
+        for atom in closure.informative_atoms():
+            if atom.fragment not in narration:
+                violations.append(
+                    SoundnessViolation(
+                        outcome.case_id,
+                        CHECK_FRAGMENT_IN_NARRATION,
+                        f"closure atom {atom.atom_id} quotes {atom.fragment!r}, which "
+                        "is absent from the bank narration",
+                    )
+                )
+            for match in atom.matches:
+                if match.relation_id not in accepted:
+                    violations.append(
+                        SoundnessViolation(
+                            outcome.case_id,
+                            CHECK_ACCEPTED_RELATIONS,
+                            f"closure atom {atom.atom_id} rests on relation "
+                            f"{match.relation_id!r}, which is not in the declared "
+                            f"accepted set {sorted(accepted)}",
+                        )
+                    )
 
         assessment = next(
             (a for a in validator.financial_assessments if a.candidate_id == chosen),
@@ -644,6 +847,12 @@ __all__ = [
     "accepted_relations_for",
     "agent_metrics",
     "aggregate_scores",
+    "conjunction_metrics",
+    "metrics_by_archetype",
+    "metrics_by_candidate_count",
+    "metrics_by_family",
+    "metrics_by_required_composition",
+    "metrics_by_tier",
     "soundness_violations",
     "telemetry",
     "telemetry_from_payloads",

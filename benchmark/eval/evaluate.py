@@ -36,6 +36,12 @@ from benchmark.eval.scoring import (
     CaseVerdict,
     agent_metrics,
     aggregate_scores,
+    conjunction_metrics,
+    metrics_by_archetype,
+    metrics_by_candidate_count,
+    metrics_by_family,
+    metrics_by_required_composition,
+    metrics_by_tier,
     soundness_violations,
     telemetry,
     telemetry_from_payloads,
@@ -205,6 +211,14 @@ def _recorded_only_result(
         },
         "recorded_versions": versions_from_payloads(payloads),
         "metrics": metrics,
+        # No decision was produced, so there is nothing to slice. Empty rather
+        # than absent, and empty rather than zero-filled: a zero here would
+        # read as a measured result.
+        "metrics_by_tier": {},
+        "metrics_by_archetype": {},
+        "metrics_by_family": {},
+        "metrics_by_required_composition": {},
+        "metrics_by_candidate_count": {},
         "agent": {
             **trajectory_metrics(payloads),
             "accepted_evidence_relations": {},
@@ -213,6 +227,12 @@ def _recorded_only_result(
             "evidence_detail_available": False,
         },
         "telemetry": telemetry_from_payloads(payloads),
+        # No decision was produced, so there is no evidence shape to describe.
+        "conjunction": {
+            "resolutions_total": None,
+            "closure_is_the_decision_input": None,
+            "note": unavailable,
+        },
         "soundness": {
             "total_violations": None,
             "violations_by_check": {},
@@ -327,7 +347,17 @@ def evaluate(config: EvaluationConfig, *, staging_dir: Path) -> EvaluationResult
         },
         "recorded_versions": versions_of(outcomes),
         "metrics": aggregate_scores(verdicts),
+        # Sliced views of the same verdicts. Present for every split, empty
+        # where the split's ground truth carries no such label -- an empty
+        # block reads as "this benchmark generation has no families", which
+        # is true, while an absent key would read as "not measured".
+        "metrics_by_tier": metrics_by_tier(verdicts),
+        "metrics_by_archetype": metrics_by_archetype(verdicts),
+        "metrics_by_family": metrics_by_family(verdicts),
+        "metrics_by_required_composition": metrics_by_required_composition(verdicts),
+        "metrics_by_candidate_count": metrics_by_candidate_count(verdicts),
         "agent": {**agent_metrics(outcomes), "evidence_detail_available": True},
+        "conjunction": conjunction_metrics(outcomes),
         "telemetry": telemetry(outcomes),
         "soundness": {
             "total_violations": len(violations),
