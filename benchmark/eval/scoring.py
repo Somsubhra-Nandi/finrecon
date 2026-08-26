@@ -152,6 +152,7 @@ def accepted_relations_for(outcome: CaseOutcome) -> tuple[dict, ...]:
                 continue
             relations.append(
                 {
+                    "evidence_kind": "reference",
                     "atom_id": atom.atom_id,
                     "fragment": atom.fragment,
                     "narration_span": list(atom.span),
@@ -164,6 +165,40 @@ def accepted_relations_for(outcome: CaseOutcome) -> tuple[dict, ...]:
                     "pinned_reference_characters": match.pinned_reference_characters,
                 }
             )
+    structural = outcome.validator_result.structural_closure
+    for fact in structural.value_date_facts:
+        if chosen not in fact.reached_candidate_ids:
+            continue
+        candidate = next(r for r in fact.candidate_results if r.candidate_id == chosen)
+        relations.append(
+            {
+                "evidence_kind": "value_date",
+                "source_span": fact.raw_source_span,
+                "narration_offsets": list(fact.source_offsets),
+                "relation_id": fact.relation_id,
+                "bank_value_date": fact.bank_value_date.isoformat(),
+                "parsed_value_date": fact.parsed_value_date.isoformat(),
+                "candidate_settlement_dates": [d.isoformat() for d in candidate.candidate_settlement_dates],
+                "candidates_reached": len(fact.reached_candidate_ids),
+            }
+        )
+    for fact in structural.breakup_amount_facts:
+        if chosen not in fact.reached_candidate_ids:
+            continue
+        matches = [match for match in fact.matches if match.candidate_id == chosen]
+        relations.append(
+            {
+                "evidence_kind": "breakup_amount",
+                "source_span": fact.raw_source_span,
+                "raw_amount_token": fact.raw_amount_token,
+                "narration_offsets": list(fact.source_offsets),
+                "parsed_amount_paise": fact.parsed_amount_paise,
+                "relation_id": fact.relation_id,
+                "settlement_ids": sorted({match.settlement_id for match in matches}),
+                "signed_line_amounts_paise": sorted({match.signed_amount_paise for match in matches}),
+                "candidates_reached": len(fact.reached_candidate_ids),
+            }
+        )
     return tuple(relations)
 
 
@@ -389,6 +424,35 @@ def conjunction_metrics(outcomes: Iterable[CaseOutcome]) -> dict:
     }
 
 
+def structural_metrics(outcomes: Iterable[CaseOutcome]) -> dict:
+    """Decision-basis and provenance counts for validator.v3 structural facts."""
+    items = list(outcomes)
+    bases: Counter = Counter()
+    states: Counter = Counter()
+    value_date_facts = 0
+    amount_facts = 0
+    contradiction_escalations = 0
+    for outcome in items:
+        validator = outcome.validator_result
+        bases[validator.resolution_evidence_basis] += 1
+        states[validator.structural_evidence_state] += 1
+        value_date_facts += len(validator.structural_closure.value_date_facts)
+        amount_facts += len(validator.structural_closure.breakup_amount_facts)
+        if not outcome.decision.resolved and validator.resolution_evidence_basis == "structural_contradiction":
+            contradiction_escalations += 1
+    return {
+        "resolution_evidence_basis": dict(sorted(bases.items())),
+        "structural_evidence_states": dict(sorted(states.items())),
+        "reference_only_resolutions": sum(1 for o in items if o.decision.resolved and o.validator_result.resolution_evidence_basis == "reference-only"),
+        "reference_plus_date_resolutions": sum(1 for o in items if o.decision.resolved and o.validator_result.resolution_evidence_basis == "reference+date"),
+        "reference_plus_amount_resolutions": sum(1 for o in items if o.decision.resolved and o.validator_result.resolution_evidence_basis == "reference+amount"),
+        "structural_contradiction_escalations": contradiction_escalations,
+        "value_date_facts": value_date_facts,
+        "breakup_amount_facts": amount_facts,
+        "complete_snapshot_is_structural_axis": True,
+    }
+
+
 # --- Soundness -------------------------------------------------------------
 
 
@@ -500,13 +564,13 @@ def soundness_violations(outcomes: Iterable[CaseOutcome]) -> list[SoundnessViola
                     "resolved with no informative reference evidence",
                 )
             )
-        if tuple(sorted(closure.intersection())) != (chosen,):
+        if validator.combined_consistent_candidate_ids != (chosen,):
             violations.append(
                 SoundnessViolation(
                     outcome.case_id,
                     CHECK_NO_FABRICATION,
-                    f"resolved {chosen!r} but the closure isolates "
-                    f"{sorted(closure.intersection())}",
+                    f"resolved {chosen!r} but combined closed evidence isolates "
+                    f"{list(validator.combined_consistent_candidate_ids)}",
                 )
             )
         for atom in closure.informative_atoms():
@@ -654,7 +718,8 @@ def agent_metrics(outcomes: Iterable[CaseOutcome]) -> dict:
             blockers[blocker] += 1
         for relation in accepted_relations_for(outcome):
             relations[relation["relation_id"]] += 1
-            reference_kinds[relation["reference_kind"]] += 1
+            if relation.get("reference_kind") is not None:
+                reference_kinds[relation["reference_kind"]] += 1
 
     return {
         **base,
@@ -848,6 +913,7 @@ __all__ = [
     "agent_metrics",
     "aggregate_scores",
     "conjunction_metrics",
+    "structural_metrics",
     "metrics_by_archetype",
     "metrics_by_candidate_count",
     "metrics_by_family",

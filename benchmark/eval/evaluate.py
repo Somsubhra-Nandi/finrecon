@@ -37,6 +37,7 @@ from benchmark.eval.scoring import (
     agent_metrics,
     aggregate_scores,
     conjunction_metrics,
+    structural_metrics,
     metrics_by_archetype,
     metrics_by_candidate_count,
     metrics_by_family,
@@ -358,6 +359,7 @@ def evaluate(config: EvaluationConfig, *, staging_dir: Path) -> EvaluationResult
         "metrics_by_candidate_count": metrics_by_candidate_count(verdicts),
         "agent": {**agent_metrics(outcomes), "evidence_detail_available": True},
         "conjunction": conjunction_metrics(outcomes),
+        "structural": structural_metrics(outcomes),
         "telemetry": telemetry(outcomes),
         "soundness": {
             "total_violations": len(violations),

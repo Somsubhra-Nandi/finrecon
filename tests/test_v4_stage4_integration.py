@@ -259,8 +259,8 @@ class TestFrozenBenchmarkV3IsUntouched:
         assert names == ["v1.json", "v2.json", "v3.json", "v4-pilot.json"]
 
 
-class TestHistoricalValidatorV1ArtifactsFailClosed:
-    """A v1 trajectory must never be silently reinterpreted as a v2 result.
+class TestHistoricalValidatorArtifactsFailClosed:
+    """A v1/v2 trajectory must never be silently reinterpreted as a v3 result.
 
     ``validator_version`` is part of the trajectory cache key, so the bump to
     ``validator.v2`` changes every key. That is the mechanism, and these tests
@@ -282,9 +282,11 @@ class TestHistoricalValidatorV1ArtifactsFailClosed:
             model=FAKE_MODEL,
             policy=DEFAULT_POLICY,
         )
-        assert inputs.validator_version == "validator.v2"
+        assert inputs.validator_version == "validator.v3"
         as_v1 = replace(inputs, validator_version="validator.v1")
+        as_v2 = replace(inputs, validator_version="validator.v2")
         assert as_v1.key() != inputs.key()
+        assert as_v2.key() != inputs.key()
 
     def test_the_policy_version_is_not_part_of_this_change(self, v4_stage2):
         """Only the validator moved, so only the validator's identity moved."""
@@ -316,11 +318,11 @@ class TestHistoricalValidatorV1ArtifactsFailClosed:
         _record_trajectories(benchmark_dir, "v4-pilot", directory)
 
         # Rewrite each artifact as though it had been produced under the
-        # superseded contract: the key it was filed under no longer matches what
+        # immediately superseded v2 contract: the key it was filed under no longer matches what
         # today's tree computes for the same case.
         for path in sorted(directory.glob("*.json")):
             payload = json.loads(path.read_text(encoding="utf-8"))
-            payload["validator_version"] = "validator.v1"
+            payload["validator_version"] = "validator.v2"
             payload["cache_key"] = "stale" + payload["cache_key"][5:]
             path.write_text(json.dumps(payload), encoding="utf-8")
             path.rename(path.with_name(f"{payload['cache_key']}.json"))
@@ -346,11 +348,11 @@ class TestHistoricalValidatorV1ArtifactsFailClosed:
 
         assert "validator_version" in CONFIGURATION_DIMENSIONS
 
-    def test_a_v2_report_records_the_validator_version_it_was_produced_under(
+    def test_a_v3_report_records_the_validator_version_it_was_produced_under(
         self, v4_evaluation
     ):
         recorded = v4_evaluation.report["recorded_versions"]
-        assert recorded["validator_version"] == ["validator.v2"]
+        assert recorded["validator_version"] == ["validator.v3"]
         assert recorded["policy_version"] == ["policy.v1"]
 
 
@@ -377,21 +379,11 @@ class TestConjunctiveProvenanceIsReported:
         }
 
     def test_the_pilot_s_conjunctive_resolutions_are_counted(self, v4_evaluation):
-        """26 of the pilot's 38 resolutions need composition; 12 do not.
-
-        The twelve split two ways, and the split is worth reading. Eight are the
-        ``single_fragment_control`` archetype, which exists so that "everything
-        needed composition" cannot be an artefact of a broken single-claim path.
-        The other four are ``conflict_stale_reference`` -- resolved, wrongly, on
-        a single claim that no reference evidence contradicts. That those four
-        are single-claim is the whole shape of the remaining gap: composition
-        did not cause them and composition cannot fix them, because what
-        refutes them is a value date rather than a reference.
-        """
+        """The 26 lexical pair/triple resolutions remain separately visible."""
         block = v4_evaluation.report["conjunction"]
         assert block["resolutions_needing_conjunction"] == 26
-        assert block["resolutions_from_a_single_claim"] == 12
-        assert block["resolutions_total"] == 38
+        assert block["resolutions_from_a_single_claim"] == 22
+        assert block["resolutions_total"] == 48
 
     def test_every_reference_state_reported_is_a_declared_one(self, v4_evaluation):
         from finrecon.decide.validator import REFERENCE_STATES
@@ -415,10 +407,40 @@ class TestConjunctiveProvenanceIsReported:
         assert block["resolutions_needing_conjunction"] == 0
         assert block["resolutions_from_a_single_claim"] == block["resolutions_total"]
 
-    def test_wrong_resolutions_still_come_only_from_the_stale_archetype(
+    def test_stale_reference_resolutions_are_eliminated(
         self, v4_evaluation
     ):
-        """v2 added no new unsafe resolution, which is the bar that mattered."""
+        """v3's value-date contradiction closes v2's known unsafe cases."""
         wrong = v4_evaluation.report["wrong_resolutions"]
-        assert len(wrong) == 4
-        assert {w["archetype"] for w in wrong} == {"conflict_stale_reference"}
+        assert wrong == []
+
+    def test_structural_decision_bases_are_reported(self, v4_evaluation):
+        block = v4_evaluation.report["structural"]
+        assert block["reference_only_resolutions"] == 34
+        assert block["reference_plus_date_resolutions"] == 4
+        assert block["reference_plus_amount_resolutions"] == 10
+        assert block["structural_contradiction_escalations"] == 4
+        assert block["complete_snapshot_is_structural_axis"] is True
+
+    def test_structural_provenance_is_reconstructable(self, v4_evaluation):
+        by_composition = {
+            case["required_composition"]: case
+            for case in v4_evaluation.report["per_case"]
+            if case["resolved"] and case["required_composition"] in {
+                "fragment_and_value_date", "fragment_and_breakup_amount"
+            }
+        }
+        dated = next(
+            relation for relation in by_composition["fragment_and_value_date"]["evidence_relations"]
+            if relation["evidence_kind"] == "value_date"
+        )
+        assert dated["source_span"].startswith("VALDT ")
+        assert dated["bank_value_date"] == dated["parsed_value_date"]
+        assert dated["candidate_settlement_dates"]
+        amount = next(
+            relation for relation in by_composition["fragment_and_breakup_amount"]["evidence_relations"]
+            if relation["evidence_kind"] == "breakup_amount"
+        )
+        assert amount["source_span"].startswith("RFND ")
+        assert isinstance(amount["parsed_amount_paise"], int)
+        assert amount["signed_line_amounts_paise"] == [-amount["parsed_amount_paise"]]
