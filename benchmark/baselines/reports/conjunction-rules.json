@@ -1,0 +1,1415 @@
+{
+  "adversarial": {
+    "R0_v1_single_fragment": {
+      "cases": 14,
+      "failures": [
+        {
+          "actual": "bnk_adv_000001|setl_adv_000001",
+          "attack": "stale reference, reference-inconsistent",
+          "expected": null,
+          "fixture": "stale_strong_reference_plus_hinge",
+          "state": "resolved",
+          "why_it_matters": "A twelve-character prefix of A looks conclusive and, under the original single-fragment rule, is. The same line also carries a clue consistent only with B and C, so the reference evidence contradicts itself and the case has to escalate. This is the one fixture where validator v1 resolves and v2 must not."
+        },
+        {
+          "actual": "bnk_adv_000001|setl_adv_000001",
+          "attack": "contradiction monotonicity, by omission",
+          "expected": null,
+          "fixture": "contradiction_after_untested",
+          "state": "resolved",
+          "why_it_matters": "As above, except the agent does not test the contradicting clue. The contradiction is in the narration either way, so the outcome must be the same."
+        },
+        {
+          "actual": null,
+          "attack": "none (capability control)",
+          "expected": "bnk_adv_000001|setl_adv_000001",
+          "fixture": "conjunction_clean_resolution",
+          "state": "no_evidence",
+          "why_it_matters": "The capability this whole change exists for: two clues, neither conclusive alone, and no third clue contradicting them. Without this fixture a rule that escalates everything would score perfectly."
+        }
+      ],
+      "matched": 11,
+      "safe": false
+    },
+    "R1_model_selected_intersection": {
+      "cases": 14,
+      "failures": [
+        {
+          "actual": "bnk_adv_000001|setl_adv_000001",
+          "attack": "omission",
+          "expected": null,
+          "fixture": "cherry_picking",
+          "state": "resolved",
+          "why_it_matters": "The agent tested the two clues that intersect on A and skipped the one that rules A out. Read completely the narration proves nothing, and the same narration would have 'proved' B or C for a different pair."
+        },
+        {
+          "actual": "bnk_adv_000001|setl_adv_000002",
+          "attack": "omission",
+          "expected": null,
+          "fixture": "cherry_picking_toward_b",
+          "state": "resolved",
+          "why_it_matters": "Same narration, a different pair, a different false proof. Included because a rule that only fails the first ordering is not safe, it is lucky."
+        },
+        {
+          "actual": "bnk_adv_000001|setl_adv_000003",
+          "attack": "omission",
+          "expected": null,
+          "fixture": "cherry_picking_toward_c",
+          "state": "resolved",
+          "why_it_matters": "The third false proof from the same line."
+        },
+        {
+          "actual": "bnk_adv_000001|setl_adv_000001",
+          "attack": "stale reference, reference-inconsistent",
+          "expected": null,
+          "fixture": "stale_strong_reference_plus_hinge",
+          "state": "resolved",
+          "why_it_matters": "A twelve-character prefix of A looks conclusive and, under the original single-fragment rule, is. The same line also carries a clue consistent only with B and C, so the reference evidence contradicts itself and the case has to escalate. This is the one fixture where validator v1 resolves and v2 must not."
+        },
+        {
+          "actual": "bnk_adv_000001|setl_adv_000001",
+          "attack": "contradiction monotonicity, by omission",
+          "expected": null,
+          "fixture": "contradiction_after_untested",
+          "state": "resolved",
+          "why_it_matters": "As above, except the agent does not test the contradicting clue. The contradiction is in the narration either way, so the outcome must be the same."
+        }
+      ],
+      "matched": 9,
+      "safe": false
+    },
+    "R2_seeded_closure_intersection": {
+      "cases": 14,
+      "failures": [],
+      "matched": 14,
+      "safe": true
+    },
+    "R3_open_closure_intersection": {
+      "cases": 14,
+      "failures": [],
+      "matched": 14,
+      "safe": true
+    },
+    "R4_closure_verified_model_proof": {
+      "cases": 14,
+      "failures": [],
+      "matched": 14,
+      "safe": true
+    }
+  },
+  "agent_evidence_source": "benchmark.baselines.conjunction.bounded_agent_fragments -- two mechanical narration splits, deterministic and non-linguistic; not a model and not a model result",
+  "baseline_suite_version": "baselines.v1",
+  "dev": {
+    "R0_v1_single_fragment": {
+      "by_archetype": {
+        "ambiguous_same_amount_same_date": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "degraded_reference:embedded_in_narration": {
+          "cases": 33,
+          "correct": 33,
+          "resolved": 33,
+          "wrong": 0
+        },
+        "degraded_reference:masked": {
+          "cases": 33,
+          "correct": 29,
+          "resolved": 29,
+          "wrong": 0
+        },
+        "degraded_reference:reordered": {
+          "cases": 33,
+          "correct": 23,
+          "resolved": 23,
+          "wrong": 0
+        },
+        "degraded_reference:separator_altered": {
+          "cases": 33,
+          "correct": 31,
+          "resolved": 31,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_left": {
+          "cases": 34,
+          "correct": 26,
+          "resolved": 26,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_right": {
+          "cases": 34,
+          "correct": 29,
+          "resolved": 29,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {},
+      "by_tier": {
+        "T2": {
+          "cases": 200,
+          "correct": 171,
+          "resolved": 171,
+          "wrong": 0
+        },
+        "T3": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        }
+      },
+      "cases": 240,
+      "correct": 171,
+      "escalated": 69,
+      "escalation_recall": 1.0,
+      "false_escalations": 29,
+      "match_rate": 0.855,
+      "resolved": 171,
+      "states": {
+        "no_evidence": 69,
+        "resolved": 171
+      },
+      "unsafe_auto_match_rate": 0.0,
+      "value_at_risk_paise": 0,
+      "wrong": 0,
+      "wrong_cases": []
+    },
+    "R1_model_selected_intersection": {
+      "by_archetype": {
+        "ambiguous_same_amount_same_date": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "degraded_reference:embedded_in_narration": {
+          "cases": 33,
+          "correct": 33,
+          "resolved": 33,
+          "wrong": 0
+        },
+        "degraded_reference:masked": {
+          "cases": 33,
+          "correct": 29,
+          "resolved": 29,
+          "wrong": 0
+        },
+        "degraded_reference:reordered": {
+          "cases": 33,
+          "correct": 23,
+          "resolved": 23,
+          "wrong": 0
+        },
+        "degraded_reference:separator_altered": {
+          "cases": 33,
+          "correct": 31,
+          "resolved": 31,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_left": {
+          "cases": 34,
+          "correct": 26,
+          "resolved": 26,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_right": {
+          "cases": 34,
+          "correct": 29,
+          "resolved": 29,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {},
+      "by_tier": {
+        "T2": {
+          "cases": 200,
+          "correct": 171,
+          "resolved": 171,
+          "wrong": 0
+        },
+        "T3": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        }
+      },
+      "cases": 240,
+      "correct": 171,
+      "escalated": 69,
+      "escalation_recall": 1.0,
+      "false_escalations": 29,
+      "match_rate": 0.855,
+      "resolved": 171,
+      "states": {
+        "no_evidence": 69,
+        "resolved": 171
+      },
+      "unsafe_auto_match_rate": 0.0,
+      "value_at_risk_paise": 0,
+      "wrong": 0,
+      "wrong_cases": []
+    },
+    "R2_seeded_closure_intersection": {
+      "by_archetype": {
+        "ambiguous_same_amount_same_date": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "degraded_reference:embedded_in_narration": {
+          "cases": 33,
+          "correct": 33,
+          "resolved": 33,
+          "wrong": 0
+        },
+        "degraded_reference:masked": {
+          "cases": 33,
+          "correct": 29,
+          "resolved": 29,
+          "wrong": 0
+        },
+        "degraded_reference:reordered": {
+          "cases": 33,
+          "correct": 23,
+          "resolved": 23,
+          "wrong": 0
+        },
+        "degraded_reference:separator_altered": {
+          "cases": 33,
+          "correct": 31,
+          "resolved": 31,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_left": {
+          "cases": 34,
+          "correct": 26,
+          "resolved": 26,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_right": {
+          "cases": 34,
+          "correct": 29,
+          "resolved": 29,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {},
+      "by_tier": {
+        "T2": {
+          "cases": 200,
+          "correct": 171,
+          "resolved": 171,
+          "wrong": 0
+        },
+        "T3": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        }
+      },
+      "cases": 240,
+      "correct": 171,
+      "escalated": 69,
+      "escalation_recall": 1.0,
+      "false_escalations": 29,
+      "match_rate": 0.855,
+      "resolved": 171,
+      "states": {
+        "no_evidence": 69,
+        "resolved": 171
+      },
+      "unsafe_auto_match_rate": 0.0,
+      "value_at_risk_paise": 0,
+      "wrong": 0,
+      "wrong_cases": []
+    },
+    "R3_open_closure_intersection": {
+      "by_archetype": {
+        "ambiguous_same_amount_same_date": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "degraded_reference:embedded_in_narration": {
+          "cases": 33,
+          "correct": 33,
+          "resolved": 33,
+          "wrong": 0
+        },
+        "degraded_reference:masked": {
+          "cases": 33,
+          "correct": 33,
+          "resolved": 33,
+          "wrong": 0
+        },
+        "degraded_reference:reordered": {
+          "cases": 33,
+          "correct": 33,
+          "resolved": 33,
+          "wrong": 0
+        },
+        "degraded_reference:separator_altered": {
+          "cases": 33,
+          "correct": 33,
+          "resolved": 33,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_left": {
+          "cases": 34,
+          "correct": 34,
+          "resolved": 34,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_right": {
+          "cases": 34,
+          "correct": 34,
+          "resolved": 34,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {},
+      "by_tier": {
+        "T2": {
+          "cases": 200,
+          "correct": 200,
+          "resolved": 200,
+          "wrong": 0
+        },
+        "T3": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        }
+      },
+      "cases": 240,
+      "correct": 200,
+      "escalated": 40,
+      "escalation_recall": 1.0,
+      "false_escalations": 0,
+      "match_rate": 1.0,
+      "resolved": 200,
+      "states": {
+        "no_evidence": 40,
+        "resolved": 200
+      },
+      "unsafe_auto_match_rate": 0.0,
+      "value_at_risk_paise": 0,
+      "wrong": 0,
+      "wrong_cases": []
+    },
+    "R4_closure_verified_model_proof": {
+      "by_archetype": {
+        "ambiguous_same_amount_same_date": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "degraded_reference:embedded_in_narration": {
+          "cases": 33,
+          "correct": 33,
+          "resolved": 33,
+          "wrong": 0
+        },
+        "degraded_reference:masked": {
+          "cases": 33,
+          "correct": 29,
+          "resolved": 29,
+          "wrong": 0
+        },
+        "degraded_reference:reordered": {
+          "cases": 33,
+          "correct": 23,
+          "resolved": 23,
+          "wrong": 0
+        },
+        "degraded_reference:separator_altered": {
+          "cases": 33,
+          "correct": 31,
+          "resolved": 31,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_left": {
+          "cases": 34,
+          "correct": 26,
+          "resolved": 26,
+          "wrong": 0
+        },
+        "degraded_reference:truncated_right": {
+          "cases": 34,
+          "correct": 29,
+          "resolved": 29,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {},
+      "by_tier": {
+        "T2": {
+          "cases": 200,
+          "correct": 171,
+          "resolved": 171,
+          "wrong": 0
+        },
+        "T3": {
+          "cases": 40,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        }
+      },
+      "cases": 240,
+      "correct": 171,
+      "escalated": 69,
+      "escalation_recall": 1.0,
+      "false_escalations": 29,
+      "match_rate": 0.855,
+      "resolved": 171,
+      "states": {
+        "model_evidence_insufficient": 29,
+        "no_evidence": 40,
+        "resolved": 171
+      },
+      "unsafe_auto_match_rate": 0.0,
+      "value_at_risk_paise": 0,
+      "wrong": 0,
+      "wrong_cases": []
+    }
+  },
+  "invariance": {
+    "R0_v1_single_fragment": {
+      "duplicate": true,
+      "order": true
+    },
+    "R1_model_selected_intersection": {
+      "duplicate": true,
+      "order": true
+    },
+    "R2_seeded_closure_intersection": {
+      "duplicate": true,
+      "order": true
+    },
+    "R3_open_closure_intersection": {
+      "duplicate": true,
+      "order": true
+    },
+    "R4_closure_verified_model_proof": {
+      "duplicate": true,
+      "order": true
+    }
+  },
+  "no_evidence_invariant": {
+    "R0_v1_single_fragment": {
+      "refuses_when_uninvestigated": true,
+      "resolves_when_investigated": false,
+      "state_when_uninvestigated": "no_evidence"
+    },
+    "R1_model_selected_intersection": {
+      "refuses_when_uninvestigated": true,
+      "resolves_when_investigated": true,
+      "state_when_uninvestigated": "no_evidence"
+    },
+    "R2_seeded_closure_intersection": {
+      "refuses_when_uninvestigated": true,
+      "resolves_when_investigated": true,
+      "state_when_uninvestigated": "no_evidence"
+    },
+    "R3_open_closure_intersection": {
+      "refuses_when_uninvestigated": false,
+      "resolves_when_investigated": true,
+      "state_when_uninvestigated": "resolved"
+    },
+    "R4_closure_verified_model_proof": {
+      "refuses_when_uninvestigated": true,
+      "resolves_when_investigated": true,
+      "state_when_uninvestigated": "model_evidence_insufficient"
+    }
+  },
+  "provider_calls_made": false,
+  "report_kind": "conjunctive_rule_comparison",
+  "shippability_criteria": "adversarially safe on every fixture; order- and duplicate-invariant; zero wrong resolutions on DEV; zero DEV T3 resolutions; and no fewer correct DEV T2 resolutions than the rule already shipped (R0). The v4 stale-reference archetype is deliberately NOT a criterion: separating it needs a narration-date-to-settlement-date relation, which this change does not add, so no reference-only rule can escalate it and requiring one to would be requiring the impossible. A rule must also still refuse a case the investigation gathered no evidence for, which is what separates the otherwise equally safe closure rules.",
+  "v4_pilot": {
+    "R0_v1_single_fragment": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "cases": 12,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "cases": 8,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "cases": 20,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "none": {
+          "cases": 16,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_tier": {
+        "V4": {
+          "cases": 64,
+          "correct": 8,
+          "resolved": 12,
+          "wrong": 4
+        }
+      },
+      "cases": 64,
+      "correct": 8,
+      "escalated": 52,
+      "escalation_recall": 0.75,
+      "false_escalations": 40,
+      "match_rate": 0.166667,
+      "resolved": 12,
+      "states": {
+        "no_evidence": 52,
+        "resolved": 12
+      },
+      "unsafe_auto_match_rate": 0.0625,
+      "value_at_risk_paise": 13445282,
+      "wrong": 4,
+      "wrong_cases": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    },
+    "R1_model_selected_intersection": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "cases": 12,
+          "correct": 12,
+          "resolved": 12,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "cases": 6,
+          "correct": 6,
+          "resolved": 6,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "cases": 20,
+          "correct": 20,
+          "resolved": 20,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "cases": 6,
+          "correct": 6,
+          "resolved": 6,
+          "wrong": 0
+        },
+        "none": {
+          "cases": 16,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_tier": {
+        "V4": {
+          "cases": 64,
+          "correct": 34,
+          "resolved": 38,
+          "wrong": 4
+        }
+      },
+      "cases": 64,
+      "correct": 34,
+      "escalated": 26,
+      "escalation_recall": 0.75,
+      "false_escalations": 14,
+      "match_rate": 0.708333,
+      "resolved": 38,
+      "states": {
+        "ambiguous": 20,
+        "no_evidence": 6,
+        "resolved": 38
+      },
+      "unsafe_auto_match_rate": 0.0625,
+      "value_at_risk_paise": 13445282,
+      "wrong": 4,
+      "wrong_cases": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    },
+    "R2_seeded_closure_intersection": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "cases": 12,
+          "correct": 12,
+          "resolved": 12,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "cases": 6,
+          "correct": 6,
+          "resolved": 6,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "cases": 20,
+          "correct": 20,
+          "resolved": 20,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "cases": 6,
+          "correct": 6,
+          "resolved": 6,
+          "wrong": 0
+        },
+        "none": {
+          "cases": 16,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_tier": {
+        "V4": {
+          "cases": 64,
+          "correct": 34,
+          "resolved": 38,
+          "wrong": 4
+        }
+      },
+      "cases": 64,
+      "correct": 34,
+      "escalated": 26,
+      "escalation_recall": 0.75,
+      "false_escalations": 14,
+      "match_rate": 0.708333,
+      "resolved": 38,
+      "states": {
+        "ambiguous": 20,
+        "no_evidence": 6,
+        "resolved": 38
+      },
+      "unsafe_auto_match_rate": 0.0625,
+      "value_at_risk_paise": 13445282,
+      "wrong": 4,
+      "wrong_cases": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    },
+    "R3_open_closure_intersection": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "cases": 12,
+          "correct": 12,
+          "resolved": 12,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "cases": 6,
+          "correct": 6,
+          "resolved": 6,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "cases": 20,
+          "correct": 20,
+          "resolved": 20,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "cases": 6,
+          "correct": 6,
+          "resolved": 6,
+          "wrong": 0
+        },
+        "none": {
+          "cases": 16,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_tier": {
+        "V4": {
+          "cases": 64,
+          "correct": 34,
+          "resolved": 38,
+          "wrong": 4
+        }
+      },
+      "cases": 64,
+      "correct": 34,
+      "escalated": 26,
+      "escalation_recall": 0.75,
+      "false_escalations": 14,
+      "match_rate": 0.708333,
+      "resolved": 38,
+      "states": {
+        "ambiguous": 20,
+        "no_evidence": 6,
+        "resolved": 38
+      },
+      "unsafe_auto_match_rate": 0.0625,
+      "value_at_risk_paise": 13445282,
+      "wrong": 4,
+      "wrong_cases": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    },
+    "R4_closure_verified_model_proof": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "cases": 6,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "cases": 12,
+          "correct": 12,
+          "resolved": 12,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "cases": 6,
+          "correct": 6,
+          "resolved": 6,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "cases": 10,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "cases": 4,
+          "correct": 0,
+          "resolved": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "cases": 20,
+          "correct": 20,
+          "resolved": 20,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "cases": 6,
+          "correct": 6,
+          "resolved": 6,
+          "wrong": 0
+        },
+        "none": {
+          "cases": 16,
+          "correct": 0,
+          "resolved": 4,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "cases": 8,
+          "correct": 8,
+          "resolved": 8,
+          "wrong": 0
+        }
+      },
+      "by_tier": {
+        "V4": {
+          "cases": 64,
+          "correct": 34,
+          "resolved": 38,
+          "wrong": 4
+        }
+      },
+      "cases": 64,
+      "correct": 34,
+      "escalated": 26,
+      "escalation_recall": 0.75,
+      "false_escalations": 14,
+      "match_rate": 0.708333,
+      "resolved": 38,
+      "states": {
+        "ambiguous": 20,
+        "no_evidence": 6,
+        "resolved": 38
+      },
+      "unsafe_auto_match_rate": 0.0625,
+      "value_at_risk_paise": 13445282,
+      "wrong": 4,
+      "wrong_cases": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    }
+  },
+  "verdicts": {
+    "R0_v1_single_fragment": {
+      "adversarially_safe": false,
+      "dev_t2_correct": 171,
+      "dev_t2_correct_vs_v1": 0,
+      "dev_t3_resolved": 0,
+      "dev_wrong": 0,
+      "duplicate_invariant": true,
+      "order_invariant": true,
+      "refuses_uninvestigated_case": true,
+      "shippable": false,
+      "v4_correct": 8,
+      "v4_resolved": 12,
+      "v4_wrong": 4
+    },
+    "R1_model_selected_intersection": {
+      "adversarially_safe": false,
+      "dev_t2_correct": 171,
+      "dev_t2_correct_vs_v1": 0,
+      "dev_t3_resolved": 0,
+      "dev_wrong": 0,
+      "duplicate_invariant": true,
+      "order_invariant": true,
+      "refuses_uninvestigated_case": true,
+      "shippable": false,
+      "v4_correct": 34,
+      "v4_resolved": 38,
+      "v4_wrong": 4
+    },
+    "R2_seeded_closure_intersection": {
+      "adversarially_safe": true,
+      "dev_t2_correct": 171,
+      "dev_t2_correct_vs_v1": 0,
+      "dev_t3_resolved": 0,
+      "dev_wrong": 0,
+      "duplicate_invariant": true,
+      "order_invariant": true,
+      "refuses_uninvestigated_case": true,
+      "shippable": true,
+      "v4_correct": 34,
+      "v4_resolved": 38,
+      "v4_wrong": 4
+    },
+    "R3_open_closure_intersection": {
+      "adversarially_safe": true,
+      "dev_t2_correct": 200,
+      "dev_t2_correct_vs_v1": 29,
+      "dev_t3_resolved": 0,
+      "dev_wrong": 0,
+      "duplicate_invariant": true,
+      "order_invariant": true,
+      "refuses_uninvestigated_case": false,
+      "shippable": false,
+      "v4_correct": 34,
+      "v4_resolved": 38,
+      "v4_wrong": 4
+    },
+    "R4_closure_verified_model_proof": {
+      "adversarially_safe": true,
+      "dev_t2_correct": 171,
+      "dev_t2_correct_vs_v1": 0,
+      "dev_t3_resolved": 0,
+      "dev_wrong": 0,
+      "duplicate_invariant": true,
+      "order_invariant": true,
+      "refuses_uninvestigated_case": true,
+      "shippable": true,
+      "v4_correct": 34,
+      "v4_resolved": 38,
+      "v4_wrong": 4
+    }
+  }
+}
