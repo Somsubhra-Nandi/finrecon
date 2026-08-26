@@ -29,6 +29,7 @@ from finrecon.agent.cache import (
 from finrecon.agent.loop import LoopConfig, run_investigation
 from finrecon.agent.providers.chain import ProviderChain
 from finrecon.agent.trajectory import Trajectory
+from finrecon.decide.config import EvidencePolicy, Stage3Policy
 from tests.stage3_factories import settlement_facts, snapshot_of, two_candidate_snapshot
 from tests.stage3_fakes import ExplodingProvider, MechanicalInvestigator
 
@@ -64,7 +65,11 @@ class TestCacheKey:
             "tool_schema_version",
             "agent_loop_version",
             "cache_schema_version",
+            "validator_version",
+            "policy_version",
+            "policy_declaration",
             "max_steps",
+            "max_tool_calls_per_step",
         ):
             assert required in fields
 
@@ -88,6 +93,21 @@ class TestCacheKey:
             snapshot, provider="p", model="m", max_steps=8
         )
 
+    def test_a_different_per_turn_tool_bound_gives_a_different_key(self, snapshot):
+        assert cache_key(
+            snapshot, provider="p", model="m", max_tool_calls_per_step=2
+        ) != cache_key(
+            snapshot, provider="p", model="m", max_tool_calls_per_step=8
+        )
+
+    def test_a_different_early_stop_policy_gives_a_different_key(self, snapshot):
+        strict = Stage3Policy(
+            evidence=EvidencePolicy(min_pinned_reference_characters=12)
+        )
+        assert cache_key(snapshot, provider="p", model="m") != cache_key(
+            snapshot, provider="p", model="m", policy=strict
+        )
+
     def test_a_different_case_gives_a_different_key(self, snapshot):
         other = snapshot_of(
             narration="NEFT CR REF ZZZZZZZZZ",
@@ -107,7 +127,14 @@ class TestCacheKey:
         )
 
     @pytest.mark.parametrize(
-        "version_attr", ["prompt_version", "tool_schema_version", "agent_loop_version"]
+        "version_attr",
+        [
+            "prompt_version",
+            "tool_schema_version",
+            "agent_loop_version",
+            "validator_version",
+            "policy_version",
+        ],
     )
     def test_bumping_a_version_invalidates_the_entry(self, snapshot, version_attr):
         base = cache_key_inputs(snapshot, provider="p", model="m")
@@ -134,6 +161,7 @@ class TestStoreAndLoad:
         assert loaded.step_count == trajectory.step_count
         assert loaded.tool_invocations == trajectory.tool_invocations
         assert loaded.termination_reason == trajectory.termination_reason
+        assert loaded.total_latency_ms == trajectory.total_latency_ms
 
     def test_a_loaded_trajectory_is_marked_replayed(self, snapshot, chain, cache):
         cache.store("k1", run_investigation(snapshot=snapshot, chain=chain))

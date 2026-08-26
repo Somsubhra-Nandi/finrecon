@@ -1,0 +1,6361 @@
+{
+  "arms": {
+    "A_rules_only": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": null,
+          "cases": 12,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 12,
+          "escalation_recall": null,
+          "false_escalations": 12,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 6,
+          "escalation_recall": null,
+          "false_escalations": 6,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": null,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 8,
+          "escalation_recall": null,
+          "false_escalations": 8,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 8
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": null,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 8,
+          "escalation_recall": null,
+          "false_escalations": 8,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 8
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": null,
+          "cases": 40,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 40,
+          "escalation_recall": 1.0,
+          "false_escalations": 34,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 40
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 40
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "4": {
+          "auto_resolution_accuracy": null,
+          "cases": 12,
+          "correct": 0,
+          "correct_escalations": 8,
+          "escalated": 12,
+          "escalation_recall": 1.0,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": null,
+          "cases": 12,
+          "correct": 0,
+          "correct_escalations": 2,
+          "escalated": 12,
+          "escalation_recall": 1.0,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": null,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 4,
+          "escalated": 8,
+          "escalation_recall": 1.0,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 8
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "contextual": {
+          "auto_resolution_accuracy": null,
+          "cases": 36,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 36,
+          "escalation_recall": 1.0,
+          "false_escalations": 30,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 36
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 36
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": null,
+          "cases": 46,
+          "correct": 0,
+          "correct_escalations": 4,
+          "escalated": 46,
+          "escalation_recall": 1.0,
+          "false_escalations": 42,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 46
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 46
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": null,
+          "cases": 64,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 64,
+          "escalation_recall": 1.0,
+          "false_escalations": 48,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 64
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 64
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": null,
+          "cases": 32,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 32,
+          "escalation_recall": 1.0,
+          "false_escalations": 26,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 32
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 32
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": null,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 8,
+          "escalation_recall": null,
+          "false_escalations": 8,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 8
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 16
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 16
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": null,
+          "cases": 20,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 20,
+          "escalation_recall": null,
+          "false_escalations": 20,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 20
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 6,
+          "escalation_recall": null,
+          "false_escalations": 6,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 16
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 16
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": null,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 8,
+          "escalation_recall": null,
+          "false_escalations": 8,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 8
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "stage2_left_unresolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": null,
+        "cases": 64,
+        "correct": 0,
+        "correct_escalations": 16,
+        "escalated": 64,
+        "escalation_recall": 1.0,
+        "false_escalations": 48,
+        "match_rate": 0.0,
+        "minimal_lexical_arity": {
+          "none": 64
+        },
+        "resolved": 0,
+        "stop_reasons": {
+          "stage2_left_unresolved": 64
+        },
+        "unsafe_auto_match_rate": 0.0,
+        "value_at_risk_paise": 0,
+        "wrong": 0
+      },
+      "wrong_resolutions": []
+    },
+    "B1_validator_v1_semantics": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": 0.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 1.0,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": null,
+          "cases": 12,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 12,
+          "escalation_recall": null,
+          "false_escalations": 12,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "2": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 6,
+          "escalation_recall": null,
+          "false_escalations": 6,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": null,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 8,
+          "escalation_recall": null,
+          "false_escalations": 8,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "2": 8
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": 0.666667,
+          "cases": 40,
+          "correct": 8,
+          "correct_escalations": 2,
+          "escalated": 28,
+          "escalation_recall": 0.333333,
+          "false_escalations": 26,
+          "match_rate": 0.235294,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 12,
+            "none": 16
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 26,
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.1,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "4": {
+          "auto_resolution_accuracy": null,
+          "cases": 12,
+          "correct": 0,
+          "correct_escalations": 8,
+          "escalated": 12,
+          "escalation_recall": 1.0,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "none": 8
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": null,
+          "cases": 12,
+          "correct": 0,
+          "correct_escalations": 2,
+          "escalated": 12,
+          "escalation_recall": 1.0,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "3": 6,
+            "none": 2
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": 0.0,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_unique_survivor": 4,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.5,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "contextual": {
+          "auto_resolution_accuracy": null,
+          "cases": 36,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 36,
+          "escalation_recall": 1.0,
+          "false_escalations": 30,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 36
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": 0.666667,
+          "cases": 46,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 34,
+          "escalation_recall": 0.0,
+          "false_escalations": 34,
+          "match_rate": 0.190476,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 20,
+            "none": 14
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "no_unique_survivor": 34,
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.086957,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": 0.666667,
+          "cases": 64,
+          "correct": 8,
+          "correct_escalations": 12,
+          "escalated": 52,
+          "escalation_recall": 0.75,
+          "false_escalations": 40,
+          "match_rate": 0.166667,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 20,
+            "3": 6,
+            "none": 26
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 46,
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0625,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": null,
+          "cases": 32,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 32,
+          "escalation_recall": 1.0,
+          "false_escalations": 26,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 32
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": null,
+          "cases": 20,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 20,
+          "escalation_recall": null,
+          "false_escalations": 20,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "2": 20
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 6,
+          "escalation_recall": null,
+          "false_escalations": 6,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": 0.666667,
+        "cases": 64,
+        "correct": 8,
+        "correct_escalations": 12,
+        "escalated": 52,
+        "escalation_recall": 0.75,
+        "false_escalations": 40,
+        "match_rate": 0.166667,
+        "minimal_lexical_arity": {
+          "1": 12,
+          "2": 20,
+          "3": 6,
+          "none": 26
+        },
+        "resolved": 12,
+        "stop_reasons": {
+          "no_admissible_evidence": 6,
+          "no_unique_survivor": 46,
+          "resolved": 12
+        },
+        "unsafe_auto_match_rate": 0.0625,
+        "value_at_risk_paise": 13445282,
+        "wrong": 4
+      },
+      "wrong_resolutions": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    },
+    "B_shipped_gate_exhaustive": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 12,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 12
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 40,
+          "correct": 34,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 12,
+            "none": 16
+          },
+          "resolved": 34,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 2,
+            "resolved": 34
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "4": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 4,
+          "correct_escalations": 8,
+          "escalated": 8,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "none": 8
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "contradictory_evidence": 6,
+            "no_admissible_evidence": 2,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 10,
+          "correct_escalations": 2,
+          "escalated": 2,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "3": 6,
+            "none": 2
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 4,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "contextual": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 36,
+          "correct": 30,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 10
+          },
+          "resolved": 30,
+          "stop_reasons": {
+            "contradictory_evidence": 6,
+            "resolved": 30
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 46,
+          "correct": 42,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 20,
+            "none": 14
+          },
+          "resolved": 42,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "resolved": 42
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 64,
+          "correct": 48,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 20,
+            "3": 6,
+            "none": 26
+          },
+          "resolved": 48,
+          "stop_reasons": {
+            "contradictory_evidence": 10,
+            "no_admissible_evidence": 6,
+            "resolved": 48
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 32,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "contradictory_evidence": 6,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 10,
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 20,
+          "correct": 20,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20
+          },
+          "resolved": 20,
+          "stop_reasons": {
+            "resolved": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 10,
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": 1.0,
+        "cases": 64,
+        "correct": 48,
+        "correct_escalations": 16,
+        "escalated": 16,
+        "escalation_recall": 1.0,
+        "false_escalations": 0,
+        "match_rate": 1.0,
+        "minimal_lexical_arity": {
+          "1": 12,
+          "2": 20,
+          "3": 6,
+          "none": 26
+        },
+        "resolved": 48,
+        "stop_reasons": {
+          "contradictory_evidence": 10,
+          "no_admissible_evidence": 6,
+          "resolved": 48
+        },
+        "unsafe_auto_match_rate": 0.0,
+        "value_at_risk_paise": 0,
+        "wrong": 0
+      },
+      "wrong_resolutions": []
+    },
+    "C1_lexical_composition": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": 0.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 1.0,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 12,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 12
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": 0.833333,
+          "cases": 40,
+          "correct": 20,
+          "correct_escalations": 2,
+          "escalated": 16,
+          "escalation_recall": 0.333333,
+          "false_escalations": 14,
+          "match_rate": 0.588235,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 12,
+            "none": 16
+          },
+          "resolved": 24,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 14,
+            "resolved": 24
+          },
+          "unsafe_auto_match_rate": 0.1,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "4": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 4,
+          "correct_escalations": 8,
+          "escalated": 8,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "none": 8
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 10,
+          "correct_escalations": 2,
+          "escalated": 2,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "3": 6,
+            "none": 2
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": 0.0,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_unique_survivor": 4,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.5,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "contextual": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 36,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 10,
+          "escalation_recall": 1.0,
+          "false_escalations": 4,
+          "match_rate": 0.866667,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 10
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 10,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": 0.875,
+          "cases": 46,
+          "correct": 28,
+          "correct_escalations": 0,
+          "escalated": 14,
+          "escalation_recall": 0.0,
+          "false_escalations": 14,
+          "match_rate": 0.666667,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 20,
+            "none": 14
+          },
+          "resolved": 32,
+          "stop_reasons": {
+            "no_unique_survivor": 14,
+            "resolved": 32
+          },
+          "unsafe_auto_match_rate": 0.086957,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": 0.894737,
+          "cases": 64,
+          "correct": 34,
+          "correct_escalations": 12,
+          "escalated": 26,
+          "escalation_recall": 0.75,
+          "false_escalations": 14,
+          "match_rate": 0.708333,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 20,
+            "3": 6,
+            "none": 26
+          },
+          "resolved": 38,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 20,
+            "resolved": 38
+          },
+          "unsafe_auto_match_rate": 0.0625,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 32,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 20,
+          "correct": 20,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20
+          },
+          "resolved": 20,
+          "stop_reasons": {
+            "resolved": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": 0.894737,
+        "cases": 64,
+        "correct": 34,
+        "correct_escalations": 12,
+        "escalated": 26,
+        "escalation_recall": 0.75,
+        "false_escalations": 14,
+        "match_rate": 0.708333,
+        "minimal_lexical_arity": {
+          "1": 12,
+          "2": 20,
+          "3": 6,
+          "none": 26
+        },
+        "resolved": 38,
+        "stop_reasons": {
+          "no_admissible_evidence": 6,
+          "no_unique_survivor": 20,
+          "resolved": 38
+        },
+        "unsafe_auto_match_rate": 0.0625,
+        "value_at_risk_paise": 13445282,
+        "wrong": 4
+      },
+      "wrong_resolutions": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    },
+    "C2_lexical_and_structural_composition": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 12,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 12
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 40,
+          "correct": 34,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 26,
+            "none": 2
+          },
+          "resolved": 34,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 2,
+            "resolved": 34
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "4": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 4,
+          "correct_escalations": 8,
+          "escalated": 8,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "none": 8
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 10,
+          "correct_escalations": 2,
+          "escalated": 2,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "3": 6,
+            "none": 2
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 4,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "contextual": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 36,
+          "correct": 30,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 24,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 30,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 30
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 46,
+          "correct": 42,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 34
+          },
+          "resolved": 42,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "resolved": 42
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 64,
+          "correct": 48,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 34,
+            "3": 6,
+            "none": 12
+          },
+          "resolved": 48,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 48
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 32,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 20,
+          "correct": 20,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20
+          },
+          "resolved": 20,
+          "stop_reasons": {
+            "resolved": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": 1.0,
+        "cases": 64,
+        "correct": 48,
+        "correct_escalations": 16,
+        "escalated": 16,
+        "escalation_recall": 1.0,
+        "false_escalations": 0,
+        "match_rate": 1.0,
+        "minimal_lexical_arity": {
+          "1": 12,
+          "2": 34,
+          "3": 6,
+          "none": 12
+        },
+        "resolved": 48,
+        "stop_reasons": {
+          "contradictory_evidence": 4,
+          "no_admissible_evidence": 6,
+          "no_unique_survivor": 6,
+          "resolved": 48
+        },
+        "unsafe_auto_match_rate": 0.0,
+        "value_at_risk_paise": 0,
+        "wrong": 0
+      },
+      "wrong_resolutions": []
+    },
+    "C3_first_subset_that_isolates": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": 0.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 1.0,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 12,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 12
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": 0.894737,
+          "cases": 40,
+          "correct": 34,
+          "correct_escalations": 2,
+          "escalated": 2,
+          "escalation_recall": 0.333333,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 26,
+            "none": 2
+          },
+          "resolved": 38,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "resolved": 38
+          },
+          "unsafe_auto_match_rate": 0.1,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "4": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 4,
+          "correct_escalations": 8,
+          "escalated": 8,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "none": 8
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 10,
+          "correct_escalations": 2,
+          "escalated": 2,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "3": 6,
+            "none": 2
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": 0.5,
+          "cases": 8,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": 0.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "2": 4
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.5,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "contextual": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 36,
+          "correct": 30,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 24,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 30,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 30
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": 0.913043,
+          "cases": 46,
+          "correct": 42,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": 0.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 34
+          },
+          "resolved": 46,
+          "stop_reasons": {
+            "resolved": 46
+          },
+          "unsafe_auto_match_rate": 0.086957,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": 0.923077,
+          "cases": 64,
+          "correct": 48,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 34,
+            "3": 6,
+            "none": 12
+          },
+          "resolved": 52,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 52
+          },
+          "unsafe_auto_match_rate": 0.0625,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 32,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 20,
+          "correct": 20,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20
+          },
+          "resolved": 20,
+          "stop_reasons": {
+            "resolved": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": 0.923077,
+        "cases": 64,
+        "correct": 48,
+        "correct_escalations": 12,
+        "escalated": 12,
+        "escalation_recall": 0.75,
+        "false_escalations": 0,
+        "match_rate": 1.0,
+        "minimal_lexical_arity": {
+          "1": 12,
+          "2": 34,
+          "3": 6,
+          "none": 12
+        },
+        "resolved": 52,
+        "stop_reasons": {
+          "no_admissible_evidence": 6,
+          "no_unique_survivor": 6,
+          "resolved": 52
+        },
+        "unsafe_auto_match_rate": 0.0625,
+        "value_at_risk_paise": 13445282,
+        "wrong": 4
+      },
+      "wrong_resolutions": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    },
+    "S0_validator_v2_reference_only": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": 0.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 1.0,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 12,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 12
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": 0.833333,
+          "cases": 40,
+          "correct": 20,
+          "correct_escalations": 2,
+          "escalated": 16,
+          "escalation_recall": 0.333333,
+          "false_escalations": 14,
+          "match_rate": 0.588235,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 12,
+            "none": 16
+          },
+          "resolved": 24,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 14,
+            "resolved": 24
+          },
+          "unsafe_auto_match_rate": 0.1,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "4": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 4,
+          "correct_escalations": 8,
+          "escalated": 8,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "none": 8
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 10,
+          "correct_escalations": 2,
+          "escalated": 2,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "3": 6,
+            "none": 2
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": 0.0,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_unique_survivor": 4,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.5,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "contextual": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 36,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 10,
+          "escalation_recall": 1.0,
+          "false_escalations": 4,
+          "match_rate": 0.866667,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 10
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 10,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": 0.875,
+          "cases": 46,
+          "correct": 28,
+          "correct_escalations": 0,
+          "escalated": 14,
+          "escalation_recall": 0.0,
+          "false_escalations": 14,
+          "match_rate": 0.666667,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 20,
+            "none": 14
+          },
+          "resolved": 32,
+          "stop_reasons": {
+            "no_unique_survivor": 14,
+            "resolved": 32
+          },
+          "unsafe_auto_match_rate": 0.086957,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": 0.894737,
+          "cases": 64,
+          "correct": 34,
+          "correct_escalations": 12,
+          "escalated": 26,
+          "escalation_recall": 0.75,
+          "false_escalations": 14,
+          "match_rate": 0.708333,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 20,
+            "3": 6,
+            "none": 26
+          },
+          "resolved": 38,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 20,
+            "resolved": 38
+          },
+          "unsafe_auto_match_rate": 0.0625,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 32,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 20,
+          "correct": 20,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20
+          },
+          "resolved": 20,
+          "stop_reasons": {
+            "resolved": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": 0.894737,
+        "cases": 64,
+        "correct": 34,
+        "correct_escalations": 12,
+        "escalated": 26,
+        "escalation_recall": 0.75,
+        "false_escalations": 14,
+        "match_rate": 0.708333,
+        "minimal_lexical_arity": {
+          "1": 12,
+          "2": 20,
+          "3": 6,
+          "none": 26
+        },
+        "resolved": 38,
+        "stop_reasons": {
+          "no_admissible_evidence": 6,
+          "no_unique_survivor": 20,
+          "resolved": 38
+        },
+        "unsafe_auto_match_rate": 0.0625,
+        "value_at_risk_paise": 13445282,
+        "wrong": 4
+      },
+      "wrong_resolutions": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    },
+    "S1_reference_and_value_date": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 12,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 12
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 40,
+          "correct": 24,
+          "correct_escalations": 6,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 10,
+          "match_rate": 0.705882,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 16,
+            "none": 12
+          },
+          "resolved": 24,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 10,
+            "resolved": 24
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "4": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 4,
+          "correct_escalations": 8,
+          "escalated": 8,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "none": 8
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 10,
+          "correct_escalations": 2,
+          "escalated": 2,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "3": 6,
+            "none": 2
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 4,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "contextual": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 36,
+          "correct": 30,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 24,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 30,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 30
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 46,
+          "correct": 32,
+          "correct_escalations": 4,
+          "escalated": 14,
+          "escalation_recall": 1.0,
+          "false_escalations": 10,
+          "match_rate": 0.761905,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 24,
+            "none": 10
+          },
+          "resolved": 32,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_unique_survivor": 10,
+            "resolved": 32
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 64,
+          "correct": 38,
+          "correct_escalations": 16,
+          "escalated": 26,
+          "escalation_recall": 1.0,
+          "false_escalations": 10,
+          "match_rate": 0.791667,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 24,
+            "3": 6,
+            "none": 22
+          },
+          "resolved": 38,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 16,
+            "resolved": 38
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 32,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": null,
+          "cases": 10,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 10,
+          "escalation_recall": null,
+          "false_escalations": 10,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 10
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 20,
+          "correct": 20,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20
+          },
+          "resolved": 20,
+          "stop_reasons": {
+            "resolved": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": 1.0,
+        "cases": 64,
+        "correct": 38,
+        "correct_escalations": 16,
+        "escalated": 26,
+        "escalation_recall": 1.0,
+        "false_escalations": 10,
+        "match_rate": 0.791667,
+        "minimal_lexical_arity": {
+          "1": 12,
+          "2": 24,
+          "3": 6,
+          "none": 22
+        },
+        "resolved": 38,
+        "stop_reasons": {
+          "contradictory_evidence": 4,
+          "no_admissible_evidence": 6,
+          "no_unique_survivor": 16,
+          "resolved": 38
+        },
+        "unsafe_auto_match_rate": 0.0,
+        "value_at_risk_paise": 0,
+        "wrong": 0
+      },
+      "wrong_resolutions": []
+    },
+    "S2_reference_and_breakup_amount": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": 0.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 1.0,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 12,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 12
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": 0.882353,
+          "cases": 40,
+          "correct": 30,
+          "correct_escalations": 2,
+          "escalated": 6,
+          "escalation_recall": 0.333333,
+          "false_escalations": 4,
+          "match_rate": 0.882353,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 22,
+            "none": 6
+          },
+          "resolved": 34,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 4,
+            "resolved": 34
+          },
+          "unsafe_auto_match_rate": 0.1,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "4": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 4,
+          "correct_escalations": 8,
+          "escalated": 8,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "none": 8
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 10,
+          "correct_escalations": 2,
+          "escalated": 2,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "3": 6,
+            "none": 2
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 8,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": 0.0,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_unique_survivor": 4,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.5,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "contextual": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 36,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 10,
+          "escalation_recall": 1.0,
+          "false_escalations": 4,
+          "match_rate": 0.866667,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 10
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 10,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": 0.904762,
+          "cases": 46,
+          "correct": 38,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": 0.0,
+          "false_escalations": 4,
+          "match_rate": 0.904762,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 30,
+            "none": 4
+          },
+          "resolved": 42,
+          "stop_reasons": {
+            "no_unique_survivor": 4,
+            "resolved": 42
+          },
+          "unsafe_auto_match_rate": 0.086957,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": 0.916667,
+          "cases": 64,
+          "correct": 44,
+          "correct_escalations": 12,
+          "escalated": 16,
+          "escalation_recall": 0.75,
+          "false_escalations": 4,
+          "match_rate": 0.916667,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 30,
+            "3": 6,
+            "none": 16
+          },
+          "resolved": 48,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 10,
+            "resolved": 48
+          },
+          "unsafe_auto_match_rate": 0.0625,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 32,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 0,
+          "escalated": 4,
+          "escalation_recall": null,
+          "false_escalations": 4,
+          "match_rate": 0.0,
+          "minimal_lexical_arity": {
+            "none": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 20,
+          "correct": 20,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20
+          },
+          "resolved": 20,
+          "stop_reasons": {
+            "resolved": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": 0.0,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 12,
+          "escalated": 12,
+          "escalation_recall": 0.75,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.25,
+          "value_at_risk_paise": 13445282,
+          "wrong": 4
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": 0.916667,
+        "cases": 64,
+        "correct": 44,
+        "correct_escalations": 12,
+        "escalated": 16,
+        "escalation_recall": 0.75,
+        "false_escalations": 4,
+        "match_rate": 0.916667,
+        "minimal_lexical_arity": {
+          "1": 12,
+          "2": 30,
+          "3": 6,
+          "none": 16
+        },
+        "resolved": 48,
+        "stop_reasons": {
+          "no_admissible_evidence": 6,
+          "no_unique_survivor": 10,
+          "resolved": 48
+        },
+        "unsafe_auto_match_rate": 0.0625,
+        "value_at_risk_paise": 13445282,
+        "wrong": 4
+      },
+      "wrong_resolutions": [
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000036",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000128"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 4659365
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000049",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000174"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3890070
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000051",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000183"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 1108769
+        },
+        {
+          "archetype": "conflict_stale_reference",
+          "case_id": "case:bnk_v4pilot_000055",
+          "predicted_settlement_ids": [
+            "setl_v4pilot_000194"
+          ],
+          "reason": "resolved a case with no correct answer",
+          "truth_settlement_ids": [],
+          "value_at_stake_paise": 3787078
+        }
+      ]
+    },
+    "S3_conservative_structural_composition": {
+      "by_archetype": {
+        "ambiguity_conjunction_incomplete": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "ambiguity_no_discriminator": {
+          "auto_resolution_accuracy": null,
+          "cases": 6,
+          "correct": 0,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "none": 6
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "no_admissible_evidence": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "amount_reference_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_context_resolves": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict_stale_reference": {
+          "auto_resolution_accuracy": null,
+          "cases": 4,
+          "correct": 0,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 12,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 12
+          },
+          "resolved": 12,
+          "stop_reasons": {
+            "resolved": 12
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conjunction_wide": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_candidate_count": {
+        "3": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 40,
+          "correct": 34,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 26,
+            "none": 2
+          },
+          "resolved": 34,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 2,
+            "resolved": 34
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "4": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 4,
+          "correct_escalations": 8,
+          "escalated": 8,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "none": 8
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "no_unique_survivor": 6,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "5": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 12,
+          "correct": 10,
+          "correct_escalations": 2,
+          "escalated": 2,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4,
+            "3": 6,
+            "none": 2
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "no_admissible_evidence": 2,
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_family": {
+        "amount_reference": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "conflict": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 4,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "contextual": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 36,
+          "correct": 30,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 24,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 30,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 30
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "decoy": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 46,
+          "correct": 42,
+          "correct_escalations": 4,
+          "escalated": 4,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 34
+          },
+          "resolved": 42,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "resolved": 42
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_candidate": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 64,
+          "correct": 48,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 12,
+            "2": 34,
+            "3": 6,
+            "none": 12
+          },
+          "resolved": 48,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6,
+            "resolved": 48
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 32,
+          "correct": 26,
+          "correct_escalations": 6,
+          "escalated": 6,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20,
+            "3": 6,
+            "none": 6
+          },
+          "resolved": 26,
+          "stop_reasons": {
+            "no_unique_survivor": 6,
+            "resolved": 26
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "multi_hop": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment_control": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "true_ambiguity": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "by_required_composition": {
+        "fragment_and_breakup_amount": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 10,
+          "correct": 10,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 10
+          },
+          "resolved": 10,
+          "stop_reasons": {
+            "resolved": 10
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_and_value_date": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 4,
+          "correct": 4,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 4
+          },
+          "resolved": 4,
+          "stop_reasons": {
+            "resolved": 4
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_pair": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 20,
+          "correct": 20,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "2": 20
+          },
+          "resolved": 20,
+          "stop_reasons": {
+            "resolved": 20
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "fragment_triple": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 6,
+          "correct": 6,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "3": 6
+          },
+          "resolved": 6,
+          "stop_reasons": {
+            "resolved": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "none": {
+          "auto_resolution_accuracy": null,
+          "cases": 16,
+          "correct": 0,
+          "correct_escalations": 16,
+          "escalated": 16,
+          "escalation_recall": 1.0,
+          "false_escalations": 0,
+          "match_rate": null,
+          "minimal_lexical_arity": {
+            "1": 4,
+            "none": 12
+          },
+          "resolved": 0,
+          "stop_reasons": {
+            "contradictory_evidence": 4,
+            "no_admissible_evidence": 6,
+            "no_unique_survivor": 6
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        },
+        "single_fragment": {
+          "auto_resolution_accuracy": 1.0,
+          "cases": 8,
+          "correct": 8,
+          "correct_escalations": 0,
+          "escalated": 0,
+          "escalation_recall": null,
+          "false_escalations": 0,
+          "match_rate": 1.0,
+          "minimal_lexical_arity": {
+            "1": 8
+          },
+          "resolved": 8,
+          "stop_reasons": {
+            "resolved": 8
+          },
+          "unsafe_auto_match_rate": 0.0,
+          "value_at_risk_paise": 0,
+          "wrong": 0
+        }
+      },
+      "overall": {
+        "auto_resolution_accuracy": 1.0,
+        "cases": 64,
+        "correct": 48,
+        "correct_escalations": 16,
+        "escalated": 16,
+        "escalation_recall": 1.0,
+        "false_escalations": 0,
+        "match_rate": 1.0,
+        "minimal_lexical_arity": {
+          "1": 12,
+          "2": 34,
+          "3": 6,
+          "none": 12
+        },
+        "resolved": 48,
+        "stop_reasons": {
+          "contradictory_evidence": 4,
+          "no_admissible_evidence": 6,
+          "no_unique_survivor": 6,
+          "resolved": 48
+        },
+        "unsafe_auto_match_rate": 0.0,
+        "value_at_risk_paise": 0,
+        "wrong": 0
+      },
+      "wrong_resolutions": []
+    }
+  },
+  "baseline_suite_version": "baselines.v2",
+  "cases": 64,
+  "intentionally_ambiguous_cases": 16,
+  "leakage_audit": {
+    "benchmark_labels_found_in_visible_files": [],
+    "cases_in_outcome_pure_narration_shapes": 24,
+    "longest_same_archetype_run_in_case_id_order": 2,
+    "longest_same_outcome_run_in_case_id_order": 8,
+    "required_outcome_by_candidate_count": {
+      "3": {
+        "AUTO_RESOLVABLE": 34,
+        "ESCALATE": 6
+      },
+      "4": {
+        "AUTO_RESOLVABLE": 4,
+        "ESCALATE": 8
+      },
+      "5": {
+        "AUTO_RESOLVABLE": 10,
+        "ESCALATE": 2
+      }
+    },
+    "required_outcome_by_narration_length": {
+      "20-39": {
+        "ESCALATE": 6
+      },
+      "40-59": {
+        "AUTO_RESOLVABLE": 38,
+        "ESCALATE": 10
+      },
+      "60-79": {
+        "AUTO_RESOLVABLE": 10
+      }
+    },
+    "required_outcome_by_narration_shape": {
+      "long_truncated_reference_with_decoys": {
+        "AUTO_RESOLVABLE": 8
+      },
+      "no_reference_field": {
+        "ESCALATE": 6
+      },
+      "reference_head_and_refund_amount": {
+        "AUTO_RESOLVABLE": 10
+      },
+      "reference_head_and_value_date": {
+        "AUTO_RESOLVABLE": 4,
+        "ESCALATE": 4
+      },
+      "reference_split_across_fields": {
+        "AUTO_RESOLVABLE": 26,
+        "ESCALATE": 6
+      }
+    },
+    "resolvable_cases_audited": 48,
+    "truth_is_highest_settlement_id": 16,
+    "truth_is_lowest_settlement_id": 14,
+    "truth_position_by_candidate_count": {
+      "3": {
+        "0": 10,
+        "1": 10,
+        "2": 14
+      },
+      "4": {
+        "0": 1,
+        "1": 1,
+        "2": 2
+      },
+      "5": {
+        "0": 3,
+        "2": 1,
+        "3": 4,
+        "4": 2
+      }
+    },
+    "truth_position_counts": {
+      "0": 14,
+      "1": 11,
+      "2": 17,
+      "3": 4,
+      "4": 2
+    },
+    "truth_position_share": {
+      "0": 0.2917,
+      "1": 0.2292,
+      "2": 0.3542,
+      "3": 0.0833,
+      "4": 0.0417
+    }
+  },
+  "provider_calls_made": false,
+  "reads_ground_truth_during_inference": false,
+  "report_kind": "deterministic_baselines",
+  "resolvable_cases": 48,
+  "split": "v4-pilot",
+  "stage2": {
+    "candidate_count_distribution": {
+      "3": 40,
+      "4": 12,
+      "5": 12
+    },
+    "candidate_count_matches_generator_intent": 64,
+    "candidates_from_exact_total_blocking": 228,
+    "candidates_total": 228,
+    "cases": 64,
+    "cases_where_truth_is_missing": [],
+    "cases_where_truth_is_present_in_candidate_set": 64,
+    "resolved": 0,
+    "unresolved": 64,
+    "unresolved_rules": {
+      "unresolved.multiple_derived_candidates": 64
+    }
+  }
+}

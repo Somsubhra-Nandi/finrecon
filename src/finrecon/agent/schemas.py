@@ -146,31 +146,60 @@ class ComputeExpectedNetOutput(ToolOutput):
 # --- compare_reference_fragment ------------------------------------------
 
 
+# One literal fragment. Deliberately **no** ``candidate_id``.
+#
+# The candidate axis is not the model's to enumerate. The complete candidate
+# set lives in the immutable Stage-2 snapshot, the controller holds it, and
+# the deterministic validator already re-evaluates every fragment against all
+# of it. Asking a model to spell out a cross-product whose second axis the
+# decision layer discards bought nothing and cost a class of malformed calls,
+# so the axis is gone from the interface.
+#
+# Written as a comment rather than a docstring on purpose: pydantic copies
+# ``__doc__`` into the emitted JSON schema, and no other tool input carries a
+# top-level description. The outbound schemas stay uniform and minimal.
 class CompareReferenceFragmentInput(ToolInput):
-    candidate_id: str = Field(
-        description="A candidate_id from this case's immutable candidate set."
-    )
     fragment: str = Field(
         description=(
             "A literal substring of this case's bank narration to test against "
-            "the candidate's references. Copy it from the narration exactly; do "
-            "not clean it up, complete it, or invent characters."
+            "every candidate's references. Copy it from the narration exactly; "
+            "do not clean it up, complete it, or invent characters."
         )
     )
 
 
-class CompareReferenceFragmentOutput(ToolOutput):
-    """Mechanical comparison of one fragment against one candidate's references.
-
-    Every declared relation is evaluated against every reference the
-    candidate's settlements carry, and all results are returned whether they
-    hold or not. There is deliberately no aggregate verdict: which candidate
-    a fragment identifies is a question about the *complete* candidate set,
-    and this tool only ever sees one candidate.
-    """
+class CandidateReferenceComparisons(ToolOutput):
+    """Every comparison for one candidate, named so the association is auditable."""
 
     candidate_id: str
+    settlement_ids: tuple[str, ...]
+    """The settlements whose references were compared, in snapshot order."""
+    comparisons: tuple[ReferenceComparison, ...]
+    """One entry per (settlement, reference kind) pair, in deterministic order.
+
+    Empty when this candidate's settlements carry no comparable reference at
+    all. The candidate still appears -- an omitted candidate and a candidate
+    with nothing to compare must not look the same.
+    """
+
+
+class CompareReferenceFragmentOutput(ToolOutput):
+    """Mechanical comparison of one fragment against the complete candidate set.
+
+    Every declared relation is evaluated against every reference every
+    candidate's settlements carry, and all results are returned whether they
+    hold or not. There is deliberately no aggregate verdict, no ordering by
+    strength and no candidate omitted: which candidate a fragment identifies
+    is a question for the validator, over the same complete set.
+    """
+
     fragment: str
+    """The literal fragment, at the top level.
+
+    Load-bearing: :func:`finrecon.decide.validator._fragments_from` harvests
+    exactly this field. The fragment is the whole of the agent's
+    contribution to the decision, so it stays where the validator reads it.
+    """
     fragment_present_in_narration: bool
     """Whether the fragment occurs literally in the immutable case narration.
 
@@ -182,12 +211,15 @@ class CompareReferenceFragmentOutput(ToolOutput):
     fragment_offsets: tuple[int, ...]
     """Every start index at which the fragment occurs in the narration."""
     narration_length: int
-    comparisons: tuple[ReferenceComparison, ...]
-    """One entry per (settlement, reference kind) pair, in deterministic order."""
+    candidates_evaluated: int
+    """How many candidates were compared. Always the whole snapshot set."""
+    candidate_comparisons: tuple[CandidateReferenceComparisons, ...]
+    """One entry per candidate, in immutable snapshot order. Never a subset."""
 
 
 __all__ = [
     "BreakupLineFacts",
+    "CandidateReferenceComparisons",
     "CompareReferenceFragmentInput",
     "CompareReferenceFragmentOutput",
     "ComputeExpectedNetInput",

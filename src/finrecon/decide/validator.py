@@ -24,50 +24,131 @@ constructing coherent stories is what it is optimized for. So the decision
 layer reads the primary evidence instead.
 
 And an agent that cannot lie about evidence can still *select* it -- the
-fishing-by-omission channel. That is closed here, mechanically: the agent
-chooses which **fragment** to test, and the validator then tests that
-fragment against **every candidate in the snapshot**, including the ones the
-agent never looked at. A model can no more hide a contradicting candidate
-than it can invent a supporting one.
+fishing-by-omission channel. ``validator.v2`` closed that for reference
+evidence; ``validator.v3`` extends the same closed-set discipline to narrowly
+declared structural assertions.
+
+Why v1's rule was not enough
+----------------------------
+
+``validator.v1`` resolved a case when *some one* fragment the agent tested
+reached exactly one candidate. Fragments reaching two or more were recorded
+and set aside as non-probative, which is correct as far as it goes -- a lazy
+fragment like ``"SETL"`` stands in a prefix relation to every canonical
+settlement ID at once and separates nothing, and letting it veto a fragment
+that genuinely separates the set would punish a model for looking around
+(``notes/STAGE3-FINDINGS.md`` section 4).
+
+But setting those fragments aside also discards exactly the evidence a
+*conjunction* is made of, and it leaves two holes:
+
+* Two clues that each reach two candidates can, together, reach one. v1 could
+  not express that, so it escalated cases whose answer was in the narration.
+* A fragment reaching two candidates can *contradict* a discriminating one --
+  "the reference is consistent only with B or C" refutes "the reference is A".
+  v1 set the contradiction aside and resolved A.
+
+The second is a safety hole, not a coverage one, and it is reproduced as a
+fixture in ``benchmark/baselines/adversarial.py``
+(``stale_strong_reference_plus_hinge``).
+
+Why the obvious fix was worse
+-----------------------------
+
+Intersecting the reach sets of the fragments *the agent tested* is unsafe, and
+not subtly:
+
+.. code-block:: text
+
+    f1 -> {A, B}       test f1 and f2  ->  {A}
+    f2 -> {A, C}       test f1 and f3  ->  {B}
+    f3 -> {B, C}       test f2 and f3  ->  {C}
+                       test all three  ->  {}
+
+One narration, three confident and mutually exclusive answers, chosen by which
+pair the model happened to look at. That is the model selecting the winner by
+selecting where not to look -- the omission channel returning one level up,
+wearing a conjunction's clothes. Measured, not assumed: the rule resolves all
+three ways on the three ``cherry_picking`` fixtures.
+
+What v2 actually does
+---------------------
+
+The evidence a conjunction is proved over is not the agent's selection. It is
+the **closure** (:mod:`finrecon.evidence.closure`): every fragment of the
+immutable narration standing in a declared relation to any candidate's
+reference, whether the agent asked about it or not. A candidate is identified
+when it is the only one consistent with **every** informative claim in that
+closure.
+
+The agent's evidence is a *seed*, not the proof. The closure is consulted only
+once the investigation has surfaced at least one admissible fragment that
+relates to some candidate reference -- because "no evidence gathered escalates"
+is an invariant this repository asserts at both the validator and the policy
+layer, and a case that auto-resolved while its audit trail showed the
+investigation contributing nothing would be a worse artifact than an
+escalation. Crucially the seed carries no selection power: *which* fragment the
+agent surfaced does not change what the closure concludes, only *whether* the
+closure is consulted at all. So the omission attack has nothing to work with,
+and an uninvestigated case still cannot move money.
+
+Under a closed evidence set, looking away cannot help, because nothing can be
+left out. Three properties follow without needing to be checked for:
+
+*Order invariance* and *duplicate invariance*, because the rule is a set
+intersection rather than a vote -- there is no count for a repetition to
+inflate. *Overlap invariance*, because fragments are grouped into atoms by
+their reach set, so ``"ABC123"``, ``"BC12"`` and ``"C123"`` are one claim read
+three ways rather than three claims.
+
+*Contradiction monotonicity* follows too: adding a claim can only shrink an
+intersection, so valid contradicting evidence can never leave a match
+standing. It empties the intersection and the case escalates.
+
+What this costs, stated plainly
+-------------------------------
+
+The agent no longer *selects* the reference evidence. It gates whether the
+reference path runs at all, and nothing more. Which fragments it tested is
+recorded, and how many of the closure's informative claims it found is reported
+as :attr:`ValidatorResult.agent_surfaced_atom_ids` -- but that is a *measured*
+quantity now, not an input to any predicate.
+
+A deliberate trade, and worth naming rather than burying: there is no reason to
+let an untrusted component choose the evidence when the complete evidence costs
+a few milliseconds to compute. What the agent keeps is the part a closure
+cannot do -- deciding which *records* to open, and, when structural evidence is
+eventually admitted, which amount or date in a narration is worth testing at
+all. Its decision authority over money remains nil, which is where DESIGN.md
+4.1 wanted it.
 
 The predicate, in full
 ----------------------
 
 A candidate survives when both hold:
 
-*Reference link.* Some admissible fragment stands in a declared mechanical
-relation to one of that candidate's references, pinning at least the
-required number of characters. A fragment is admissible only if the
-validator finds it literally present in the snapshot's narration -- checked
-here, not taken from the tool's own boolean.
+*Reference link.* It is the sole candidate consistent with every informative
+claim in the narration's closure. A claim is informative when it does not
+reach every candidate at once; a fragment reaching none is silence rather than
+contradiction and is excluded. Fragments the agent *reported* must still occur
+literally in the immutable narration to be admitted at all -- checked here,
+never taken from a tool's own boolean -- but the closure is built from the
+narration and so cannot contain a fabrication in the first place.
 
 *Financial exactness.* The candidate's group total equals the bank credit to
 the paise, every settlement's break-up accounts for its own amount to the
 paise, every referencing line names a record in a terminal successful state,
-and the candidate came from exact-total blocking.
+and the candidate came from exact-total blocking. Unchanged from v1.
 
-Uniqueness, and what "discriminating" means
--------------------------------------------
+Failing closed
+--------------
 
-Each fragment is evaluated **independently** against the complete candidate
-set, and a fragment counts only when it *separates* them -- when exactly one
-candidate is reachable from it. A fragment that reaches two candidates, or
-none, is not probative: it carries no information about which of them is
-right, and it is recorded and then set aside.
-
-That distinction matters more than it looks. Canonical settlement IDs share
-a prefix (``setl_dev_000023``, ``setl_dev_000024``), so a lazy fragment like
-``"SETL"`` stands in a declared prefix relation to *every* candidate at once.
-Treating that as contradicting a fragment that genuinely separates them
-would let the noisiest probe in a trajectory veto the most informative one --
-a rule under which a model is punished for looking around.
-
-What is *not* set aside is disagreement. If two discriminating fragments
-point at different candidates, that is a contradiction in the evidence and
-the case escalates. There is no majority vote, no tie-break and no
-preference for the stronger relation: DESIGN.md 4.3 makes "more than one
-candidate satisfies the predicates" a hard blocker, and two fragments
-disagreeing is that same state arrived at from a different direction.
+Nothing is identified when the investigation surfaced no admissible evidence,
+when the closure is incomplete (a narration longer than the declared
+enumeration bound), when no claim separates the candidates, when several
+candidates survive every claim, or when none does. The five are distinguished
+by :attr:`ValidatorResult.reference_evidence_state` so an escalation says which
+it was, and the policy gate needs only to know that the count is not one.
 """
 
 from __future__ import annotations
@@ -87,6 +168,12 @@ from finrecon.evidence.reference import (
     compare,
     strongest_admissible_relation,
 )
+from finrecon.evidence.closure import (
+    ReferenceClosure,
+    build_reference_closure,
+    fragment_reach,
+)
+from finrecon.evidence.structural import StructuralClosure, build_structural_closure
 from finrecon.normalize.provenance import FrozenModel
 
 SUCCESSFUL_PAYMENT_STATUS = "captured"
@@ -94,6 +181,46 @@ SUCCESSFUL_REFUND_STATUS = "processed"
 
 FRAGMENT_INADMISSIBLE_EMPTY = "empty_fragment"
 FRAGMENT_INADMISSIBLE_NOT_IN_NARRATION = "fragment_not_present_in_narration"
+
+REFERENCE_STATE_NO_AGENT_EVIDENCE = "no_admissible_agent_evidence"
+"""The investigation surfaced nothing that relates to any candidate reference.
+
+The closure is not consulted, and that is a deliberate precondition rather
+than an oversight. An investigation that gathered no admissible evidence gets
+no resolution -- otherwise a case could auto-resolve while its audit trail
+showed the investigation contributing nothing, and "no evidence gathered
+escalates" is an invariant this repository has asserted at both the validator
+and the policy layer since ``validator.v1``.
+"""
+
+REFERENCE_STATE_NO_EVIDENCE = "no_informative_evidence"
+"""Nothing in the narration separates the candidates. Not a contradiction."""
+
+REFERENCE_STATE_IDENTIFIED = "identified"
+"""Exactly one candidate is consistent with every informative claim."""
+
+REFERENCE_STATE_AMBIGUOUS = "ambiguous"
+"""Several candidates survive every claim. The evidence is simply not enough."""
+
+REFERENCE_STATE_CONTRADICTORY = "contradictory"
+"""No candidate survives every claim. The narration argues with itself."""
+
+REFERENCE_STATE_CLOSURE_INCOMPLETE = "closure_incomplete"
+"""The narration exceeded the declared exhaustive-enumeration bound.
+
+A partial closure cannot support a claim about what the narration does *not*
+contain, so nothing is identified. See
+:data:`finrecon.evidence.closure.MAX_NARRATION_LENGTH`.
+"""
+
+REFERENCE_STATES: tuple[str, ...] = (
+    REFERENCE_STATE_IDENTIFIED,
+    REFERENCE_STATE_AMBIGUOUS,
+    REFERENCE_STATE_CONTRADICTORY,
+    REFERENCE_STATE_NO_EVIDENCE,
+    REFERENCE_STATE_NO_AGENT_EVIDENCE,
+    REFERENCE_STATE_CLOSURE_INCOMPLETE,
+)
 
 
 class RawToolEvidence(FrozenModel):
@@ -187,10 +314,46 @@ class ValidatorResult(FrozenModel):
     inadmissible_fragments: tuple[InadmissibleFragment, ...]
     findings: tuple[ReferenceFinding, ...]
     reference_matched_candidate_ids: tuple[str, ...]
-    """Union over *all* fragments, discriminating or not. Audit only."""
+    """Union over *all* agent fragments, discriminating or not. Audit only."""
     discriminating_fragments: tuple[str, ...]
+    """Agent fragments that reached exactly one candidate. Audit only since v2.
+
+    Under ``validator.v1`` this was the decision input. It is kept, and kept
+    accurate, because it is what makes the v1-to-v2 difference legible in a
+    stored result: a v2 resolution with an empty ``discriminating_fragments``
+    is precisely a case v1 could not have reached.
+    """
     reference_identified_candidate_ids: tuple[str, ...]
-    """Candidates named by a fragment that separated the set. The decision input."""
+    """The policy-compatible decision input, never from agent selection.
+
+    Since v3 this is derived from the intersection of the reference and
+    structural closures. One candidate when the combined evidence isolates
+    one; the surviving set when several survive; a non-singleton contradicting
+    union (or empty) when none do. This shape keeps policy.v1 fail-closed.
+    """
+    reference_evidence_state: str
+    """One of :data:`REFERENCE_STATES`. Why the reference path ended as it did."""
+    reference_closure: ReferenceClosure
+    """The complete deterministic reference evidence, with full provenance."""
+    reference_intersection_candidate_ids: tuple[str, ...]
+    """Candidates consistent with every informative claim. Empty on contradiction."""
+    reference_union_candidate_ids: tuple[str, ...]
+    """Candidates consistent with at least one informative claim."""
+    informative_atom_ids: tuple[str, ...]
+    """Every claim that separates the candidates at all."""
+    agent_surfaced_atom_ids: tuple[str, ...]
+    """Informative claims the agent's own fragments happened to reach.
+
+    A *measured* quantity, not an input. Since v2 the decision does not depend
+    on which claims the agent found, so how many it found is free to report --
+    and reporting it is how "did the investigation earn its tokens?" stays
+    answerable without the answer being able to move money.
+    """
+    structural_closure: StructuralClosure
+    structural_intersection_candidate_ids: tuple[str, ...]
+    combined_consistent_candidate_ids: tuple[str, ...]
+    structural_evidence_state: str
+    resolution_evidence_basis: str
     financial_assessments: tuple[CandidateFinancialAssessment, ...]
     financially_exact_candidate_ids: tuple[str, ...]
     surviving_candidate_ids: tuple[str, ...]
@@ -199,6 +362,30 @@ class ValidatorResult(FrozenModel):
     @property
     def has_unique_survivor(self) -> bool:
         return len(self.surviving_candidate_ids) == 1
+
+    @property
+    def resolved_conjunctively(self) -> bool:
+        """True for a reference-only result where no single claim sufficed.
+
+        Not "more than one claim exists" -- a case can carry several claims and
+        still be resolved by one of them alone, which is what ``validator.v1``
+        already did and what benchmark v3's T2 tier is built to be. The
+        distinguishing question is whether any informative claim isolates a
+        candidate by itself; if none does, the intersection is what identified
+        it and the resolution is one v1 could not have reached.
+        """
+        if (
+            self.reference_evidence_state != REFERENCE_STATE_IDENTIFIED
+            or self.resolution_evidence_basis != "reference-only"
+        ):
+            return False
+        return not any(
+            len(atom.reach) == 1 for atom in self.reference_closure.informative_atoms()
+        )
+
+    @property
+    def informative_atom_count(self) -> int:
+        return len(self.informative_atom_ids)
 
 
 def _settlement_facts(snapshot: CaseSnapshot) -> dict[str, SettlementFacts]:
@@ -363,11 +550,136 @@ def validate_case(
         sorted({cid for finding in findings for cid in finding.matched_candidate_ids})
     )
     discriminating = tuple(f.fragment for f in findings if f.is_discriminating)
-    identified = tuple(
-        sorted(
-            {finding.matched_candidate_ids[0] for finding in findings if finding.is_discriminating}
-        )
+
+    # --- the closure, and the identification derived from it -------------
+    #
+    # validator.v2. Everything above this line describes what the *agent*
+    # looked at, and is audit. What identifies a candidate is the closure: every
+    # fragment of the immutable narration that stands in a declared relation to
+    # any candidate's reference, whether the agent asked about it or not.
+    #
+    # The reason is the omission channel. Intersecting only the fragments the
+    # agent tested would let one narration prove three different candidates
+    # depending on which pair of clues the agent happened to test, which is the
+    # model choosing the winner by choosing where not to look -- see
+    # notes/BENCHMARK-V4-FINDINGS.md and benchmark/baselines/adversarial.py,
+    # where that attack is a fixture rather than a hypothesis.
+    closure = build_reference_closure(
+        snapshot,
+        accepted_relation_ids=policy.evidence.accepted_relation_ids,
+        min_pinned_reference_characters=floor,
     )
+
+    # What the agent's own admissible fragments reach. Two jobs, and only one
+    # of them touches the decision: this *seeds* the closure (an investigation
+    # that gathered nothing gets no resolution), and it is reported so that how
+    # much of the closure the agent found stays measurable.
+    agent_reach = {
+        fragment: fragment_reach(
+            snapshot,
+            fragment,
+            accepted_relation_ids=policy.evidence.accepted_relation_ids,
+            min_pinned_reference_characters=floor,
+        )
+        for fragment in admissible
+    }
+    agent_gathered_evidence = any(reach for reach in agent_reach.values())
+
+    intersection = closure.intersection()
+    union = closure.union()
+    if not closure.is_complete:
+        state = REFERENCE_STATE_CLOSURE_INCOMPLETE
+        identified: tuple[str, ...] = ()
+    elif not agent_gathered_evidence:
+        # The seed. Note what this is *not*: it is not the agent choosing the
+        # evidence. Whether the closure then identifies anything does not
+        # depend on which fragment the agent surfaced, only on the fact that it
+        # surfaced one -- so the omission attack has nothing to work with,
+        # while a case that was never investigated still cannot resolve.
+        state = REFERENCE_STATE_NO_AGENT_EVIDENCE
+        identified = ()
+    elif not closure.has_informative_evidence():
+        state = REFERENCE_STATE_NO_EVIDENCE
+        identified = ()
+    elif len(intersection) == 1:
+        state = REFERENCE_STATE_IDENTIFIED
+        identified = tuple(sorted(intersection))
+    elif intersection:
+        state = REFERENCE_STATE_AMBIGUOUS
+        identified = tuple(sorted(intersection))
+    else:
+        # The claims contradict each other. Reported as the union so the gate
+        # escalates on "more than one candidate has reference support, so none
+        # is supported by all of it" rather than on a bare absence -- there was
+        # evidence, and saying there was none would misdescribe the refusal.
+        state = REFERENCE_STATE_CONTRADICTORY
+        identified = tuple(sorted(union))
+
+    # Structural evidence is a second closed evidence set.  It is enumerated
+    # from the immutable narration and complete snapshot, never from whichever
+    # candidate or breakup line the agent chose to inspect.  It remains gated
+    # by the same admissible reference seed: structure alone cannot resolve.
+    structural = build_structural_closure(snapshot)
+    structurally_consistent = set(structural.intersection_candidate_ids)
+    combined = set(intersection) & structurally_consistent
+    structural_state = (
+        "none"
+        if not structural.has_evidence
+        else "contradictory"
+        if structural.is_contradictory
+        else "consistent"
+    )
+
+    if (
+        closure.is_complete
+        and agent_gathered_evidence
+        and closure.has_informative_evidence()
+        and structural.has_evidence
+    ):
+        if len(combined) == 1:
+            state = REFERENCE_STATE_IDENTIFIED
+            identified = tuple(sorted(combined))
+        elif combined:
+            state = REFERENCE_STATE_AMBIGUOUS
+            identified = tuple(sorted(combined))
+        else:
+            state = REFERENCE_STATE_CONTRADICTORY
+            contradiction_union = set(union) | set(structural.union_candidate_ids)
+            # The unchanged policy reads this legacy field.  A contradiction
+            # must therefore never masquerade as a singleton merely because
+            # one side of it reaches nobody.
+            identified = (
+                tuple(sorted(contradiction_union))
+                if len(contradiction_union) > 1
+                else ()
+            )
+
+    has_date = bool(structural.value_date_facts)
+    has_amount = bool(structural.breakup_amount_facts)
+    if state == REFERENCE_STATE_CONTRADICTORY and structural.has_evidence:
+        basis = "structural_contradiction"
+    elif state == REFERENCE_STATE_IDENTIFIED and has_date and has_amount:
+        basis = "reference+date+amount"
+    elif state == REFERENCE_STATE_IDENTIFIED and has_date:
+        basis = "reference+date"
+    elif state == REFERENCE_STATE_IDENTIFIED and has_amount:
+        basis = "reference+amount"
+    elif state == REFERENCE_STATE_IDENTIFIED:
+        basis = "reference-only"
+    else:
+        basis = "unresolved"
+
+    # Which informative claims the agent's own fragments landed on. Measured,
+    # never an input to the decision above.
+    agent_atom_ids: list[str] = []
+    for reach in agent_reach.values():
+        if not reach:
+            continue
+        atom = closure.atom_for_reach(reach)
+        if atom is None or atom.atom_id not in closure.informative_atom_ids:
+            continue
+        if atom.atom_id not in agent_atom_ids:
+            agent_atom_ids.append(atom.atom_id)
 
     assessments = tuple(
         _assess_finances(candidate, facts_by_id, policy.evidence)
@@ -377,8 +689,9 @@ def validate_case(
         sorted(a.candidate_id for a in assessments if a.is_financially_exact)
     )
 
-    # Survival needs a fragment that *separated* the candidates, not merely
-    # one that touched this candidate among others.
+    # Survival needs the combined closed evidence to have isolated *one*
+    # candidate and that candidate's money to add up.  The policy interface is
+    # unchanged; what changed is where ``identified`` comes from.
     survivors = tuple(sorted(set(identified) & set(financially_exact)))
 
     return ValidatorResult(
@@ -395,6 +708,17 @@ def validate_case(
         reference_matched_candidate_ids=reference_matched,
         discriminating_fragments=discriminating,
         reference_identified_candidate_ids=identified,
+        reference_evidence_state=state,
+        reference_closure=closure,
+        reference_intersection_candidate_ids=tuple(sorted(intersection)),
+        reference_union_candidate_ids=tuple(sorted(union)),
+        informative_atom_ids=closure.informative_atom_ids,
+        agent_surfaced_atom_ids=tuple(agent_atom_ids),
+        structural_closure=structural,
+        structural_intersection_candidate_ids=structural.intersection_candidate_ids,
+        combined_consistent_candidate_ids=tuple(sorted(combined)),
+        structural_evidence_state=structural_state,
+        resolution_evidence_basis=basis,
         financial_assessments=assessments,
         financially_exact_candidate_ids=financially_exact,
         surviving_candidate_ids=survivors,
@@ -415,6 +739,13 @@ def parse_comparison_output(payload: dict[str, Any]) -> CompareReferenceFragment
 __all__ = [
     "FRAGMENT_INADMISSIBLE_EMPTY",
     "FRAGMENT_INADMISSIBLE_NOT_IN_NARRATION",
+    "REFERENCE_STATES",
+    "REFERENCE_STATE_AMBIGUOUS",
+    "REFERENCE_STATE_CLOSURE_INCOMPLETE",
+    "REFERENCE_STATE_CONTRADICTORY",
+    "REFERENCE_STATE_IDENTIFIED",
+    "REFERENCE_STATE_NO_AGENT_EVIDENCE",
+    "REFERENCE_STATE_NO_EVIDENCE",
     "CandidateFinancialAssessment",
     "CandidateReferenceMatch",
     "InadmissibleFragment",

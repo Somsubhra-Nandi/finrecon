@@ -15,6 +15,44 @@ useless -- an empty answer, a nonsense tool name, arguments that will not
 parse -- is returned normally and handled by the loop as model behaviour.
 That is the line DESIGN.md 4.2 draws, and it is drawn here rather than at
 the call site so no adapter can quietly move it.
+
+Strict tool schemas
+-------------------
+
+Function declarations are sent with ``"strict": true`` when the provider
+speaks that dialect and the tool's schema qualifies for it. Where a provider
+honours it, argument generation is constrained to the declared grammar, and
+a duplicate object key -- the dominant observed malformed-call shape -- stops
+being expressible rather than merely being rejected afterwards.
+
+It is defence in depth and nothing more. Nothing downstream may assume it
+worked: the provider may ignore the flag, a gateway may strip it, and a model
+may be served through a path that does not support it. Arguments still arrive
+as raw text, the strict duplicate-key decoder in
+:mod:`finrecon.agent.tools` still runs on every call, and batch preflight is
+unchanged. The local distrust boundary is the one that decides.
+
+Gateway telemetry
+-----------------
+
+Two facts a routing gateway reports that a first-party endpoint does not, both
+handled here once rather than per adapter:
+
+**The model that actually answered.** ``body["model"]`` is lifted into
+``ModelResponse.reported_model`` and kept separate from the requested ID. A
+gateway may resolve an alias -- ``claude-opus-5-thinking`` in,
+``claude-opus-5`` out -- and a trajectory that recorded only the request would
+name a model that never ran.
+
+**Disagreeing usage names.** The OpenAI dialect names token counts
+``prompt_tokens`` / ``completion_tokens``; some gateways emit an
+``input_tokens`` / ``output_tokens`` pair alongside, and the two pairs are
+observed to *disagree* (GoRouter live: ``completion_tokens: 8`` beside
+``output_tokens: 0``). :func:`normalize_usage` therefore selects rather than
+reconciles -- canonical name first, alias only as a fallback for an absent
+one -- and keeps the provider's block verbatim so the choice is auditable.
+Nothing is summed, averaged or back-filled: an invented token count is worse
+than a missing one, because it looks like a measurement.
 """
 
 from __future__ import annotations
@@ -35,11 +73,90 @@ from finrecon.agent.providers.base import (
 from finrecon.agent.providers.transport import DEFAULT_TIMEOUT_SECONDS, post_json
 
 
+def supports_strict_tool_schema(schema: dict[str, Any]) -> bool:
+    """Whether one JSON schema qualifies for OpenAI-dialect strict mode.
+
+    Strict mode is only valid for a closed object schema in which every
+    declared property is required. Sending ``strict: true`` beside a schema
+    that does not satisfy that is a request error, so an unqualified schema
+    is sent *without* the flag rather than with a claim the provider will
+    reject. Every current tool input qualifies; this check exists so that
+    adding one which does not degrades to ordinary tool calling instead of
+    breaking every live run.
+    """
+    if schema.get("type") != "object":
+        return False
+    if schema.get("additionalProperties") is not False:
+        return False
+    properties = schema.get("properties")
+    if not isinstance(properties, dict):
+        return False
+    required = schema.get("required")
+    if not isinstance(required, list):
+        return False
+    return set(required) == set(properties)
+
+
+USAGE_FIELD_ALIASES: dict[str, tuple[str, ...]] = {
+    "input_tokens": ("prompt_tokens", "input_tokens"),
+    "output_tokens": ("completion_tokens", "output_tokens"),
+    "total_tokens": ("total_tokens",),
+}
+"""Normalized field -> the wire names that may carry it, in precedence order.
+
+The OpenAI-canonical name wins. The alias is a fallback for a canonical name
+that is *absent*, never a tie-breaker for one that is present and disagrees:
+picking by a fixed rule keeps the normalized number traceable to a single
+reported value, and ``TokenUsage.raw`` carries the rest.
+"""
+
+
+def normalize_usage(body: dict[str, Any]) -> TokenUsage:
+    """Translate a chat-completions ``usage`` block into neutral token counts.
+
+    Selects by :data:`USAGE_FIELD_ALIASES`, preserves the block verbatim, and
+    lifts a ``usage_source`` attribution when the provider reports one. An
+    absent or non-object block is an empty :class:`TokenUsage`, not an error:
+    a provider that does not meter is not a provider that failed.
+    """
+    usage = body.get("usage")
+    if not isinstance(usage, dict):
+        return TokenUsage()
+
+    def selected(names: tuple[str, ...]) -> int | None:
+        for name in names:
+            value = usage.get(name)
+            # ``isinstance(value, int)`` only: a float or a numeric string is
+            # a shape this layer does not recognise, and coercing one would
+            # be the adapter deciding what the provider meant.
+            if isinstance(value, int) and not isinstance(value, bool):
+                return value
+        return None
+
+    source = usage.get("usage_source")
+    return TokenUsage(
+        input_tokens=selected(USAGE_FIELD_ALIASES["input_tokens"]),
+        output_tokens=selected(USAGE_FIELD_ALIASES["output_tokens"]),
+        total_tokens=selected(USAGE_FIELD_ALIASES["total_tokens"]),
+        usage_source=source if isinstance(source, str) else None,
+        raw=dict(usage),
+    )
+
+
 class OpenAICompatibleProvider(ModelProvider):
     """Shared translation for the OpenAI chat-completions tool-call dialect."""
 
     provider_id = "openai-compatible"
     default_endpoint = "/chat/completions"
+
+    strict_tool_schema_supported: bool = True
+    """Whether this dialect accepts ``strict`` on a function declaration.
+
+    A class-level capability, not a runtime probe. Both subclasses here speak
+    the OpenAI dialect; a future adapter whose gateway rejects the field sets
+    this to ``False`` and keeps working. Gemini does not inherit from this
+    class at all, so its payload is untouched by anything in this module.
+    """
 
     def __init__(
         self,
@@ -50,6 +167,7 @@ class OpenAICompatibleProvider(ModelProvider):
         timeout_seconds: float = DEFAULT_TIMEOUT_SECONDS,
         temperature: float = 0.0,
         extra_headers: dict[str, str] | None = None,
+        strict_tool_schema: bool | None = None,
         transport=post_json,
     ) -> None:
         self._api_key = api_key
@@ -58,6 +176,11 @@ class OpenAICompatibleProvider(ModelProvider):
         self._timeout_seconds = timeout_seconds
         self._temperature = temperature
         self._extra_headers = dict(extra_headers or {})
+        self._strict_tool_schema = (
+            self.strict_tool_schema_supported
+            if strict_tool_schema is None
+            else strict_tool_schema
+        )
         # Injected so tests can drive the adapter's *translation* without a
         # network, and without monkeypatching a module global.
         self._transport = transport
@@ -95,14 +218,16 @@ class OpenAICompatibleProvider(ModelProvider):
         return payload
 
     def _tool_payload(self, tool: ToolSpec) -> dict[str, Any]:
-        return {
-            "type": "function",
-            "function": {
-                "name": tool.name,
-                "description": tool.description,
-                "parameters": tool.parameters_json_schema,
-            },
+        function: dict[str, Any] = {
+            "name": tool.name,
+            "description": tool.description,
+            "parameters": tool.parameters_json_schema,
         }
+        if self._strict_tool_schema and supports_strict_tool_schema(
+            tool.parameters_json_schema
+        ):
+            function["strict"] = True
+        return {"type": "function", "function": function}
 
     def build_payload(
         self, messages: tuple[ConversationMessage, ...], tools: tuple[ToolSpec, ...]
@@ -175,19 +300,19 @@ class OpenAICompatibleProvider(ModelProvider):
         return text, tuple(calls), finish if isinstance(finish, str) else None
 
     def parse_usage(self, body: dict[str, Any]) -> TokenUsage:
-        usage = body.get("usage")
-        if not isinstance(usage, dict):
-            return TokenUsage()
+        return normalize_usage(body)
 
-        def as_int(key: str) -> int | None:
-            value = usage.get(key)
-            return int(value) if isinstance(value, int) else None
+    def parse_reported_model(self, body: dict[str, Any]) -> str | None:
+        """The model the response body names, or ``None`` if it names none.
 
-        return TokenUsage(
-            input_tokens=as_int("prompt_tokens"),
-            output_tokens=as_int("completion_tokens"),
-            total_tokens=as_int("total_tokens"),
-        )
+        Never defaulted to the requested ID. See
+        :attr:`finrecon.agent.providers.base.ModelResponse.reported_model`.
+        """
+        reported = body.get("model")
+        if not isinstance(reported, str):
+            return None
+        reported = reported.strip()
+        return reported or None
 
     # --- the one public call ---------------------------------------------
 
@@ -216,7 +341,13 @@ class OpenAICompatibleProvider(ModelProvider):
             usage=self.parse_usage(body),
             latency_ms=latency_ms,
             finish_reason=finish_reason,
+            reported_model=self.parse_reported_model(body),
         )
 
 
-__all__ = ["OpenAICompatibleProvider"]
+__all__ = [
+    "USAGE_FIELD_ALIASES",
+    "OpenAICompatibleProvider",
+    "normalize_usage",
+    "supports_strict_tool_schema",
+]

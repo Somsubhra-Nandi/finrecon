@@ -35,19 +35,37 @@ single-shot extraction (DESIGN.md 5.5) -- would be measuring nothing.
 
 So the split is: ``compare_reference_fragment`` will tell you, mechanically,
 that ``PF*******VQ`` is mask-consistent with ``PF1CEIYFJVQ``. It will not
-tell you that the candidate carrying that UTR is the right one, and it never
-sees more than the one candidate it was asked about. Deciding requires the
-complete candidate set, which only the validator holds.
+tell you that the candidate carrying that UTR is the right one. Deciding
+requires weighing the complete candidate set, and that authority sits in the
+validator and the policy gate, not here.
+
+Who enumerates the candidates
+-----------------------------
+
+``compare_reference_fragment`` takes a fragment and **no candidate_id**, and
+compares it against every candidate in the immutable snapshot. That is not a
+convenience: the deterministic validator already re-evaluates every fragment
+across the complete set and discards whichever candidate a tool call named,
+so a per-candidate argument was a cross-product the model had to spell out
+and the decision layer then threw away. Removing it moves no judgement into
+the model -- the fan-out is total, unordered and unranked, and the model
+still cannot drop a candidate from it.
+
+The other three tools keep their scalar ``candidate_id`` / ``settlement_id``.
+They are targeted record reads, which is real investigation: choosing *which*
+record to open is the model's job, and keeping the identifier keeps the
+access-control check below meaningful.
 
 Access control
 --------------
 
-Every candidate or settlement identifier is checked against the immutable
-snapshot before a handler runs. A model cannot name a settlement that is not
-in this case's candidate set and have the system investigate it as though it
-were -- that would be adding a candidate through the back door, the mirror
-image of the omission attack DESIGN.md 4.1 is built to prevent. An unknown
-identifier is a validation failure: not executed, recorded, escalated.
+Every candidate or settlement identifier a call does carry is checked against
+the immutable snapshot before a handler runs. A model cannot name a
+settlement that is not in this case's candidate set and have the system
+investigate it as though it were -- that would be adding a candidate through
+the back door, the mirror image of the omission attack DESIGN.md 4.1 is built
+to prevent. An unknown identifier is a validation failure: not executed,
+recorded, escalated.
 """
 
 from __future__ import annotations
@@ -61,6 +79,7 @@ from pydantic import ValidationError
 from finrecon.agent.providers.base import ToolSpec
 from finrecon.agent.schemas import (
     BreakupLineFacts,
+    CandidateReferenceComparisons,
     CompareReferenceFragmentInput,
     CompareReferenceFragmentOutput,
     ComputeExpectedNetInput,
@@ -97,6 +116,7 @@ class ToolValidationError(Exception):
     SCHEMA_VALIDATION_FAILED = "schema_validation_failed"
     UNKNOWN_CANDIDATE = "unknown_candidate"
     UNKNOWN_SETTLEMENT = "unknown_settlement"
+    TOOL_CALL_BATCH_LIMIT_EXCEEDED = "tool_call_batch_limit_exceeded"
 
     def __init__(self, reason: str, detail: str) -> None:
         super().__init__(f"{reason}: {detail}")
@@ -239,31 +259,55 @@ def _compute_expected_net(
 def _compare_reference_fragment(
     context: ToolContext, args: CompareReferenceFragmentInput
 ) -> CompareReferenceFragmentOutput:
-    candidate = context.candidate(args.candidate_id)
+    """Compare one fragment against **every** candidate in the snapshot.
+
+    The loop below is the whole point of the tool's shape. It walks
+    ``snapshot.candidates`` -- the complete, immutable Stage-2 set -- in its
+    declared order, and it has no filter, no early exit, no ordering by
+    strength and no notion of a better candidate. A candidate whose
+    settlements carry no comparable reference still gets an entry with an
+    empty comparison tuple, so "evaluated and nothing held" is visibly
+    different from "not evaluated".
+
+    This performs the same fan-out the deterministic validator performs
+    anyway (:mod:`finrecon.decide.validator`). Doing it here means the model
+    never has to spell out a candidate cross-product to reach it -- and,
+    because the fan-out is total and unranked, seeing it confers no power to
+    shrink the case.
+    """
     narration = context.snapshot.base_evidence.bank_record.narration
 
-    comparisons: list[ReferenceComparison] = []
-    for facts in context.settlements_of(candidate):
-        references: dict[str, str | None] = {
-            "utr": facts.utr,
-            "settlement_id": facts.settlement_id,
-        }
-        for kind in REFERENCE_KINDS:
-            value = references[kind]
-            if value is None:
-                # A settlement with no UTR has nothing to compare against.
-                # Reporting no entry is the fact; inventing an empty string
-                # would create a comparison that could accidentally hold.
-                continue
-            comparisons.append(compare(args.fragment, value, kind))  # type: ignore[arg-type]
+    per_candidate: list[CandidateReferenceComparisons] = []
+    for candidate in context.snapshot.candidates:
+        comparisons: list[ReferenceComparison] = []
+        for facts in context.settlements_of(candidate):
+            references: dict[str, str | None] = {
+                "utr": facts.utr,
+                "settlement_id": facts.settlement_id,
+            }
+            for kind in REFERENCE_KINDS:
+                value = references[kind]
+                if value is None:
+                    # A settlement with no UTR has nothing to compare against.
+                    # Reporting no entry is the fact; inventing an empty string
+                    # would create a comparison that could accidentally hold.
+                    continue
+                comparisons.append(compare(args.fragment, value, kind))  # type: ignore[arg-type]
+        per_candidate.append(
+            CandidateReferenceComparisons(
+                candidate_id=candidate.candidate_id,
+                settlement_ids=candidate.settlement_ids,
+                comparisons=tuple(comparisons),
+            )
+        )
 
     return CompareReferenceFragmentOutput(
-        candidate_id=candidate.candidate_id,
         fragment=args.fragment,
         fragment_present_in_narration=bool(args.fragment) and args.fragment in narration,
         fragment_offsets=_occurrences(narration, args.fragment),
         narration_length=len(narration),
-        comparisons=tuple(comparisons),
+        candidates_evaluated=len(context.snapshot.candidates),
+        candidate_comparisons=tuple(per_candidate),
     )
 
 
@@ -317,12 +361,14 @@ TOOL_DEFINITIONS: tuple[ToolDefinition, ...] = (
     ToolDefinition(
         name=TOOL_COMPARE_REFERENCE_FRAGMENT,
         description=(
-            "Mechanically compare a literal substring of the bank narration against "
-            "one candidate's references. Reports, for every declared relation "
+            "Mechanically compare one literal substring of the bank narration "
+            "against the references of EVERY candidate in this case. Takes the "
+            "fragment alone -- the complete candidate set is supplied by the "
+            "controller, so one call covers all candidates. Reports, per candidate, "
+            "for every declared relation "
             "(exact, prefix, suffix, contains, mask-consistent, separator-normalized, "
             "character-multiset), whether it holds and how many reference characters "
-            "it pins. It does not say whether the candidate is correct -- it only "
-            "ever sees one candidate."
+            "it pins. It reports no verdict and names no winner."
         ),
         input_model=CompareReferenceFragmentInput,
         output_model=CompareReferenceFragmentOutput,
@@ -409,16 +455,51 @@ def validate_call(tool_name: str, raw_arguments: str) -> tuple[ToolDefinition, T
     return definition, arguments
 
 
+def prepare_call(
+    context: ToolContext, tool_name: str, raw_arguments: str
+) -> tuple[ToolDefinition, ToolInput]:
+    """Validate and authorize one call without executing its handler.
+
+    The loop uses this preflight boundary for multi-call assistant turns: every
+    call in the turn must pass strict JSON decoding, Pydantic validation and
+    snapshot access control before *any* handler in that batch runs. This makes
+    a malformed mixed batch deterministic and atomic even though all handlers
+    are read-only.
+    """
+    definition, arguments = validate_call(tool_name, raw_arguments)
+
+    # Resolve any identifier the call carries against the immutable snapshot
+    # now, rather than in the handler, so a hallucinated ID aborts a whole
+    # batch before execution. ``compare_reference_fragment`` carries none --
+    # it names no candidate at all -- and the ``getattr`` default is what
+    # makes that a no-op rather than a special case.
+    candidate_id = getattr(arguments, "candidate_id", None)
+    if candidate_id is not None:
+        context.candidate(candidate_id)
+    settlement_id = getattr(arguments, "settlement_id", None)
+    if settlement_id is not None:
+        context.settlement(settlement_id)
+
+    return definition, arguments
+
+
+def execute_prepared(
+    context: ToolContext, definition: ToolDefinition, arguments: ToolInput
+) -> ToolOutput:
+    """Execute a call that already passed :func:`prepare_call`."""
+    return definition.handler(context, arguments)
+
+
 def execute(context: ToolContext, tool_name: str, raw_arguments: str) -> tuple[ToolInput, ToolOutput]:
     """Validate then run one tool call against the immutable snapshot.
 
-    Access control happens inside the handlers' calls to
-    :meth:`ToolContext.candidate` / :meth:`ToolContext.settlement`, which
-    raise :class:`ToolValidationError` before any fact is read -- so an
-    unknown identifier produces a refusal, never a partial result.
+    Access control happens during :func:`prepare_call` and is repeated by the
+    handlers' reads through :meth:`ToolContext.candidate` /
+    :meth:`ToolContext.settlement`. An unknown identifier therefore produces
+    a refusal before any handler runs, never a partial result.
     """
-    definition, arguments = validate_call(tool_name, raw_arguments)
-    output = definition.handler(context, arguments)
+    definition, arguments = prepare_call(context, tool_name, raw_arguments)
+    output = execute_prepared(context, definition, arguments)
     return arguments, output
 
 
@@ -433,6 +514,8 @@ __all__ = [
     "ToolDefinition",
     "ToolValidationError",
     "execute",
+    "execute_prepared",
+    "prepare_call",
     "tool_specs",
     "validate_call",
 ]

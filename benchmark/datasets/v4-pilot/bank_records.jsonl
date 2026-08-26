@@ -1,0 +1,64 @@
+{"amount":3421409,"bank_record_id":"bnk_v4pilot_000001","direction":"credit","narration":"RTGS CR REF UTIBCN57 BATCH12 REF2 876856 RAZORPAY SOFTWARE","value_date":"2026-07-19"}
+{"amount":4180076,"bank_record_id":"bnk_v4pilot_000002","direction":"credit","narration":"RTGS CR REF ICICIM11 BATCH61 REF2 654435 RAZORPAY SOFTWARE","value_date":"2026-09-14"}
+{"amount":2183588,"bank_record_id":"bnk_v4pilot_000003","direction":"credit","narration":"RTGS CR REF HDFCCN12 BATCH99 RFND 33.77 RAZORPAY SOFTWARE","value_date":"2026-04-21"}
+{"amount":2232195,"bank_record_id":"bnk_v4pilot_000004","direction":"credit","narration":"RTGS CR REF PUNBUP64 BATCH36 REF2 622167 RAZORPAY SOFTWARE","value_date":"2026-10-27"}
+{"amount":3131761,"bank_record_id":"bnk_v4pilot_000005","direction":"credit","narration":"NEFT CR-RZRPAY-IDIBUP23-BATCH41-RFND 53.43-MUM","value_date":"2026-09-05"}
+{"amount":3331608,"bank_record_id":"bnk_v4pilot_000006","direction":"credit","narration":"IMPS/P2A/HDFCRT35-BATCH86-643513/RAZORPAY","value_date":"2026-03-31"}
+{"amount":4481883,"bank_record_id":"bnk_v4pilot_000007","direction":"credit","narration":"NEFT CR-RZRPAY-IDIBCN6256132846-BATCH33-IDIBCN42/265168-MUM","value_date":"2026-07-10"}
+{"amount":2005525,"bank_record_id":"bnk_v4pilot_000008","direction":"credit","narration":"RTGS CR REF ICICRT38 BATCH45 RFND 36.87 RAZORPAY SOFTWARE","value_date":"2026-09-23"}
+{"amount":1047084,"bank_record_id":"bnk_v4pilot_000009","direction":"credit","narration":"NEFT CR-RZRPAY-YESBRT63/BATCH34/895192-MUM","value_date":"2026-02-20"}
+{"amount":3968985,"bank_record_id":"bnk_v4pilot_000010","direction":"credit","narration":"NEFT CR-RZRPAY-UTIBNB86/BATCH72/897499-MUM","value_date":"2026-03-14"}
+{"amount":3000541,"bank_record_id":"bnk_v4pilot_000011","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-08-02"}
+{"amount":3449758,"bank_record_id":"bnk_v4pilot_000012","direction":"credit","narration":"UPI/HDFCIM97/BATCH88/917788/RAZORPAY SETTLEMENT","value_date":"2026-11-04"}
+{"amount":1645034,"bank_record_id":"bnk_v4pilot_000013","direction":"credit","narration":"NEFT CR-RZRPAY-PUNBCN81351728-REV333 BATCH63 PGSETL BATCH63-MUM","value_date":"2026-05-17"}
+{"amount":712453,"bank_record_id":"bnk_v4pilot_000014","direction":"credit","narration":"NEFT CR-RZRPAY-SBINUP4695895772-BATCH49-SBINUP97/692574-MUM","value_date":"2026-08-13"}
+{"amount":4347139,"bank_record_id":"bnk_v4pilot_000015","direction":"credit","narration":"UPI/AXISIM31935668/REV874 BATCH56 PGSETL BATCH56/RAZORPAY SETTLEMENT","value_date":"2026-07-13"}
+{"amount":3458682,"bank_record_id":"bnk_v4pilot_000016","direction":"credit","narration":"NEFT CR-RZRPAY-PUNBRT48/BATCH73/365172-MUM","value_date":"2026-04-13"}
+{"amount":4644133,"bank_record_id":"bnk_v4pilot_000017","direction":"credit","narration":"IMPS/P2A/UTIBIM69-BATCH79-945585/RAZORPAY","value_date":"2026-01-19"}
+{"amount":386477,"bank_record_id":"bnk_v4pilot_000018","direction":"credit","narration":"BANK CREDIT - ONLINE TXN SETTLEMENT","value_date":"2026-07-16"}
+{"amount":3326210,"bank_record_id":"bnk_v4pilot_000019","direction":"credit","narration":"UPI/BARBIM78/BATCH45/VALDT 13DEC26/RAZORPAY SETTLEMENT","value_date":"2026-12-13"}
+{"amount":4925358,"bank_record_id":"bnk_v4pilot_000020","direction":"credit","narration":"NEFT CR-RZRPAY-AXISRT18-BATCH94-RFND 79.39-MUM","value_date":"2026-07-08"}
+{"amount":1183151,"bank_record_id":"bnk_v4pilot_000021","direction":"credit","narration":"UPI/KKBKUP56344751/REV794 BATCH58 PGSETL BATCH58/RAZORPAY SETTLEMENT","value_date":"2026-09-13"}
+{"amount":4280022,"bank_record_id":"bnk_v4pilot_000022","direction":"credit","narration":"NEFT CR-RZRPAY-UTIBIM72/BATCH62/762425-MUM","value_date":"2026-07-20"}
+{"amount":3626128,"bank_record_id":"bnk_v4pilot_000023","direction":"credit","narration":"UPI/IDIBCN72/BATCH39/169644/RAZORPAY SETTLEMENT","value_date":"2026-12-22"}
+{"amount":1692977,"bank_record_id":"bnk_v4pilot_000024","direction":"credit","narration":"UPI/AXISIM99/BATCH29/411761/RAZORPAY SETTLEMENT","value_date":"2026-03-22"}
+{"amount":2105633,"bank_record_id":"bnk_v4pilot_000025","direction":"credit","narration":"NEFT CR-RZRPAY-PUNBCN92/BATCH47/266544-MUM","value_date":"2026-11-02"}
+{"amount":3895973,"bank_record_id":"bnk_v4pilot_000026","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-08-09"}
+{"amount":1810285,"bank_record_id":"bnk_v4pilot_000027","direction":"credit","narration":"IMPS/P2A/SBINNB17-BATCH86-965217/RAZORPAY","value_date":"2026-03-16"}
+{"amount":849530,"bank_record_id":"bnk_v4pilot_000028","direction":"credit","narration":"NEFT CR-RZRPAY-KKBKRT12/BATCH36/852186-MUM","value_date":"2026-09-20"}
+{"amount":300777,"bank_record_id":"bnk_v4pilot_000029","direction":"credit","narration":"NEFT CR-RZRPAY-ICICUP26/BATCH81/175783-MUM","value_date":"2026-01-25"}
+{"amount":3391099,"bank_record_id":"bnk_v4pilot_000030","direction":"credit","narration":"RTGS CR - VENDOR PAYOUT","value_date":"2026-07-04"}
+{"amount":2012118,"bank_record_id":"bnk_v4pilot_000031","direction":"credit","narration":"RTGS CR REF ICICCN9242847158 BATCH44 ORIG ICICCN72 SEQ 482489 RAZORPAY","value_date":"2026-05-27"}
+{"amount":4254522,"bank_record_id":"bnk_v4pilot_000032","direction":"credit","narration":"RTGS CR REF YESBRT94 BATCH23 REF2 192249 RAZORPAY SOFTWARE","value_date":"2026-08-15"}
+{"amount":2014886,"bank_record_id":"bnk_v4pilot_000033","direction":"credit","narration":"RTGS CR REF YESBNB72 BATCH72 RFND 22.53 RAZORPAY SOFTWARE","value_date":"2026-04-22"}
+{"amount":3361355,"bank_record_id":"bnk_v4pilot_000034","direction":"credit","narration":"IMPS CREDIT RECEIVED","value_date":"2026-03-16"}
+{"amount":4630968,"bank_record_id":"bnk_v4pilot_000035","direction":"credit","narration":"NEFT CR-RZRPAY-KKBKCN53-BATCH55-VALDT 05FEB26-MUM","value_date":"2026-02-05"}
+{"amount":4659365,"bank_record_id":"bnk_v4pilot_000036","direction":"credit","narration":"UPI/616325/BATCH28/VALDT 03JUN26/RAZORPAY SETTLEMENT","value_date":"2026-06-03"}
+{"amount":2356106,"bank_record_id":"bnk_v4pilot_000037","direction":"credit","narration":"UPI/HDFCCN15618897/REV225 BATCH55 PGSETL BATCH55/RAZORPAY SETTLEMENT","value_date":"2026-11-14"}
+{"amount":4068239,"bank_record_id":"bnk_v4pilot_000038","direction":"credit","narration":"IMPS/P2A/HDFCCN65-BATCH86-292865/RAZORPAY","value_date":"2026-03-11"}
+{"amount":1428084,"bank_record_id":"bnk_v4pilot_000039","direction":"credit","narration":"NEFT CR-RZRPAY-YESBRT69/BATCH76/611973-MUM","value_date":"2026-03-26"}
+{"amount":3068808,"bank_record_id":"bnk_v4pilot_000040","direction":"credit","narration":"IMPS/P2A/KKBKIM82-BATCH91-616864/RAZORPAY","value_date":"2026-05-29"}
+{"amount":3325981,"bank_record_id":"bnk_v4pilot_000041","direction":"credit","narration":"IMPS/P2A/YESBCN63-BATCH43-959834/RAZORPAY","value_date":"2026-09-03"}
+{"amount":4735698,"bank_record_id":"bnk_v4pilot_000042","direction":"credit","narration":"NEFT CREDIT - SETTLEMENT","value_date":"2026-08-19"}
+{"amount":1466978,"bank_record_id":"bnk_v4pilot_000043","direction":"credit","narration":"NEFT CR-RZRPAY-SBINIM93988581-REV515 BATCH15 PGSETL BATCH15-MUM","value_date":"2026-06-18"}
+{"amount":4018853,"bank_record_id":"bnk_v4pilot_000044","direction":"credit","narration":"RTGS CR REF SBINIM91 BATCH44 RFND 17.54 RAZORPAY SOFTWARE","value_date":"2026-12-06"}
+{"amount":4785948,"bank_record_id":"bnk_v4pilot_000045","direction":"credit","narration":"NEFT CR-RZRPAY-KKBKCN18-BATCH37-VALDT 21MAR26-MUM","value_date":"2026-03-21"}
+{"amount":341636,"bank_record_id":"bnk_v4pilot_000046","direction":"credit","narration":"RTGS CR REF UTIBRT84 BATCH77 RFND 63.71 RAZORPAY SOFTWARE","value_date":"2026-02-24"}
+{"amount":4267065,"bank_record_id":"bnk_v4pilot_000047","direction":"credit","narration":"NEFT CR-RZRPAY-AXISCN2267598237-BATCH51-AXISCN92/267538-MUM","value_date":"2026-04-26"}
+{"amount":3605914,"bank_record_id":"bnk_v4pilot_000048","direction":"credit","narration":"UPI/IDIBUP92/BATCH14/VALDT 09APR26/RAZORPAY SETTLEMENT","value_date":"2026-04-09"}
+{"amount":3890070,"bank_record_id":"bnk_v4pilot_000049","direction":"credit","narration":"NEFT CR-RZRPAY-694247-BATCH14-VALDT 20NOV26-MUM","value_date":"2026-11-20"}
+{"amount":3276324,"bank_record_id":"bnk_v4pilot_000050","direction":"credit","narration":"RTGS CR REF KKBKUP92 BATCH38 REF2 619841 RAZORPAY SOFTWARE","value_date":"2026-08-21"}
+{"amount":1108769,"bank_record_id":"bnk_v4pilot_000051","direction":"credit","narration":"UPI/677761/BATCH96/VALDT 03JUN26/RAZORPAY SETTLEMENT","value_date":"2026-06-03"}
+{"amount":4133071,"bank_record_id":"bnk_v4pilot_000052","direction":"credit","narration":"RTGS CR REF PUNBCN33 BATCH72 REF2 436925 RAZORPAY SOFTWARE","value_date":"2026-11-21"}
+{"amount":1506484,"bank_record_id":"bnk_v4pilot_000053","direction":"credit","narration":"NEFT CR-RZRPAY-YESBNB98874112-REV294 BATCH51 PGSETL BATCH51-MUM","value_date":"2026-06-06"}
+{"amount":1785080,"bank_record_id":"bnk_v4pilot_000054","direction":"credit","narration":"NEFT CR-RZRPAY-AXISIM56-BATCH14-RFND 63.24-MUM","value_date":"2026-08-09"}
+{"amount":3787078,"bank_record_id":"bnk_v4pilot_000055","direction":"credit","narration":"UPI/953229/BATCH31/VALDT 27AUG26/RAZORPAY SETTLEMENT","value_date":"2026-08-27"}
+{"amount":263177,"bank_record_id":"bnk_v4pilot_000056","direction":"credit","narration":"RTGS CR REF AXISCN3568761562 BATCH73 ORIG AXISCN56 SEQ 157668 RAZORPAY","value_date":"2026-04-26"}
+{"amount":313942,"bank_record_id":"bnk_v4pilot_000057","direction":"credit","narration":"UPI/ICICRT54/BATCH19/793336/RAZORPAY SETTLEMENT","value_date":"2026-02-22"}
+{"amount":3643435,"bank_record_id":"bnk_v4pilot_000058","direction":"credit","narration":"NEFT CR-RZRPAY-YESBCN93-BATCH26-RFND 98.25-MUM","value_date":"2026-07-22"}
+{"amount":760061,"bank_record_id":"bnk_v4pilot_000059","direction":"credit","narration":"NEFT CR-RZRPAY-HDFCNB88-BATCH19-RFND 42.12-MUM","value_date":"2026-09-21"}
+{"amount":3101032,"bank_record_id":"bnk_v4pilot_000060","direction":"credit","narration":"UPI/PUNBCN51751167/REV132 BATCH41 PGSETL BATCH41/RAZORPAY SETTLEMENT","value_date":"2026-07-18"}
+{"amount":4196588,"bank_record_id":"bnk_v4pilot_000061","direction":"credit","narration":"RTGS CR REF YESBCN49 BATCH22 REF2 324618 RAZORPAY SOFTWARE","value_date":"2026-10-18"}
+{"amount":3073233,"bank_record_id":"bnk_v4pilot_000062","direction":"credit","narration":"UPI/ICICNB64/BATCH96/368854/RAZORPAY SETTLEMENT","value_date":"2026-08-22"}
+{"amount":2797509,"bank_record_id":"bnk_v4pilot_000063","direction":"credit","narration":"NEFT CR-RZRPAY-YESBIM1948422924-BATCH44-YESBIM98/424912-MUM","value_date":"2026-03-16"}
+{"amount":2935119,"bank_record_id":"bnk_v4pilot_000064","direction":"credit","narration":"NEFT CR-RZRPAY-KKBKIM84845197-REV872 BATCH92 PGSETL BATCH92-MUM","value_date":"2026-11-12"}

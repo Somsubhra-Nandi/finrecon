@@ -15,6 +15,20 @@ back) and which are configuration failures (and therefore may not). See
 Nothing here logs, stores, or returns an API key. Headers are built inside
 :func:`post_json` from the key argument and are never echoed back to the
 caller, never attached to an exception, and never written to a trajectory.
+
+Client identity
+---------------
+
+Every request carries an explicit :data:`USER_AGENT`. Left unset, ``urllib``
+sends ``Python-urllib/3.x``, and an edge WAF in front of a provider may
+refuse that signature before the request ever reaches the model -- observed
+as Cloudflare error 1010 (``HTTP 403``) from GoRouter and, earlier, from
+Groq, on a key that the same endpoint accepts from an ordinary HTTP client.
+That is a client-fingerprint rejection, not a credential problem, so the
+fix belongs to the one place that builds headers rather than to any
+adapter. The value is a fixed application identity on purpose: it must not
+drift with the package version, because a stable signature is the property
+being asserted.
 """
 
 from __future__ import annotations
@@ -31,6 +45,15 @@ from finrecon.agent.providers.base import (
 )
 
 DEFAULT_TIMEOUT_SECONDS = 60.0
+
+USER_AGENT = "finrecon/0.1"
+"""The client identity sent on every outgoing provider request.
+
+Deliberately a constant rather than the packaging version: this string
+exists so the signature stays *stable* across releases, and a value that
+changed every version bump would be a moving fingerprint. Overridable per
+request through ``extra_headers`` for a provider that needs its own.
+"""
 
 _REDACTED = "<redacted>"
 
@@ -95,8 +118,10 @@ def post_json(
     when the provider envelope itself is missing.
     """
     body = json.dumps(payload).encode("utf-8")
-    headers = {"Content-Type": "application/json"}
+    headers = {"Content-Type": "application/json", "User-Agent": USER_AGENT}
     headers[auth_header] = f"{auth_prefix}{api_key}"
+    # Last, so a provider-specific header -- including a deliberate
+    # User-Agent override -- still wins over the defaults above.
     if extra_headers:
         headers.update(extra_headers)
 
@@ -163,6 +188,7 @@ def redact(value: str | None) -> str:
 
 __all__ = [
     "DEFAULT_TIMEOUT_SECONDS",
+    "USER_AGENT",
     "classify_http_status",
     "post_json",
     "redact",

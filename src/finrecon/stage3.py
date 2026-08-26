@@ -163,6 +163,7 @@ def investigate_snapshots(
             replay_only=replay_only,
             provider_id=provider_id,
             model=model,
+            policy=policy,
             write_cache=write_cache,
         )
         validator_result, decision = adjudicate(

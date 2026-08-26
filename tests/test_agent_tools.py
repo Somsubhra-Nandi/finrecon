@@ -29,7 +29,9 @@ from finrecon.agent.schemas import (
 )
 from finrecon.agent.tools import ToolContext, ToolValidationError
 from tests.stage3_factories import (
+    DECOY_UTR,
     MASKED_NARRATION,
+    OTHER_SETTLEMENT_ID,
     TRUE_SETTLEMENT_ID,
     TRUE_UTR,
     no_reference_snapshot,
@@ -94,7 +96,7 @@ class TestArgumentValidation:
 
     def test_a_missing_required_field_is_refused(self, context):
         with pytest.raises(ToolValidationError) as exc:
-            tools.execute(context, "compare_reference_fragment", '{"fragment": "PF"}')
+            tools.execute(context, "compare_reference_fragment", "{}")
         assert exc.value.reason == ToolValidationError.SCHEMA_VALIDATION_FAILED
 
     def test_a_wrongly_typed_field_is_refused(self, context, snapshot):
@@ -193,14 +195,38 @@ class TestCandidateAccessControl:
             )
         assert exc.value.reason == ToolValidationError.UNKNOWN_SETTLEMENT
 
-    def test_comparing_against_an_unknown_candidate_is_refused(self, context):
+    def test_a_candidate_id_on_the_comparison_tool_is_refused(self, context, snapshot):
+        """The candidate axis is gone from the interface, not merely ignored.
+
+        A model that still tries to aim a comparison at one candidate --
+        whether at a real one or an invented one -- is refused by the closed
+        input schema before any handler runs. There is no code path that
+        silently drops the field.
+        """
+        for candidate_id in ("invented", snapshot.candidate_ids()[0]):
+            with pytest.raises(ToolValidationError) as exc:
+                tools.execute(
+                    context,
+                    "compare_reference_fragment",
+                    json.dumps({"candidate_id": candidate_id, "fragment": "PF*******VQ"}),
+                )
+            assert exc.value.reason == ToolValidationError.SCHEMA_VALIDATION_FAILED
+
+    def test_a_duplicate_fragment_key_is_still_refused(self, context):
+        """The failure mode this change was made for must remain a refusal.
+
+        Removing ``candidate_id`` removes the cross-product that produced
+        these objects. It does not make a duplicate key acceptable: two
+        values for one field is still ambiguous, and ambiguity is never
+        executed.
+        """
         with pytest.raises(ToolValidationError) as exc:
             tools.execute(
                 context,
                 "compare_reference_fragment",
-                json.dumps({"candidate_id": "invented", "fragment": "PF*******VQ"}),
+                '{"fragment":"PF*******VQ","fragment":"RTGS"}',
             )
-        assert exc.value.reason == ToolValidationError.UNKNOWN_CANDIDATE
+        assert exc.value.reason == ToolValidationError.DUPLICATE_ARGUMENT_KEY
 
     def test_the_error_names_the_candidates_that_do_exist(self, context, snapshot):
         with pytest.raises(ToolValidationError) as exc:
@@ -239,23 +265,67 @@ class TestOutputsAreFacts:
         assert output.group_unexplained_delta_paise == 0
         assert output.group_total_is_exact is True
 
-    def test_comparison_reports_every_relation_for_one_candidate_only(self, context, snapshot):
+    def test_comparison_covers_every_candidate_in_the_snapshot(self, context, snapshot):
         _, output = tools.execute(
             context,
             "compare_reference_fragment",
-            json.dumps({"candidate_id": snapshot.candidate_ids()[1], "fragment": "PF*******VQ"}),
+            json.dumps({"fragment": "PF*******VQ"}),
         )
         assert isinstance(output, CompareReferenceFragmentOutput)
         assert output.fragment_present_in_narration is True
-        assert output.candidate_id == snapshot.candidate_ids()[1]
-        # One entry per (settlement, reference kind): utr and settlement_id.
-        assert {c.reference_kind for c in output.comparisons} == {"utr", "settlement_id"}
+        assert output.candidates_evaluated == len(snapshot.candidates)
+        # Every candidate, in immutable snapshot order. Never a subset, never
+        # reordered by how well anything matched.
+        assert tuple(
+            entry.candidate_id for entry in output.candidate_comparisons
+        ) == snapshot.candidate_ids()
+        for entry in output.candidate_comparisons:
+            # One entry per (settlement, reference kind): utr and settlement_id.
+            assert {c.reference_kind for c in entry.comparisons} == {"utr", "settlement_id"}
 
-    def test_a_fabricated_fragment_is_reported_as_absent_not_hidden(self, context, snapshot):
+    def test_comparison_ordering_does_not_depend_on_which_candidate_matched(self):
+        """The order is the snapshot's, whichever candidate the fragment reaches."""
+        forward = snapshot_of(
+            narration=MASKED_NARRATION,
+            settlements=(
+                settlement_facts(OTHER_SETTLEMENT_ID, DECOY_UTR),
+                settlement_facts(TRUE_SETTLEMENT_ID, TRUE_UTR),
+            ),
+        )
+        reversed_ = snapshot_of(
+            narration=MASKED_NARRATION,
+            settlements=(
+                settlement_facts(TRUE_SETTLEMENT_ID, TRUE_UTR),
+                settlement_facts(OTHER_SETTLEMENT_ID, DECOY_UTR),
+            ),
+        )
+        for snapshot in (forward, reversed_):
+            _, output = tools.execute(
+                ToolContext(snapshot=snapshot),
+                "compare_reference_fragment",
+                json.dumps({"fragment": "PF*******VQ"}),
+            )
+            assert tuple(
+                e.candidate_id for e in output.candidate_comparisons
+            ) == snapshot.candidate_ids()
+
+    def test_the_comparison_repeated_is_byte_identical(self, context):
+        """Deterministic output: the same fragment twice, the same payload."""
+        payloads = []
+        for _ in range(2):
+            _, output = tools.execute(
+                context,
+                "compare_reference_fragment",
+                json.dumps({"fragment": "PF*******VQ"}),
+            )
+            payloads.append(json.dumps(output.model_dump(mode="json"), sort_keys=True))
+        assert payloads[0] == payloads[1]
+
+    def test_a_fabricated_fragment_is_reported_as_absent_not_hidden(self, context):
         _, output = tools.execute(
             context,
             "compare_reference_fragment",
-            json.dumps({"candidate_id": snapshot.candidate_ids()[1], "fragment": TRUE_UTR}),
+            json.dumps({"fragment": TRUE_UTR}),
         )
         assert output.fragment_present_in_narration is False
         assert output.fragment_offsets == ()
@@ -266,19 +336,36 @@ class TestOutputsAreFacts:
         _, output = tools.execute(
             context,
             "compare_reference_fragment",
-            json.dumps({"candidate_id": snapshot.candidate_ids()[0], "fragment": "CREDIT"}),
+            json.dumps({"fragment": "CREDIT"}),
         )
-        assert {c.reference_kind for c in output.comparisons} == {"settlement_id"}
+        assert output.candidates_evaluated == len(snapshot.candidates)
+        for entry in output.candidate_comparisons:
+            assert {c.reference_kind for c in entry.comparisons} == {"settlement_id"}
+
+    def test_a_candidate_with_nothing_comparable_still_appears(self):
+        """Evaluated-and-empty must not look like omitted.
+
+        A settlement carrying no UTR and a fragment that reaches nothing
+        still produce a candidate entry. Dropping it would make the output
+        a subset of the candidate set, which is the one shape this tool must
+        never return.
+        """
+        snapshot = no_reference_snapshot()
+        _, output = tools.execute(
+            ToolContext(snapshot=snapshot),
+            "compare_reference_fragment",
+            json.dumps({"fragment": "NEFT"}),
+        )
+        assert tuple(
+            e.candidate_id for e in output.candidate_comparisons
+        ) == snapshot.candidate_ids()
 
     def test_no_tool_output_contains_a_verdict_field(self, context, snapshot):
         calls = [
             ("lookup_candidate_records", {"candidate_id": snapshot.candidate_ids()[0]}),
             ("inspect_settlement_breakup", {"settlement_id": TRUE_SETTLEMENT_ID}),
             ("compute_expected_net", {"candidate_id": snapshot.candidate_ids()[0]}),
-            (
-                "compare_reference_fragment",
-                {"candidate_id": snapshot.candidate_ids()[0], "fragment": "PF*******VQ"},
-            ),
+            ("compare_reference_fragment", {"fragment": "PF*******VQ"}),
         ]
         for name, args in calls:
             _, output = tools.execute(context, name, json.dumps(args))
@@ -286,11 +373,11 @@ class TestOutputsAreFacts:
             for forbidden in ("confidence", "is_correct", "winner", "recommend", "score", "rank"):
                 assert forbidden not in serialized, f"{name} leaked {forbidden}"
 
-    def test_fragment_offsets_locate_every_occurrence(self, context, snapshot):
+    def test_fragment_offsets_locate_every_occurrence(self, context):
         _, output = tools.execute(
             context,
             "compare_reference_fragment",
-            json.dumps({"candidate_id": snapshot.candidate_ids()[0], "fragment": "R"}),
+            json.dumps({"fragment": "R"}),
         )
         assert len(output.fragment_offsets) == MASKED_NARRATION.count("R")
 
@@ -317,7 +404,7 @@ class TestReadOnly:
         tools.execute(
             context,
             "compare_reference_fragment",
-            json.dumps({"candidate_id": snapshot.candidate_ids()[1], "fragment": "PF*******VQ"}),
+            json.dumps({"fragment": "PF*******VQ"}),
         )
         assert snapshot.content_hash == before
         assert snapshot.verify_integrity()
@@ -400,6 +487,6 @@ def test_a_single_settlement_snapshot_still_validates_access():
     _, output = tools.execute(
         context,
         "compare_reference_fragment",
-        json.dumps({"candidate_id": snapshot.candidate_ids()[0], "fragment": "ABCDEF12345"}),
+        json.dumps({"fragment": "ABCDEF12345"}),
     )
     assert output.fragment_present_in_narration is True

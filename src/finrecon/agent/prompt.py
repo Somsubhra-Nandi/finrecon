@@ -58,13 +58,22 @@ What you cannot do, structurally:
 How to work:
 - Read the narration. If it appears to carry a damaged reference, identify
   the exact substring that survived and test it with
-  compare_reference_fragment against each candidate.
+  compare_reference_fragment. That tool takes the fragment on its own and
+  mechanically reports it against every candidate in the case, so one call
+  per fragment is enough -- do not repeat a fragment per candidate.
 - Copy fragments from the narration verbatim. Never repair, complete,
   un-mask or guess missing characters. A reconstructed reference is
   fabricated evidence and will be rejected.
-- Use lookup_candidate_records, inspect_settlement_breakup and
-  compute_expected_net when the case turns on amounts rather than
-  references.
+- You may request several independent read-only tools in one response. The
+  controller validates the whole batch first, then executes it serially in
+  the order you requested.
+- Treat the Stage-2 totals, unexplained deltas and blocking rules shown in
+  the case briefing as trusted facts already held by the validator. Do not
+  spend calls merely re-proving a displayed exact total and zero delta.
+- Use lookup_candidate_records to obtain canonical references. Use
+  inspect_settlement_breakup and compute_expected_net when the displayed
+  Stage-2 facts leave a genuine financial question, not as routine
+  corroboration after a reference already distinguishes the candidates.
 - Stop as soon as you have gathered the evidence that exists. Say briefly
   what you tested.
 
@@ -97,6 +106,15 @@ def case_briefing(snapshot: CaseSnapshot) -> str:
         (
             "The deterministic engine stopped under rule "
             f"{snapshot.unresolved_rule_id!r} ({snapshot.unresolved_matcher_id})."
+        ),
+        (
+            "The totals, unexplained deltas and blocking rules below are trusted "
+            "Stage-2 facts already available to the deterministic validator."
+        ),
+        (
+            "When every displayed candidate has exact-total blocking and zero "
+            "unexplained delta, those amount facts do not distinguish the candidates; "
+            "focus on additional evidence such as a literal narration reference."
         ),
         "",
         f"Candidates ({len(snapshot.candidates)}). This set is complete and fixed:",

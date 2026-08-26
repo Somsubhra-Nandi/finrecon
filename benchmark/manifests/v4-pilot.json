@@ -1,0 +1,212 @@
+{
+  "archetype_counts": {
+    "ambiguity_conjunction_incomplete": 6,
+    "ambiguity_no_discriminator": 6,
+    "amount_reference_hop": 10,
+    "conflict_context_resolves": 4,
+    "conflict_stale_reference": 4,
+    "conjunction_pair": 12,
+    "conjunction_triple": 6,
+    "conjunction_wide": 8,
+    "single_fragment_control": 8
+  },
+  "candidate_count_buckets": {
+    "3": 40,
+    "4": 12,
+    "5": 12
+  },
+  "case_count": 64,
+  "declared_archetypes": [
+    {
+      "archetype": "single_fragment_control",
+      "candidate_counts": [
+        3
+      ],
+      "families": [
+        "single_fragment_control",
+        "decoy",
+        "multi_candidate"
+      ],
+      "required_composition": "single_fragment",
+      "required_outcome": "AUTO_RESOLVABLE"
+    },
+    {
+      "archetype": "conjunction_pair",
+      "candidate_counts": [
+        3
+      ],
+      "families": [
+        "multi_fragment",
+        "contextual",
+        "decoy",
+        "multi_candidate"
+      ],
+      "required_composition": "fragment_pair",
+      "required_outcome": "AUTO_RESOLVABLE"
+    },
+    {
+      "archetype": "conjunction_wide",
+      "candidate_counts": [
+        4,
+        5
+      ],
+      "families": [
+        "multi_fragment",
+        "multi_candidate",
+        "contextual",
+        "decoy"
+      ],
+      "required_composition": "fragment_pair",
+      "required_outcome": "AUTO_RESOLVABLE"
+    },
+    {
+      "archetype": "conjunction_triple",
+      "candidate_counts": [
+        5
+      ],
+      "families": [
+        "multi_fragment",
+        "multi_candidate",
+        "contextual"
+      ],
+      "required_composition": "fragment_triple",
+      "required_outcome": "AUTO_RESOLVABLE"
+    },
+    {
+      "archetype": "amount_reference_hop",
+      "candidate_counts": [
+        3
+      ],
+      "families": [
+        "amount_reference",
+        "multi_hop",
+        "multi_candidate",
+        "decoy"
+      ],
+      "required_composition": "fragment_and_breakup_amount",
+      "required_outcome": "AUTO_RESOLVABLE"
+    },
+    {
+      "archetype": "conflict_stale_reference",
+      "candidate_counts": [
+        3
+      ],
+      "families": [
+        "conflict",
+        "decoy",
+        "multi_candidate",
+        "true_ambiguity"
+      ],
+      "required_composition": "none",
+      "required_outcome": "ESCALATE"
+    },
+    {
+      "archetype": "conflict_context_resolves",
+      "candidate_counts": [
+        3
+      ],
+      "families": [
+        "conflict",
+        "contextual",
+        "multi_candidate",
+        "decoy"
+      ],
+      "required_composition": "fragment_and_value_date",
+      "required_outcome": "AUTO_RESOLVABLE"
+    },
+    {
+      "archetype": "ambiguity_no_discriminator",
+      "candidate_counts": [
+        3,
+        4,
+        5
+      ],
+      "families": [
+        "true_ambiguity",
+        "multi_candidate"
+      ],
+      "required_composition": "none",
+      "required_outcome": "ESCALATE"
+    },
+    {
+      "archetype": "ambiguity_conjunction_incomplete",
+      "candidate_counts": [
+        4
+      ],
+      "families": [
+        "true_ambiguity",
+        "multi_fragment",
+        "multi_candidate",
+        "contextual"
+      ],
+      "required_composition": "none",
+      "required_outcome": "ESCALATE"
+    }
+  ],
+  "declared_compositions": [
+    "single_fragment",
+    "fragment_pair",
+    "fragment_triple",
+    "fragment_and_breakup_amount",
+    "fragment_and_value_date",
+    "none"
+  ],
+  "declared_families": [
+    "amount_reference",
+    "conflict",
+    "contextual",
+    "decoy",
+    "multi_candidate",
+    "multi_fragment",
+    "multi_hop",
+    "single_fragment_control",
+    "true_ambiguity"
+  ],
+  "family_counts": {
+    "amount_reference": 10,
+    "conflict": 8,
+    "contextual": 36,
+    "decoy": 46,
+    "multi_candidate": 64,
+    "multi_fragment": 32,
+    "multi_hop": 10,
+    "single_fragment_control": 8,
+    "true_ambiguity": 16
+  },
+  "frozen": false,
+  "generator_version": "4.0.0-pilot",
+  "hash_algorithm": "For each path listed in 'hashed_files', in exactly that order, build the line '<relative_path>\\t<hex sha256 of that file's raw bytes>\\n' (paths are relative to benchmark/, forward-slash separated). Concatenate those lines into one string and take sha256 of its UTF-8 encoding. Identical in construction to benchmark v3's frozen_eval_sha256, so a later freeze needs no new scheme. Depends only on file content plus a fixed path label -- never on mtimes, filesystem iteration order, or archive metadata.",
+  "hashed_files": [
+    "datasets/v4-pilot/bank_records.jsonl",
+    "datasets/v4-pilot/orders.jsonl",
+    "datasets/v4-pilot/payments.jsonl",
+    "datasets/v4-pilot/refunds.jsonl",
+    "datasets/v4-pilot/settlements.jsonl",
+    "ground_truth/v4-pilot.jsonl"
+  ],
+  "pilot_sha256": "38e7e67eb79f51f946f2a0042f5ee2f0edd9497dea24d83f067bd0082bee1e1c",
+  "record_counts": {
+    "bank_records": 64,
+    "orders": 228,
+    "payments": 228,
+    "refunds": 30,
+    "settlements": 228
+  },
+  "required_composition_counts": {
+    "fragment_and_breakup_amount": 10,
+    "fragment_and_value_date": 4,
+    "fragment_pair": 20,
+    "fragment_triple": 6,
+    "none": 16,
+    "single_fragment": 8
+  },
+  "required_outcome_counts": {
+    "AUTO_RESOLVABLE": 48,
+    "ESCALATE": 16
+  },
+  "seed": 4242,
+  "split": "v4-pilot",
+  "status": "PILOT -- not frozen, not a reporting artifact. No match rate, precision or coverage number may be presented from this split until a freeze decision is taken and recorded in benchmark/manifests/CHANGELOG.md.",
+  "total_record_count": 778,
+  "v3_untouched": "This manifest is a separate file. benchmark/manifests/v1.json, v2.json and v3.json are never opened by the v4 generator, and the v3 FROZEN-EVAL fingerprint f9eb8770be6cc216d1c8b5486a10b74005382141f7c079844e2748444a44fc5b is unchanged by anything in this package."
+}

@@ -18,6 +18,9 @@ import json
 import pytest
 
 from finrecon.agent.trajectory import (
+    INVOCATION_SUCCEEDED,
+    INVOCATION_VALIDATION_FAILED,
+    TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
     TERMINATION_INVESTIGATION_COMPLETE,
     TERMINATION_PROVIDER_INFRASTRUCTURE_FAILURE,
     TERMINATION_STEP_BUDGET_EXHAUSTED,
@@ -65,6 +68,7 @@ def trajectory_for(
             call_index=0,
             tool_name=item.tool_name,
             raw_arguments=json.dumps(item.arguments),
+            status=INVOCATION_SUCCEEDED,
             validated_arguments=item.arguments,
             validation_error_reason=None,
             validation_error_detail=None,
@@ -79,6 +83,7 @@ def trajectory_for(
                 call_index=0,
                 tool_name="compute_expected_net",
                 raw_arguments="{oops",
+                status=INVOCATION_VALIDATION_FAILED,
                 validated_arguments=None,
                 validation_error_reason="malformed_arguments_json",
                 validation_error_detail="not JSON",
@@ -112,7 +117,11 @@ def trajectory_for(
         tool_schema_version="t",
         agent_loop_version="l",
         cache_schema_version="c",
+        validator_version="v",
+        policy_version="p",
+        policy_declaration={},
         max_steps=8,
+        max_tool_calls_per_step=8,
         provider_chain=("fake:fake",),
         steps=steps,
         tool_invocations=tuple(invocations),
@@ -214,6 +223,13 @@ class TestFinancialBlockers:
 
 
 class TestInvestigationBlockers:
+    def test_deterministic_early_stop_uses_the_same_resolution_predicates(self, snapshot):
+        _, decision = gate_case(
+            snapshot, termination=TERMINATION_DETERMINISTIC_POLICY_RESOLVED
+        )
+        assert decision.outcome == "RESOLVE"
+        assert decision.blockers == ()
+
     def test_step_budget_exhaustion_escalates_even_with_perfect_evidence(self, snapshot):
         _, decision = gate_case(snapshot, termination=TERMINATION_STEP_BUDGET_EXHAUSTED)
         assert decision.outcome == "ESCALATE"

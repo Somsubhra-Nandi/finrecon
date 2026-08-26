@@ -170,7 +170,11 @@ class TestArchitectureDiagnostic:
     def test_every_case_terminated_in_a_declared_state(self, dev_stage3_result):
         result, _, _ = dev_stage3_result
         reasons = Counter(o.trajectory.termination_reason for o in result.outcomes)
-        assert set(reasons) == {"investigation_complete"}
+        assert set(reasons) <= {
+            "investigation_complete",
+            "deterministic_policy_resolved",
+        }
+        assert reasons["deterministic_policy_resolved"] > 0
 
     def test_the_end_to_end_path_resolves_a_substantial_share_of_t2(
         self, dev_stage3_result, dev_ground_truth

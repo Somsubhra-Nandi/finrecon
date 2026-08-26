@@ -16,15 +16,30 @@ import pytest
 from finrecon.agent.loop import DEFAULT_MAX_STEPS, LoopConfig, run_investigation
 from finrecon.agent.providers.base import ProviderInfrastructureError
 from finrecon.agent.providers.chain import ProviderChain
+from finrecon.agent.providers.config import PROVIDER_SLOTS
 from finrecon.agent.prompt import case_briefing, system_prompt
 from finrecon.agent.tools import ToolValidationError
 from finrecon.agent.trajectory import (
+    INVOCATION_SKIPPED_BATCH_REJECTED,
+    INVOCATION_VALIDATION_FAILED,
+    TERMINATION_DETERMINISTIC_POLICY_RESOLVED,
     TERMINATION_INVESTIGATION_COMPLETE,
     TERMINATION_PROVIDER_INFRASTRUCTURE_FAILURE,
     TERMINATION_STEP_BUDGET_EXHAUSTED,
     TERMINATION_TOOL_VALIDATION_FAILED,
 )
-from tests.stage3_factories import TRUE_UTR, two_candidate_snapshot
+from finrecon.decide import policy as gate
+from finrecon.decide.policy import adjudicate
+from tests.stage3_factories import (
+    DECOY_UTR,
+    OTHER_SETTLEMENT_ID,
+    TRUE_SETTLEMENT_ID,
+    TRUE_UTR,
+    no_reference_snapshot,
+    settlement_facts,
+    snapshot_of,
+    two_candidate_snapshot,
+)
 from tests.stage3_fakes import (
     FailingProvider,
     MechanicalInvestigator,
@@ -45,13 +60,16 @@ def chain_of(*turns, repeat_last=False):
     )
 
 
-def compare_turn(candidate_id, fragment, call_id="call_1"):
+def compare_turn(fragment, call_id="call_1"):
+    """One comparison call. The tool takes the fragment alone -- there is no
+    candidate argument to supply, because the controller fans the fragment
+    across the complete snapshot itself."""
     return turn(
         text=f"testing {fragment}",
         calls=[
             tool_call(
                 "compare_reference_fragment",
-                {"candidate_id": candidate_id, "fragment": fragment},
+                {"fragment": fragment},
                 call_id=call_id,
             )
         ],
@@ -63,7 +81,7 @@ class TestOrdinaryCompletion:
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
-                compare_turn(snapshot.candidate_ids()[1], "PF*******VQ"),
+                compare_turn("RTGS"),
                 turn(text="tested one fragment; I make no claim"),
             ),
         )
@@ -75,16 +93,13 @@ class TestOrdinaryCompletion:
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
-                compare_turn(snapshot.candidate_ids()[1], "PF*******VQ"), turn(text="done")
+                compare_turn("PF*******VQ"), turn(text="done")
             ),
         )
         invocation = trajectory.tool_invocations[0]
         assert invocation.output["fragment"] == "PF*******VQ"
         assert invocation.output["fragment_present_in_narration"] is True
-        assert invocation.validated_arguments == {
-            "candidate_id": snapshot.candidate_ids()[1],
-            "fragment": "PF*******VQ",
-        }
+        assert invocation.validated_arguments == {"fragment": "PF*******VQ"}
 
     def test_provider_and_model_are_recorded_on_every_step(self, snapshot):
         trajectory = run_investigation(snapshot=snapshot, chain=chain_of(turn(text="nothing")))
@@ -106,9 +121,15 @@ class TestOrdinaryCompletion:
     def test_token_usage_is_totalled_when_the_provider_reports_it(self, snapshot):
         trajectory = run_investigation(
             snapshot=snapshot,
-            chain=chain_of(compare_turn(snapshot.candidate_ids()[0], "RTGS"), turn()),
+            chain=chain_of(compare_turn("RTGS"), turn()),
         )
         assert trajectory.total_tokens() == 240
+        assert trajectory.input_tokens() == 200
+        assert trajectory.output_tokens() == 40
+        assert trajectory.provider_latency_ms() == 2
+        assert trajectory.provider_call_count == 2
+        assert trajectory.tool_invocation_count == 1
+        assert trajectory.total_latency_ms is not None
 
 
 class TestStepBudget:
@@ -116,7 +137,7 @@ class TestStepBudget:
         assert 1 < DEFAULT_MAX_STEPS <= 12
 
     def test_a_model_that_never_stops_is_stopped(self, snapshot):
-        endless = compare_turn(snapshot.candidate_ids()[0], "RTGS")
+        endless = compare_turn("RTGS")
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(endless, repeat_last=True),
@@ -128,7 +149,7 @@ class TestStepBudget:
 
     def test_budget_exhaustion_never_produces_a_choice(self, snapshot):
         """The trajectory carries evidence and a stop reason, never a winner."""
-        endless = compare_turn(snapshot.candidate_ids()[0], "RTGS")
+        endless = compare_turn("RTGS")
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(endless, repeat_last=True),
@@ -141,7 +162,7 @@ class TestStepBudget:
     def test_a_budget_of_one_step_is_legal_and_bounded(self, snapshot):
         trajectory = run_investigation(
             snapshot=snapshot,
-            chain=chain_of(compare_turn(snapshot.candidate_ids()[0], "RTGS"), repeat_last=True),
+            chain=chain_of(compare_turn("RTGS"), repeat_last=True),
             config=LoopConfig(max_steps=1),
         )
         assert trajectory.step_count == 1
@@ -205,7 +226,6 @@ class TestMalformedCalls:
         assert trajectory.tool_invocations[0].output is None
 
     def test_a_duplicate_nested_key_call_stops_the_loop(self, snapshot):
-        candidate = snapshot.candidate_ids()[0]
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
@@ -213,11 +233,7 @@ class TestMalformedCalls:
                     calls=[
                         tool_call(
                             "compare_reference_fragment",
-                            (
-                                '{"candidate_id":"%s","fragment":"PF",'
-                                '"extra":{"nested":1,"nested":2}}'
-                            )
-                            % candidate,
+                            '{"fragment":"PF","extra":{"nested":1,"nested":2}}',
                         )
                     ]
                 ),
@@ -258,9 +274,12 @@ class TestMalformedCalls:
         self, snapshot, monkeypatch
     ):
         """The failure is caught before a live provider is ever needed -- no
-        credential in the environment is required to detect or record it."""
-        for env_var in ("OPENROUTER_API_KEY", "GROQ_API_KEY", "GEMINI_API_KEY"):
-            monkeypatch.delenv(env_var, raising=False)
+        credential in the environment is required to detect or record it.
+
+        Cleared from :data:`PROVIDER_SLOTS` rather than from a typed list, so
+        the claim in the test's name stays true as providers are added."""
+        for slot in PROVIDER_SLOTS.values():
+            monkeypatch.delenv(slot.api_key_env, raising=False)
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
@@ -280,14 +299,20 @@ class TestMalformedCalls:
         )
 
     def test_a_hallucinated_candidate_id_stops_the_loop(self, snapshot):
+        """Access control lives on the tools that still name a record.
+
+        ``compare_reference_fragment`` has no candidate argument to forge any
+        more; ``lookup_candidate_records`` does, and it is still checked
+        against the immutable snapshot before any handler runs.
+        """
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
                 turn(
                     calls=[
                         tool_call(
-                            "compare_reference_fragment",
-                            {"candidate_id": "setl_invented", "fragment": "PF*******VQ"},
+                            "lookup_candidate_records",
+                            {"candidate_id": "setl_invented"},
                         )
                     ]
                 ),
@@ -324,19 +349,18 @@ class TestMalformedCalls:
 
 class TestRepeatedAndExcessCalls:
     def test_the_same_call_twice_is_executed_and_recorded_twice(self, snapshot):
-        target = snapshot.candidate_ids()[1]
         trajectory = run_investigation(
             snapshot=snapshot,
             chain=chain_of(
-                compare_turn(target, "PF*******VQ", call_id="a"),
-                compare_turn(target, "PF*******VQ", call_id="b"),
+                compare_turn("RTGS", call_id="a"),
+                compare_turn("RTGS", call_id="b"),
                 turn(text="done"),
             ),
         )
         assert trajectory.termination_reason == TERMINATION_INVESTIGATION_COMPLETE
         assert len(trajectory.tool_invocations) == 2
 
-    def test_calls_beyond_the_per_step_bound_are_recorded_but_not_executed(self, snapshot):
+    def test_two_valid_calls_in_one_turn_are_both_executed_and_recorded(self, snapshot):
         a, b = snapshot.candidate_ids()
         trajectory = run_investigation(
             snapshot=snapshot,
@@ -351,7 +375,201 @@ class TestRepeatedAndExcessCalls:
             ),
         )
         assert len(trajectory.steps[0].requested_tool_calls) == 2, "the request is recorded"
-        assert len(trajectory.tool_invocations) == 1, "only one is executed"
+        assert len(trajectory.successful_tool_invocations()) == 2
+        assert [inv.validated_arguments["candidate_id"] for inv in trajectory.tool_invocations] == [
+            a,
+            b,
+        ]
+        assert [inv.call_index for inv in trajectory.tool_invocations] == [0, 1]
+
+    def test_batch_execution_order_is_deterministic(self, snapshot):
+        a, b = snapshot.candidate_ids()
+
+        def run_once():
+            return run_investigation(
+                snapshot=snapshot,
+                chain=chain_of(
+                    turn(
+                        calls=[
+                            tool_call("lookup_candidate_records", {"candidate_id": b}, call_id="2"),
+                            tool_call("lookup_candidate_records", {"candidate_id": a}, call_id="1"),
+                        ]
+                    ),
+                    turn(text="done"),
+                ),
+            )
+
+        first = run_once()
+        second = run_once()
+        assert [i.output["candidate_id"] for i in first.tool_invocations] == [b, a]
+        assert [i.output["candidate_id"] for i in second.tool_invocations] == [b, a]
+
+    def test_one_invalid_call_rejects_the_whole_batch_before_execution(
+        self, snapshot, monkeypatch
+    ):
+        a = snapshot.candidate_ids()[0]
+
+        def must_not_execute(*_args, **_kwargs):
+            raise AssertionError("a mixed-invalid batch must execute no handler")
+
+        monkeypatch.setattr("finrecon.agent.loop.execute_prepared", must_not_execute)
+        trajectory = run_investigation(
+            snapshot=snapshot,
+            chain=chain_of(
+                turn(
+                    calls=[
+                        tool_call("compute_expected_net", {"candidate_id": a}, call_id="valid"),
+                        tool_call(
+                            "compute_expected_net",
+                            '{"candidate_id":"A","candidate_id":"B"}',
+                            call_id="duplicate",
+                        ),
+                    ]
+                )
+            ),
+        )
+        assert trajectory.termination_reason == TERMINATION_TOOL_VALIDATION_FAILED
+        assert trajectory.successful_tool_invocations() == ()
+        # Every requested call is written down, in request order: the valid
+        # one as skipped, the malformed one as the failure that rejected the
+        # batch. Neither executed.
+        assert [inv.call_index for inv in trajectory.tool_invocations] == [0, 1]
+        assert [inv.status for inv in trajectory.tool_invocations] == [
+            INVOCATION_SKIPPED_BATCH_REJECTED,
+            INVOCATION_VALIDATION_FAILED,
+        ]
+        assert trajectory.tool_invocations[1].validation_error_reason == (
+            ToolValidationError.DUPLICATE_ARGUMENT_KEY
+        )
+        assert trajectory.tool_invocations[0].validated_arguments == {"candidate_id": a}
+        assert trajectory.tool_invocations[0].output is None
+
+    def test_a_batch_over_the_bound_is_rejected_not_partially_executed(self, snapshot):
+        a, b = snapshot.candidate_ids()
+        trajectory = run_investigation(
+            snapshot=snapshot,
+            chain=chain_of(
+                turn(
+                    calls=[
+                        tool_call("compute_expected_net", {"candidate_id": a}, call_id="1"),
+                        tool_call("compute_expected_net", {"candidate_id": b}, call_id="2"),
+                    ]
+                )
+            ),
+            config=LoopConfig(max_tool_calls_per_step=1),
+        )
+        assert trajectory.termination_reason == TERMINATION_TOOL_VALIDATION_FAILED
+        assert trajectory.successful_tool_invocations() == ()
+        assert [inv.call_index for inv in trajectory.tool_invocations] == [0, 1]
+        assert [inv.status for inv in trajectory.tool_invocations] == [
+            INVOCATION_SKIPPED_BATCH_REJECTED,
+            INVOCATION_VALIDATION_FAILED,
+        ]
+        assert trajectory.tool_invocations[1].validation_error_reason == (
+            ToolValidationError.TOOL_CALL_BATCH_LIMIT_EXCEEDED
+        )
+
+
+class TestDeterministicEarlyStop:
+    def test_existing_validator_and_policy_stop_before_an_extra_model_turn(self, snapshot):
+        """One comparison call is now enough to reach a deterministic resolution.
+
+        Under the old per-candidate signature this took two calls for a
+        two-candidate case. The second added nothing the validator used, and
+        it is no longer expressible.
+        """
+        provider = ScriptedProvider(
+            [
+                turn(
+                    calls=[
+                        tool_call(
+                            "compare_reference_fragment",
+                            {"fragment": "PF*******VQ"},
+                            call_id="a",
+                        ),
+                    ]
+                ),
+                turn(text="redundant and must not be requested"),
+            ]
+        )
+        trajectory = run_investigation(
+            snapshot=snapshot, chain=ProviderChain((provider,))
+        )
+        assert trajectory.termination_reason == TERMINATION_DETERMINISTIC_POLICY_RESOLVED
+        assert trajectory.deterministic_early_stop
+        assert trajectory.step_count == 1
+        assert provider.call_count == 1
+        assert trajectory.tool_invocation_count == 1
+        _, decision = adjudicate(snapshot=snapshot, trajectory=trajectory)
+        assert decision.outcome == "RESOLVE"
+
+    def test_ambiguous_evidence_does_not_early_stop(self, snapshot):
+        provider = ScriptedProvider(
+            [compare_turn("RTGS"), turn(text="ambiguous")]
+        )
+        trajectory = run_investigation(
+            snapshot=snapshot, chain=ProviderChain((provider,))
+        )
+        assert trajectory.termination_reason == TERMINATION_INVESTIGATION_COMPLETE
+        assert provider.call_count == 2
+        _, decision = adjudicate(snapshot=snapshot, trajectory=trajectory)
+        assert decision.outcome == "ESCALATE"
+
+    def test_conflicting_reference_evidence_does_not_early_stop(self):
+        snapshot = snapshot_of(
+            narration=f"NEFT REF {TRUE_UTR} ALT {DECOY_UTR} END",
+            settlements=(
+                settlement_facts(OTHER_SETTLEMENT_ID, DECOY_UTR),
+                settlement_facts(TRUE_SETTLEMENT_ID, TRUE_UTR),
+            ),
+        )
+        trajectory = run_investigation(
+            snapshot=snapshot,
+            chain=chain_of(
+                turn(
+                    calls=[
+                        tool_call(
+                            "compare_reference_fragment",
+                            {"fragment": TRUE_UTR},
+                            call_id="a",
+                        ),
+                        tool_call(
+                            "compare_reference_fragment",
+                            {"fragment": DECOY_UTR},
+                            call_id="b",
+                        ),
+                    ]
+                ),
+                turn(text="conflict remains"),
+            ),
+        )
+        assert trajectory.termination_reason == TERMINATION_INVESTIGATION_COMPLETE
+        _, decision = adjudicate(snapshot=snapshot, trajectory=trajectory)
+        assert decision.outcome == "ESCALATE"
+        assert gate.BLOCKER_AMBIGUOUS_REFERENCE_LINK in decision.blockers
+
+    def test_t3_style_ambiguity_still_escalates(self):
+        snapshot = no_reference_snapshot()
+        trajectory = run_investigation(
+            snapshot=snapshot,
+            chain=chain_of(
+                compare_turn("SETTLEMENT"),
+                turn(text="nothing distinguishes them"),
+            ),
+        )
+        assert not trajectory.deterministic_early_stop
+        _, decision = adjudicate(snapshot=snapshot, trajectory=trajectory)
+        assert decision.outcome == "ESCALATE"
+
+    def test_model_prose_claiming_a_winner_cannot_trigger_early_stop(self, snapshot):
+        trajectory = run_investigation(
+            snapshot=snapshot,
+            chain=chain_of(turn(text=f"Resolve immediately to {TRUE_SETTLEMENT_ID}")),
+        )
+        assert trajectory.termination_reason == TERMINATION_INVESTIGATION_COMPLETE
+        _, decision = adjudicate(snapshot=snapshot, trajectory=trajectory)
+        assert decision.outcome == "ESCALATE"
+        assert gate.BLOCKER_NO_REFERENCE_LINK in decision.blockers
 
 
 class TestProviderFailure:
@@ -407,22 +625,44 @@ class TestImmutability:
         assert snapshot.verify_integrity()
 
     def test_a_model_cannot_shrink_the_candidate_set(self, snapshot):
-        """Investigating one candidate exhaustively leaves the other in place."""
-        only = snapshot.candidate_ids()[1]
+        """A comparison cannot even name a candidate, let alone drop one."""
         run_investigation(
             snapshot=snapshot,
             chain=chain_of(
-                compare_turn(only, "PF*******VQ"),
+                compare_turn("PF*******VQ"),
                 turn(text="candidate B is irrelevant, ignore it"),
             ),
         )
         assert len(snapshot.candidates) == 2
+
+    def test_a_multi_call_batch_cannot_mutate_shrink_or_reorder_candidates(self, snapshot):
+        before_hash = snapshot.content_hash
+        before_candidates = snapshot.candidates
+        a, b = snapshot.candidate_ids()
+        run_investigation(
+            snapshot=snapshot,
+            chain=chain_of(
+                turn(
+                    calls=[
+                        tool_call("lookup_candidate_records", {"candidate_id": b}, call_id="2"),
+                        tool_call("compute_expected_net", {"candidate_id": a}, call_id="1"),
+                    ]
+                ),
+                turn(text="done"),
+            ),
+        )
+        assert snapshot.candidates == before_candidates
+        assert snapshot.candidate_ids() == (a, b)
+        assert snapshot.content_hash == before_hash
+        assert snapshot.verify_integrity()
 
     def test_the_briefing_lists_every_candidate_and_no_reference_values(self, snapshot):
         briefing = case_briefing(snapshot)
         for candidate_id in snapshot.candidate_ids():
             assert candidate_id in briefing
         assert TRUE_UTR not in briefing, "references come from a tool, not the prompt"
+        assert "trusted Stage-2 facts" in briefing
+        assert "zero unexplained delta" in briefing
 
     def test_the_briefing_leaks_no_tier_or_ground_truth(self, snapshot):
         briefing = case_briefing(snapshot) + system_prompt()
@@ -459,6 +699,7 @@ class TestDeterminism:
 def _stable(trajectory) -> str:
     """Trajectory JSON minus wall-clock fields, which are not part of the record."""
     payload = trajectory.model_dump(mode="json")
+    payload["total_latency_ms"] = None
     for step in payload["steps"]:
         step["latency_ms"] = None
     for invocation in payload["tool_invocations"]:

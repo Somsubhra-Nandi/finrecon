@@ -3,7 +3,7 @@
 The agent loop imports :class:`ProviderChain` and the neutral message types
 and nothing else. It has no knowledge of HTTP verbs, endpoints, SDKs,
 authentication headers or any provider's response shape -- all of that is
-absorbed by the three adapters here.
+absorbed by the adapters here.
 
 Operational order (DESIGN.md 4.1's bounded agent has to run *somewhere*;
 which host it runs on is deployment policy, not architecture):
@@ -12,6 +12,7 @@ which host it runs on is deployment policy, not architecture):
 OpenRouter              primary
 Groq                    first infrastructure fallback
 Gemini                  second infrastructure fallback
+GoRouter                third infrastructure fallback
 ======================  ============================================
 
 Fallback is permitted for availability failures only. See
@@ -47,6 +48,7 @@ from finrecon.agent.providers.config import (
     provider_order,
 )
 from finrecon.agent.providers.gemini import GeminiProvider
+from finrecon.agent.providers.gorouter import GoRouterProvider
 from finrecon.agent.providers.groq import GroqProvider
 from finrecon.agent.providers.openrouter import OpenRouterProvider
 
@@ -56,6 +58,7 @@ __all__ = [
     "ChainResult",
     "ConversationMessage",
     "GeminiProvider",
+    "GoRouterProvider",
     "GroqProvider",
     "ModelProvider",
     "ModelResponse",

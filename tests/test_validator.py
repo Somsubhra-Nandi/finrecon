@@ -24,19 +24,23 @@ from finrecon.agent.loop import run_investigation
 from finrecon.agent.providers.chain import ProviderChain
 from finrecon.agent.tools import TOOL_COMPARE_REFERENCE_FRAGMENT, ToolContext, execute
 from finrecon.agent.trajectory import (
+    INVOCATION_SKIPPED_BATCH_REJECTED,
+    INVOCATION_SUCCEEDED,
+    INVOCATION_VALIDATION_FAILED,
     ModelStepRecord,
     ToolInvocationRecord,
     Trajectory,
     UsageRecord,
 )
 from finrecon.decide.config import DEFAULT_POLICY, EvidencePolicy, Stage3Policy
+from finrecon.decide.policy import decide
 from finrecon.decide.validator import (
     FRAGMENT_INADMISSIBLE_NOT_IN_NARRATION,
     RawToolEvidence,
     raw_tool_evidence,
     validate_case,
 )
-from finrecon.evidence.reference import RELATION_MASK, RELATION_PREFIX
+from finrecon.evidence.reference import RELATION_MASK, RELATION_PREFIX, compare
 from tests.stage3_factories import (
     DECOY_UTR,
     MASKED_NARRATION,
@@ -48,22 +52,62 @@ from tests.stage3_factories import (
     snapshot_of,
     two_candidate_snapshot,
 )
-from tests.stage3_fakes import MechanicalInvestigator
+from tests.stage3_fakes import MechanicalInvestigator, candidate_fragments
 
 
-def comparison_evidence(snapshot, fragment, candidate_index=0) -> RawToolEvidence:
-    """Run the real tool, so the validator is fed a genuine raw output."""
+def comparison_evidence(snapshot, fragment) -> RawToolEvidence:
+    """Run the real tool, so the validator is fed a genuine raw output.
+
+    There is no candidate argument to choose any more: the tool takes the
+    fragment alone and reports it against the complete snapshot.
+    """
     context = ToolContext(snapshot=snapshot)
-    candidate_id = snapshot.candidate_ids()[candidate_index]
     arguments, output = execute(
         context,
         TOOL_COMPARE_REFERENCE_FRAGMENT,
-        json.dumps({"candidate_id": candidate_id, "fragment": fragment}),
+        json.dumps({"fragment": fragment}),
     )
     return RawToolEvidence(
         tool_name=TOOL_COMPARE_REFERENCE_FRAGMENT,
         arguments=arguments.model_dump(mode="json"),
         output=output.model_dump(mode="json"),
+    )
+
+
+def legacy_per_candidate_evidence(snapshot, fragment, candidate_index) -> RawToolEvidence:
+    """The evidence the *old* per-candidate tool signature would have produced.
+
+    Rebuilt here, in the test suite, from the same comparison predicate the
+    tool uses -- one candidate's references only, under the old flat output
+    shape. Nothing in ``src`` produces this any more; it exists so the
+    decision-invariance tests can feed the validator the old semantics and
+    the new semantics and demand the same answer.
+    """
+    candidate = snapshot.candidates[candidate_index]
+    facts_by_id = {f.settlement_id: f for f in snapshot.base_evidence.settlement_facts}
+    narration = snapshot.base_evidence.bank_record.narration
+    comparisons = []
+    for settlement_id in candidate.settlement_ids:
+        facts = facts_by_id[settlement_id]
+        for kind, value in (("utr", facts.utr), ("settlement_id", facts.settlement_id)):
+            if value is None:
+                continue
+            comparisons.append(compare(fragment, value, kind).model_dump(mode="json"))
+    return RawToolEvidence(
+        tool_name=TOOL_COMPARE_REFERENCE_FRAGMENT,
+        arguments={"candidate_id": candidate.candidate_id, "fragment": fragment},
+        output={
+            "candidate_id": candidate.candidate_id,
+            "fragment": fragment,
+            "fragment_present_in_narration": bool(fragment) and fragment in narration,
+            "fragment_offsets": [
+                i for i in range(len(narration)) if narration.startswith(fragment, i)
+            ]
+            if fragment
+            else [],
+            "narration_length": len(narration),
+            "comparisons": comparisons,
+        },
     )
 
 
@@ -78,25 +122,23 @@ class TestItSeesTheCompleteCandidateSet:
         assert result.complete_candidate_ids == snapshot.candidate_ids()
         assert len(result.complete_candidate_ids) == 2
 
-    def test_a_fragment_tested_against_one_candidate_is_evaluated_against_all(
-        self, snapshot
-    ):
+    def test_a_fragment_is_evaluated_against_every_candidate(self, snapshot):
         """The closure of the fishing-by-omission channel (DESIGN.md §4.1)."""
-        evidence = (comparison_evidence(snapshot, "PF*******VQ", candidate_index=0),)
-        assert evidence[0].arguments["candidate_id"] == snapshot.candidate_ids()[0]
+        evidence = (comparison_evidence(snapshot, "PF*******VQ"),)
+        assert "candidate_id" not in evidence[0].arguments, "no candidate axis to steer"
 
         result = validate_case(snapshot=snapshot, evidence=evidence)
         finding = result.findings[0]
-        assert finding.candidates_evaluated == 2, "both, not the one that was asked about"
+        assert finding.candidates_evaluated == 2, "both, from the immutable snapshot"
         assert finding.matched_candidate_ids == (snapshot.candidate_ids()[1],)
 
-    def test_the_agents_choice_of_candidate_does_not_steer_the_finding(self):
-        """It asks about one candidate; the evidence lands on the other anyway.
+    def test_the_agent_has_no_candidate_axis_to_steer_the_finding_with(self):
+        """The omission guarantee, now enforced by the interface itself.
 
-        The strongest form of the omission guarantee. Which candidate the
-        agent names in a tool call decides nothing -- the validator re-runs
-        the fragment across the whole set and reports where it actually
-        lands, even when that contradicts the agent's line of enquiry.
+        Previously the agent named a candidate and the validator ignored it.
+        Now there is no field to name one in: a comparison carries a fragment
+        and nothing else, and the finding lands wherever the evidence
+        actually points across the complete set.
         """
         snapshot = snapshot_of(
             narration="RTGS CR REF EQPJ4E94BAD7U4Y RAZORPAY",
@@ -105,9 +147,8 @@ class TestItSeesTheCompleteCandidateSet:
                 settlement_facts(TRUE_SETTLEMENT_ID, TRUE_UTR),
             ),
         )
-        asked_about = snapshot.candidate_ids()[1]
-        evidence = (comparison_evidence(snapshot, DECOY_UTR, candidate_index=1),)
-        assert evidence[0].arguments["candidate_id"] == asked_about
+        evidence = (comparison_evidence(snapshot, DECOY_UTR),)
+        assert set(evidence[0].arguments) == {"fragment"}
 
         result = validate_case(snapshot=snapshot, evidence=evidence)
         assert result.findings[0].candidates_evaluated == 2
@@ -123,7 +164,7 @@ class TestItSeesTheCompleteCandidateSet:
                 settlement_facts("SETL_SHARED_B", None),
             ),
         )
-        evidence = (comparison_evidence(snapshot, "SETL_SHARED", candidate_index=0),)
+        evidence = (comparison_evidence(snapshot, "SETL_SHARED"),)
         result = validate_case(snapshot=snapshot, evidence=evidence)
         assert len(result.findings[0].matched_candidate_ids) == 2
         assert result.findings[0].is_discriminating is False
@@ -158,7 +199,11 @@ class TestItIgnoresAgentProse:
             tool_schema_version="t",
             agent_loop_version="l",
             cache_schema_version="c",
+            validator_version="v",
+            policy_version="p",
+            policy_declaration={},
             max_steps=8,
+            max_tool_calls_per_step=8,
             provider_chain=("fake:fake",),
             steps=(
                 ModelStepRecord(
@@ -185,6 +230,7 @@ class TestItIgnoresAgentProse:
                     call_index=0,
                     tool_name=TOOL_COMPARE_REFERENCE_FRAGMENT,
                     raw_arguments="{}",
+                    status=INVOCATION_SUCCEEDED,
                     validated_arguments=evidence[0].arguments,
                     validation_error_reason=None,
                     validation_error_detail=None,
@@ -206,7 +252,11 @@ class TestItIgnoresAgentProse:
             tool_schema_version="t",
             agent_loop_version="l",
             cache_schema_version="c",
+            validator_version="v",
+            policy_version="p",
+            policy_declaration={},
             max_steps=8,
+            max_tool_calls_per_step=8,
             provider_chain=("fake:fake",),
             steps=(),
             tool_invocations=(
@@ -214,16 +264,191 @@ class TestItIgnoresAgentProse:
                     step_index=1,
                     call_index=0,
                     tool_name=TOOL_COMPARE_REFERENCE_FRAGMENT,
-                    raw_arguments='{"candidate_id": "x"}',
+                    raw_arguments='{"fragment": "PF", "fragment": "VQ"}',
+                    status=INVOCATION_VALIDATION_FAILED,
                     validated_arguments=None,
-                    validation_error_reason="unknown_candidate",
-                    validation_error_detail="x",
+                    validation_error_reason="duplicate_argument_key",
+                    validation_error_detail="duplicate key 'fragment'",
                     output=None,
                 ),
             ),
             termination_reason="tool_validation_failed",
         )
         assert raw_tool_evidence(trajectory) == ()
+
+
+class TestDecisionInvarianceAcrossTheContractChange:
+    """Removing ``candidate_id`` must not move a single decision.
+
+    This is the load-bearing claim of the change, so it is tested against the
+    thing that would break: not the tool's output shape, but the validator
+    and the policy gate reading it.
+
+    Both sides of every comparison below feed the *same* fragments. One side
+    supplies them as the old per-candidate tool would have -- one call per
+    candidate, one candidate's references per output, the old flat shape --
+    and the other as the new snapshot-wide tool does. If any predicate had
+    ever consumed the candidate axis, these would diverge.
+    """
+
+    def _clean_trajectory(self, snapshot, evidence):
+        return Trajectory(
+            case_id=snapshot.case_id,
+            snapshot_hash=snapshot.content_hash,
+            batch_id=snapshot.batch_id,
+            prompt_version="p",
+            tool_schema_version="t",
+            agent_loop_version="l",
+            cache_schema_version="c",
+            validator_version="v",
+            policy_version="p",
+            policy_declaration={},
+            max_steps=8,
+            max_tool_calls_per_step=8,
+            provider_chain=("fake:fake",),
+            steps=(),
+            tool_invocations=tuple(
+                ToolInvocationRecord(
+                    step_index=index + 1,
+                    call_index=0,
+                    tool_name=item.tool_name,
+                    raw_arguments=json.dumps(item.arguments),
+                    status=INVOCATION_SUCCEEDED,
+                    validated_arguments=item.arguments,
+                    validation_error_reason=None,
+                    validation_error_detail=None,
+                    output=item.output,
+                )
+                for index, item in enumerate(evidence)
+            ),
+            termination_reason="investigation_complete",
+        )
+
+    def _both_ways(self, snapshot, fragments):
+        """(old-semantics result, new-semantics result) for one fragment set."""
+        legacy = tuple(
+            legacy_per_candidate_evidence(snapshot, fragment, index)
+            for fragment in fragments
+            for index in range(len(snapshot.candidates))
+        )
+        modern = tuple(comparison_evidence(snapshot, fragment) for fragment in fragments)
+        return legacy, modern
+
+    def _assert_same_decision(self, snapshot, fragments):
+        legacy, modern = self._both_ways(snapshot, fragments)
+        old_result = validate_case(snapshot=snapshot, evidence=legacy)
+        new_result = validate_case(snapshot=snapshot, evidence=modern)
+        assert new_result == old_result
+
+        old_decision = decide(
+            snapshot=snapshot,
+            trajectory=self._clean_trajectory(snapshot, legacy),
+            validator_result=old_result,
+        )
+        new_decision = decide(
+            snapshot=snapshot,
+            trajectory=self._clean_trajectory(snapshot, modern),
+            validator_result=new_result,
+        )
+        assert new_decision.outcome == old_decision.outcome
+        assert new_decision.resolved_candidate_id == old_decision.resolved_candidate_id
+        assert new_decision.resolved_settlement_ids == old_decision.resolved_settlement_ids
+        assert new_decision.blockers == old_decision.blockers
+        return new_decision
+
+    def test_a_discriminating_fragment_resolves_identically(self, snapshot):
+        decision = self._assert_same_decision(snapshot, ("PF*******VQ",))
+        assert decision.outcome == "RESOLVE"
+        assert decision.resolved_settlement_ids == (TRUE_SETTLEMENT_ID,)
+
+    def test_a_non_discriminating_fragment_stays_ambiguous(self):
+        shared = snapshot_of(
+            narration="RZPY/SETL_SHARED/CREDIT",
+            settlements=(
+                settlement_facts("SETL_SHARED_A", None),
+                settlement_facts("SETL_SHARED_B", None),
+            ),
+        )
+        decision = self._assert_same_decision(shared, ("SETL_SHARED",))
+        assert decision.outcome == "ESCALATE"
+
+    def test_conflicting_discriminators_stay_an_escalation(self):
+        conflicted = snapshot_of(
+            narration=f"NEFT REF {TRUE_UTR} ALT {DECOY_UTR} END",
+            settlements=(
+                settlement_facts(OTHER_SETTLEMENT_ID, DECOY_UTR),
+                settlement_facts(TRUE_SETTLEMENT_ID, TRUE_UTR),
+            ),
+        )
+        decision = self._assert_same_decision(conflicted, (TRUE_UTR, DECOY_UTR))
+        assert decision.outcome == "ESCALATE"
+
+    def test_a_fabricated_fragment_stays_inadmissible(self, snapshot):
+        decision = self._assert_same_decision(snapshot, (TRUE_UTR,))
+        assert decision.outcome == "ESCALATE"
+
+    def test_a_fragment_below_the_pinning_floor_still_proves_nothing(self, snapshot):
+        decision = self._assert_same_decision(snapshot, ("PF",))
+        assert decision.outcome == "ESCALATE"
+
+    def test_the_financial_predicates_are_untouched(self):
+        """One paise short: the reference still lands, the money still does not."""
+        short = snapshot_of(
+            narration=MASKED_NARRATION,
+            settlements=(
+                settlement_facts(OTHER_SETTLEMENT_ID, DECOY_UTR),
+                settlement_facts(TRUE_SETTLEMENT_ID, TRUE_UTR, breakup_delta=1),
+            ),
+        )
+        decision = self._assert_same_decision(short, ("PF*******VQ",))
+        assert decision.outcome == "ESCALATE"
+
+    def test_a_case_with_no_reference_anywhere_stays_unresolved(self):
+        decision = self._assert_same_decision(no_reference_snapshot(), ("SETTLEMENT",))
+        assert decision.outcome == "ESCALATE"
+
+    def test_invariance_holds_over_the_whole_dev_residual(self, dev_result):
+        """The corpus-scale form: every DEV case Stage 2 left unresolved.
+
+        240 snapshots, T2 and T3 together, with fragments enumerated
+        mechanically from each narration -- no ground truth consulted, and no
+        case singled out. Every one must adjudicate the same under both
+        semantics.
+        """
+        result, _ = dev_result
+        checked = 0
+        for case_snapshot in result.snapshots:
+            fragments = candidate_fragments(
+                case_snapshot.base_evidence.bank_record.narration
+            )
+            if not fragments:
+                continue
+            legacy, modern = self._both_ways(case_snapshot, fragments)
+            old_result = validate_case(snapshot=case_snapshot, evidence=legacy)
+            new_result = validate_case(snapshot=case_snapshot, evidence=modern)
+            assert new_result == old_result, case_snapshot.case_id
+            old_decision = decide(
+                snapshot=case_snapshot,
+                trajectory=self._clean_trajectory(case_snapshot, legacy),
+                validator_result=old_result,
+            )
+            new_decision = decide(
+                snapshot=case_snapshot,
+                trajectory=self._clean_trajectory(case_snapshot, modern),
+                validator_result=new_result,
+            )
+            assert new_decision == old_decision, case_snapshot.case_id
+            checked += 1
+        assert checked == 240
+
+    def test_the_new_semantics_need_fewer_calls_for_the_same_answer(self, snapshot):
+        """The point of the change, stated as an assertion rather than a claim."""
+        legacy, modern = self._both_ways(snapshot, ("PF*******VQ",))
+        assert len(legacy) == len(snapshot.candidates)
+        assert len(modern) == 1
+        assert validate_case(snapshot=snapshot, evidence=legacy) == validate_case(
+            snapshot=snapshot, evidence=modern
+        )
 
 
 class TestFragmentAdmissibility:
@@ -241,14 +466,14 @@ class TestFragmentAdmissibility:
         """A forged output claiming presence is still checked against the narration."""
         forged = RawToolEvidence(
             tool_name=TOOL_COMPARE_REFERENCE_FRAGMENT,
-            arguments={"candidate_id": snapshot.candidate_ids()[1], "fragment": TRUE_UTR},
+            arguments={"fragment": TRUE_UTR},
             output={
-                "candidate_id": snapshot.candidate_ids()[1],
                 "fragment": TRUE_UTR,
                 "fragment_present_in_narration": True,
                 "fragment_offsets": [0],
                 "narration_length": len(MASKED_NARRATION),
-                "comparisons": [],
+                "candidates_evaluated": 2,
+                "candidate_comparisons": [],
             },
         )
         result = validate_case(snapshot=snapshot, evidence=(forged,))

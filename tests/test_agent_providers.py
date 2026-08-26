@@ -32,6 +32,7 @@ from finrecon.agent.providers.gemini import GeminiProvider
 from finrecon.agent.providers.groq import GroqProvider
 from finrecon.agent.providers.openrouter import OpenRouterProvider
 from finrecon.agent.providers.transport import classify_http_status, redact
+from finrecon.agent.providers.openai_compatible import supports_strict_tool_schema
 from finrecon.agent.tools import tool_specs
 from tests.stage3_fakes import (
     FailingProvider,
@@ -140,7 +141,140 @@ class TestOpenAICompatibleAdapters:
         assert {t["function"]["name"] for t in payload["tools"]} == set(
             {s.name for s in tool_specs()}
         )
+        assert {
+            tool["function"]["name"]: tool["function"]["description"]
+            for tool in payload["tools"]
+        } == {spec.name: spec.description for spec in tool_specs()}
         assert payload["messages"][0]["role"] == "system"
+
+
+class TestStrictToolSchemas:
+    """``strict: true`` on the OpenAI dialect, and what must not depend on it.
+
+    Strict mode constrains argument generation to the declared grammar where
+    a provider honours it, which is where a duplicate object key stops being
+    expressible. It is defence in depth: every test below that asserts it is
+    *sent* is paired with one asserting the local decoder still refuses a
+    duplicate key regardless.
+    """
+
+    def test_openai_compatible_tools_declare_strict_mode(self):
+        transport = RecordingTransport(responses=[openai_body()])
+        provider = OpenRouterProvider(api_key=SECRET, transport=transport)
+        provider.complete(MESSAGES, tool_specs())
+        tools = transport.requests[0]["payload"]["tools"]
+        assert tools, "the tools were sent at all"
+        assert all(tool["function"]["strict"] is True for tool in tools)
+
+    def test_groq_declares_strict_mode_too(self):
+        transport = RecordingTransport(responses=[openai_body()])
+        provider = GroqProvider(api_key=SECRET, transport=transport)
+        provider.complete(MESSAGES, tool_specs())
+        tools = transport.requests[0]["payload"]["tools"]
+        assert all(tool["function"]["strict"] is True for tool in tools)
+
+    def test_every_tool_schema_qualifies_for_strict_mode(self):
+        """Closed object, and every declared property required."""
+        for spec in tool_specs():
+            schema = spec.parameters_json_schema
+            assert supports_strict_tool_schema(schema), spec.name
+            assert schema["additionalProperties"] is False
+            assert set(schema["required"]) == set(schema["properties"])
+
+    def test_a_schema_that_does_not_qualify_is_sent_without_the_flag(self):
+        """Degrade to ordinary tool calling rather than send an invalid claim."""
+        transport = RecordingTransport(responses=[openai_body()])
+        provider = OpenRouterProvider(api_key=SECRET, transport=transport)
+        loose = ToolSpec(
+            name="loose",
+            description="an optional field, so strict mode does not apply",
+            parameters_json_schema={
+                "type": "object",
+                "properties": {"a": {"type": "string"}, "b": {"type": "string"}},
+                "required": ["a"],
+                "additionalProperties": False,
+            },
+        )
+        assert supports_strict_tool_schema(loose.parameters_json_schema) is False
+        provider.complete(MESSAGES, (loose,))
+        function = transport.requests[0]["payload"]["tools"][0]["function"]
+        assert "strict" not in function
+        assert function["parameters"] == loose.parameters_json_schema
+
+    def test_an_adapter_can_opt_out_of_strict_mode(self):
+        """Capability-gated, so a gateway that rejects the field stays usable."""
+        transport = RecordingTransport(responses=[openai_body()])
+        provider = OpenRouterProvider(
+            api_key=SECRET, transport=transport, strict_tool_schema=False
+        )
+        provider.complete(MESSAGES, tool_specs())
+        tools = transport.requests[0]["payload"]["tools"]
+        assert all("strict" not in tool["function"] for tool in tools)
+
+    def test_strict_mode_does_not_relax_the_local_duplicate_key_decoder(self):
+        """The provider may ignore the flag. Local validation decides anyway."""
+        from finrecon.agent.tools import ToolValidationError, validate_call
+
+        with pytest.raises(ToolValidationError) as exc:
+            validate_call(
+                "compare_reference_fragment",
+                '{"fragment":"PF*******VQ","fragment":"RTGS"}',
+            )
+        assert exc.value.reason == ToolValidationError.DUPLICATE_ARGUMENT_KEY
+
+    def test_arguments_are_never_rewritten_by_the_adapter(self):
+        """Malformed argument text reaches the loop exactly as the model sent it."""
+        malformed = '{"fragment":"A","fragment":"B"}'
+        transport = RecordingTransport(
+            responses=[openai_body(calls=[("compare_reference_fragment", malformed)])]
+        )
+        provider = OpenRouterProvider(api_key=SECRET, transport=transport)
+        response = provider.complete(MESSAGES, tool_specs())
+        assert response.tool_calls[0].raw_arguments == malformed
+
+    def test_several_tool_calls_stay_separate_and_ordered(self):
+        transport = RecordingTransport(
+            responses=[
+                openai_body(
+                    calls=[
+                        ("compare_reference_fragment", '{"fragment": "AAAA"}'),
+                        ("compare_reference_fragment", '{"fragment": "BBBB"}'),
+                        ("lookup_candidate_records", '{"candidate_id": "c1"}'),
+                    ]
+                )
+            ]
+        )
+        provider = OpenRouterProvider(api_key=SECRET, transport=transport)
+        response = provider.complete(MESSAGES, tool_specs())
+        assert [c.tool_name for c in response.tool_calls] == [
+            "compare_reference_fragment",
+            "compare_reference_fragment",
+            "lookup_candidate_records",
+        ]
+        assert [c.raw_arguments for c in response.tool_calls] == [
+            '{"fragment": "AAAA"}',
+            '{"fragment": "BBBB"}',
+            '{"candidate_id": "c1"}',
+        ]
+
+    def test_the_gemini_payload_carries_no_strict_field(self):
+        """A different dialect. Nothing in the OpenAI adapter reaches it."""
+        transport = RecordingTransport(
+            responses=[
+                {
+                    "candidates": [
+                        {"content": {"parts": [{"text": "ok"}]}, "finishReason": "STOP"}
+                    ]
+                }
+            ]
+        )
+        provider = GeminiProvider(api_key=SECRET, transport=transport)
+        provider.complete(MESSAGES, tool_specs())
+        payload = transport.requests[0]["payload"]
+        assert "strict" not in json.dumps(payload)
+        declarations = payload["tools"][0]["functionDeclarations"]
+        assert {d["name"] for d in declarations} == {s.name for s in tool_specs()}
+        assert all(set(d) == {"name", "description", "parameters"} for d in declarations)
 
     def test_the_credential_is_passed_to_transport_and_nowhere_else(self):
         transport = RecordingTransport(responses=[openai_body()])
@@ -163,6 +297,37 @@ class TestOpenAICompatibleAdapters:
         call = response.tool_calls[0]
         assert call.tool_name == "compute_expected_net"
         assert call.raw_arguments == '{"candidate_id": "c1"}'
+
+    def test_multiple_tool_results_keep_call_ids_and_order(self):
+        transport = RecordingTransport(responses=[openai_body()])
+        provider = OpenRouterProvider(api_key=SECRET, transport=transport)
+        provider.complete(
+            MESSAGES
+            + (
+                ConversationMessage(
+                    role="assistant",
+                    tool_calls=(
+                        tool_call("compute_expected_net", {"candidate_id": "a"}, call_id="a"),
+                        tool_call("compute_expected_net", {"candidate_id": "b"}, call_id="b"),
+                    ),
+                ),
+                ConversationMessage(
+                    role="tool",
+                    content='{"candidate_id":"a"}',
+                    tool_call_id="a",
+                    tool_name="compute_expected_net",
+                ),
+                ConversationMessage(
+                    role="tool",
+                    content='{"candidate_id":"b"}',
+                    tool_call_id="b",
+                    tool_name="compute_expected_net",
+                ),
+            ),
+            (),
+        )
+        payload_messages = transport.requests[0]["payload"]["messages"]
+        assert [m.get("tool_call_id") for m in payload_messages[-2:]] == ["a", "b"]
 
     def test_malformed_tool_arguments_survive_to_the_loop_unrepaired(self):
         """The adapter must not fix them; the loop has to see the model's behaviour."""
@@ -261,6 +426,42 @@ class TestGeminiAdapter:
         assert [c["role"] for c in contents] == ["user", "model", "user"]
         assert contents[1]["parts"][-1]["functionCall"]["name"] == "compute_expected_net"
         assert contents[2]["parts"][0]["functionResponse"]["name"] == "compute_expected_net"
+
+    def test_parallel_tool_results_are_grouped_in_deterministic_order(self):
+        transport = RecordingTransport(responses=[self.gemini_body()])
+        provider = GeminiProvider(api_key=SECRET, transport=transport)
+        provider.complete(
+            MESSAGES
+            + (
+                ConversationMessage(
+                    role="assistant",
+                    tool_calls=(
+                        tool_call("compute_expected_net", {"candidate_id": "b"}, call_id="b"),
+                        tool_call("compute_expected_net", {"candidate_id": "a"}, call_id="a"),
+                    ),
+                ),
+                ConversationMessage(
+                    role="tool",
+                    content='{"candidate_id":"b"}',
+                    tool_call_id="b",
+                    tool_name="compute_expected_net",
+                ),
+                ConversationMessage(
+                    role="tool",
+                    content='{"candidate_id":"a"}',
+                    tool_call_id="a",
+                    tool_name="compute_expected_net",
+                ),
+            ),
+            (),
+        )
+        contents = transport.requests[0]["payload"]["contents"]
+        assert [c["role"] for c in contents] == ["user", "model", "user"]
+        responses = contents[-1]["parts"]
+        assert len(responses) == 2
+        assert [
+            part["functionResponse"]["response"]["candidate_id"] for part in responses
+        ] == ["b", "a"]
 
     def test_the_key_travels_in_a_header_not_the_url(self):
         transport = RecordingTransport(responses=[self.gemini_body()])
@@ -451,8 +652,17 @@ class TestNoFallbackWhenTheProviderAnswered:
 
 class TestConfiguration:
     def test_the_default_order_is_openrouter_then_groq_then_gemini(self):
-        assert provider_config.DEFAULT_PROVIDER_ORDER == ("openrouter", "groq", "gemini")
-        assert provider_config.provider_order({}) == ("openrouter", "groq", "gemini")
+        """The original three keep their original positions, in front.
+
+        Asserted as a prefix rather than as the whole tuple: adding a provider
+        must never be able to change which one answers first, and stating the
+        prefix separately is what makes that the tested invariant instead of an
+        incidental property of a literal.
+        """
+        expected = ("openrouter", "groq", "gemini", "gorouter")
+        assert provider_config.DEFAULT_PROVIDER_ORDER == expected
+        assert provider_config.provider_order({}) == expected
+        assert provider_config.DEFAULT_PROVIDER_ORDER[:3] == ("openrouter", "groq", "gemini")
 
     def test_the_order_is_configurable(self):
         env = {"FINRECON_PROVIDER_ORDER": "gemini, groq"}

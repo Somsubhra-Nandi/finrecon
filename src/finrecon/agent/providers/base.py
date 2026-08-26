@@ -86,11 +86,43 @@ class ConversationMessage:
 
 @dataclass(frozen=True)
 class TokenUsage:
+    """Normalized token counts, plus the provider's own usage block verbatim.
+
+    The three counts are the normalized view every consumer reads. They are
+    *selected* from what a provider reported, never computed: a gateway that
+    reports two disagreeing names for the same quantity gets one of them
+    picked by a declared rule (see
+    :func:`finrecon.agent.providers.openai_compatible.normalize_usage`), and
+    the disagreement stays visible in ``raw`` rather than being averaged,
+    summed or otherwise invented away.
+    """
+
     input_tokens: int | None = None
     output_tokens: int | None = None
     total_tokens: int | None = None
+    usage_source: str | None = None
+    """The provider's own attribution for the counts, when it reports one.
+
+    Some gateways bill against an upstream and say so -- GoRouter returns
+    ``usage_source: anthropic`` beside the counts. Recorded because a token
+    count whose origin is a third party is a different fact from one the
+    endpoint measured itself.
+    """
+    raw: dict[str, Any] | None = None
+    """The provider's usage block exactly as it arrived, or ``None``.
+
+    Kept so a normalization decision can always be audited against the
+    numbers it was made from. Nothing downstream adjudicates on it.
+    """
 
     def is_empty(self) -> bool:
+        """True when no *count* was reported. Metadata alone does not count.
+
+        Deliberately unchanged by the two fields above: a usage block that
+        carried an attribution and no numbers is still an absence of token
+        telemetry, and callers asking "did this provider report usage?" mean
+        the counts.
+        """
         return (
             self.input_tokens is None
             and self.output_tokens is None
@@ -104,6 +136,7 @@ class ModelResponse:
 
     provider: str
     model: str
+    """The model identifier this adapter *asked* for. Configuration, not an echo."""
     text: str
     tool_calls: tuple[ToolCallRequest, ...] = ()
     usage: TokenUsage = field(default_factory=TokenUsage)
@@ -111,6 +144,17 @@ class ModelResponse:
     finish_reason: str | None = None
     transport_attempts: int = 1
     """How many HTTP attempts this provider needed, including the successful one."""
+    reported_model: str | None = None
+    """The model identifier the provider's response body claimed, if any.
+
+    Distinct from ``model`` on purpose. A routing gateway may resolve an
+    alias to something else -- ``claude-opus-5-thinking`` requested,
+    ``claude-opus-5`` returned -- and a trajectory that recorded only the
+    request would attribute the run to a model that never answered it.
+    ``None`` when the provider does not report one; never back-filled from
+    the request, because "it did not say" and "it said the same thing" are
+    different facts.
+    """
 
 
 # --- Error taxonomy -------------------------------------------------------
