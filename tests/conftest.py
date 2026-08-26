@@ -173,6 +173,34 @@ def frozen_eval_tier_labels(benchmark_dir):
 
 
 @pytest.fixture(scope="session")
+def v4_stage2(benchmark_dir):
+    """One deterministic Stage-2 pass over the benchmark v4 pilot split.
+
+    Session-scoped and read-only, like ``dev_result``. The v4 pilot is a
+    development artifact -- ``benchmark/eval/groundtruth.py`` lists it beside
+    ``dev`` rather than behind the frozen-truth gate -- so nothing here needs
+    the ceremony ``frozen_eval_tier_labels`` carries.
+    """
+    store = LedgerStore(":memory:")
+    result = process_batch(store=store, benchmark_dir=benchmark_dir, split="v4-pilot")
+    yield result, store
+    store.close()
+
+
+@pytest.fixture(scope="session")
+def v4_truth(benchmark_dir):
+    """v4 pilot ground truth, keyed by Stage-2 case ID.
+
+    **Test-only**, exactly as ``dev_ground_truth`` is. Loaded through the
+    Stage-4 loader rather than parsed here, so a test and the evaluator cannot
+    disagree about what a v4 ground-truth row means.
+    """
+    from benchmark.eval.groundtruth import load_ground_truth
+
+    return load_ground_truth(benchmark_dir, "v4-pilot")
+
+
+@pytest.fixture(scope="session")
 def dev_stage3_result(benchmark_dir, tmp_path_factory):
     """One full Stage-3 pass over every DEV case Stage 2 left unresolved.
 
