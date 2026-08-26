@@ -1,4 +1,4 @@
-.PHONY: install test generate-dev generate-frozen verify-frozen test-idempotency test-isolation reconcile-dev test-stage3 investigate-dev investigate-dev-replay test-stage4 eval eval-compare
+.PHONY: install test generate-dev generate-frozen verify-frozen test-idempotency test-isolation reconcile-dev test-stage3 investigate-dev investigate-dev-replay test-stage4 eval eval-compare generate-v4-pilot verify-v4-pilot reconcile-v4-pilot baselines-v4-pilot conjunction-rules test-v4 test-validator-v2
 
 install:
 	pip install -e ".[dev]"
@@ -68,3 +68,44 @@ eval:
 eval-compare:
 	@test -n "$(A)" -a -n "$(B)" || (echo "usage: make eval-compare A=report-a.json B=report-b.json"; exit 2)
 	python -m benchmark.eval compare $(A) $(B)
+
+# Benchmark v4 PILOT ---------------------------------------------------
+# Additive. Nothing in this section reads, writes or regenerates benchmark
+# v3: it owns `benchmark/datasets/v4-pilot/`, `ground_truth/v4-pilot.jsonl`
+# and `manifests/v4-pilot.json`, and `make verify-frozen` above must keep
+# passing before and after any of it.
+#
+# The pilot is NOT frozen. No match rate, precision or coverage number from
+# this split may be reported as a benchmark result until a freeze decision
+# is taken and recorded in benchmark/manifests/CHANGELOG.md.
+
+generate-v4-pilot:
+	python -m finrecon.benchmark.generator_v4.generate --write
+
+verify-v4-pilot:
+	python -m finrecon.benchmark.generator_v4.generate --verify
+
+reconcile-v4-pilot:
+	python -m finrecon.reconcile_cli --split v4-pilot
+
+# Deterministic diagnostic baselines: how much of the pilot needs no model.
+# Zero provider calls; ground truth is read only to score decisions that
+# were already made. Exits non-zero if a *conservative* arm resolves a case
+# incorrectly, which would mean the pilot misleads rather than tests.
+baselines-v4-pilot:
+	python -m benchmark.baselines --split v4-pilot --json-out benchmark/baselines/reports/v4-pilot.json
+
+test-v4:
+	pytest -q tests/test_benchmark_v4_pilot.py tests/test_v4_leakage.py tests/test_v4_baselines.py tests/test_v4_stage4_integration.py
+
+# Validator v2 -------------------------------------------------------------
+# The experimental harness that chose the conjunction rule: five candidate
+# rules against the adversarial fixtures, the v4 pilot and the DEV residual.
+# Zero provider calls. Exits non-zero if the rule the tree currently ships
+# would not pass its own shippability criteria.
+conjunction-rules:
+	python -m benchmark.baselines.conjunction_report --json-out benchmark/baselines/reports/conjunction-rules.json
+
+# The safety properties of the rule that shipped, through the production path.
+test-validator-v2:
+	pytest -q tests/test_evidence_closure.py tests/test_validator_conjunction.py
