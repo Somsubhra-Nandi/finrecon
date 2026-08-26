@@ -26,8 +26,15 @@ from finrecon.pipeline import case_id_for
 
 from benchmark.eval.errors import EvaluationInputError, GroundTruthPolicyError
 
-SCORABLE_WITHOUT_OPT_IN = ("dev",)
-"""Splits whose truth may be read for scoring with no further ceremony."""
+SCORABLE_WITHOUT_OPT_IN = ("dev", "v4-pilot")
+"""Splits whose truth may be read for scoring with no further ceremony.
+
+``v4-pilot`` is here for the same reason ``dev`` is: it is a *development*
+artifact. The freeze protocol's gate exists to stop held-out outcomes being
+consulted while iterating, and a pilot that is still being designed has no
+held-out status to protect. A frozen v4, if one is ever cut, would be a
+different split name and would go into :data:`GATED_SPLITS`.
+"""
 
 GATED_SPLITS = ("frozen-eval",)
 """Splits whose truth requires an explicit opt-in. See module docstring."""
@@ -44,6 +51,25 @@ class GroundTruthEntry:
     correct_relationship: dict | None
     true_reference: str | None
     value_at_stake_paise: int
+    families: tuple[str, ...] = ()
+    """Benchmark v4 analysis tags. Empty for v1-v3 splits, which have no families.
+
+    Defaulted rather than required so one loader serves both generations: a v3
+    ground-truth line has no ``families`` key and must keep parsing unchanged,
+    since re-reading v3 truth is how the evaluator's own regression tests pin
+    that v4 changed nothing about v3 scoring.
+    """
+    required_composition: str = ""
+    """The smallest evidence combination v4 says identifies the true candidate."""
+    expected_candidate_count: int | None = None
+    """What the v4 generator built. ``None`` for splits that do not record it."""
+
+    @property
+    def candidate_count_bucket(self) -> str:
+        """A stable label for candidate-count reporting, or ``unknown``."""
+        if self.expected_candidate_count is None:
+            return "unknown"
+        return str(self.expected_candidate_count)
 
     @property
     def is_uniquely_resolvable(self) -> bool:
@@ -106,6 +132,9 @@ def load_ground_truth(
             correct_relationship=raw["correct_relationship"],
             true_reference=raw["true_reference"],
             value_at_stake_paise=raw["value_at_stake_paise"],
+            families=tuple(raw.get("families") or ()),
+            required_composition=raw.get("required_composition") or "",
+            expected_candidate_count=raw.get("expected_candidate_count"),
         )
     if not entries:
         raise EvaluationInputError(f"ground truth at {path} contained no rows")
