@@ -330,21 +330,21 @@ arms, zero provider calls:
 |---|---:|---:|---:|---:|
 | A · Stage-2 rules only | 0 | 0 | 0 | 0.000 |
 | B1 · `validator.v1` semantics (the before-column) | 12 | 8 | **4** | 0.167 |
-| B · the shipped gate, exhaustively fed (`validator.v2`) | 38 | 34 | **4** | 0.708 |
+| B · the shipped gate, exhaustively fed (`validator.v3`) | 48 | 48 | **0** | 1.000 |
 | C1 · lexical composition | 38 | 34 | **4** | 0.708 |
 | C2 · lexical + structural composition | 48 | 48 | 0 | 1.000 |
 | C3 · first subset that isolates | 52 | 48 | **4** | 1.000 |
 
 `B1` is the rule that saturated v3 T2; on v4 it reaches only the 8-case
 positive control, which is the measurement that justified `validator.v2`. `B`
-is the shipped gate, and the `B1`-to-`B` gap is what v2 bought. But arm C2
-still solves the pilot completely — which is close to a tautology, because
+is the shipped gate: v2 supplied closed reference conjunction and v3 supplies
+closed structural consistency. Arm C2 also solves the pilot completely — which is close to a tautology, because
 C2 composes exactly the feature vocabulary the generator uses to *define* its
 cases. Raising the conjunction arity raises an exponent, not a complexity
 class. That is reported rather than hidden, and it is why the recommendation is
 not to freeze a full v4 yet.
 
-Every wrong resolution in that table comes from one four-case archetype whose
+Every wrong resolution outside the shipped gate and conservative C2/S3 rules comes from one four-case archetype whose
 correct outcome is escalation: a stale reference from a different settlement
 plus a contradicting value-date field. Only C2's "exactly one candidate is
 consistent with *everything*" rule escapes it — C3 has identical features and
@@ -356,6 +356,7 @@ make generate-v4-pilot   # build and write the pilot (verifies every case twice)
 make verify-v4-pilot     # recompute its fingerprint against its manifest
 make baselines-v4-pilot  # the five arms; zero provider calls
 make test-v4             # the pilot's own tests
+make test-validator-v3   # structural closure and adversarial decision fixtures
 make verify-frozen       # benchmark v3, still frozen
 ```
 
@@ -467,6 +468,32 @@ the evidence when the complete evidence costs four milliseconds.
 ```bash
 make conjunction-rules    # the five-rule comparison that chose the rule
 make test-validator-v2    # the closure's equivalence claims + the safety suite
+```
+
+### Validator v3 — structural evidence hardening
+
+Full account: [`notes/VALIDATOR-V3-FINDINGS.md`](notes/VALIDATOR-V3-FINDINGS.md).
+
+`validator.v2` could prove reference conjunctions but could not refute a stale
+reference with trusted structural context. `validator.v3` adds two closed,
+exact relations: an explicit `VALDT DDMONYY` field must agree with the normalized
+bank value date and candidate settlement date, and an explicit `RFND rrr.pp`
+field must equal a signed refund breakup line in integer paise. Both are
+evaluated over the complete immutable candidate snapshot. All recognized
+tokens participate; duplicates add no weight and conflicting tokens empty the
+intersection. Date or amount alone never resolves because v2's admissible
+reference seed remains mandatory.
+
+The v4 pilot moves from **38 resolved / 34 correct / 4 wrong / 26 escalated**
+to **48 resolved / 48 correct / 0 wrong / 16 escalated**. All 16 intentionally
+ambiguous cases escalate; unsafe auto-match rate and value at risk are zero.
+The frozen v3 cohort remains **171 correct / 0 wrong / 0 T3 resolved** and its
+fingerprint is unchanged.
+
+Current identities:
+
+```
+investigator.v4   tools.v3   loop.v2   trajectory-cache.v3   validator.v3   policy.v1
 ```
 
 ### Frozen-eval SHA-256
