@@ -57,6 +57,8 @@ from finrecon.decide.validator import raw_tool_evidence, validate_case
 
 from benchmark.baselines.features import (
     Feature,
+    conservative_breakup_amount_features,
+    conservative_value_date_features,
     distinct_reach_sets,
     lexical_features,
     structural_features,
@@ -68,8 +70,15 @@ ARM_B = "B_shipped_gate_exhaustive"
 ARM_C1 = "C1_lexical_composition"
 ARM_C2 = "C2_lexical_and_structural_composition"
 ARM_C3 = "C3_first_subset_that_isolates"
+ARM_S0 = "S0_validator_v2_reference_only"
+ARM_S1 = "S1_reference_and_value_date"
+ARM_S2 = "S2_reference_and_breakup_amount"
+ARM_S3 = "S3_conservative_structural_composition"
 
-ARMS: tuple[str, ...] = (ARM_A, ARM_B1, ARM_B, ARM_C1, ARM_C2, ARM_C3)
+ARMS: tuple[str, ...] = (
+    ARM_A, ARM_B1, ARM_B, ARM_C1, ARM_C2, ARM_C3,
+    ARM_S0, ARM_S1, ARM_S2, ARM_S3,
+)
 
 MAX_SUBSET_SIZE = 4
 """How many feature reach sets arm C3 will intersect. One more than the highest
@@ -501,12 +510,54 @@ def arm_c3_first_subset_that_isolates(
     )
 
 
+def _seeded_structural_arm(
+    snapshot: CaseSnapshot,
+    arm: str,
+    *,
+    include_date: bool,
+    include_amount: bool,
+    policy: Stage3Policy = DEFAULT_POLICY,
+) -> ArmPrediction:
+    """Experimental v3 rule: closed references seed complete structural facts."""
+    floor = applicable_min_pinned(snapshot.base_evidence.bank_record.amount_paise, policy)
+    lexical = lexical_features(snapshot, floor)
+    # Preserve validator.v2's no-evidence invariant: structure never seeds itself.
+    if not lexical:
+        return _consistent_with_everything(snapshot, (), arm, policy)
+    features = lexical
+    if include_date:
+        features += conservative_value_date_features(snapshot)
+    if include_amount:
+        features += conservative_breakup_amount_features(snapshot)
+    return _consistent_with_everything(snapshot, features, arm, policy)
+
+
+def arm_s0_reference_only(snapshot: CaseSnapshot, policy: Stage3Policy = DEFAULT_POLICY) -> ArmPrediction:
+    return _seeded_structural_arm(snapshot, ARM_S0, include_date=False, include_amount=False, policy=policy)
+
+
+def arm_s1_reference_and_value_date(snapshot: CaseSnapshot, policy: Stage3Policy = DEFAULT_POLICY) -> ArmPrediction:
+    return _seeded_structural_arm(snapshot, ARM_S1, include_date=True, include_amount=False, policy=policy)
+
+
+def arm_s2_reference_and_breakup_amount(snapshot: CaseSnapshot, policy: Stage3Policy = DEFAULT_POLICY) -> ArmPrediction:
+    return _seeded_structural_arm(snapshot, ARM_S2, include_date=False, include_amount=True, policy=policy)
+
+
+def arm_s3_conservative_structural(snapshot: CaseSnapshot, policy: Stage3Policy = DEFAULT_POLICY) -> ArmPrediction:
+    return _seeded_structural_arm(snapshot, ARM_S3, include_date=True, include_amount=True, policy=policy)
+
+
 SNAPSHOT_ARMS = {
     ARM_B1: arm_b1_validator_v1_semantics,
     ARM_B: arm_b_single_fragment,
     ARM_C1: arm_c1_lexical_composition,
     ARM_C2: arm_c2_lexical_and_structural,
     ARM_C3: arm_c3_first_subset_that_isolates,
+    ARM_S0: arm_s0_reference_only,
+    ARM_S1: arm_s1_reference_and_value_date,
+    ARM_S2: arm_s2_reference_and_breakup_amount,
+    ARM_S3: arm_s3_conservative_structural,
 }
 
 

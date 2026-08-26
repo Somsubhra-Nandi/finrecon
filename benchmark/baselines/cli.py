@@ -120,13 +120,18 @@ def main(argv: list[str] | None = None) -> int:
     else:
         print_summary(report)
 
-    # A wrong auto-resolution by a *conservative* arm would mean the benchmark
-    # is unsound. Arm C3 is the deliberately aggressive one, so its wrong
-    # answers are a measurement rather than a build failure.
+    # The shipped gate and the candidate production rules must remain safe.
+    # Historical/ablated arms intentionally retain the stale-reference failure
+    # so the experiment still shows which capability closes it.
     conservative_wrong = sum(
         len(report["arms"][arm]["wrong_resolutions"])
-        for arm in ("A_rules_only", "C1_lexical_composition",
-                    "C2_lexical_and_structural_composition")
+        for arm in (
+            "A_rules_only",
+            "B_shipped_gate_exhaustive",
+            "C2_lexical_and_structural_composition",
+            "S1_reference_and_value_date",
+            "S3_conservative_structural_composition",
+        )
     )
     return 1 if conservative_wrong else 0
 

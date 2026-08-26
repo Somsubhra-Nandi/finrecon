@@ -1,4 +1,4 @@
-.PHONY: install test generate-dev generate-frozen verify-frozen test-idempotency test-isolation reconcile-dev test-stage3 investigate-dev investigate-dev-replay test-stage4 eval eval-compare generate-v4-pilot verify-v4-pilot reconcile-v4-pilot baselines-v4-pilot conjunction-rules test-v4 test-validator-v2
+.PHONY: install test generate-dev generate-frozen verify-frozen test-idempotency test-isolation reconcile-dev test-stage3 investigate-dev investigate-dev-replay test-stage4 eval eval-compare generate-v4-pilot verify-v4-pilot reconcile-v4-pilot baselines-v4-pilot conjunction-rules test-v4 test-validator-v2 test-validator-v3
 
 install:
 	pip install -e ".[dev]"
@@ -109,3 +109,6 @@ conjunction-rules:
 # The safety properties of the rule that shipped, through the production path.
 test-validator-v2:
 	pytest -q tests/test_evidence_closure.py tests/test_validator_conjunction.py
+
+test-validator-v3:
+	pytest -q tests/test_evidence_closure.py tests/test_validator_conjunction.py tests/test_validator_structural.py

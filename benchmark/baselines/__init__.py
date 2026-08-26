@@ -15,8 +15,8 @@ not part of the shipped controller: ``pyproject.toml`` declares
 ``finrecon``, and the dependency arrow runs one way -- the baselines import
 ``finrecon``, and nothing under ``src/finrecon`` imports the baselines.
 
-The five arms
--------------
+The diagnostic arms
+-------------------
 
 ``A`` -- rules only
     The unmodified Stage-2 deterministic core. What resolves before any
@@ -71,6 +71,6 @@ reported as one. See ``benchmark/V4-PILOT.md``.
 
 from __future__ import annotations
 
-BASELINE_SUITE_VERSION = "baselines.v1"
+BASELINE_SUITE_VERSION = "baselines.v2"
 
 __all__ = ["BASELINE_SUITE_VERSION"]

@@ -51,6 +51,10 @@ MONTHS = ("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", 
 
 _MONEY = re.compile(r"(?<![\d.])(\d{1,7})\.(\d{2})(?![\d.])")
 _DATE = re.compile(r"(?<!\d)(\d{2})(" + "|".join(MONTHS) + r")(\d{2})(?!\d)")
+_REFUND_FIELD = re.compile(r"(?<![A-Z0-9])RFND\s+(\d{1,7})\.(\d{2})(?![\d.])")
+_VALUE_DATE_FIELD = re.compile(
+    r"(?<![A-Z0-9])VALDT\s+(\d{2})(" + "|".join(MONTHS) + r")(\d{2})(?!\d)"
+)
 
 
 @dataclass(frozen=True)
@@ -194,6 +198,77 @@ def structural_features(snapshot: CaseSnapshot) -> tuple[Feature, ...]:
     return tuple(features)
 
 
+def conservative_breakup_amount_features(snapshot: CaseSnapshot) -> tuple[Feature, ...]:
+    """Explicit refund fields matched to signed refund lines, exactly in paise.
+
+    Unlike the older C2 diagnostic, this does not treat every decimal as money
+    or every line's absolute value as interchangeable.  Every distinct RFND
+    field is retained, including one that reaches no candidate: a syntactically
+    valid asserted refund that no candidate accounts for is contradiction, not
+    silence.
+    """
+    narration = snapshot.base_evidence.bank_record.narration
+    facts_by_id = _facts_by_id(snapshot)
+    features: list[Feature] = []
+    seen: set[tuple[str, int]] = set()
+    for match in _REFUND_FIELD.finditer(narration):
+        token = match.group(0)
+        paise = int(match.group(1)) * 100 + int(match.group(2))
+        identity = (token, paise)
+        if identity in seen:
+            continue
+        seen.add(identity)
+        reach = frozenset(
+            candidate.candidate_id
+            for candidate in snapshot.candidates
+            if any(
+                any(
+                    line.line_type == "refund" and line.amount_paise == -paise
+                    for line in facts_by_id[settlement_id].derivation.lines
+                )
+                for settlement_id in candidate.settlement_ids
+                if settlement_id in facts_by_id
+            )
+        )
+        features.append(Feature(kind="breakup_refund_amount_paise", token=token, reach=reach))
+    return tuple(features)
+
+
+def conservative_value_date_features(snapshot: CaseSnapshot) -> tuple[Feature, ...]:
+    """Explicit value-date fields verified against the immutable bank record.
+
+    A narration date is admitted only when it restates the normalized bank
+    value date exactly.  This avoids comparing unrelated dates merely because
+    they share a shape.  Each candidate reaches the fact when at least one
+    settlement date equals that value date; grouped settlements may legitimately
+    straddle midnight under the Stage-2 window.
+    """
+    narration = snapshot.base_evidence.bank_record.narration
+    bank_value_date = snapshot.base_evidence.bank_record.value_date
+    features: list[Feature] = []
+    seen: set[tuple[str, date]] = set()
+    for match in _VALUE_DATE_FIELD.finditer(narration):
+        token = match.group(0)
+        try:
+            value = date(
+                2000 + int(match.group(3)),
+                MONTHS.index(match.group(2)) + 1,
+                int(match.group(1)),
+            )
+        except ValueError:
+            continue
+        if value != bank_value_date or (token, value) in seen:
+            continue
+        seen.add((token, value))
+        reach = frozenset(
+            candidate.candidate_id
+            for candidate in snapshot.candidates
+            if value in candidate.settlement_dates
+        )
+        features.append(Feature(kind="bank_value_date_exact", token=token, reach=reach))
+    return tuple(features)
+
+
 def distinct_reach_sets(features: tuple[Feature, ...]) -> tuple[frozenset[str], ...]:
     """The distinct reach sets, in a deterministic order. Many fragments, few sets."""
     return tuple(
@@ -208,6 +283,8 @@ __all__ = [
     "MONTHS",
     "Feature",
     "date_tokens",
+    "conservative_breakup_amount_features",
+    "conservative_value_date_features",
     "distinct_reach_sets",
     "lexical_features",
     "lexical_reach",
