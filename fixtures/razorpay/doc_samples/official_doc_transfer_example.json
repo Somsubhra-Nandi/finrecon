@@ -1,0 +1,22 @@
+[
+  {
+    "amount": 100000,
+    "created_at": 1755000000,
+    "credit": 0,
+    "currency": "INR",
+    "debit": 100296,
+    "description": "official-doc transfer example: amount=100000 debit=100296 fee=296 tax=46",
+    "dispute_id": null,
+    "entity_id": "trf_docsample_official001",
+    "fee": 296,
+    "on_hold": false,
+    "order_id": null,
+    "payment_id": "pay_docsample_official_linked",
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_official_trf",
+    "settlement_utr": "HDFCRTOFFTRF01",
+    "tax": 46,
+    "type": "transfer"
+  }
+]

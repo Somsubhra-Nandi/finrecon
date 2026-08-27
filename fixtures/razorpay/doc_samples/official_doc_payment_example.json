@@ -1,0 +1,22 @@
+[
+  {
+    "amount": 100000,
+    "created_at": 1755000000,
+    "credit": 97100,
+    "currency": "INR",
+    "debit": 0,
+    "description": "official-doc payment example: amount=100000 credit=97100 fee=2900 tax=0",
+    "dispute_id": null,
+    "entity_id": "pay_docsample_official001",
+    "fee": 2900,
+    "on_hold": false,
+    "order_id": "order_docsample_official001",
+    "payment_id": null,
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_official_pay",
+    "settlement_utr": "HDFCRTOFFPAY01",
+    "tax": 0,
+    "type": "payment"
+  }
+]

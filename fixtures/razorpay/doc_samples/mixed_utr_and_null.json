@@ -1,0 +1,42 @@
+[
+  {
+    "amount": 300000,
+    "created_at": 1755000000,
+    "credit": 294300,
+    "currency": "INR",
+    "debit": 0,
+    "description": null,
+    "dispute_id": null,
+    "entity_id": "pay_docsample_e001",
+    "fee": 5700,
+    "on_hold": false,
+    "order_id": "order_docsample_e001",
+    "payment_id": null,
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_e001",
+    "settlement_utr": "HDFCRTE0000001",
+    "tax": 1026,
+    "type": "payment"
+  },
+  {
+    "amount": 200,
+    "created_at": 1755000000,
+    "credit": 0,
+    "currency": "INR",
+    "debit": 200,
+    "description": "adjustment carries no UTR of its own",
+    "dispute_id": null,
+    "entity_id": "adj_docsample_e002",
+    "fee": 0,
+    "on_hold": false,
+    "order_id": null,
+    "payment_id": null,
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_e001",
+    "settlement_utr": null,
+    "tax": 0,
+    "type": "adjustment"
+  }
+]

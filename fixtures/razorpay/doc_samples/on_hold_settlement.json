@@ -1,0 +1,22 @@
+[
+  {
+    "amount": 400000,
+    "created_at": 1755000000,
+    "credit": 392400,
+    "currency": "INR",
+    "debit": 0,
+    "description": "reserve hold, not yet settled",
+    "dispute_id": null,
+    "entity_id": "pay_docsample_k001",
+    "fee": 7600,
+    "on_hold": true,
+    "order_id": "order_docsample_k001",
+    "payment_id": null,
+    "settled": false,
+    "settled_at": null,
+    "settlement_id": "setl_docsample_k001",
+    "settlement_utr": null,
+    "tax": 1368,
+    "type": "payment"
+  }
+]
