@@ -6,6 +6,7 @@ from .recon import (
     QuarantinedSettlement,
     RazorpayReconAdapterResult,
     ReconRowCollection,
+    UnresolvedRefundCompanion,
     build_recon_result,
     is_blocking_conflict,
 )
@@ -19,6 +20,7 @@ __all__ = [
     "RazorpayReconRow",
     "RazorpayReconType",
     "ReconRowCollection",
+    "UnresolvedRefundCompanion",
     "build_recon_result",
     "is_blocking_conflict",
 ]

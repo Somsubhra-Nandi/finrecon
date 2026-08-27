@@ -5,14 +5,18 @@ records (with ``breakup``) from a complete collection of Razorpay settlement
 recon rows (:class:`~finrecon.adapters.razorpay.recon_row.RazorpayReconRow`).
 See ``notes/RAZORPAY-INPUT-GAP.md`` §4 for the design this implements.
 
-**What this module does not do.** It does not build canonical ``Payment``,
-``Refund`` or ``Order`` records. The recon feed carries no ``status`` for a
-payment or refund and no order total distinct from the settled amount
-(RAZORPAY-INPUT-GAP.md §2.2-2.3), so synthesizing those canonical objects
-from recon rows alone would mean inventing a field the source never
-supplied — exactly the "manufactured accounting" §4.5/item 7 rules out.
-Building those records is a separate, later task against the orders/
-payments/refunds *entity* endpoints, not this one.
+**Payment/Refund companions.** This module also builds the minimum
+canonical ``Payment`` companions (and, where the recon feed's evidence
+falls short, :class:`UnresolvedRefundCompanion` facts rather than
+canonical ``Refund`` records) needed to mechanically check
+:func:`finrecon.matchers.derivation.breakup_references_are_sound` against
+imported settlements. See ``README.md``'s "Payment/Refund companions"
+section for the sourced justification of the ``PaymentStatus.CAPTURED``
+derivation and why ``RefundStatus.PROCESSED`` is deliberately never
+derived. It does not build canonical ``Order`` records — the engine's
+``breakup_references_are_sound`` predicate never looks one up, so nothing
+here needs one (RAZORPAY-INPUT-GAP.md §2.3, and see item 4 of the
+companion-construction task brief: "minimum data only").
 
 **Downstream boundary.** The engine reads exactly the five ``loader.py``
 files; nothing here changes that contract, and the resulting
@@ -55,7 +59,14 @@ from collections.abc import Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
-from finrecon.models import Settlement, SettlementLineItem, SettlementLineType
+from finrecon.models import (
+    Payment,
+    PaymentStatus,
+    Refund,
+    Settlement,
+    SettlementLineItem,
+    SettlementLineType,
+)
 from finrecon.models.money import Paise
 
 from ..manifest import (
@@ -146,14 +157,35 @@ against that bar and found blocking:
   exhaustive only over what it actually enumerates, so that failure would
   never surface as an escalation; the credit would simply never generate
   the candidate. Both are therefore blocking rather than merely observed.
+* ``payment_companion_not_settled`` — the documented ``settled`` field on a
+  recon row is explicitly boolean, and the endpoint is not documented to
+  guarantee it is always ``true`` (the on-hold/reserve case can return
+  ``settled=false``, see ``on_hold_settlement.json``). The capture-before-
+  settlement precondition this adapter relies on to derive
+  ``PaymentStatus.CAPTURED`` only holds once ``settled`` is actually
+  ``true``, so a row that is not settled cannot produce a trustworthy
+  companion — endpoint membership alone is not documented to imply it.
+* ``payment_companion_missing_order_id`` — :class:`finrecon.models.Payment`
+  requires ``order_id``; a ``payment`` recon row with none cannot produce a
+  companion that ``breakup_references_are_sound`` could ever accept, so the
+  settlement whose breakup references it can no longer be mechanically
+  verified and must not reach the eligible collection.
+* ``refund_companion_missing_payment_id`` — the same reasoning for
+  :class:`UnresolvedRefundCompanion`, which requires the row's linked
+  ``payment_id`` (see :func:`_build_refund_companion`).
 
 ``IngestWarning`` is a distinct type from ``IngestConflict`` and is never
-blocking. It currently has no members this adapter emits — see the
-history in :func:`_conformance` for why the one warning kind that used to
-exist (``breakup_does_not_balance_to_source_net``) was removed rather than
-kept: the condition it reported became a proven-unreachable algebraic
-identity once :func:`_row_principal`/:func:`_settlement_deductions` were
-introduced, so it is now enforced as an assertion instead.
+blocking. Its one former kind (``breakup_does_not_balance_to_source_net``)
+was removed once :func:`_row_principal`/:func:`_settlement_deductions` made
+the condition it reported a proven-unreachable algebraic identity, now
+enforced as an assertion instead (see :func:`_conformance`). It currently
+has exactly one member this adapter emits:
+``refund_status_unprovable_from_recon`` — see :func:`_build_refund_companion`
+— which is deliberately non-blocking: the *refund* itself is real and its
+amount/linkage are proven exactly, only its terminal status is unprovable
+from this feed alone, and that gap belongs to
+``breakup_references_are_sound`` to enforce (by finding no ``Refund`` to
+look up), not to ingestion-level quarantine.
 """
 
 
@@ -209,6 +241,41 @@ class QuarantinedSettlement:
 
 
 @dataclass(frozen=True)
+class UnresolvedRefundCompanion:
+    """Refund facts extracted from one ``refund`` recon row, deliberately
+    kept apart from :class:`finrecon.models.Refund`.
+
+    Recon proves ``refund_id`` (the row's own ``entity_id``), its linked
+    ``payment_id``, and the exact settled amount — all honestly readable
+    off the row, and all cross-checked against the same
+    :func:`_row_principal` the settlement's own REFUND breakup line is
+    built from (see :func:`_build_refund_companion`), so ``amount`` here is
+    *provably* the positive counterpart of that line's amount, never merely
+    expected to agree with it.
+
+    It does **not** prove :class:`finrecon.models.RefundStatus`. Unlike a
+    payment (Razorpay's settlement docs establish that settlement requires
+    a *captured* payment — see :func:`_build_payment_companion`), no
+    equivalent documented guarantee ties settlement-recon presence to
+    ``RefundStatus.PROCESSED``: a refund can be included in a settlement's
+    accounting while still ``pending`` from Razorpay's own perspective (see
+    ``README.md``'s "Refund status: unresolved by design"). Fabricating
+    ``PROCESSED`` would let ``breakup_references_are_sound`` pass on an
+    unproven status — exactly the "manufactured accounting" this adapter
+    exists to refuse — so this type exists instead of a canonical
+    ``Refund``, and no canonical ``Refund`` is built from recon rows at
+    all (:data:`RazorpayReconAdapterResult.refunds` is always empty).
+    """
+
+    refund_id: str
+    payment_id: str
+    amount: Paise
+    currency: str
+    created_at: datetime
+    settlement_id: str
+
+
+@dataclass(frozen=True)
 class RazorpayReconAdapterResult:
     """The adapter's output. ``settlements`` is the decision-eligible set.
 
@@ -222,6 +289,17 @@ class RazorpayReconAdapterResult:
     into the visible dataset files; ``quarantined_settlements`` is a
     separate, ingestion-review-only artifact and must never be merged
     into the same output.
+
+    **Companions.** ``payments`` is built from every ``payment`` recon row
+    that survived deduplication/conflict exclusion and carried an
+    ``order_id`` (see :func:`_build_payment_companion`) — independent of
+    whether that row's own settlement ended up quarantined for an
+    unrelated reason, since the fact "this payment was captured and
+    settled for this amount" is true regardless. ``refunds`` is always
+    empty by design (see :class:`UnresolvedRefundCompanion`);
+    ``unresolved_refund_companions`` carries the refund facts recon *can*
+    prove, for audit and for a future enrichment step that supplies an
+    authoritative status.
     """
 
     settlements: tuple[Settlement, ...]
@@ -229,6 +307,15 @@ class RazorpayReconAdapterResult:
     manifest: IngestManifest
     conflicts: tuple[IngestConflict, ...] = field(default=())
     warnings: tuple[IngestWarning, ...] = field(default=())
+    payments: tuple[Payment, ...] = field(default=())
+    refunds: tuple[Refund, ...] = field(default=())
+    """Always empty. See :class:`UnresolvedRefundCompanion` for why this
+    adapter never fabricates a canonical ``Refund`` from recon rows alone.
+    Kept as an explicit field (rather than omitted) so a caller wiring this
+    result into ``breakup_references_are_sound(settlement, payments=...,
+    refunds=...)`` has the same three-collection shape to reach for, ready
+    for whatever later step supplies real ``Refund`` records."""
+    unresolved_refund_companions: tuple[UnresolvedRefundCompanion, ...] = field(default=())
 
     def eligible_settlements(self) -> tuple[Settlement, ...]:
         """The only settlements safe to hand to the reconciliation path."""
@@ -434,6 +521,137 @@ def _row_principal(row: RazorpayReconRow) -> int:
     ``fee``.
     """
     return (row.credit - row.debit) + row.fee
+
+
+def _build_payment_companion(
+    row: RazorpayReconRow,
+) -> tuple[Payment | None, IngestConflict | None]:
+    """Derive a canonical :class:`~finrecon.models.Payment` from one
+    ``payment`` recon row.
+
+    ``status=PaymentStatus.CAPTURED`` is not guessed. Razorpay's own
+    documentation states capture as a settlement *prerequisite* ("The
+    payment must be captured") and describes the settlement cycle itself
+    as counting from the capture date ("We automatically settle captured
+    payments to the bank account... following our settlement cycle" —
+    settlement cycle FAQs; "captured payments are settled... T+2 working
+    days (T being the date of transaction capture)" — About Settlements).
+    Crucially, that precondition is only established for a row that is
+    itself actually settled: the documented ``settled`` field on this feed
+    is explicitly boolean ("Indicates whether the transaction has been
+    settled or not. Possible values: true, false"), NOT a field the
+    endpoint guarantees is always ``true`` for every row it returns — the
+    on-hold/reserve case (RAZORPAY-INPUT-GAP.md §2.4/§5, and this
+    adapter's own ``on_hold_settlement.json`` fixture) is documented
+    exactly as a row that can appear with ``settled=False``. So
+    ``row.settled`` is checked explicitly below rather than inferred from
+    "this row was returned by the recon endpoint at all" — endpoint
+    membership alone is not documented to imply settlement, only the
+    ``settled`` field itself is.
+
+    A row's presence in the *settlement recon* feed with ``settled=True``
+    is exactly that documented precondition having already held, so
+    deriving ``CAPTURED`` here is reading off a documented implication,
+    not inventing a field the source never supplied. See ``README.md``'s
+    "Payment status: CAPTURED derivation" for the full sourced
+    justification and citations.
+
+    ``amount`` intentionally reuses :func:`_row_principal` — the exact
+    integer the settlement's own PAYMENT breakup line is built from (see
+    :func:`_build_breakup`) — rather than re-deriving it from ``row.amount``
+    independently, so the canonical Payment's amount is *provably* equal
+    to the referencing line's amount (what
+    :func:`finrecon.matchers.derivation.breakup_references_are_sound`
+    checks), not merely expected to agree with it.
+
+    Returns ``(None, IngestConflict)`` when ``settled`` is not ``True`` —
+    the CAPTURED derivation's own precondition does not hold for this row
+    (``payment_companion_not_settled``) — or when ``order_id`` is absent —
+    the canonical :class:`~finrecon.models.Payment` model requires one and
+    the recon feed does not guarantee it is populated
+    (``payment_companion_missing_order_id``). Either way no companion can
+    be built and the settlement referencing this row cannot be verified
+    (:data:`NON_BLOCKING_CONFLICT_KINDS` classifies both as blocking).
+    """
+    if row.settled is not True:
+        return None, IngestConflict(
+            kind="payment_companion_not_settled",
+            settlement_id=row.settlement_id,
+            detail=(
+                f"payment row {row.entity_id!r} has settled={row.settled!r}; "
+                "the documented capture-before-settlement precondition this "
+                "adapter relies on to derive PaymentStatus.CAPTURED only "
+                "holds for a row that is actually settled, so no companion "
+                "Payment can be built for this row and its settlement's "
+                "breakup references cannot be mechanically verified"
+            ),
+            entity_ids=(row.entity_id,),
+        )
+    if row.order_id is None:
+        return None, IngestConflict(
+            kind="payment_companion_missing_order_id",
+            settlement_id=row.settlement_id,
+            detail=(
+                f"payment row {row.entity_id!r} has no order_id; the "
+                "canonical Payment model requires one, so no companion "
+                "Payment can be built for this row and its settlement's "
+                "breakup references cannot be mechanically verified"
+            ),
+            entity_ids=(row.entity_id,),
+        )
+    raw_method = getattr(row, "method", None)
+    method = raw_method if isinstance(raw_method, str) else None
+    payment = Payment(
+        payment_id=row.entity_id,
+        order_id=row.order_id,
+        amount=Paise(_row_principal(row)),
+        currency=row.currency,
+        status=PaymentStatus.CAPTURED,
+        method=method,
+        created_at=_epoch_to_utc(row.created_at),
+    )
+    return payment, None
+
+
+def _build_refund_companion(
+    row: RazorpayReconRow,
+) -> tuple[UnresolvedRefundCompanion | None, IngestConflict | None]:
+    """Extract refund facts from one ``refund`` recon row, without
+    fabricating a status. See :class:`UnresolvedRefundCompanion`.
+
+    ``amount`` is ``-_row_principal(row)``: the REFUND breakup line's
+    amount is negative (a deduction), and
+    :func:`finrecon.matchers.derivation.breakup_references_are_sound`
+    checks ``refund.amount_paise == -line.amount_paise``, so this is the
+    exact positive counterpart of that line's amount, provably (same
+    source integer), not merely expected to match.
+
+    Returns ``(None, IngestConflict)`` when ``payment_id`` is absent —
+    the documented recon contract carries the *linked* payment on a
+    refund row, and without it no companion can be built at all (blocking,
+    same reasoning as :func:`_build_payment_companion`).
+    """
+    if row.payment_id is None:
+        return None, IngestConflict(
+            kind="refund_companion_missing_payment_id",
+            settlement_id=row.settlement_id,
+            detail=(
+                f"refund row {row.entity_id!r} has no linked payment_id; "
+                "an UnresolvedRefundCompanion requires one, so no companion "
+                "can be built for this row and its settlement's breakup "
+                "references cannot be mechanically verified"
+            ),
+            entity_ids=(row.entity_id,),
+        )
+    companion = UnresolvedRefundCompanion(
+        refund_id=row.entity_id,
+        payment_id=row.payment_id,
+        amount=Paise(-_row_principal(row)),
+        currency=row.currency,
+        created_at=_epoch_to_utc(row.created_at),
+        settlement_id=row.settlement_id,
+    )
+    return companion, None
 
 
 def _settlement_deductions(
@@ -656,6 +874,8 @@ def build_recon_result(collection: ReconRowCollection) -> RazorpayReconAdapterRe
     warnings: list[IngestWarning] = []
     conformance: list[ConformanceReport] = []
     provenance: list[RowProvenance] = []
+    payments: list[Payment] = []
+    unresolved_refund_companions: list[UnresolvedRefundCompanion] = []
 
     row_index_by_fingerprint = {row.fingerprint(): idx for idx, row in enumerate(collection.rows)}
 
@@ -700,6 +920,34 @@ def build_recon_result(collection: ReconRowCollection) -> RazorpayReconAdapterRe
                 created_at=created_at,
                 breakup=breakup,
             )
+
+            for row in rows:
+                if row.type is RazorpayReconType.PAYMENT:
+                    payment, payment_conflict = _build_payment_companion(row)
+                    if payment_conflict is not None:
+                        settlement_conflicts.append(payment_conflict)
+                    if payment is not None:
+                        payments.append(payment)
+                elif row.type is RazorpayReconType.REFUND:
+                    refund_companion, refund_conflict = _build_refund_companion(row)
+                    if refund_conflict is not None:
+                        settlement_conflicts.append(refund_conflict)
+                    if refund_companion is not None:
+                        unresolved_refund_companions.append(refund_companion)
+                        warnings.append(
+                            IngestWarning(
+                                kind="refund_status_unprovable_from_recon",
+                                settlement_id=settlement_id,
+                                detail=(
+                                    f"refund row {row.entity_id!r}: settlement recon proves "
+                                    "refund_id, linked payment_id and exact amount, but carries "
+                                    "no evidence for RefundStatus — no canonical Refund is built; "
+                                    "see UnresolvedRefundCompanion. "
+                                    "breakup_references_are_sound stays fail-closed on this line "
+                                    "until an authoritative refund status is available"
+                                ),
+                            )
+                        )
 
             # `_build_breakup` emits one label per breakup line, in the same
             # order as `rows` for the per-row lines followed by the aggregate
@@ -800,6 +1048,8 @@ def build_recon_result(collection: ReconRowCollection) -> RazorpayReconAdapterRe
         manifest=manifest,
         conflicts=tuple(all_conflicts),
         warnings=tuple(warnings),
+        payments=tuple(payments),
+        unresolved_refund_companions=tuple(unresolved_refund_companions),
     )
 
 
@@ -809,6 +1059,7 @@ __all__ = [
     "QuarantinedSettlement",
     "RazorpayReconAdapterResult",
     "ReconRowCollection",
+    "UnresolvedRefundCompanion",
     "build_recon_result",
     "is_blocking_conflict",
 ]
