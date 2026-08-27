@@ -570,6 +570,206 @@ def _mutate_row(row: RazorpayReconRow, **changes) -> RazorpayReconRow:
     return RazorpayReconRow.model_validate_json(json.dumps(payload))
 
 
+class TestPaymentCompanions:
+    """Task brief §8 A-D: the minimum Payment[] companion needed for
+    ``breakup_references_are_sound`` to mechanically pass, built without
+    fabricating anything the recon feed does not honestly support."""
+
+    def test_a_documented_settled_payment_row_produces_a_matching_payment(self):
+        from finrecon.models import PaymentStatus, SettlementLineType
+
+        result = build("official_doc_payment_example.json")
+        (settlement,) = result.settlements
+        (payment,) = result.payments
+        (payment_line,) = [l for l in settlement.breakup if l.type is SettlementLineType.PAYMENT]
+
+        assert payment.payment_id == payment_line.reference_id == "pay_docsample_official001"
+        assert int(payment.amount) == int(payment_line.amount) == 100000
+        assert payment.order_id == "order_docsample_official001"
+        assert payment.status is PaymentStatus.CAPTURED
+        assert payment.currency == "INR"
+
+    def test_b_breakup_references_are_sound_succeeds_for_a_payment_only_settlement(self):
+        from finrecon.matchers.derivation import breakup_references_are_sound
+        from finrecon.normalize.records import normalize_payment, normalize_settlement
+
+        result = build("official_doc_payment_example.json")
+        (settlement,) = result.settlements
+        normalized_settlement = normalize_settlement(settlement)
+        payments = {p.payment_id: normalize_payment(p) for p in result.payments}
+
+        assert breakup_references_are_sound(normalized_settlement, payments=payments, refunds={}) is True
+
+    def test_c_duplicate_identical_payment_evidence_collapses_deterministically(self):
+        result = build("duplicate_rows.json")
+        assert len(result.payments) == 1
+        assert result.payments[0].payment_id == "pay_docsample_j001"
+
+    def test_d_conflicting_payment_evidence_fails_closed(self):
+        rows = load_fixture_rows("duplicate_rows.json")
+        mutated = _mutate_row(rows[1], credit=rows[1].credit + 1)
+        result = build_recon_result(ReconRowCollection.of("s", [rows[0], mutated]))
+        assert result.settlements == ()
+        assert result.payments == ()
+        assert any(c.kind == "duplicate_entity_id_conflict" for c in result.conflicts)
+
+    def test_unsettled_payment_row_does_not_derive_captured_and_fails_closed(self):
+        """CAPTURED must never be derived from endpoint membership alone --
+        the documented ``settled`` field is explicitly boolean, and the
+        on-hold/reserve fixture is the documented case where a row can
+        come back with settled=False even though the recon endpoint
+        returned it."""
+        result = build("on_hold_settlement.json")
+        assert result.settlements == ()
+        assert result.payments == ()
+        assert len(result.quarantined_settlements) == 1
+        assert any(
+            c.kind == "payment_companion_not_settled"
+            for c in result.quarantined_settlements[0].blocking_conflicts
+        )
+        assert "payment_companion_not_settled" not in NON_BLOCKING_CONFLICT_KINDS
+
+    def test_payment_row_with_settled_true_is_unaffected_by_the_settled_check(self):
+        (row,) = load_fixture_rows("official_doc_payment_example.json")
+        assert row.settled is True
+        result = build("official_doc_payment_example.json")
+        assert len(result.payments) == 1
+
+    def test_payment_missing_order_id_is_a_blocking_ingestion_conflict(self):
+        (row,) = load_fixture_rows("official_doc_payment_example.json")
+        missing_order_id = _mutate_row(row, order_id=None)
+        result = build_recon_result(ReconRowCollection.of("s", [missing_order_id]))
+        assert result.settlements == ()
+        assert result.payments == ()
+        assert len(result.quarantined_settlements) == 1
+        assert any(
+            c.kind == "payment_companion_missing_order_id"
+            for c in result.quarantined_settlements[0].blocking_conflicts
+        )
+        assert "payment_companion_missing_order_id" not in NON_BLOCKING_CONFLICT_KINDS
+
+
+class TestRefundCompanions:
+    """Task brief §8 E-H: refund companions stay conservative. Recon proves
+    identity, linkage and amount; it never proves ``RefundStatus``, so no
+    canonical ``Refund`` is ever produced from it (see
+    ``UnresolvedRefundCompanion``), and ``breakup_references_are_sound``
+    stays fail-closed on every REFUND line by construction."""
+
+    def test_e_refund_reference_id_is_the_refund_entity_id_not_the_linked_payment(self):
+        result = build("payment_and_refund.json")
+        (companion,) = result.unresolved_refund_companions
+        rows = load_fixture_rows("payment_and_refund.json")
+        refund_row = next(r for r in rows if r.type.value == "refund")
+
+        assert companion.refund_id == refund_row.entity_id == "rfnd_docsample_b002"
+        assert companion.payment_id == refund_row.payment_id == "pay_docsample_b001"
+        assert companion.refund_id != companion.payment_id
+
+    def test_f_refund_companion_amount_and_payment_linkage_are_exact(self):
+        from finrecon.models import SettlementLineType
+
+        result = build("payment_and_refund.json")
+        (settlement,) = result.settlements
+        (companion,) = result.unresolved_refund_companions
+        (refund_line,) = [l for l in settlement.breakup if l.type is SettlementLineType.REFUND]
+
+        assert companion.refund_id == refund_line.reference_id
+        assert int(companion.amount) == -int(refund_line.amount) == 120000
+
+    def test_g_no_canonical_refund_is_ever_produced_and_the_reference_stays_unsound(self):
+        """Outcome B of the task brief's refund-status research: official
+        Razorpay documentation does not establish that settlement-recon
+        presence implies ``RefundStatus.PROCESSED`` (unlike payments, where
+        capture-before-settlement is documented), so this adapter never
+        fabricates one. ``result.refunds`` is always empty, and the
+        soundness predicate is therefore always False for a REFUND line,
+        by construction rather than by omission."""
+        from finrecon.matchers.derivation import breakup_references_are_sound
+        from finrecon.normalize.records import normalize_payment, normalize_settlement
+
+        result = build("payment_and_refund.json")
+        assert result.refunds == ()
+        assert len(result.unresolved_refund_companions) == 1
+        assert any(w.kind == "refund_status_unprovable_from_recon" for w in result.manifest.warnings)
+
+        (settlement,) = result.settlements
+        normalized_settlement = normalize_settlement(settlement)
+        payments = {p.payment_id: normalize_payment(p) for p in result.payments}
+        assert (
+            breakup_references_are_sound(normalized_settlement, payments=payments, refunds={})
+            is False
+        )
+
+    def test_h_conflicting_refund_evidence_fails_closed(self):
+        rows = load_fixture_rows("payment_and_refund.json")
+        refund_row = next(r for r in rows if r.type.value == "refund")
+        payment_row = next(r for r in rows if r.type.value == "payment")
+        conflicting_copy = _mutate_row(refund_row, debit=refund_row.debit + 1)
+        result = build_recon_result(
+            ReconRowCollection.of("s", [payment_row, refund_row, conflicting_copy])
+        )
+
+        assert result.settlements == ()
+        assert result.unresolved_refund_companions == ()
+        assert any(c.kind == "duplicate_entity_id_conflict" for c in result.conflicts)
+
+    def test_refund_missing_linked_payment_id_is_a_blocking_ingestion_conflict(self):
+        rows = load_fixture_rows("payment_and_refund.json")
+        refund_row = next(r for r in rows if r.type.value == "refund")
+        payment_row = next(r for r in rows if r.type.value == "payment")
+        missing_payment_id = _mutate_row(refund_row, payment_id=None)
+        result = build_recon_result(ReconRowCollection.of("s", [payment_row, missing_payment_id]))
+
+        assert result.settlements == ()
+        assert result.unresolved_refund_companions == ()
+        assert len(result.quarantined_settlements) == 1
+        assert any(
+            c.kind == "refund_companion_missing_payment_id"
+            for c in result.quarantined_settlements[0].blocking_conflicts
+        )
+        assert "refund_companion_missing_payment_id" not in NON_BLOCKING_CONFLICT_KINDS
+
+
+class TestCompanionBatchIsolationAndOrdering:
+    """Task brief §8 I-J: companion construction follows the same
+    per-settlement isolation and input-order independence as settlement
+    construction itself."""
+
+    def test_i_a_settlement_with_invalid_companion_data_does_not_affect_a_valid_sibling(self):
+        (bad_row,) = load_fixture_rows("official_doc_payment_example.json")
+        bad_row = _mutate_row(bad_row, order_id=None)
+        good_rows = load_fixture_rows("multi_payment_settlement.json")
+        result = build_recon_result(ReconRowCollection.of("mixed", [bad_row, *good_rows]))
+
+        eligible_ids = {s.settlement_id for s in result.settlements}
+        quarantined_ids = {q.settlement_id for q in result.quarantined_settlements}
+        assert eligible_ids == {"setl_docsample_a001"}
+        assert quarantined_ids == {"setl_docsample_official_pay"}
+        assert {p.payment_id for p in result.payments} == {
+            "pay_docsample_a001",
+            "pay_docsample_a002",
+        }
+
+    def test_j_input_order_permutation_preserves_payment_and_refund_companions(self):
+        rows = load_fixture_rows("multi_payment_settlement.json") + load_fixture_rows(
+            "payment_and_refund.json"
+        )
+        forward = build_recon_result(ReconRowCollection.of("s", rows))
+        shuffled = list(rows)
+        random.Random(13).shuffle(shuffled)
+        backward = build_recon_result(ReconRowCollection.of("s", shuffled))
+
+        assert {p.payment_id for p in forward.payments} == {p.payment_id for p in backward.payments}
+        assert {
+            (c.refund_id, c.payment_id, int(c.amount))
+            for c in forward.unresolved_refund_companions
+        } == {
+            (c.refund_id, c.payment_id, int(c.amount))
+            for c in backward.unresolved_refund_companions
+        }
+
+
 class TestConflictTaxonomy:
     """Section 1 of the hardening brief: every conflict kind this adapter
     can emit is individually classified, not guessed at in bulk."""

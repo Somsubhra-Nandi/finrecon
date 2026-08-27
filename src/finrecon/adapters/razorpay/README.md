@@ -32,9 +32,13 @@ GROUP / VALIDATE   (recon.py: build_recon_result)
         v
 CANONICAL FINRECON RECORDS               INGESTION MANIFEST
   result.settlements                      finrecon.adapters.manifest.IngestManifest
-  (decision-eligible ONLY; validates      (row provenance, conflicts, warnings,
-   against the unmodified canonical       conformance reports — audit/debug only,
-   model; loader.py's contract is         never read by the decision engine)
+  result.payments                         (row provenance, conflicts, warnings,
+  result.refunds (always empty --          conformance reports — audit/debug only,
+   see "Payment/Refund companions")        never read by the decision engine)
+  result.unresolved_refund_companions
+  (decision-eligible ONLY; validates
+   against the unmodified canonical
+   model; loader.py's contract is
    untouched)
         |
         v (separately)
@@ -92,15 +96,96 @@ this is enforced today by the two fields being distinct types
 a runtime assertion in `build_recon_result` that the two settlement-id
 sets are always disjoint.
 
+## Payment/Refund companions
+
+`build_recon_result` also builds the minimum canonical `Payment[]` (and,
+short of a canonical `Refund`, `UnresolvedRefundCompanion[]`) companions
+needed so an imported `Settlement.breakup` can be mechanically checked by
+`finrecon.matchers.derivation.breakup_references_are_sound`. This is
+deliberately the *minimum* extension: no `Order`, no live API client, no
+webhook ingestion. `breakup_references_are_sound` never looks up an
+`Order`, so none is built.
+
+### Payment status: `CAPTURED` derivation
+
+A `payment` recon row's canonical `Payment.status` is derived as
+`PaymentStatus.CAPTURED`, never guessed. Razorpay's own documentation
+states this as a settlement *precondition*, not an adapter assumption:
+
+* Settlements FAQ, prerequisites for a payment to settle: **"The payment
+  must be captured."**
+* About Settlements: **"We automatically settle captured payments to the
+  bank account you submitted to us during your KYC verification following
+  our settlement cycle."**
+* About Settlements (cycle definition): **"captured payments are settled
+  within [the settlement cycle]... T+2 working days (T being the date of
+  transaction capture)"**.
+
+(Sources: <https://razorpay.com/docs/payments/settlements/faqs/>,
+<https://razorpay.com/docs/payments/settlements/>.)
+
+The settlement recon feed does **not** guarantee every row it returns is
+itself settled — the documented `settled` field is explicitly boolean
+("Indicates whether the transaction has been settled or not. Possible
+values: true, false"), and the on-hold/reserve case is a documented
+example of a row the endpoint can return with `settled=false` (see
+`on_hold_settlement.json` and RAZORPAY-INPUT-GAP.md §2.4/§5). So this
+adapter does not derive `CAPTURED` from endpoint membership alone: a
+`payment` row's own `settled` field must explicitly be `True` before the
+capture-before-settlement precondition above is read as having held for
+*that* row. `_build_payment_companion` checks this first and fails closed
+(`payment_companion_not_settled`, blocking) when it does not — see
+"Companion conflict/quarantine boundary" below. Only once `settled=True`
+is deriving `CAPTURED` reading off a documented implication rather than
+inventing a field the source never supplied. `Payment.amount`, `order_id`,
+`currency`, `method` (when present) and `created_at` are otherwise
+copied/converted honestly from the row — see `_build_payment_companion` in
+`recon.py`.
+
+### Refund status: unresolved by design
+
+The equivalent claim for refunds — that a `refund` row's presence in
+settlement recon proves `RefundStatus.PROCESSED` — is **not** established
+by official Razorpay documentation. The refund entity docs define
+`processed` as refund's own terminal state but do not tie it to settlement
+recon inclusion, and the settlement docs describe *what* a settled refund
+deducts, not confirmation that its status has reached `processed` by the
+time it is recon'd. Fabricating `PROCESSED` here would let
+`breakup_references_are_sound` pass on an unproven status.
+
+So this adapter never builds a canonical `Refund` from recon rows —
+`RazorpayReconAdapterResult.refunds` is always the empty tuple. Instead it
+builds `UnresolvedRefundCompanion` — `refund_id`, linked `payment_id` and
+exact `amount`, all of which recon *does* honestly prove — and records a
+non-blocking `refund_status_unprovable_from_recon` `IngestWarning` per
+refund row. A settlement whose breakup references a refund therefore
+always fails `breakup_references_are_sound` (there is no `Refund` for the
+lookup to find), which is the correct, fail-closed outcome pending a real
+refunds-entity-backed enrichment step — not an ingestion-level quarantine,
+since the settlement's own reconstructed data is not in question.
+
+### Companion conflict/quarantine boundary
+
+A `payment` row with `settled` not `True`, a `payment` row with no
+`order_id`, or a `refund` row with no linked `payment_id`, cannot produce a
+trustworthy companion at all. Each is a new blocking `IngestConflict` kind
+(`payment_companion_not_settled`, `payment_companion_missing_order_id`,
+`refund_companion_missing_payment_id` — see `NON_BLOCKING_CONFLICT_KINDS`
+in `recon.py`) that quarantines the row's settlement, same as any other
+source contradiction. Duplicate/conflicting payment or refund evidence
+(same `entity_id`, different content) is already caught by the existing
+row-level dedupe/conflict mechanism (`duplicate_entity_id_conflict`) —
+nothing new was needed there, since a payment or refund row's own
+`entity_id` *is* its companion's identity.
+
 ## What this adapter does not build
 
-`Payment`, `Refund` and `Order` canonical records are **not** synthesized
-from recon rows here. The recon feed carries no payment/refund `status`
-and no order total distinct from the settled amount
-(`notes/RAZORPAY-INPUT-GAP.md` §2.2-2.3), so building those records from
-recon rows alone would mean inventing a field the source never supplied.
-That is a separate task against the orders/payments/refunds entity
-endpoints.
+`Order` canonical records are not synthesized from recon rows —
+`breakup_references_are_sound` never looks one up, so nothing in the
+reconciliation path needs one. A live Razorpay API/webhook client, a
+refunds-entity enrichment step (needed to ever populate `refunds` with a
+real `RefundStatus`), and bank ingestion are all likewise out of scope for
+this adapter.
 
 ## Honesty notes
 
