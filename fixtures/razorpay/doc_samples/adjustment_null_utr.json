@@ -1,0 +1,22 @@
+[
+  {
+    "amount": 500,
+    "created_at": 1755000000,
+    "credit": 0,
+    "currency": "INR",
+    "debit": 500,
+    "description": "manual adjustment, no UTR",
+    "dispute_id": null,
+    "entity_id": "adj_docsample_d001",
+    "fee": 0,
+    "on_hold": false,
+    "order_id": null,
+    "payment_id": null,
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_d001",
+    "settlement_utr": null,
+    "tax": 0,
+    "type": "adjustment"
+  }
+]

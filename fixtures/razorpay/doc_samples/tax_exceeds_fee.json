@@ -1,0 +1,22 @@
+[
+  {
+    "amount": 100000,
+    "created_at": 1755000000,
+    "credit": 90000,
+    "currency": "INR",
+    "debit": 0,
+    "description": "malformed doc-derived case: tax column exceeds fee column",
+    "dispute_id": null,
+    "entity_id": "pay_docsample_m001",
+    "fee": 5000,
+    "on_hold": false,
+    "order_id": "order_docsample_m001",
+    "payment_id": null,
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_m001",
+    "settlement_utr": "HDFCRTM0000001",
+    "tax": 8000,
+    "type": "payment"
+  }
+]

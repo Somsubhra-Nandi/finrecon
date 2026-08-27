@@ -1,0 +1,42 @@
+[
+  {
+    "amount": 90000,
+    "created_at": 1755000000,
+    "credit": 88290,
+    "currency": "INR",
+    "debit": 0,
+    "description": null,
+    "dispute_id": null,
+    "entity_id": "pay_docsample_j001",
+    "fee": 1710,
+    "on_hold": false,
+    "order_id": "order_docsample_j001",
+    "payment_id": null,
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_j001",
+    "settlement_utr": "HDFCRTJ0000001",
+    "tax": 308,
+    "type": "payment"
+  },
+  {
+    "amount": 90000,
+    "created_at": 1755000000,
+    "credit": 88290,
+    "currency": "INR",
+    "debit": 0,
+    "description": null,
+    "dispute_id": null,
+    "entity_id": "pay_docsample_j001",
+    "fee": 1710,
+    "on_hold": false,
+    "order_id": "order_docsample_j001",
+    "payment_id": null,
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_j001",
+    "settlement_utr": "HDFCRTJ0000001",
+    "tax": 308,
+    "type": "payment"
+  }
+]

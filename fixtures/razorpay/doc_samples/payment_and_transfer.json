@@ -1,0 +1,42 @@
+[
+  {
+    "amount": 250000,
+    "created_at": 1755000000,
+    "credit": 245250,
+    "currency": "INR",
+    "debit": 0,
+    "description": null,
+    "dispute_id": null,
+    "entity_id": "pay_docsample_c001",
+    "fee": 4750,
+    "on_hold": false,
+    "order_id": "order_docsample_c001",
+    "payment_id": null,
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_c001",
+    "settlement_utr": "HDFCRTC0000001",
+    "tax": 855,
+    "type": "payment"
+  },
+  {
+    "amount": 50000,
+    "created_at": 1755000000,
+    "credit": 0,
+    "currency": "INR",
+    "debit": 50000,
+    "description": "linked account transfer",
+    "dispute_id": null,
+    "entity_id": "trf_docsample_c002",
+    "fee": 0,
+    "on_hold": false,
+    "order_id": null,
+    "payment_id": "pay_docsample_c001",
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_c001",
+    "settlement_utr": "HDFCRTC0000001",
+    "tax": 0,
+    "type": "transfer"
+  }
+]

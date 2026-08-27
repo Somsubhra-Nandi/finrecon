@@ -1,0 +1,42 @@
+[
+  {
+    "amount": 50000,
+    "created_at": 1755000000,
+    "credit": 49050,
+    "currency": "INR",
+    "debit": 0,
+    "description": null,
+    "dispute_id": null,
+    "entity_id": "pay_docsample_h001",
+    "fee": 950,
+    "on_hold": false,
+    "order_id": "order_docsample_h001",
+    "payment_id": null,
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_h001",
+    "settlement_utr": "HDFCRTH0000001",
+    "tax": 171,
+    "type": "payment"
+  },
+  {
+    "amount": 180000,
+    "created_at": 1755000000,
+    "credit": 0,
+    "currency": "INR",
+    "debit": 180000,
+    "description": "refund larger than this settlement's collections",
+    "dispute_id": null,
+    "entity_id": "rfnd_docsample_h002",
+    "fee": 0,
+    "on_hold": false,
+    "order_id": "order_docsample_h001",
+    "payment_id": "pay_docsample_h001",
+    "settled": true,
+    "settled_at": 1755090000,
+    "settlement_id": "setl_docsample_h001",
+    "settlement_utr": "HDFCRTH0000001",
+    "tax": 0,
+    "type": "refund"
+  }
+]
