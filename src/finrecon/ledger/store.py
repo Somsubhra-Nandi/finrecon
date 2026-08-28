@@ -16,10 +16,12 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+from datetime import datetime, timezone
 from pathlib import Path
 
 from finrecon.candidates.snapshot import CandidateRecord, CaseSnapshot
 from finrecon.ledger.audit import audit_row, canonical_json
+from finrecon.ledger.human import HumanResolution, HumanResolutionError, validate_human_resolution
 from finrecon.ledger.schema import SCHEMA_STATEMENTS, SCHEMA_VERSION
 from finrecon.matchers.result import ReconciliationDecision
 
@@ -178,6 +180,96 @@ class LedgerStore:
                 row,
             )
 
+    # --- ingestion audit (not decision evidence) ----------------------
+
+    def record_ingestion_audit(self, *, batch_id: str, source_kind: str, source_id: str,
+                               event_type: str, subject_id: str | None, fingerprint: str,
+                               payload: dict) -> None:
+        body = canonical_json({"batch_id": batch_id, "source_kind": source_kind,
+                               "source_id": source_id, "event_type": event_type,
+                               "subject_id": subject_id, "fingerprint": fingerprint,
+                               "payload": payload})
+        event_id = hashlib.sha256(body.encode("utf-8")).hexdigest()
+        with self._conn:
+            self._conn.execute(
+                "INSERT INTO ingestion_audit_events (event_id, batch_id, source_kind, source_id, "
+                "event_type, subject_id, fingerprint, payload_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?) "
+                "ON CONFLICT (event_id) DO NOTHING",
+                (event_id, batch_id, source_kind, source_id, event_type, subject_id,
+                 fingerprint, canonical_json(payload)),
+            )
+
+    # --- human resolutions (snapshot-bound workflow authority) --------
+
+    def record_human_resolution(self, snapshot: CaseSnapshot, *, selected_candidate_id: str | None,
+                                reason: str, actor: str | None = None,
+                                recorded_at: str | None = None) -> HumanResolution:
+        resolution_type = validate_human_resolution(snapshot, selected_candidate_id)
+        reason = reason.strip()
+        if not reason:
+            raise HumanResolutionError("human resolution reason must not be empty")
+        stored = self._conn.execute(
+            "SELECT content_hash FROM case_snapshots WHERE batch_id = ? AND case_id = ?",
+            (snapshot.batch_id, snapshot.case_id),
+        ).fetchone()
+        if stored is None or stored["content_hash"] != snapshot.content_hash:
+            raise HumanResolutionError("resolution must target a persisted exact case snapshot")
+        existing = self._conn.execute(
+            "SELECT * FROM human_resolution_events WHERE batch_id = ? AND case_id = ? "
+            "AND snapshot_hash = ? AND active = 1",
+            (snapshot.batch_id, snapshot.case_id, snapshot.content_hash),
+        ).fetchone()
+        if existing is not None and (existing["resolution_type"], existing["selected_candidate_id"],
+                                     existing["reason"], existing["actor"]) == (
+            resolution_type, selected_candidate_id, reason, actor):
+            return self._human_resolution_from_row(existing)
+        revision = 1 if existing is None else int(existing["revision"]) + 1
+        stamp = recorded_at or datetime.now(timezone.utc).isoformat()
+        identity = canonical_json({"batch_id": snapshot.batch_id, "case_id": snapshot.case_id,
+                                   "snapshot_hash": snapshot.content_hash, "revision": revision,
+                                   "resolution_type": resolution_type, "selected_candidate_id": selected_candidate_id,
+                                   "reason": reason, "actor": actor})
+        resolution_id = hashlib.sha256(identity.encode("utf-8")).hexdigest()
+        with self._conn:
+            if existing is not None:
+                self._conn.execute("UPDATE human_resolution_events SET active = 0 WHERE resolution_id = ?",
+                                   (existing["resolution_id"],))
+            self._conn.execute(
+                "INSERT INTO human_resolution_events (resolution_id, batch_id, case_id, bank_record_id, "
+                "snapshot_hash, revision, resolution_type, selected_candidate_id, reason, actor, recorded_at, active) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)",
+                (resolution_id, snapshot.batch_id, snapshot.case_id, snapshot.bank_record_id,
+                 snapshot.content_hash, revision, resolution_type, selected_candidate_id, reason, actor, stamp),
+            )
+            if selected_candidate_id is not None:
+                candidate = next(c for c in snapshot.candidates if c.candidate_id == selected_candidate_id)
+                for ordinal, settlement_id in enumerate(candidate.settlement_ids):
+                    self._conn.execute(
+                        "INSERT INTO human_resolution_links (resolution_id, settlement_id, ordinal) VALUES (?, ?, ?)",
+                        (resolution_id, settlement_id, ordinal),
+                    )
+        return self.get_active_human_resolution(snapshot)  # type: ignore[return-value]
+
+    def get_active_human_resolution(self, snapshot: CaseSnapshot) -> HumanResolution | None:
+        row = self._conn.execute(
+            "SELECT * FROM human_resolution_events WHERE batch_id = ? AND case_id = ? "
+            "AND snapshot_hash = ? AND active = 1",
+            (snapshot.batch_id, snapshot.case_id, snapshot.content_hash),
+        ).fetchone()
+        return self._human_resolution_from_row(row) if row else None
+
+    @staticmethod
+    def _human_resolution_from_row(row: sqlite3.Row) -> HumanResolution:
+        return HumanResolution(**{key: (bool(row[key]) if key == "active" else row[key]) for key in row.keys()})
+
+    def human_resolution_rows(self, batch_id: str, case_id: str | None = None) -> list[sqlite3.Row]:
+        sql = "SELECT * FROM human_resolution_events WHERE batch_id = ?"
+        args: tuple[str, ...] = (batch_id,)
+        if case_id is not None:
+            sql += " AND case_id = ?"
+            args += (case_id,)
+        return list(self._conn.execute(sql + " ORDER BY case_id, revision", args))
+
     # --- Stage 3 ---------------------------------------------------------
 
     def record_investigation(self, batch_id: str, trajectory) -> None:
@@ -303,8 +395,11 @@ class LedgerStore:
         """
         rows = self._conn.execute(
             "SELECT settlement_id FROM case_links WHERE batch_id = ? "
-            "UNION SELECT settlement_id FROM stage3_links WHERE batch_id = ?",
-            (batch_id, batch_id),
+            "UNION SELECT settlement_id FROM stage3_links WHERE batch_id = ? "
+            "UNION SELECT hrl.settlement_id FROM human_resolution_links hrl "
+            "JOIN human_resolution_events hre ON hre.resolution_id = hrl.resolution_id "
+            "WHERE hre.batch_id = ? AND hre.active = 1",
+            (batch_id, batch_id, batch_id),
         )
         return frozenset(row["settlement_id"] for row in rows)
 
@@ -319,8 +414,11 @@ class LedgerStore:
         rows = self._conn.execute(
             "SELECT settlement_id, case_id FROM case_links WHERE batch_id = ? "
             "UNION SELECT settlement_id, case_id FROM stage3_links WHERE batch_id = ? "
+            "UNION SELECT hrl.settlement_id, hre.case_id FROM human_resolution_links hrl "
+            "JOIN human_resolution_events hre ON hre.resolution_id = hrl.resolution_id "
+            "WHERE hre.batch_id = ? AND hre.active = 1 "
             "ORDER BY settlement_id, case_id",
-            (batch_id, batch_id),
+            (batch_id, batch_id, batch_id),
         )
         claims: dict[str, list[str]] = {}
         for row in rows:
@@ -398,6 +496,9 @@ class LedgerStore:
             "stage3_tool_calls",
             "stage3_decisions",
             "stage3_links",
+            "ingestion_audit_events",
+            "human_resolution_events",
+            "human_resolution_links",
         }:
             raise ValueError(f"unknown ledger table: {table!r}")
         return int(self._conn.execute(f"SELECT COUNT(*) AS n FROM {table}").fetchone()["n"])
@@ -439,6 +540,12 @@ class LedgerStore:
             )
         )
 
+    def ingestion_audit_rows(self, batch_id: str) -> list[sqlite3.Row]:
+        return list(self._conn.execute(
+            "SELECT * FROM ingestion_audit_events WHERE batch_id = ? ORDER BY event_type, subject_id, event_id",
+            (batch_id,),
+        ))
+
     def snapshot_payload(self, batch_id: str, case_id: str) -> dict | None:
         row = self._conn.execute(
             "SELECT payload_json FROM case_snapshots WHERE batch_id = ? AND case_id = ?",
@@ -468,6 +575,10 @@ class LedgerStore:
         for row in self.candidate_rows(batch_id):
             parts.append(canonical_json({k: row[k] for k in row.keys()}))
         for row in self.audit_rows(batch_id):
+            parts.append(canonical_json({k: row[k] for k in row.keys()}))
+        for row in self.ingestion_audit_rows(batch_id):
+            parts.append(canonical_json({k: row[k] for k in row.keys()}))
+        for row in self.human_resolution_rows(batch_id):
             parts.append(canonical_json({k: row[k] for k in row.keys()}))
         # Stage-3 rows join the digest so a re-investigation is held to the
         # same standard as a re-reconciliation: identical content, not merely

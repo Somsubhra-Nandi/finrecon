@@ -6,7 +6,8 @@ metrics. The schema below is exactly that and nothing more. There is still
 no human-resolution table; that is Stage 5, and adding it now would be
 scaffolding for work that does not exist.
 
-**Schema v2 adds the four Stage-3 tables and changes none of the Stage-2
+**Schema v2 added the four Stage-3 tables. Schema v3 adds distinct ingestion
+audit and snapshot-bound human-resolution tables, and changes none of the Stage-2
 ones.** That is deliberate. Stage-2 rows are the record of what the
 deterministic core decided, and a later stage overwriting `cases.status`
 would destroy the ability to say *which* layer settled a case — the exact
@@ -33,7 +34,7 @@ caller remembering it is not an invariant.
 
 from __future__ import annotations
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 SCHEMA_STATEMENTS: tuple[str, ...] = (
     """
@@ -218,4 +219,55 @@ SCHEMA_STATEMENTS: tuple[str, ...] = (
     "CREATE INDEX IF NOT EXISTS idx_stage3_outcome ON stage3_decisions (batch_id, outcome)",
     "CREATE INDEX IF NOT EXISTS idx_stage3_links_settlement "
     "ON stage3_links (batch_id, settlement_id)",
+    # Ingestion findings are deliberately a separate audit channel.  They
+    # are never joined by the decision engine and cannot become evidence.
+    """
+    CREATE TABLE IF NOT EXISTS ingestion_audit_events (
+        event_id     TEXT PRIMARY KEY,
+        batch_id     TEXT NOT NULL,
+        source_kind  TEXT NOT NULL CHECK (source_kind IN ('razorpay', 'bank')),
+        source_id    TEXT NOT NULL,
+        event_type   TEXT NOT NULL,
+        subject_id   TEXT,
+        fingerprint  TEXT NOT NULL,
+        payload_json TEXT NOT NULL,
+        FOREIGN KEY (batch_id) REFERENCES batches (batch_id)
+    )
+    """,
+    # This is an append-only decision journal.  `active` identifies the
+    # current decision for one exact immutable snapshot; superseding an
+    # action retires it rather than overwriting history.
+    """
+    CREATE TABLE IF NOT EXISTS human_resolution_events (
+        resolution_id TEXT PRIMARY KEY,
+        batch_id      TEXT NOT NULL,
+        case_id       TEXT NOT NULL,
+        bank_record_id TEXT NOT NULL,
+        snapshot_hash TEXT NOT NULL,
+        revision      INTEGER NOT NULL,
+        resolution_type TEXT NOT NULL CHECK (resolution_type IN ('select_candidate', 'keep_escalated')),
+        selected_candidate_id TEXT,
+        reason        TEXT NOT NULL,
+        actor         TEXT,
+        recorded_at   TEXT NOT NULL,
+        active        INTEGER NOT NULL CHECK (active IN (0, 1)),
+        FOREIGN KEY (batch_id, case_id) REFERENCES cases (batch_id, case_id),
+        CHECK ((resolution_type = 'select_candidate') = (selected_candidate_id IS NOT NULL)),
+        UNIQUE (batch_id, case_id, snapshot_hash, revision)
+    )
+    """,
+    """
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_active_human_resolution
+    ON human_resolution_events (batch_id, case_id, snapshot_hash) WHERE active = 1
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS human_resolution_links (
+        resolution_id TEXT NOT NULL,
+        settlement_id TEXT NOT NULL,
+        ordinal       INTEGER NOT NULL,
+        PRIMARY KEY (resolution_id, settlement_id),
+        FOREIGN KEY (resolution_id) REFERENCES human_resolution_events (resolution_id)
+    )
+    """,
+    "CREATE INDEX IF NOT EXISTS idx_ingestion_audit_batch ON ingestion_audit_events (batch_id, event_type)",
 )
