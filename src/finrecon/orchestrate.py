@@ -68,6 +68,7 @@ from finrecon.agent.providers.chain import ProviderChain
 from finrecon.agent.providers.config import build_chain, describe_configuration
 from finrecon.decide.config import DEFAULT_POLICY, Stage3Policy
 from finrecon.ledger.audit import canonical_json
+from finrecon.ledger.human import HumanResolution
 from finrecon.ledger.store import LedgerStore
 from finrecon.matchers.result import ReconciliationDecision
 from finrecon.models import Order, Payment, Refund, Settlement, BankRecord
@@ -85,6 +86,7 @@ def content_fingerprint_for_batch(
     refunds: Sequence[Refund],
     settlements: Sequence[Settlement],
     bank_records: Sequence[BankRecord],
+    ingestion_fingerprint: str | None = None,
 ) -> str:
     """A deterministic content fingerprint over raw eligible input records.
 
@@ -110,6 +112,9 @@ def content_fingerprint_for_batch(
         "refunds": _dump_sorted(refunds),
         "settlements": _dump_sorted(settlements),
         "bank_records": _dump_sorted(bank_records),
+        # Includes source material that did not become canonical input, so
+        # batch identity remains fail-closed for rejected/quarantined rows.
+        "ingestion_fingerprint": ingestion_fingerprint,
     }
     return hashlib.sha256(canonical_json(manifest).encode("utf-8")).hexdigest()
 
@@ -128,6 +133,7 @@ class BatchOrchestrationResult:
     stage3_result: Stage3Result
     razorpay_result: RazorpayReconAdapterResult
     bank_result: BankCsvAdapterResult
+    human_resolutions: tuple[HumanResolution, ...] = ()
 
     # --- Stage-2/Stage-3 outcomes -----------------------------------------
 
@@ -145,6 +151,11 @@ class BatchOrchestrationResult:
     def escalated(self) -> tuple[CaseOutcome, ...]:
         """Stage-2-unresolved cases Stage 3 investigated and could not resolve."""
         return self.stage3_result.escalated()
+
+    @property
+    def human_resolved(self) -> tuple[HumanResolution, ...]:
+        """Exact snapshot-bound human selections authoritative this run."""
+        return tuple(resolution for resolution in self.human_resolutions if resolution.resolved)
 
     @property
     def total_cases(self) -> int:
@@ -206,6 +217,69 @@ class BatchOrchestrationResult:
     def ingested_bank_record_count(self) -> int:
         return len(self.bank_result.records)
 
+
+def _ingestion_fingerprint(*, razorpay_rows: Sequence[RazorpayReconRow], razorpay_source_id: str,
+                           bank_csv_bytes: bytes, bank_source_id: str,
+                           bank_profile: BankCsvProfile) -> str:
+    """Batch identity over all source material, including rejected input."""
+    payload = {
+        "razorpay_source_id": razorpay_source_id,
+        "razorpay_rows": sorted((row.model_dump(mode="json") for row in razorpay_rows), key=canonical_json),
+        "bank_source_id": bank_source_id,
+        "bank_profile_id": bank_profile.profile_id,
+        "bank_csv_sha256": hashlib.sha256(bank_csv_bytes).hexdigest(),
+    }
+    return hashlib.sha256(canonical_json(payload).encode("utf-8")).hexdigest()
+
+
+def _persist_ingestion_audit(*, store: LedgerStore, batch_id: str,
+                             razorpay: RazorpayReconAdapterResult,
+                             bank: BankCsvAdapterResult, bank_profile: BankCsvProfile) -> None:
+    """Persist bounded provenance/finding facts; never feed them to decisions."""
+    for item in razorpay.manifest.rows:
+        store.record_ingestion_audit(batch_id=batch_id, source_kind="razorpay", source_id=item.source_id,
+            event_type="source_row", subject_id=item.entity_id, fingerprint=item.row_fingerprint,
+            payload={"settlement_id": item.settlement_id, "produced": list(item.produced),
+                     "source_fields_used": list(item.source_fields_used), "dropped_fields": list(item.dropped_fields),
+                     "unrecognized_fields": list(item.unrecognized_fields)})
+    for item in razorpay.quarantined_settlements:
+        store.record_ingestion_audit(batch_id=batch_id, source_kind="razorpay", source_id=razorpay.manifest.source_id,
+            event_type="quarantined_settlement", subject_id=item.settlement_id,
+            fingerprint=hashlib.sha256(canonical_json({"settlement_id": item.settlement_id, "rows": list(item.row_fingerprints)}).encode()).hexdigest(),
+            payload={"eligibility": "quarantined", "row_fingerprints": list(item.row_fingerprints),
+                     "conflicts": [conflict.model_dump(mode="json") for conflict in item.blocking_conflicts]})
+    for item in razorpay.conflicts:
+        store.record_ingestion_audit(batch_id=batch_id, source_kind="razorpay", source_id=razorpay.manifest.source_id,
+            event_type="conflict", subject_id=item.settlement_id,
+            fingerprint=hashlib.sha256(canonical_json(item.model_dump(mode="json")).encode()).hexdigest(),
+            payload=item.model_dump(mode="json"))
+    for item in razorpay.warnings:
+        store.record_ingestion_audit(batch_id=batch_id, source_kind="razorpay", source_id=razorpay.manifest.source_id,
+            event_type="warning", subject_id=item.settlement_id,
+            fingerprint=hashlib.sha256(canonical_json(item.model_dump(mode="json")).encode()).hexdigest(),
+            payload=item.model_dump(mode="json"))
+    for item in razorpay.unresolved_refund_companions:
+        payload = {"refund_id": item.refund_id, "payment_id": item.payment_id, "amount_paise": int(item.amount),
+                   "currency": item.currency, "settlement_id": item.settlement_id}
+        store.record_ingestion_audit(batch_id=batch_id, source_kind="razorpay", source_id=razorpay.manifest.source_id,
+            event_type="unresolved_refund_companion", subject_id=item.refund_id,
+            fingerprint=hashlib.sha256(canonical_json(payload).encode()).hexdigest(), payload=payload)
+    for item in bank.manifest.rows:
+        store.record_ingestion_audit(batch_id=batch_id, source_kind="bank", source_id=item.source_id,
+            event_type="accepted_bank_row" if item.produced else "bank_row_not_produced", subject_id=str(item.row_index),
+            fingerprint=item.row_fingerprint, payload={"profile_id": bank_profile.profile_id, "row_index": item.row_index,
+            "produced": list(item.produced), "source_fields_used": list(item.source_fields_used),
+            "dropped_fields": list(item.dropped_fields)})
+    for item in bank.rejected_rows:
+        store.record_ingestion_audit(batch_id=batch_id, source_kind="bank", source_id=bank.manifest.source_id,
+            event_type="rejected_bank_row", subject_id=str(item.row_index), fingerprint=item.row_fingerprint,
+            payload={"profile_id": bank_profile.profile_id, "row_index": item.row_index, "reason": item.reason,
+                     "detail": item.detail})
+    for item in bank.conflicts:
+        payload = item.model_dump(mode="json")
+        store.record_ingestion_audit(batch_id=batch_id, source_kind="bank", source_id=bank.manifest.source_id,
+            event_type="conflict", subject_id=",".join(str(index) for index in item.row_indices),
+            fingerprint=hashlib.sha256(canonical_json(payload).encode()).hexdigest(), payload=payload)
 
 def run_reconciliation_batch(
     *,
@@ -294,6 +368,13 @@ def run_reconciliation_batch(
         refunds=refunds,
         settlements=eligible_settlements,
         bank_records=bank_records,
+        ingestion_fingerprint=_ingestion_fingerprint(
+            razorpay_rows=razorpay_rows,
+            razorpay_source_id=razorpay_source_id,
+            bank_csv_bytes=bank_csv_bytes,
+            bank_source_id=bank_source_id,
+            bank_profile=bank_profile,
+        ),
     )
 
     # --- Stage 2: exactly what process_batch does, minus the file loader --
@@ -309,6 +390,13 @@ def run_reconciliation_batch(
         snapshots=snapshots,
         candidates_by_case=candidates_by_case,
     )
+    _persist_ingestion_audit(
+        store=store,
+        batch_id=batch_id,
+        razorpay=razorpay_result,
+        bank=bank_result,
+        bank_profile=bank_profile,
+    )
 
     batch_result = BatchResult(
         batch_id=batch_id,
@@ -320,14 +408,33 @@ def run_reconciliation_batch(
         candidates_by_case=candidates_by_case,
     )
 
-    # --- Stage 3: unresolved cases only, automatic via batch_result.snapshots
+    # --- Stage 3: only snapshots without exact active human authority ---
+    # Snapshot hashing is deliberately the applicability test: same-looking
+    # IDs with changed financial facts/candidates do not pass this boundary.
+    active_human = tuple(
+        resolution for snapshot in batch_result.snapshots
+        if (resolution := store.get_active_human_resolution(snapshot)) is not None
+    )
+    snapshots_for_stage3 = tuple(
+        snapshot for snapshot in batch_result.snapshots
+        if store.get_active_human_resolution(snapshot) is None
+    )
+    stage3_batch = BatchResult(
+        batch_id=batch_result.batch_id,
+        split=batch_result.split,
+        content_fingerprint=batch_result.content_fingerprint,
+        batch=batch_result.batch,
+        decisions=batch_result.decisions,
+        snapshots=snapshots_for_stage3,
+        candidates_by_case=batch_result.candidates_by_case,
+    )
     resolved_cache = cache if cache is not None else TrajectoryCache(
         fixtures_dir if fixtures_dir is not None else DEFAULT_FIXTURE_DIR
     )
 
     stage3_result = run_stage3(
         store=store,
-        batch_result=batch_result,
+        batch_result=stage3_batch,
         chain=resolved_chain,
         cache=resolved_cache,
         config=config,
@@ -344,6 +451,7 @@ def run_reconciliation_batch(
         stage3_result=stage3_result,
         razorpay_result=razorpay_result,
         bank_result=bank_result,
+        human_resolutions=active_human,
     )
 
 

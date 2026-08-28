@@ -21,6 +21,7 @@ from finrecon.adapters.razorpay.recon_row import RazorpayReconRow, RazorpayRecon
 from finrecon.agent.cache import ReplayMissError, TrajectoryCache
 from finrecon.agent.providers.chain import ProviderChain
 from finrecon.ledger.store import BatchIdentityError, LedgerStore
+from finrecon.ledger.human import HumanResolutionError
 from finrecon.orchestrate import run_reconciliation_batch
 from tests.stage3_fakes import ExplodingProvider, MechanicalInvestigator
 
@@ -711,3 +712,88 @@ class TestNeverTouchesBenchmark:
                         assert not alias.name.startswith("benchmark")
                 elif isinstance(node, ast.ImportFrom):
                     assert not (node.module or "").startswith("benchmark")
+
+
+class TestDurableHumanResolutionAndIngestionAudit:
+    def _escalated_inputs(self):
+        settled_at = datetime(2026, 9, 1, 9, 0, 0, tzinfo=UTC)
+        rows = [
+            razorpay_payment_row(entity_id="pay_human_a", settlement_id="setl_human_a",
+                order_id="order_human_a", amount=250_000, settled_at=settled_at),
+            razorpay_payment_row(entity_id="pay_human_b", settlement_id="setl_human_b",
+                order_id="order_human_b", amount=250_000, settled_at=settled_at),
+        ]
+        return rows, bank_csv_bytes([("REFH", "01/09/2026", "NEFT CREDIT SETTLEMENT", "2500.00")])
+
+    def test_snapshot_bound_human_resolution_survives_reopen_and_skips_provider(self, tmp_path):
+        rows, csv_bytes = self._escalated_inputs()
+        path = tmp_path / "ledger.sqlite"
+        store = LedgerStore(path)
+        first = run_reconciliation_batch(store=store, razorpay_rows=rows, razorpay_source_id="rzp",
+            bank_csv_bytes=csv_bytes, bank_profile=BANK_PROFILE, bank_source_id="bank", batch_id="batch:human",
+            mode="live", chain=ProviderChain((MechanicalInvestigator(),)), cache=TrajectoryCache(tmp_path / "cache"))
+        assert len(first.escalated) == 1
+        snapshot = first.batch_result.snapshots[0]
+        with pytest.raises(HumanResolutionError):
+            store.record_human_resolution(snapshot, selected_candidate_id="not-in-snapshot", reason="no")
+        selected = snapshot.candidates[0].candidate_id
+        resolution = store.record_human_resolution(snapshot, selected_candidate_id=selected,
+            reason="Reviewed source evidence", actor="reviewer")
+        assert resolution.reason == "Reviewed source evidence"
+        # Exact retry is idempotent; a change preserves prior revision.
+        assert store.record_human_resolution(snapshot, selected_candidate_id=selected,
+            reason="Reviewed source evidence", actor="reviewer").resolution_id == resolution.resolution_id
+        replacement = store.record_human_resolution(snapshot, selected_candidate_id=None,
+            reason="Reopened after review", actor="reviewer")
+        assert replacement.revision == 2
+        assert len(store.human_resolution_rows("batch:human")) == 2
+        # Re-select to establish an active exact decision for the rerun.
+        store.record_human_resolution(snapshot, selected_candidate_id=selected,
+            reason="Confirmed selection", actor="reviewer")
+        store.close()
+
+        reopened = LedgerStore(path)
+        rerun = run_reconciliation_batch(store=reopened, razorpay_rows=rows, razorpay_source_id="rzp",
+            bank_csv_bytes=csv_bytes, bank_profile=BANK_PROFILE, bank_source_id="bank", batch_id="batch:human",
+            mode="live", chain=ProviderChain((ExplodingProvider(),)), cache=TrajectoryCache(tmp_path / "cache"))
+        assert len(rerun.human_resolved) == 1
+        assert rerun.stage3_result.outcomes == ()
+        assert len(reopened.human_resolution_rows("batch:human")) == 3
+        reopened.close()
+
+    def test_changed_snapshot_is_stale_and_ingestion_audit_is_durable(self, tmp_path):
+        rows, csv_bytes = self._escalated_inputs()
+        store = make_store()
+        first = run_reconciliation_batch(store=store, razorpay_rows=rows, razorpay_source_id="rzp",
+            bank_csv_bytes=csv_bytes, bank_profile=BANK_PROFILE, bank_source_id="bank", batch_id="batch:stale-a",
+            mode="live", chain=ProviderChain((MechanicalInvestigator(),)), cache=TrajectoryCache(tmp_path / "cache"))
+        snap = first.batch_result.snapshots[0]
+        store.record_human_resolution(snap, selected_candidate_id=snap.candidates[0].candidate_id, reason="reviewed")
+        changed = rows + [razorpay_payment_row(entity_id="pay_human_c", settlement_id="setl_human_c",
+            order_id="order_human_c", amount=250_000, settled_at=datetime(2026, 9, 1, 9, 0, tzinfo=UTC))]
+        second = run_reconciliation_batch(store=store, razorpay_rows=changed, razorpay_source_id="rzp",
+            bank_csv_bytes=csv_bytes, bank_profile=BANK_PROFILE, bank_source_id="bank", batch_id="batch:stale-b",
+            mode="live", chain=ProviderChain((MechanicalInvestigator(),)), cache=TrajectoryCache(tmp_path / "cache"))
+        assert second.human_resolved == ()
+        assert len(second.stage3_result.outcomes) == 1
+
+        # A malformed bank row and a conflicting Razorpay settlement are both
+        # durable audit facts and neither reaches the engine.
+        bad = razorpay_payment_row(entity_id="pay_conflict", settlement_id="setl_conflict",
+            order_id="order_conflict", amount=10_000, settled_at=datetime(2026, 9, 2, 9, 0, tzinfo=UTC), settlement_utr="A")
+        bad2 = bad.model_copy(update={"entity_id": "pay_conflict", "settlement_utr": "B"})
+        audit_run = run_reconciliation_batch(store=store, razorpay_rows=[bad, bad2], razorpay_source_id="rzp",
+            bank_csv_bytes=("Ref No,Value Date,Narration,Debit,Credit\nBAD,bad-date,x,,1.00\n").encode(),
+            bank_profile=BANK_PROFILE, bank_source_id="bank", batch_id="batch:audit", mode="replay",
+            fixtures_dir=tmp_path / "fixtures")
+        events = store.ingestion_audit_rows("batch:audit")
+        assert any(row["event_type"] == "quarantined_settlement" for row in events)
+        assert any(row["event_type"] == "rejected_bank_row" for row in events)
+        assert audit_run.batch_result.batch.settlements == ()
+        before = len(events)
+        run_reconciliation_batch(store=store, razorpay_rows=[bad, bad2], razorpay_source_id="rzp",
+            bank_csv_bytes=("Ref No,Value Date,Narration,Debit,Credit\nBAD,bad-date,x,,1.00\n").encode(),
+            bank_profile=BANK_PROFILE, bank_source_id="bank", batch_id="batch:audit", mode="replay",
+            fixtures_dir=tmp_path / "fixtures")
+        assert len(store.ingestion_audit_rows("batch:audit")) == before
+        store.close()
