@@ -1,0 +1,76 @@
+{
+    "ambiguous_cases":  10,
+    "benchmark_name":  "bounded-search-v1",
+    "benchmark_sha256":  "e2142a61275a681971cc6d14a02d9c3a8439cb797972a32e072518a09ebb9958",
+    "candidate_count_distribution":  {
+                                         "3":  32,
+                                         "4":  9,
+                                         "5":  9
+                                     },
+    "case_count":  50,
+    "fairness_contract":  {
+                              "only_intended_difference":  "selection and ordering of evidence tool calls",
+                              "same_candidate_set":  true,
+                              "same_policy":  "policy.v1",
+                              "same_snapshot":  true,
+                              "same_tool_budget":  true,
+                              "same_tool_outputs":  true,
+                              "same_tools":  true,
+                              "same_validator":  "validator.v3"
+                          },
+    "family_counts":  {
+                          "ambiguity_controls":  10,
+                          "conflicting_evidence":  6,
+                          "decoy_heavy_candidate_search":  7,
+                          "multi_evidence_composition":  7,
+                          "noisy_reference_selection":  7,
+                          "reference_prioritization":  7,
+                          "refund_linked_reasoning":  6
+                      },
+    "frozen":  true,
+    "generator_version":  "bounded-search-generator.v1",
+    "hash_algorithm":  "For each hashed_files path in order, hash raw bytes; concatenate \u0027\u003cpath\u003e\\t\u003cfile_sha256\u003e\\n\u0027; SHA-256 the UTF-8 concatenation.",
+    "hashed_files":  [
+                         "datasets/bounded-search-v1/bank_records.jsonl",
+                         "datasets/bounded-search-v1/orders.jsonl",
+                         "datasets/bounded-search-v1/payments.jsonl",
+                         "datasets/bounded-search-v1/refunds.jsonl",
+                         "datasets/bounded-search-v1/settlements.jsonl",
+                         "ground_truth/bounded-search-v1.jsonl",
+                         "cohorts/bounded-search-v1.json"
+                     ],
+    "label":  "Synthetic bounded-search challenge",
+    "network_or_provider_calls_required":  false,
+    "plausible_evidence_action_count":  {
+                                            "max":  42,
+                                            "mean":  34.52,
+                                            "min":  30
+                                        },
+    "purpose":  "Compare evidence-search strategy under the same immutable candidate snapshot, tool schemas and outputs, validator.v3, policy.v1, and four-call budget.",
+    "record_counts":  {
+                          "bank_records":  50,
+                          "orders":  177,
+                          "payments":  177,
+                          "refunds":  18,
+                          "settlements":  177
+                      },
+    "required_composition_counts":  {
+                                        "fragment_and_breakup_amount":  6,
+                                        "fragment_pair":  19,
+                                        "fragment_triple":  4,
+                                        "none":  10,
+                                        "single_fragment":  11
+                                    },
+    "resolvable_cases":  40,
+    "seed":  730241,
+    "status":  "FROZEN BEFORE HOSTED-MODEL EVALUATION. Do not modify this cohort after observing provider results.",
+    "tool_budget":  {
+                        "max_model_steps":  4,
+                        "max_tool_calls_per_step":  1,
+                        "maximum_executed_tool_calls_per_case":  4,
+                        "one_tool_call_definition":  "One successfully executed registered tool invocation. A compare_reference_fragment invocation counts once although the tool deterministically fans that fragment across every immutable candidate.",
+                        "terminal_turn_semantics":  "A case may spend all four steps on tools only if validator/policy resolves after the fourth output; otherwise step-budget exhaustion is a blocker."
+                    },
+    "total_record_count":  599,
+    "v3_frozen_eval_sha256_expected":  "f9eb8770be6cc216d1c8b5486a10b74005382141f7c079844e2748444a44fc5b"
+}
