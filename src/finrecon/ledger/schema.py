@@ -34,7 +34,7 @@ caller remembering it is not an invariant.
 
 from __future__ import annotations
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 
 SCHEMA_STATEMENTS: tuple[str, ...] = (
     """
@@ -104,6 +104,20 @@ SCHEMA_STATEMENTS: tuple[str, ...] = (
         case_id       TEXT NOT NULL,
         content_hash  TEXT NOT NULL,
         payload_json  TEXT NOT NULL,
+        PRIMARY KEY (batch_id, case_id),
+        FOREIGN KEY (batch_id, case_id) REFERENCES cases (batch_id, case_id)
+    )
+    """,
+    # A durable read model for the product surface.  Unresolved cases already
+    # carry these facts in their immutable snapshot; deterministically resolved
+    # cases do not.  Keeping the normalized bank record and the complete set of
+    # settlements considered by Stage 2 makes every case inspectable after a
+    # process restart without changing a matcher or decision table.
+    """
+    CREATE TABLE IF NOT EXISTS case_contexts (
+        batch_id     TEXT NOT NULL,
+        case_id      TEXT NOT NULL,
+        payload_json TEXT NOT NULL,
         PRIMARY KEY (batch_id, case_id),
         FOREIGN KEY (batch_id, case_id) REFERENCES cases (batch_id, case_id)
     )

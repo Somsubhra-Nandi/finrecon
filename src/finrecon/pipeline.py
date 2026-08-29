@@ -154,6 +154,8 @@ def persist_batch(
     )
 
     amounts = {r.bank_record_id: int(r.amount_paise) for r in batch.bank_records}
+    bank_by_id = {r.bank_record_id: r for r in batch.bank_records}
+    settlement_by_id = batch.settlement_by_id()
     snapshot_by_case = {s.case_id: s for s in snapshots}
 
     # `sequence` is the decision's index in case-ID order, not an arrival
@@ -161,6 +163,20 @@ def persist_batch(
     # from it deduplicate rather than accumulate.
     for sequence, decision in enumerate(decisions):
         store.record_decision(batch_id, decision, amounts[decision.bank_record_id])
+        considered_ids = tuple(sorted(set(decision.settlement_ids) | set(decision.evidence.considered_settlement_ids)))
+        store.record_case_context(
+            batch_id=batch_id,
+            case_id=decision.case_id,
+            payload={
+                "bank_record": bank_by_id[decision.bank_record_id].model_dump(mode="json"),
+                "settlements": [
+                    settlement_by_id[settlement_id].model_dump(mode="json")
+                    for settlement_id in considered_ids
+                    if settlement_id in settlement_by_id
+                ],
+                "decision": decision.model_dump(mode="json"),
+            },
+        )
         store.record_audit(batch_id, decision, sequence)
         candidates = candidates_by_case.get(decision.case_id)
         if candidates:

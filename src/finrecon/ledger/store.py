@@ -45,7 +45,11 @@ class LedgerStore:
 
     def __init__(self, path: str | Path = ":memory:") -> None:
         self.path = str(path)
-        self._conn = sqlite3.connect(self.path)
+        # FastAPI may construct a request dependency in one worker and execute
+        # a multipart endpoint in another.  Each LedgerStore remains request-
+        # scoped; allowing that one connection to cross the worker boundary is
+        # safe and avoids sharing a connection between requests.
+        self._conn = sqlite3.connect(self.path, check_same_thread=False)
         self._conn.row_factory = sqlite3.Row
         self._conn.execute("PRAGMA foreign_keys = ON")
         self._create_schema()
@@ -164,6 +168,19 @@ class LedgerStore:
                     snapshot.content_hash,
                     canonical_json(snapshot.model_dump(mode="json")),
                 ),
+            )
+
+    def record_case_context(self, *, batch_id: str, case_id: str, payload: dict) -> None:
+        """Persist normalized display facts for every case, including Stage-2 resolutions.
+
+        This is an audit/read projection only.  No matcher, validator, policy, or
+        human-resolution path reads it.
+        """
+        with self._conn:
+            self._conn.execute(
+                "INSERT INTO case_contexts (batch_id, case_id, payload_json) "
+                "VALUES (?, ?, ?) ON CONFLICT (batch_id, case_id) DO NOTHING",
+                (batch_id, case_id, canonical_json(payload)),
             )
 
     def record_audit(
@@ -491,6 +508,7 @@ class LedgerStore:
             "case_links",
             "case_candidates",
             "case_snapshots",
+            "case_contexts",
             "audit_log",
             "stage3_investigations",
             "stage3_tool_calls",
@@ -553,6 +571,13 @@ class LedgerStore:
         ).fetchone()
         return json.loads(row["payload_json"]) if row else None
 
+    def case_context_payload(self, batch_id: str, case_id: str) -> dict | None:
+        row = self._conn.execute(
+            "SELECT payload_json FROM case_contexts WHERE batch_id = ? AND case_id = ?",
+            (batch_id, case_id),
+        ).fetchone()
+        return json.loads(row["payload_json"]) if row else None
+
     def status_counts(self, batch_id: str) -> dict[str, int]:
         rows = self._conn.execute(
             "SELECT status, COUNT(*) AS n FROM cases WHERE batch_id = ? GROUP BY status "
@@ -573,6 +598,11 @@ class LedgerStore:
         for row in self.link_rows(batch_id):
             parts.append(canonical_json({k: row[k] for k in row.keys()}))
         for row in self.candidate_rows(batch_id):
+            parts.append(canonical_json({k: row[k] for k in row.keys()}))
+        context_rows = self._conn.execute(
+            "SELECT * FROM case_contexts WHERE batch_id = ? ORDER BY case_id", (batch_id,)
+        )
+        for row in context_rows:
             parts.append(canonical_json({k: row[k] for k in row.keys()}))
         for row in self.audit_rows(batch_id):
             parts.append(canonical_json({k: row[k] for k in row.keys()}))
