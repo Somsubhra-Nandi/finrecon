@@ -135,6 +135,37 @@ orchestration-optimization experiment are recorded in
 trajectory corpus (`fixtures/trajectories/`) remains empty, and no hosted-model
 result is presented as reproducible fixture evidence.
 
+## Reproduce the evaluation
+
+From a clean clone, install the development dependencies and run the one
+submission command:
+
+```bash
+uv sync --extra dev
+uv run python -m benchmark.final_eval
+```
+
+It verifies the frozen v3 fingerprint, runs all 890 FROZEN-EVAL cases, runs
+the complete Stage-3 residual cohort through a deterministic recorded/replay
+path, and separately evaluates the complete v4 adversarial pilot. It needs no
+network connection and no provider/API-key environment variables. Reports are
+written to `benchmark/reports/final-eval.json` and
+`benchmark/reports/final-eval.md`.
+
+The replay investigator is explicitly deterministic and non-LLM: this is a
+reproducible orchestration/validator/policy evaluation, not a fresh claim
+about hosted-model quality. Live provider work is always explicit and is never
+run by `make eval`.
+
+Run the full repository health suite with:
+
+```bash
+uv run pytest
+```
+
+On systems with GNU Make, `make eval` and `make test` are equivalent
+convenience aliases.
+
 ### Record, case, batch (DESIGN.md §5.0)
 
 | Term | Meaning here |
