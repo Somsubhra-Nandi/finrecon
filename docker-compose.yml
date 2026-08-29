@@ -1,0 +1,18 @@
+services:
+  finrecon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      FINRECON_LEDGER_PATH: /app/var/finrecon.sqlite3
+    volumes:
+      - finrecon-data:/app/var
+    restart: unless-stopped
+
+volumes:
+  finrecon-data:

@@ -22,6 +22,7 @@ from finrecon.normalize import normalize_batch
 from finrecon.pipeline import case_id_for, reconcile_batch
 from finrecon.decide.config import DEFAULT_POLICY
 from finrecon.decide.policy import adjudicate
+from finrecon.agent.version import POLICY_VERSION, VALIDATOR_VERSION
 
 
 CONTROLLER_REJECTION_DEMO = "case:bnk_bsearch_000012"
@@ -265,6 +266,15 @@ class BenchmarkCatalog:
             raise HTTPException(status_code=409, detail={"code": "benchmark_replay_snapshot_unavailable", "message": "The persisted trajectory has no immutable candidate snapshot to bind against."})
         if snapshot.content_hash != trajectory.snapshot_hash or not snapshot.verify_integrity():
             raise HTTPException(status_code=409, detail={"code": "benchmark_replay_snapshot_mismatch", "message": "The persisted trajectory does not match the immutable candidate snapshot; replay is refused."})
+        if (
+            trajectory.validator_version != VALIDATOR_VERSION
+            or trajectory.policy_version != POLICY_VERSION
+            or trajectory.policy_declaration != DEFAULT_POLICY.describe()
+        ):
+            raise HTTPException(status_code=409, detail={
+                "code": "benchmark_replay_version_incompatible",
+                "message": "The recorded trajectory was produced under an incompatible validator or policy contract; current re-adjudication is refused.",
+            })
         validator, decision = adjudicate(snapshot=snapshot, trajectory=trajectory, claimed_settlement_ids=frozenset(), policy=DEFAULT_POLICY)
         # The persisted artifact remains untouched. This is an offline
         # deterministic re-adjudication over its recorded raw outputs; it

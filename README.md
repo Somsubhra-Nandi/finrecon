@@ -793,7 +793,7 @@ For local development, run these in separate terminals:
 ```bash
 uv run --extra dev uvicorn finrecon.api.app:app --reload --host 127.0.0.1 --port 8000
 cd web
-npm install
+npm ci
 npm run dev
 ```
 
@@ -801,7 +801,7 @@ Open `http://127.0.0.1:5173`. To serve one production-built process instead:
 
 ```bash
 cd web
-npm install
+npm ci
 npm run build
 cd ..
 uv run uvicorn finrecon.api.app:app --host 127.0.0.1 --port 8000
@@ -809,6 +809,39 @@ uv run uvicorn finrecon.api.app:app --host 127.0.0.1 --port 8000
 
 Then open `http://127.0.0.1:8000`. The default durable ledger is
 `var/finrecon.sqlite3`; override it with `FINRECON_LEDGER_PATH`.
+
+## Docker self-hosting
+
+The single FinRecon container serves both the FastAPI API and the built web
+dashboard at `http://localhost:8000`. It is replay/demo-first by default: no
+provider credential is needed to load the dashboard, run the operational demo,
+browse benchmarks, or replay committed bounded-search trajectories.
+
+```powershell
+git clone <your-fork-or-repository-url> finrecon
+cd finrecon
+Copy-Item .env.example .env
+# Optional: add your own provider credential to .env for Live investigations.
+docker compose up --build
+```
+
+Open `http://localhost:8000`; health is available at
+`http://localhost:8000/api/health`. Docker persists the SQLite ledger in the
+named `finrecon-data` volume at `/app/var/finrecon.sqlite3`. Set
+`FINRECON_LEDGER_PATH` to use a different server-side SQLite location.
+
+Live investigation is intentionally unavailable in a public/demo deployment
+unless the server operator configures a provider. Credentials are backend
+environment variables only—never browser inputs. Supported variables are
+`OPENROUTER_API_KEY`, `GROQ_API_KEY`, `GEMINI_API_KEY`, and
+`GOROUTER_API_KEY`, with optional provider-specific `*_MODEL` and `*_BASE_URL`
+settings documented in [`.env.example`](.env.example). With no configured
+credential, Live returns self-host configuration guidance while Replay, Demo,
+and Benchmarks remain fully usable.
+
+Benchmark replay reads persisted trajectory artifacts and makes zero provider
+calls. v3 and the v4 pilot remain report/case-explorer views unless a real
+persisted replay artifact exists.
 
 ## Running tests
 

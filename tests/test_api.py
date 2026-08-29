@@ -123,3 +123,19 @@ def test_upload_run_endpoint_handles_a_deterministic_batch_without_network(clien
     assert body["provider_calls_made"] is False
     assert body["result"]["metrics"]["deterministic_resolved"] == 1
     assert body["result"]["metrics"]["ai_assisted_resolved"] == 0
+
+
+def test_live_mode_without_server_credentials_returns_safe_configuration_guidance(client: TestClient):
+    rows = json.loads((DEMO_ROOT / "razorpay.json").read_text(encoding="utf-8"))
+    response = client.post(
+        "/api/reconciliation/run",
+        data={"mode": "live", "batch_id": "batch:no-live-provider"},
+        files={
+            "razorpay_file": ("razorpay.json", json.dumps(rows), "application/json"),
+            "bank_file": ("bank.csv", (DEMO_ROOT / "bank.csv").read_bytes(), "text/csv"),
+            "bank_profile": ("profile.json", (DEMO_ROOT / "bank-profile.json").read_bytes(), "application/json"),
+        },
+    )
+    assert response.status_code == 503
+    assert response.json()["detail"]["code"] == "live_provider_not_configured"
+    assert "never accepted from the browser" in response.json()["detail"]["message"]

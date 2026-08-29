@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -77,3 +78,17 @@ def test_malformed_trajectory_is_not_returned(tmp_path: Path):
     with pytest.raises(Exception) as error:
         catalog.replay("bounded-search-v1", "openrouter-free", "case:bad")
     assert getattr(error.value, "status_code", None) == 503
+
+
+def test_incompatible_validator_or_policy_trajectory_fails_closed(client: TestClient, tmp_path: Path, monkeypatch):
+    catalog = client.app.state.benchmark_catalog
+    original = catalog._trajectory_path("openrouter-free", "case:bnk_bsearch_000012")
+    assert original is not None
+    altered = json.loads(original.read_text(encoding="utf-8"))
+    altered["validator_version"] = "validator.v999"
+    incompatible = tmp_path / "incompatible.json"
+    incompatible.write_text(json.dumps(altered), encoding="utf-8")
+    monkeypatch.setattr(catalog, "_trajectory_path", lambda *_args: incompatible)
+    response = client.get("/api/benchmarks/bounded-search-v1/replays/openrouter-free/case:bnk_bsearch_000012")
+    assert response.status_code == 409
+    assert response.json()["detail"]["code"] == "benchmark_replay_version_incompatible"
