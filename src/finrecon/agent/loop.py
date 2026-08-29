@@ -207,8 +207,18 @@ def run_investigation(
     context = ToolContext(snapshot=snapshot)
     specs = tool_specs()
 
+    effective_system_prompt = system_prompt()
+
+    if config.max_tool_calls_per_step != MAX_TOOL_CALLS_PER_STEP:
+        effective_system_prompt += (
+            "\n\nRuntime controller contract:\n"
+            f"- Request at most {config.max_tool_calls_per_step} tool call(s) "
+            "in each assistant response.\n"
+            "- Wait for the returned tool result before requesting more.\n"
+            "- Never batch more tool calls than this runtime limit.\n"
+        )
     messages: list[ConversationMessage] = [
-        ConversationMessage(role="system", content=system_prompt()),
+        ConversationMessage(role="system", content=effective_system_prompt),
         ConversationMessage(role="user", content=case_briefing(snapshot)),
     ]
 

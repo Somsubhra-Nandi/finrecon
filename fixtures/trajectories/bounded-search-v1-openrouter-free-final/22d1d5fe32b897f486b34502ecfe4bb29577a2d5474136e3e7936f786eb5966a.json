@@ -1,0 +1,72 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:bounded-search-v1",
+  "cache_key": "22d1d5fe32b897f486b34502ecfe4bb29577a2d5474136e3e7936f786eb5966a",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_bsearch_000046",
+  "max_steps": 4,
+  "max_tool_calls_per_step": 1,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "openrouter:openrouter/free"
+  ],
+  "replayed": false,
+  "snapshot_hash": "0aa044a537791053bab1d6e725a73aaa7205324c04e0bf380237b9e27dde1f99",
+  "steps": [
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": "HTTP 429: {\"error\":{\"message\":\"Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day\",\"code\":429,\"metadata\":{\"headers\":{\"X-RateLimit-Limit\":\"50\",\"X-RateLimit-Remaining\":\"0\",\"X-RateLimit-Reset\":\"1788048000000\"},\"limit_source\":\"openrouter_free_tier_daily\",\"remedy_hint\":\"Wait for the daily reset (see X-RateLimit-Reset), or purchase credits to raise your free-model ...",
+          "error_class": "ProviderInfrastructureError",
+          "model": "openrouter/free",
+          "outcome": "rate_limited",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": "rate_limited",
+      "fallback_used": false,
+      "finish_reason": null,
+      "index": 1,
+      "latency_ms": null,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": null,
+      "requested_tool_calls": [],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "raw": null,
+        "total_tokens": null,
+        "usage_source": null
+      }
+    }
+  ],
+  "termination_detail": "all providers failed (openrouter:rate_limited)",
+  "termination_reason": "provider_infrastructure_failure",
+  "tool_invocations": [],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 267,
+  "validator_version": "validator.v3"
+}

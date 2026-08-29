@@ -254,9 +254,15 @@ class TestFrozenBenchmarkV3IsUntouched:
         }
 
     def test_the_v4_pilot_has_its_own_manifest_file(self, benchmark_dir):
-        """Additive means additive: four manifests, none of them rewritten."""
+        """Additive means additive: each benchmark has its own manifest."""
         names = sorted(p.name for p in (benchmark_dir / "manifests").glob("*.json"))
-        assert names == ["v1.json", "v2.json", "v3.json", "v4-pilot.json"]
+        assert names == [
+            "bounded-search-v1.json",
+            "v1.json",
+            "v2.json",
+            "v3.json",
+            "v4-pilot.json",
+        ]
 
 
 class TestHistoricalValidatorArtifactsFailClosed:

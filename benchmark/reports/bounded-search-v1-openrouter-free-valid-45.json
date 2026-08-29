@@ -1,0 +1,3314 @@
+{
+  "agent": {
+    "accepted_evidence_relations": {
+      "character_multiset_equal": 3,
+      "prefix_of_reference": 43,
+      "refund_field_equals_signed_breakup_refund": 3,
+      "suffix_of_reference": 17
+    },
+    "cases": 45,
+    "cases_with_any_validation_failure": 11,
+    "deterministic_policy_resolved": 30,
+    "escalation_blockers": {
+      "ambiguous_reference_link": 1,
+      "multiple_surviving_candidates": 1,
+      "no_reference_link": 14,
+      "step_budget_exhausted": 3,
+      "tool_validation_failure": 11
+    },
+    "evidence_detail_available": true,
+    "investigation_complete": 1,
+    "provider_configuration_failure": 0,
+    "provider_infrastructure_failure": 0,
+    "reference_kinds_used": {
+      "utr": 63
+    },
+    "termination_reasons": {
+      "deterministic_policy_resolved": 30,
+      "investigation_complete": 1,
+      "step_budget_exhausted": 3,
+      "tool_validation_failed": 11
+    },
+    "tool_budget_exhausted_cases": 3,
+    "tool_budget_exhaustion_rate": 0.066667,
+    "tool_calls_executed_total": 60,
+    "tool_calls_max_per_case": 4,
+    "tool_calls_mean_per_case": 1.3333,
+    "tool_calls_median_per_case": 1,
+    "tool_invocations_skipped": 28,
+    "tool_invocations_total": 99,
+    "tool_validation_failed": 11,
+    "tool_validation_reasons": {
+      "duplicate_argument_key": 0,
+      "malformed_arguments_json": 0,
+      "schema_validation_failed": 0,
+      "tool_call_batch_limit_exceeded": 10,
+      "unknown_candidate": 1,
+      "unknown_settlement": 0,
+      "unknown_tool": 0
+    },
+    "tool_validation_rejections_total": 11
+  },
+  "cohort": {
+    "all_expected_tier": true,
+    "case_ids": [
+      "case:bnk_bsearch_000001",
+      "case:bnk_bsearch_000002",
+      "case:bnk_bsearch_000003",
+      "case:bnk_bsearch_000004",
+      "case:bnk_bsearch_000005",
+      "case:bnk_bsearch_000006",
+      "case:bnk_bsearch_000007",
+      "case:bnk_bsearch_000008",
+      "case:bnk_bsearch_000009",
+      "case:bnk_bsearch_000010",
+      "case:bnk_bsearch_000011",
+      "case:bnk_bsearch_000012",
+      "case:bnk_bsearch_000013",
+      "case:bnk_bsearch_000014",
+      "case:bnk_bsearch_000015",
+      "case:bnk_bsearch_000016",
+      "case:bnk_bsearch_000017",
+      "case:bnk_bsearch_000018",
+      "case:bnk_bsearch_000019",
+      "case:bnk_bsearch_000020",
+      "case:bnk_bsearch_000021",
+      "case:bnk_bsearch_000022",
+      "case:bnk_bsearch_000023",
+      "case:bnk_bsearch_000024",
+      "case:bnk_bsearch_000025",
+      "case:bnk_bsearch_000026",
+      "case:bnk_bsearch_000027",
+      "case:bnk_bsearch_000028",
+      "case:bnk_bsearch_000030",
+      "case:bnk_bsearch_000031",
+      "case:bnk_bsearch_000033",
+      "case:bnk_bsearch_000034",
+      "case:bnk_bsearch_000036",
+      "case:bnk_bsearch_000037",
+      "case:bnk_bsearch_000039",
+      "case:bnk_bsearch_000040",
+      "case:bnk_bsearch_000041",
+      "case:bnk_bsearch_000042",
+      "case:bnk_bsearch_000043",
+      "case:bnk_bsearch_000044",
+      "case:bnk_bsearch_000045",
+      "case:bnk_bsearch_000047",
+      "case:bnk_bsearch_000048",
+      "case:bnk_bsearch_000049",
+      "case:bnk_bsearch_000050"
+    ],
+    "case_source": {
+      "case:bnk_bsearch_000001": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000002": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000003": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000004": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000005": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000006": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000007": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000008": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000009": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000010": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000011": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000012": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000013": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000014": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000015": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000016": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000017": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000018": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000019": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000020": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000021": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000022": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000023": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000024": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000025": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000026": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000027": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000028": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000030": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000031": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000033": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000034": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000036": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000037": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000039": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000040": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000041": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000042": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000043": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000044": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000045": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000047": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000048": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000049": "cache:bounded-search-v1-openrouter-free-final",
+      "case:bnk_bsearch_000050": "cache:bounded-search-v1-openrouter-free-final"
+    },
+    "complete": true,
+    "contamination": [],
+    "duplicate_requested": [],
+    "duplicate_sources": {},
+    "expected_tier": "SEARCH",
+    "extra": [
+      "case:bnk_bsearch_000029",
+      "case:bnk_bsearch_000032",
+      "case:bnk_bsearch_000035",
+      "case:bnk_bsearch_000038",
+      "case:bnk_bsearch_000046"
+    ],
+    "found_count": 45,
+    "missing": [],
+    "requested_count": 45,
+    "requested_explicitly": true,
+    "sources_contributing": {
+      "cache:bounded-search-v1-openrouter-free-final": 45
+    },
+    "sources_offered": {
+      "cache:bounded-search-v1-openrouter-free-final": 50
+    },
+    "tier_counts": {
+      "SEARCH": 45
+    },
+    "unknown_to_ground_truth": []
+  },
+  "configuration": {
+    "allow_frozen_truth": false,
+    "evaluator_version": "stage4-eval.v1",
+    "expected_tier": "SEARCH",
+    "explicit_cohort_supplied": true,
+    "label": "bounded-search-v1-openrouter-free-valid-45",
+    "max_steps": 4,
+    "max_tool_calls_per_step": 1,
+    "model_requested": "openrouter/free",
+    "offline": true,
+    "policy_declaration": {
+      "accepted_relation_ids": [
+        "character_multiset_equal",
+        "contains_reference",
+        "exact",
+        "mask_consistent",
+        "prefix_of_reference",
+        "separator_normalized_equal",
+        "suffix_of_reference"
+      ],
+      "auto_resolution_ceiling_paise": 50000000,
+      "elevated_min_pinned_reference_characters": 8,
+      "elevated_scrutiny_threshold_paise": 10000000,
+      "max_unexplained_delta_paise": 0,
+      "min_pinned_reference_characters": 4,
+      "require_exact_total_blocking_rule": true,
+      "require_fragment_present_in_narration": true
+    },
+    "provider_constructed": false,
+    "provider_id_requested": "openrouter",
+    "replay": true,
+    "require_exact_cohort": true,
+    "require_expected_tier": true,
+    "run_dumps": [],
+    "split": "bounded-search-v1",
+    "trajectory_dirs": [
+      "bounded-search-v1-openrouter-free-final"
+    ]
+  },
+  "conjunction": {
+    "agent_atom_coverage": 0.376471,
+    "cases_with_incomplete_closure": 0,
+    "closure_is_the_decision_input": true,
+    "final_intersection_size": {
+      "0": 3,
+      "1": 33,
+      "2": 9
+    },
+    "independent_narration_spans_per_case": {
+      "0": 3,
+      "1": 18,
+      "2": 24
+    },
+    "informative_atoms_per_case": {
+      "0": 3,
+      "1": 5,
+      "2": 34,
+      "4": 3
+    },
+    "informative_atoms_surfaced_by_agent": 32,
+    "informative_atoms_total": 85,
+    "note": "The agent seeds the reference path and does not select within it, so agent_atom_coverage measures investigation efficiency and nothing about correctness. See src/finrecon/decide/validator.py.",
+    "reference_evidence_states": {
+      "ambiguous": 1,
+      "identified": 30,
+      "no_admissible_agent_evidence": 14
+    },
+    "resolutions_from_a_single_claim": 13,
+    "resolutions_needing_conjunction": 17,
+    "resolutions_total": 30
+  },
+  "evaluator_version": "stage4-eval.v1",
+  "metrics": {
+    "auto_resolution_accuracy": 1.0,
+    "auto_resolution_coverage": 0.666667,
+    "auto_resolved": 30,
+    "correct_auto_resolutions": 30,
+    "correctly_escalated": 7,
+    "escalated": 15,
+    "escalation_recall": 1.0,
+    "investigated": 45,
+    "match_rate_denominator": "cases with a uniquely resolvable ground truth",
+    "match_rate_numerator": "correct automatic reconciliations only",
+    "overall_match_rate": 0.789474,
+    "scoring_available": true,
+    "scoring_unavailable_reason": null,
+    "truly_ambiguous_cases": 7,
+    "uniquely_resolvable_cases": 38,
+    "unsafe_auto_match_rate": 0.0,
+    "value_at_risk_paise": 0,
+    "wrong_auto_resolutions": 0
+  },
+  "metrics_by_archetype": {
+    "ambiguity_controls": {
+      "auto_resolution_accuracy": null,
+      "auto_resolved": 0,
+      "cases": 7,
+      "correct_auto_resolutions": 0,
+      "correctly_escalated": 7,
+      "escalated": 7,
+      "match_rate": null,
+      "tool_budget_exhausted_cases": 1,
+      "tool_budget_exhaustion_rate": 0.142857,
+      "tool_calls_executed_total": 8,
+      "tool_calls_mean_per_case": 1.1429,
+      "tool_calls_median_per_case": 0,
+      "truly_ambiguous": 7,
+      "uniquely_resolvable": 0,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "conflicting_evidence": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 5,
+      "cases": 6,
+      "correct_auto_resolutions": 5,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.833333,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 9,
+      "tool_calls_mean_per_case": 1.5,
+      "tool_calls_median_per_case": 1.5,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 6,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "decoy_heavy_candidate_search": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 6,
+      "cases": 7,
+      "correct_auto_resolutions": 6,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.857143,
+      "tool_budget_exhausted_cases": 1,
+      "tool_budget_exhaustion_rate": 0.142857,
+      "tool_calls_executed_total": 11,
+      "tool_calls_mean_per_case": 1.5714,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 7,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "multi_evidence_composition": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 5,
+      "cases": 6,
+      "correct_auto_resolutions": 5,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.833333,
+      "tool_budget_exhausted_cases": 1,
+      "tool_budget_exhaustion_rate": 0.166667,
+      "tool_calls_executed_total": 10,
+      "tool_calls_mean_per_case": 1.6667,
+      "tool_calls_median_per_case": 1.0,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 6,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "noisy_reference_selection": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 5,
+      "cases": 7,
+      "correct_auto_resolutions": 5,
+      "correctly_escalated": 0,
+      "escalated": 2,
+      "match_rate": 0.714286,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 6,
+      "tool_calls_mean_per_case": 0.8571,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 7,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "reference_prioritization": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 6,
+      "cases": 7,
+      "correct_auto_resolutions": 6,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.857143,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 9,
+      "tool_calls_mean_per_case": 1.2857,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 7,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "refund_linked_reasoning": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 3,
+      "cases": 5,
+      "correct_auto_resolutions": 3,
+      "correctly_escalated": 0,
+      "escalated": 2,
+      "match_rate": 0.6,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 7,
+      "tool_calls_mean_per_case": 1.4,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 5,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "metrics_by_candidate_count": {
+    "3": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 24,
+      "cases": 31,
+      "correct_auto_resolutions": 24,
+      "correctly_escalated": 2,
+      "escalated": 7,
+      "match_rate": 0.827586,
+      "tool_budget_exhausted_cases": 1,
+      "tool_budget_exhaustion_rate": 0.032258,
+      "tool_calls_executed_total": 41,
+      "tool_calls_mean_per_case": 1.3226,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 2,
+      "uniquely_resolvable": 29,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "4": {
+      "auto_resolution_accuracy": null,
+      "auto_resolved": 0,
+      "cases": 8,
+      "correct_auto_resolutions": 0,
+      "correctly_escalated": 5,
+      "escalated": 8,
+      "match_rate": 0.0,
+      "tool_budget_exhausted_cases": 2,
+      "tool_budget_exhaustion_rate": 0.25,
+      "tool_calls_executed_total": 12,
+      "tool_calls_mean_per_case": 1.5,
+      "tool_calls_median_per_case": 1.0,
+      "truly_ambiguous": 5,
+      "uniquely_resolvable": 3,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "5": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 6,
+      "cases": 6,
+      "correct_auto_resolutions": 6,
+      "correctly_escalated": 0,
+      "escalated": 0,
+      "match_rate": 1.0,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 7,
+      "tool_calls_mean_per_case": 1.1667,
+      "tool_calls_median_per_case": 1.0,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 6,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "metrics_by_family": {
+    "ambiguity_controls": {
+      "auto_resolution_accuracy": null,
+      "auto_resolved": 0,
+      "cases": 7,
+      "correct_auto_resolutions": 0,
+      "correctly_escalated": 7,
+      "escalated": 7,
+      "match_rate": null,
+      "tool_budget_exhausted_cases": 1,
+      "tool_budget_exhaustion_rate": 0.142857,
+      "tool_calls_executed_total": 8,
+      "tool_calls_mean_per_case": 1.1429,
+      "tool_calls_median_per_case": 0,
+      "truly_ambiguous": 7,
+      "uniquely_resolvable": 0,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "conflicting_evidence": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 5,
+      "cases": 6,
+      "correct_auto_resolutions": 5,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.833333,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 9,
+      "tool_calls_mean_per_case": 1.5,
+      "tool_calls_median_per_case": 1.5,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 6,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "decoy_heavy_candidate_search": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 6,
+      "cases": 7,
+      "correct_auto_resolutions": 6,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.857143,
+      "tool_budget_exhausted_cases": 1,
+      "tool_budget_exhaustion_rate": 0.142857,
+      "tool_calls_executed_total": 11,
+      "tool_calls_mean_per_case": 1.5714,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 7,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "multi_evidence_composition": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 5,
+      "cases": 6,
+      "correct_auto_resolutions": 5,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.833333,
+      "tool_budget_exhausted_cases": 1,
+      "tool_budget_exhaustion_rate": 0.166667,
+      "tool_calls_executed_total": 10,
+      "tool_calls_mean_per_case": 1.6667,
+      "tool_calls_median_per_case": 1.0,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 6,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "noisy_reference_selection": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 5,
+      "cases": 7,
+      "correct_auto_resolutions": 5,
+      "correctly_escalated": 0,
+      "escalated": 2,
+      "match_rate": 0.714286,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 6,
+      "tool_calls_mean_per_case": 0.8571,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 7,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "reference_prioritization": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 6,
+      "cases": 7,
+      "correct_auto_resolutions": 6,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.857143,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 9,
+      "tool_calls_mean_per_case": 1.2857,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 7,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "refund_linked_reasoning": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 3,
+      "cases": 5,
+      "correct_auto_resolutions": 3,
+      "correctly_escalated": 0,
+      "escalated": 2,
+      "match_rate": 0.6,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 7,
+      "tool_calls_mean_per_case": 1.4,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 5,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "metrics_by_required_composition": {
+    "fragment_and_breakup_amount": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 3,
+      "cases": 5,
+      "correct_auto_resolutions": 3,
+      "correctly_escalated": 0,
+      "escalated": 2,
+      "match_rate": 0.6,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 7,
+      "tool_calls_mean_per_case": 1.4,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 5,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "fragment_pair": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 14,
+      "cases": 19,
+      "correct_auto_resolutions": 14,
+      "correctly_escalated": 0,
+      "escalated": 5,
+      "match_rate": 0.736842,
+      "tool_budget_exhausted_cases": 2,
+      "tool_budget_exhaustion_rate": 0.105263,
+      "tool_calls_executed_total": 29,
+      "tool_calls_mean_per_case": 1.5263,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 19,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "fragment_triple": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 3,
+      "cases": 3,
+      "correct_auto_resolutions": 3,
+      "correctly_escalated": 0,
+      "escalated": 0,
+      "match_rate": 1.0,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 3,
+      "tool_calls_mean_per_case": 1.0,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 3,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "none": {
+      "auto_resolution_accuracy": null,
+      "auto_resolved": 0,
+      "cases": 7,
+      "correct_auto_resolutions": 0,
+      "correctly_escalated": 7,
+      "escalated": 7,
+      "match_rate": null,
+      "tool_budget_exhausted_cases": 1,
+      "tool_budget_exhaustion_rate": 0.142857,
+      "tool_calls_executed_total": 8,
+      "tool_calls_mean_per_case": 1.1429,
+      "tool_calls_median_per_case": 0,
+      "truly_ambiguous": 7,
+      "uniquely_resolvable": 0,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "single_fragment": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 10,
+      "cases": 11,
+      "correct_auto_resolutions": 10,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.909091,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 13,
+      "tool_calls_mean_per_case": 1.1818,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 11,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "metrics_by_tier": {
+    "SEARCH": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 30,
+      "cases": 45,
+      "correct_auto_resolutions": 30,
+      "correctly_escalated": 7,
+      "escalated": 15,
+      "match_rate": 0.789474,
+      "tool_budget_exhausted_cases": 3,
+      "tool_budget_exhaustion_rate": 0.066667,
+      "tool_calls_executed_total": 60,
+      "tool_calls_mean_per_case": 1.3333,
+      "tool_calls_median_per_case": 1,
+      "truly_ambiguous": 7,
+      "uniquely_resolvable": 38,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "offline_guarantee": {
+    "cache_hits": 45,
+    "chain": null,
+    "provider_calls_made": false,
+    "replay_only": true
+  },
+  "per_case": [
+    {
+      "archetype": "decoy_heavy_candidate_search",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000001",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "YESBCN57632516",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            185
+          ],
+          "narration_span": [
+            185,
+            199
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "YESBCN5763251626",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "YESBCN576",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            185
+          ],
+          "narration_span": [
+            185,
+            194
+          ],
+          "pinned_reference_characters": 9,
+          "reference_kind": "utr",
+          "reference_value": "YESBCN5763251626",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "decoy_heavy_candidate_search"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000001|setl_bsearch_000001",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000001"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "YESBCN5763251626",
+      "truth_settlement_ids": [
+        "setl_bsearch_000001"
+      ],
+      "value_at_stake_paise": 1113394,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "refund_linked_reasoning",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000002",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [
+        "refund_linked_reasoning"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "fragment_and_breakup_amount",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": "UTIBRT2479528421",
+      "truth_settlement_ids": [
+        "setl_bsearch_000004"
+      ],
+      "value_at_stake_paise": 1212976,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "reference_prioritization",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000003",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "YESBNB297",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            133
+          ],
+          "narration_span": [
+            133,
+            142
+          ],
+          "pinned_reference_characters": 9,
+          "reference_kind": "utr",
+          "reference_value": "YESBNB2975343455",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "YESBNB29753434",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            133
+          ],
+          "narration_span": [
+            133,
+            147
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "YESBNB2975343455",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "reference_prioritization"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000003|setl_bsearch_000008",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000008"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "YESBNB2975343455",
+      "truth_settlement_ids": [
+        "setl_bsearch_000008"
+      ],
+      "value_at_stake_paise": 3592952,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "noisy_reference_selection",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "4",
+      "case_id": "case:bnk_bsearch_000004",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [
+        "noisy_reference_selection"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "fragment_pair",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": "HDFCNB4463333465",
+      "truth_settlement_ids": [
+        "setl_bsearch_000010"
+      ],
+      "value_at_stake_paise": 1352895,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguity_controls",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000005",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [
+        "ambiguity_controls"
+      ],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "none",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 3944406,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "reference_prioritization",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000006",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "IDIBIM47",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            154
+          ],
+          "narration_span": [
+            154,
+            162
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "IDIBIM4746277827",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "IDIBIM47462778",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            154
+          ],
+          "narration_span": [
+            154,
+            168
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "IDIBIM4746277827",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "reference_prioritization"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000006|setl_bsearch_000019",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000019"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "IDIBIM4746277827",
+      "truth_settlement_ids": [
+        "setl_bsearch_000019"
+      ],
+      "value_at_stake_paise": 1811452,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "conflicting_evidence",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000007",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "HDFCUP28",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            37
+          ],
+          "narration_span": [
+            37,
+            45
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "HDFCUP2882969973",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "969973",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            94
+          ],
+          "narration_span": [
+            94,
+            100
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "HDFCUP2882969973",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "conflicting_evidence"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000007|setl_bsearch_000022",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000022"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "HDFCUP2882969973",
+      "truth_settlement_ids": [
+        "setl_bsearch_000022"
+      ],
+      "value_at_stake_paise": 2996512,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "reference_prioritization",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000008",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "YESBNB22213913",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            106
+          ],
+          "narration_span": [
+            106,
+            120
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "YESBNB2221391355",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "YESBNB22",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            106
+          ],
+          "narration_span": [
+            106,
+            114
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "YESBNB2221391355",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "reference_prioritization"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000008|setl_bsearch_000023",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000023"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "YESBNB2221391355",
+      "truth_settlement_ids": [
+        "setl_bsearch_000023"
+      ],
+      "value_at_stake_paise": 3172356,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "multi_evidence_composition",
+      "blockers": [],
+      "candidate_count_bucket": "5",
+      "case_id": "case:bnk_bsearch_000009",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 4,
+          "evidence_kind": "reference",
+          "fragment": "BARBNB",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            116,
+            193
+          ],
+          "narration_span": [
+            116,
+            199
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "BARBNB3536886156",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "886156",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            54
+          ],
+          "narration_span": [
+            54,
+            60
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "BARBNB3536886156",
+          "relation_id": "suffix_of_reference"
+        },
+        {
+          "atom_id": "atom:2",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "BARBNB6658581363",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            116
+          ],
+          "narration_span": [
+            116,
+            132
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "BARBNB3536886156",
+          "relation_id": "character_multiset_equal"
+        },
+        {
+          "atom_id": "atom:3",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "BARBNB35",
+          "member_fragment_count": 2,
+          "narration_offsets": [
+            193
+          ],
+          "narration_span": [
+            193,
+            201
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "BARBNB3536886156",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "multi_evidence_composition"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000009|setl_bsearch_000029",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000029"
+      ],
+      "required_composition": "fragment_triple",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "BARBNB3536886156",
+      "truth_settlement_ids": [
+        "setl_bsearch_000029"
+      ],
+      "value_at_stake_paise": 3511014,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "decoy_heavy_candidate_search",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000010",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "IDIBUP744",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            137
+          ],
+          "narration_span": [
+            137,
+            146
+          ],
+          "pinned_reference_characters": 9,
+          "reference_kind": "utr",
+          "reference_value": "IDIBUP7446739632",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "IDIBUP74467396",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            137
+          ],
+          "narration_span": [
+            137,
+            151
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "IDIBUP7446739632",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "decoy_heavy_candidate_search"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000010|setl_bsearch_000032",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000032"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "IDIBUP7446739632",
+      "truth_settlement_ids": [
+        "setl_bsearch_000032"
+      ],
+      "value_at_stake_paise": 114741,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "refund_linked_reasoning",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000011",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "UTIBCN38",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            168
+          ],
+          "narration_span": [
+            168,
+            176
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "UTIBCN3827969743",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "candidates_reached": 2,
+          "evidence_kind": "breakup_amount",
+          "narration_offsets": [
+            143
+          ],
+          "parsed_amount_paise": 1242,
+          "raw_amount_token": "12.42",
+          "relation_id": "refund_field_equals_signed_breakup_refund",
+          "settlement_ids": [
+            "setl_bsearch_000034"
+          ],
+          "signed_line_amounts_paise": [
+            -1242
+          ],
+          "source_span": "RFND 12.42"
+        }
+      ],
+      "families": [
+        "refund_linked_reasoning"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000011|setl_bsearch_000034",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000034"
+      ],
+      "required_composition": "fragment_and_breakup_amount",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "UTIBCN3827969743",
+      "truth_settlement_ids": [
+        "setl_bsearch_000034"
+      ],
+      "value_at_stake_paise": 4395531,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguity_controls",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "4",
+      "case_id": "case:bnk_bsearch_000012",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [
+        "ambiguity_controls"
+      ],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "none",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 251537,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguity_controls",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "4",
+      "case_id": "case:bnk_bsearch_000013",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [
+        "ambiguity_controls"
+      ],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "none",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 3060656,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "reference_prioritization",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000014",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [
+        "reference_prioritization"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "single_fragment",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": "PUNBCN3569997129",
+      "truth_settlement_ids": [
+        "setl_bsearch_000045"
+      ],
+      "value_at_stake_paise": 3954875,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "decoy_heavy_candidate_search",
+      "blockers": [
+        "step_budget_exhausted",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "4",
+      "case_id": "case:bnk_bsearch_000015",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [
+        "decoy_heavy_candidate_search"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "fragment_pair",
+      "resolved": false,
+      "termination_reason": "step_budget_exhausted",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": true,
+      "tool_calls_executed": 4,
+      "truth_reference": "SBINRT1196494387",
+      "truth_settlement_ids": [
+        "setl_bsearch_000051"
+      ],
+      "value_at_stake_paise": 3150324,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "multi_evidence_composition",
+      "blockers": [],
+      "candidate_count_bucket": "5",
+      "case_id": "case:bnk_bsearch_000016",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 4,
+          "evidence_kind": "reference",
+          "fragment": "YESBCN",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            72,
+            221
+          ],
+          "narration_span": [
+            72,
+            227
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "YESBCN9462282921",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "YESBCN94",
+          "member_fragment_count": 2,
+          "narration_offsets": [
+            221
+          ],
+          "narration_span": [
+            221,
+            229
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "YESBCN9462282921",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:2",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "282921",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            203
+          ],
+          "narration_span": [
+            203,
+            209
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "YESBCN9462282921",
+          "relation_id": "suffix_of_reference"
+        },
+        {
+          "atom_id": "atom:3",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "YESBCN8922129426",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            72
+          ],
+          "narration_span": [
+            72,
+            88
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "YESBCN9462282921",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [
+        "multi_evidence_composition"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000016|setl_bsearch_000056",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000056"
+      ],
+      "required_composition": "fragment_triple",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "YESBCN9462282921",
+      "truth_settlement_ids": [
+        "setl_bsearch_000056"
+      ],
+      "value_at_stake_paise": 2642021,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguity_controls",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "4",
+      "case_id": "case:bnk_bsearch_000017",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [
+        "ambiguity_controls"
+      ],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "none",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 329141,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "decoy_heavy_candidate_search",
+      "blockers": [],
+      "candidate_count_bucket": "5",
+      "case_id": "case:bnk_bsearch_000018",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "UTIBUP34",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            178
+          ],
+          "narration_span": [
+            178,
+            186
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "UTIBUP3478144134",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "144134",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            108
+          ],
+          "narration_span": [
+            108,
+            114
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "UTIBUP3478144134",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "decoy_heavy_candidate_search"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000018|setl_bsearch_000061",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000061"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": "UTIBUP3478144134",
+      "truth_settlement_ids": [
+        "setl_bsearch_000061"
+      ],
+      "value_at_stake_paise": 4352710,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "reference_prioritization",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000019",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "BARBIM12",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            127
+          ],
+          "narration_span": [
+            127,
+            135
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "BARBIM1286954447",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "BARBIM12869544",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            127
+          ],
+          "narration_span": [
+            127,
+            141
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "BARBIM1286954447",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "reference_prioritization"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000019|setl_bsearch_000068",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000068"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "BARBIM1286954447",
+      "truth_settlement_ids": [
+        "setl_bsearch_000068"
+      ],
+      "value_at_stake_paise": 2192192,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguity_controls",
+      "blockers": [
+        "ambiguous_reference_link",
+        "multiple_surviving_candidates"
+      ],
+      "candidate_count_bucket": "4",
+      "case_id": "case:bnk_bsearch_000020",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [
+        "ambiguity_controls"
+      ],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "none",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 2081915,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "decoy_heavy_candidate_search",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000021",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "BARBUP89953895",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            122
+          ],
+          "narration_span": [
+            122,
+            136
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "BARBUP8995389596",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "BARBUP89",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            122
+          ],
+          "narration_span": [
+            122,
+            130
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "BARBUP8995389596",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "decoy_heavy_candidate_search"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000021|setl_bsearch_000074",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000074"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "BARBUP8995389596",
+      "truth_settlement_ids": [
+        "setl_bsearch_000074"
+      ],
+      "value_at_stake_paise": 4941463,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "refund_linked_reasoning",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000022",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [
+        "refund_linked_reasoning"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "fragment_and_breakup_amount",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": "IDIBNB2642267574",
+      "truth_settlement_ids": [
+        "setl_bsearch_000076"
+      ],
+      "value_at_stake_paise": 3803028,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "conflicting_evidence",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000023",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "945797",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            151
+          ],
+          "narration_span": [
+            151,
+            157
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "ICICNB6512945797",
+          "relation_id": "suffix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "ICICNB65",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            73
+          ],
+          "narration_span": [
+            73,
+            81
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "ICICNB6512945797",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "conflicting_evidence"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000023|setl_bsearch_000081",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000081"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": "ICICNB6512945797",
+      "truth_settlement_ids": [
+        "setl_bsearch_000081"
+      ],
+      "value_at_stake_paise": 3235195,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "noisy_reference_selection",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000024",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "742915",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            215
+          ],
+          "narration_span": [
+            215,
+            221
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "HDFCCN5163742915",
+          "relation_id": "suffix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "HDFCCN51",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            143
+          ],
+          "narration_span": [
+            143,
+            151
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "HDFCCN5163742915",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "noisy_reference_selection"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000024|setl_bsearch_000083",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000083"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": "HDFCCN5163742915",
+      "truth_settlement_ids": [
+        "setl_bsearch_000083"
+      ],
+      "value_at_stake_paise": 1933848,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "multi_evidence_composition",
+      "blockers": [
+        "step_budget_exhausted",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000025",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [
+        "multi_evidence_composition"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "fragment_pair",
+      "resolved": false,
+      "termination_reason": "step_budget_exhausted",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": true,
+      "tool_calls_executed": 4,
+      "truth_reference": "SBINCN7553436486",
+      "truth_settlement_ids": [
+        "setl_bsearch_000085"
+      ],
+      "value_at_stake_paise": 1734865,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguity_controls",
+      "blockers": [
+        "step_budget_exhausted",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "4",
+      "case_id": "case:bnk_bsearch_000026",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [
+        "ambiguity_controls"
+      ],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "none",
+      "resolved": false,
+      "termination_reason": "step_budget_exhausted",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": true,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 4125039,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "reference_prioritization",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000027",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "AXISCN69436376",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            168
+          ],
+          "narration_span": [
+            168,
+            182
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "AXISCN6943637695",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "AXISCN69",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            168
+          ],
+          "narration_span": [
+            168,
+            176
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "AXISCN6943637695",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "reference_prioritization"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000027|setl_bsearch_000092",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000092"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "AXISCN6943637695",
+      "truth_settlement_ids": [
+        "setl_bsearch_000092"
+      ],
+      "value_at_stake_paise": 3984947,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "refund_linked_reasoning",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000028",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "UTIBCN74",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            175
+          ],
+          "narration_span": [
+            175,
+            183
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "UTIBCN7479886149",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "candidates_reached": 2,
+          "evidence_kind": "breakup_amount",
+          "narration_offsets": [
+            143
+          ],
+          "parsed_amount_paise": 6696,
+          "raw_amount_token": "66.96",
+          "relation_id": "refund_field_equals_signed_breakup_refund",
+          "settlement_ids": [
+            "setl_bsearch_000095"
+          ],
+          "signed_line_amounts_paise": [
+            -6696
+          ],
+          "source_span": "RFND 66.96"
+        }
+      ],
+      "families": [
+        "refund_linked_reasoning"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000028|setl_bsearch_000095",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000095"
+      ],
+      "required_composition": "fragment_and_breakup_amount",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": "UTIBCN7479886149",
+      "truth_settlement_ids": [
+        "setl_bsearch_000095"
+      ],
+      "value_at_stake_paise": 2179391,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "noisy_reference_selection",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "4",
+      "case_id": "case:bnk_bsearch_000030",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [
+        "noisy_reference_selection"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "fragment_pair",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": "SBINUP9659157975",
+      "truth_settlement_ids": [
+        "setl_bsearch_000102"
+      ],
+      "value_at_stake_paise": 3085550,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "reference_prioritization",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000031",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "AXISRT96",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            85
+          ],
+          "narration_span": [
+            85,
+            93
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "AXISRT9662591691",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "AXISRT96625916",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            85
+          ],
+          "narration_span": [
+            85,
+            99
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "AXISRT9662591691",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "reference_prioritization"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000031|setl_bsearch_000106",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000106"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "AXISRT9662591691",
+      "truth_settlement_ids": [
+        "setl_bsearch_000106"
+      ],
+      "value_at_stake_paise": 3022522,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "decoy_heavy_candidate_search",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000033",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "KKBKCN33227749",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            38
+          ],
+          "narration_span": [
+            38,
+            52
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "KKBKCN3322774954",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "KKBKCN33",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            38
+          ],
+          "narration_span": [
+            38,
+            46
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "KKBKCN3322774954",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "decoy_heavy_candidate_search"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000033|setl_bsearch_000113",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000113"
+      ],
+      "required_composition": "single_fragment",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "KKBKCN3322774954",
+      "truth_settlement_ids": [
+        "setl_bsearch_000113"
+      ],
+      "value_at_stake_paise": 900936,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "noisy_reference_selection",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000034",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "IDIBCN62",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            143
+          ],
+          "narration_span": [
+            143,
+            151
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "IDIBCN6293965521",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "965521",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            80
+          ],
+          "narration_span": [
+            80,
+            86
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "IDIBCN6293965521",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "noisy_reference_selection"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000034|setl_bsearch_000116",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000116"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "IDIBCN6293965521",
+      "truth_settlement_ids": [
+        "setl_bsearch_000116"
+      ],
+      "value_at_stake_paise": 2136854,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "multi_evidence_composition",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000036",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "PUNBRT63",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            163
+          ],
+          "narration_span": [
+            163,
+            171
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "PUNBRT6363776611",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "776611",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            54
+          ],
+          "narration_span": [
+            54,
+            60
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "PUNBRT6363776611",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "multi_evidence_composition"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000036|setl_bsearch_000125",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000125"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "PUNBRT6363776611",
+      "truth_settlement_ids": [
+        "setl_bsearch_000125"
+      ],
+      "value_at_stake_paise": 814199,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "conflicting_evidence",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000037",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "YESBIM68",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            66
+          ],
+          "narration_span": [
+            66,
+            74
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "YESBIM6886852818",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "852818",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            172
+          ],
+          "narration_span": [
+            172,
+            178
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "YESBIM6886852818",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "conflicting_evidence"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000037|setl_bsearch_000127",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000127"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "YESBIM6886852818",
+      "truth_settlement_ids": [
+        "setl_bsearch_000127"
+      ],
+      "value_at_stake_paise": 1758850,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "multi_evidence_composition",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000039",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "UTIBIM63",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            36
+          ],
+          "narration_span": [
+            36,
+            44
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "UTIBIM6355382698",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "382698",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            138
+          ],
+          "narration_span": [
+            138,
+            144
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "UTIBIM6355382698",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "multi_evidence_composition"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000039|setl_bsearch_000136",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000136"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": "UTIBIM6355382698",
+      "truth_settlement_ids": [
+        "setl_bsearch_000136"
+      ],
+      "value_at_stake_paise": 880396,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "refund_linked_reasoning",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000040",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "HDFCRT12",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            189
+          ],
+          "narration_span": [
+            189,
+            197
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "HDFCRT1213512292",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "candidates_reached": 2,
+          "evidence_kind": "breakup_amount",
+          "narration_offsets": [
+            80
+          ],
+          "parsed_amount_paise": 9265,
+          "raw_amount_token": "92.65",
+          "relation_id": "refund_field_equals_signed_breakup_refund",
+          "settlement_ids": [
+            "setl_bsearch_000137"
+          ],
+          "signed_line_amounts_paise": [
+            -9265
+          ],
+          "source_span": "RFND 92.65"
+        }
+      ],
+      "families": [
+        "refund_linked_reasoning"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000040|setl_bsearch_000137",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000137"
+      ],
+      "required_composition": "fragment_and_breakup_amount",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "HDFCRT1213512292",
+      "truth_settlement_ids": [
+        "setl_bsearch_000137"
+      ],
+      "value_at_stake_paise": 2806780,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "noisy_reference_selection",
+      "blockers": [],
+      "candidate_count_bucket": "5",
+      "case_id": "case:bnk_bsearch_000041",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "ICICNB29",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            136
+          ],
+          "narration_span": [
+            136,
+            144
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "ICICNB2984498672",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "498672",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            201
+          ],
+          "narration_span": [
+            201,
+            207
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "ICICNB2984498672",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "noisy_reference_selection"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000041|setl_bsearch_000144",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000144"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "ICICNB2984498672",
+      "truth_settlement_ids": [
+        "setl_bsearch_000144"
+      ],
+      "value_at_stake_paise": 3509677,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "conflicting_evidence",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000042",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "145566",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            87
+          ],
+          "narration_span": [
+            87,
+            93
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "SBINRT7366145566",
+          "relation_id": "suffix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "SBINRT73",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            51
+          ],
+          "narration_span": [
+            51,
+            59
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "SBINRT7366145566",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "conflicting_evidence"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000042|setl_bsearch_000146",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000146"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "SBINRT7366145566",
+      "truth_settlement_ids": [
+        "setl_bsearch_000146"
+      ],
+      "value_at_stake_paise": 2472625,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "noisy_reference_selection",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000043",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "AXISRT81",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            45
+          ],
+          "narration_span": [
+            45,
+            53
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "AXISRT8193515924",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "515924",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            166
+          ],
+          "narration_span": [
+            166,
+            172
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "AXISRT8193515924",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "noisy_reference_selection"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000043|setl_bsearch_000148",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000148"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "AXISRT8193515924",
+      "truth_settlement_ids": [
+        "setl_bsearch_000148"
+      ],
+      "value_at_stake_paise": 3294264,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "noisy_reference_selection",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000044",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "HDFCUP97",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            157
+          ],
+          "narration_span": [
+            157,
+            165
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "HDFCUP9774556129",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "556129",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            73
+          ],
+          "narration_span": [
+            73,
+            79
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "HDFCUP9774556129",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "noisy_reference_selection"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000044|setl_bsearch_000151",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000151"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "HDFCUP9774556129",
+      "truth_settlement_ids": [
+        "setl_bsearch_000151"
+      ],
+      "value_at_stake_paise": 4997904,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguity_controls",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000045",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [
+        "ambiguity_controls"
+      ],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "none",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 4465669,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "decoy_heavy_candidate_search",
+      "blockers": [],
+      "candidate_count_bucket": "5",
+      "case_id": "case:bnk_bsearch_000047",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "612526",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            195
+          ],
+          "narration_span": [
+            195,
+            201
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "UTIBCN8937612526",
+          "relation_id": "suffix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "UTIBCN89",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            151
+          ],
+          "narration_span": [
+            151,
+            159
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "UTIBCN8937612526",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [
+        "decoy_heavy_candidate_search"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000047|setl_bsearch_000163",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000163"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "UTIBCN8937612526",
+      "truth_settlement_ids": [
+        "setl_bsearch_000163"
+      ],
+      "value_at_stake_paise": 4876478,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "conflicting_evidence",
+      "blockers": [],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000048",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "AXISIM84",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            44
+          ],
+          "narration_span": [
+            44,
+            52
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "AXISIM8477235156",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 2,
+          "evidence_kind": "reference",
+          "fragment": "235156",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            66
+          ],
+          "narration_span": [
+            66,
+            72
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "AXISIM8477235156",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [
+        "conflicting_evidence"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000048|setl_bsearch_000168",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000168"
+      ],
+      "required_composition": "fragment_pair",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": "AXISIM8477235156",
+      "truth_settlement_ids": [
+        "setl_bsearch_000168"
+      ],
+      "value_at_stake_paise": 1807802,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "multi_evidence_composition",
+      "blockers": [],
+      "candidate_count_bucket": "5",
+      "case_id": "case:bnk_bsearch_000049",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "ICICUP35",
+          "member_fragment_count": 2,
+          "narration_offsets": [
+            124
+          ],
+          "narration_span": [
+            124,
+            132
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "ICICUP3522614943",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 4,
+          "evidence_kind": "reference",
+          "fragment": "ICICUP",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            59,
+            124
+          ],
+          "narration_span": [
+            59,
+            130
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "ICICUP3522614943",
+          "relation_id": "prefix_of_reference"
+        },
+        {
+          "atom_id": "atom:2",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "614943",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            106
+          ],
+          "narration_span": [
+            106,
+            112
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "ICICUP3522614943",
+          "relation_id": "suffix_of_reference"
+        },
+        {
+          "atom_id": "atom:3",
+          "candidates_reached": 3,
+          "evidence_kind": "reference",
+          "fragment": "ICICUP4935163224",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            59
+          ],
+          "narration_span": [
+            59,
+            75
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "ICICUP3522614943",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [
+        "multi_evidence_composition"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_bsearch_000049|setl_bsearch_000171",
+      "predicted_settlement_ids": [
+        "setl_bsearch_000171"
+      ],
+      "required_composition": "fragment_triple",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 1,
+      "truth_reference": "ICICUP3522614943",
+      "truth_settlement_ids": [
+        "setl_bsearch_000171"
+      ],
+      "value_at_stake_paise": 4734086,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "conflicting_evidence",
+      "blockers": [
+        "tool_validation_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "3",
+      "case_id": "case:bnk_bsearch_000050",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [
+        "conflicting_evidence"
+      ],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "fragment_pair",
+      "resolved": false,
+      "termination_reason": "tool_validation_failed",
+      "tier": "SEARCH",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": "HDFCCN8656585285",
+      "truth_settlement_ids": [
+        "setl_bsearch_000175"
+      ],
+      "value_at_stake_paise": 3546913,
+      "wrong_reason": null
+    }
+  ],
+  "recorded_versions": {
+    "agent_loop_version": [
+      "loop.v2"
+    ],
+    "cache_schema_version": [
+      "trajectory-cache.v3"
+    ],
+    "policy_version": [
+      "policy.v1"
+    ],
+    "prompt_version": [
+      "investigator.v4"
+    ],
+    "tool_schema_version": [
+      "tools.v3"
+    ],
+    "validator_version": [
+      "validator.v3"
+    ]
+  },
+  "report_kind": "evaluation",
+  "soundness": {
+    "checks_available": true,
+    "checks_unavailable_reason": null,
+    "total_violations": 0,
+    "violations": [],
+    "violations_by_check": {}
+  },
+  "structural": {
+    "breakup_amount_facts": 5,
+    "complete_snapshot_is_structural_axis": true,
+    "reference_only_resolutions": 27,
+    "reference_plus_amount_resolutions": 3,
+    "reference_plus_date_resolutions": 0,
+    "resolution_evidence_basis": {
+      "reference+amount": 3,
+      "reference-only": 27,
+      "unresolved": 15
+    },
+    "structural_contradiction_escalations": 0,
+    "structural_evidence_states": {
+      "consistent": 5,
+      "none": 40
+    },
+    "value_date_facts": 0
+  },
+  "telemetry": {
+    "cases": 45,
+    "cases_reporting_latency": 45,
+    "cases_reporting_tokens": 45,
+    "fallback_reasons": {},
+    "fallback_used_cases": 0,
+    "latency_mean_ms_per_case": 14686.4,
+    "latency_total_ms": 660888,
+    "model_steps_max": 4,
+    "model_steps_mean_per_case": 1.6,
+    "model_steps_total": 72,
+    "models_reported": {
+      "openrouter:cohere/north-mini-code:free": 5,
+      "openrouter:dots-studio/dots-3-note-preview:free": 4,
+      "openrouter:inclusionai/ling-3.0-flash-fin:free": 7,
+      "openrouter:liquid/lfm-2.5-2.6b:free": 3,
+      "openrouter:minimax/minimax-m2.7:free": 14,
+      "openrouter:minimax/minimax-m3:free": 15,
+      "openrouter:nvidia/nemotron-3-super-120b-a12b:free": 7,
+      "openrouter:nvidia/nemotron-3-ultra-550b-a55b:free": 1,
+      "openrouter:nvidia/nemotron-3.5-lightning:free": 7,
+      "openrouter:poolside/laguna-s-2.1:free": 3,
+      "openrouter:poolside/laguna-xs-2.1:free": 1
+    },
+    "models_requested": {
+      "openrouter:openrouter/free": 45
+    },
+    "provider_attempt_outcomes": {
+      "success": 72
+    },
+    "provider_chains": {
+      "openrouter:openrouter/free": 45
+    },
+    "provider_error_classes": {},
+    "provider_failed_attempts": 0,
+    "provider_reported_cost_currency": "USD",
+    "provider_reported_cost_total": 0.0,
+    "requested_matches_reported": false,
+    "steps_reporting_cost": 72,
+    "tokens_input_total": 174742,
+    "tokens_mean_per_case": 5674.38,
+    "tokens_output_total": 80605,
+    "tokens_total": 255347
+  },
+  "wrong_resolutions": []
+}

@@ -135,6 +135,37 @@ orchestration-optimization experiment are recorded in
 trajectory corpus (`fixtures/trajectories/`) remains empty, and no hosted-model
 result is presented as reproducible fixture evidence.
 
+## Reproduce the evaluation
+
+From a clean clone, install the development dependencies and run the one
+submission command:
+
+```bash
+uv sync --extra dev
+uv run python -m benchmark.final_eval
+```
+
+It verifies the frozen v3 fingerprint, runs all 890 FROZEN-EVAL cases, runs
+the complete Stage-3 residual cohort through a deterministic recorded/replay
+path, and separately evaluates the complete v4 adversarial pilot. It needs no
+network connection and no provider/API-key environment variables. Reports are
+written to `benchmark/reports/final-eval.json` and
+`benchmark/reports/final-eval.md`.
+
+The replay investigator is explicitly deterministic and non-LLM: this is a
+reproducible orchestration/validator/policy evaluation, not a fresh claim
+about hosted-model quality. Live provider work is always explicit and is never
+run by `make eval`.
+
+Run the full repository health suite with:
+
+```bash
+uv run pytest
+```
+
+On systems with GNU Make, `make eval` and `make test` are equivalent
+convenience aliases.
+
 ### Record, case, batch (DESIGN.md §5.0)
 
 | Term | Meaning here |
@@ -745,6 +776,35 @@ python -m venv .venv
 .venv\Scripts\activate      # Windows
 make install
 ```
+
+## Operations console
+
+FinRecon includes a React + TypeScript operations console backed by a thin
+FastAPI layer over the existing orchestration and SQLite ledger boundaries.
+No matching, validation, policy, or human-resolution authority is implemented
+in the browser.
+
+For local development, run these in separate terminals:
+
+```bash
+uv run --extra dev uvicorn finrecon.api.app:app --reload --host 127.0.0.1 --port 8000
+cd web
+npm install
+npm run dev
+```
+
+Open `http://127.0.0.1:5173`. To serve one production-built process instead:
+
+```bash
+cd web
+npm install
+npm run build
+cd ..
+uv run uvicorn finrecon.api.app:app --host 127.0.0.1 --port 8000
+```
+
+Then open `http://127.0.0.1:8000`. The default durable ledger is
+`var/finrecon.sqlite3`; override it with `FINRECON_LEDGER_PATH`.
 
 ## Running tests
 

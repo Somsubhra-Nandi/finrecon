@@ -1,0 +1,459 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:bounded-search-v1",
+  "cache_key": "d2d0949745e3e1ffad5bf003bb0c75ac55205df87b81f7a0f9c07b247e22a422",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_bsearch_000044",
+  "max_steps": 4,
+  "max_tool_calls_per_step": 1,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "openrouter:openrouter/free"
+  ],
+  "replayed": false,
+  "snapshot_hash": "ee94c1c72c2977891c57f7be698426aac5350a37dd63bdcf8d222e1721e52afd",
+  "steps": [
+    {
+      "assistant_text": "I'll investigate this case. The narration contains several reference-like fragments. The most distinctive-looking fragments are the alphanumeric codes (like AX0XN7, BT02LK, etc.) and the codes INWARD-NOTE-RETAINED=556129 and HDFCUP97.\n\nLet me start by testing a fragment against all candidates. I'll try the \"HDFCUP97\" fragment first as it appears to be a possible reference fragment.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 1,
+      "latency_ms": 2054,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "minimax/minimax-m3:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "call_function_l3hy9ybm4edp_1",
+          "raw_arguments": "{\"fragment\": \"HDFCUP97\"}",
+          "tool_name": "compare_reference_fragment"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 2076,
+        "output_tokens": 117,
+        "raw": {
+          "completion_tokens": 117,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 2076,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 1413,
+            "video_tokens": 0
+          },
+          "total_tokens": 2193
+        },
+        "total_tokens": 2193,
+        "usage_source": null
+      }
+    }
+  ],
+  "termination_detail": "existing validator/policy reached safe resolution after tool batch at step 1",
+  "termination_reason": "deterministic_policy_resolved",
+  "tool_invocations": [
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "candidate_comparisons": [
+          {
+            "candidate_id": "bnk_bsearch_000044|setl_bsearch_000151",
+            "comparisons": [
+              {
+                "fragment": "HDFCUP97",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "HDFCUP97",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [
+                  "prefix_of_reference"
+                ],
+                "max_pinned_reference_characters": 8,
+                "reference_folded": "HDFCUP9774556129",
+                "reference_kind": "utr",
+                "reference_length": 16,
+                "reference_value": "HDFCUP9774556129",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": true,
+                    "pinned_reference_characters": 8,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              },
+              {
+                "fragment": "HDFCUP97",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "HDFCUP97",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_BSEARCH_000151",
+                "reference_kind": "settlement_id",
+                "reference_length": 19,
+                "reference_value": "setl_bsearch_000151",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_bsearch_000151"
+            ]
+          },
+          {
+            "candidate_id": "bnk_bsearch_000044|setl_bsearch_000152",
+            "comparisons": [
+              {
+                "fragment": "HDFCUP97",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "HDFCUP97",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [
+                  "prefix_of_reference"
+                ],
+                "max_pinned_reference_characters": 8,
+                "reference_folded": "HDFCUP9785672215",
+                "reference_kind": "utr",
+                "reference_length": 16,
+                "reference_value": "HDFCUP9785672215",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": true,
+                    "pinned_reference_characters": 8,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              },
+              {
+                "fragment": "HDFCUP97",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "HDFCUP97",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_BSEARCH_000152",
+                "reference_kind": "settlement_id",
+                "reference_length": 19,
+                "reference_value": "setl_bsearch_000152",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_bsearch_000152"
+            ]
+          },
+          {
+            "candidate_id": "bnk_bsearch_000044|setl_bsearch_000153",
+            "comparisons": [
+              {
+                "fragment": "HDFCUP97",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "HDFCUP97",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "YESBIM1464556129",
+                "reference_kind": "utr",
+                "reference_length": 16,
+                "reference_value": "YESBIM1464556129",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              },
+              {
+                "fragment": "HDFCUP97",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "HDFCUP97",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_BSEARCH_000153",
+                "reference_kind": "settlement_id",
+                "reference_length": 19,
+                "reference_value": "setl_bsearch_000153",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_bsearch_000153"
+            ]
+          }
+        ],
+        "candidates_evaluated": 3,
+        "fragment": "HDFCUP97",
+        "fragment_offsets": [
+          157
+        ],
+        "fragment_present_in_narration": true,
+        "narration_length": 221
+      },
+      "raw_arguments": "{\"fragment\": \"HDFCUP97\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "compare_reference_fragment",
+      "validated_arguments": {
+        "fragment": "HDFCUP97"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    }
+  ],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 2129,
+  "validator_version": "validator.v3"
+}

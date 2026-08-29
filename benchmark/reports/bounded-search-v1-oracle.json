@@ -1,0 +1,413 @@
+{
+  "ambiguous_cases_verified": 10,
+  "benchmark_name": "bounded-search-v1",
+  "benchmark_sha256": "e2142a61275a681971cc6d14a02d9c3a8439cb797972a32e072518a09ebb9958",
+  "by_family": {
+    "ambiguity_controls": {
+      "cases": 10,
+      "correct": 0,
+      "escalated": 10,
+      "wrong": 0
+    },
+    "conflicting_evidence": {
+      "cases": 6,
+      "correct": 6,
+      "escalated": 0,
+      "wrong": 0
+    },
+    "decoy_heavy_candidate_search": {
+      "cases": 7,
+      "correct": 7,
+      "escalated": 0,
+      "wrong": 0
+    },
+    "multi_evidence_composition": {
+      "cases": 7,
+      "correct": 7,
+      "escalated": 0,
+      "wrong": 0
+    },
+    "noisy_reference_selection": {
+      "cases": 7,
+      "correct": 7,
+      "escalated": 0,
+      "wrong": 0
+    },
+    "reference_prioritization": {
+      "cases": 7,
+      "correct": 7,
+      "escalated": 0,
+      "wrong": 0
+    },
+    "refund_linked_reasoning": {
+      "cases": 6,
+      "correct": 6,
+      "escalated": 0,
+      "wrong": 0
+    }
+  },
+  "cases": 50,
+  "correct_auto_resolutions": 40,
+  "escalated": 10,
+  "evaluation_only": true,
+  "ground_truth_read_during_search": false,
+  "per_case": [
+    {
+      "case_id": "case:bnk_bsearch_000001",
+      "correct": true,
+      "family": "decoy_heavy_candidate_search",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000002",
+      "correct": true,
+      "family": "refund_linked_reasoning",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000003",
+      "correct": true,
+      "family": "reference_prioritization",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000004",
+      "correct": true,
+      "family": "noisy_reference_selection",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000005",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 0
+    },
+    {
+      "case_id": "case:bnk_bsearch_000006",
+      "correct": true,
+      "family": "reference_prioritization",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000007",
+      "correct": true,
+      "family": "conflicting_evidence",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000008",
+      "correct": true,
+      "family": "reference_prioritization",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000009",
+      "correct": true,
+      "family": "multi_evidence_composition",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000010",
+      "correct": true,
+      "family": "decoy_heavy_candidate_search",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000011",
+      "correct": true,
+      "family": "refund_linked_reasoning",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000012",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 0
+    },
+    {
+      "case_id": "case:bnk_bsearch_000013",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000014",
+      "correct": true,
+      "family": "reference_prioritization",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000015",
+      "correct": true,
+      "family": "decoy_heavy_candidate_search",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000016",
+      "correct": true,
+      "family": "multi_evidence_composition",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000017",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000018",
+      "correct": true,
+      "family": "decoy_heavy_candidate_search",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000019",
+      "correct": true,
+      "family": "reference_prioritization",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000020",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000021",
+      "correct": true,
+      "family": "decoy_heavy_candidate_search",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000022",
+      "correct": true,
+      "family": "refund_linked_reasoning",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000023",
+      "correct": true,
+      "family": "conflicting_evidence",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000024",
+      "correct": true,
+      "family": "noisy_reference_selection",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000025",
+      "correct": true,
+      "family": "multi_evidence_composition",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000026",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000027",
+      "correct": true,
+      "family": "reference_prioritization",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000028",
+      "correct": true,
+      "family": "refund_linked_reasoning",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000029",
+      "correct": true,
+      "family": "refund_linked_reasoning",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000030",
+      "correct": true,
+      "family": "noisy_reference_selection",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000031",
+      "correct": true,
+      "family": "reference_prioritization",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000032",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000033",
+      "correct": true,
+      "family": "decoy_heavy_candidate_search",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000034",
+      "correct": true,
+      "family": "noisy_reference_selection",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000035",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 0
+    },
+    {
+      "case_id": "case:bnk_bsearch_000036",
+      "correct": true,
+      "family": "multi_evidence_composition",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000037",
+      "correct": true,
+      "family": "conflicting_evidence",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000038",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 0
+    },
+    {
+      "case_id": "case:bnk_bsearch_000039",
+      "correct": true,
+      "family": "multi_evidence_composition",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000040",
+      "correct": true,
+      "family": "refund_linked_reasoning",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000041",
+      "correct": true,
+      "family": "noisy_reference_selection",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000042",
+      "correct": true,
+      "family": "conflicting_evidence",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000043",
+      "correct": true,
+      "family": "noisy_reference_selection",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000044",
+      "correct": true,
+      "family": "noisy_reference_selection",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000045",
+      "correct": false,
+      "family": "ambiguity_controls",
+      "resolved": false,
+      "tool_calls_in_unbounded_oracle": 0
+    },
+    {
+      "case_id": "case:bnk_bsearch_000046",
+      "correct": true,
+      "family": "multi_evidence_composition",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000047",
+      "correct": true,
+      "family": "decoy_heavy_candidate_search",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000048",
+      "correct": true,
+      "family": "conflicting_evidence",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000049",
+      "correct": true,
+      "family": "multi_evidence_composition",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    },
+    {
+      "case_id": "case:bnk_bsearch_000050",
+      "correct": true,
+      "family": "conflicting_evidence",
+      "resolved": true,
+      "tool_calls_in_unbounded_oracle": 1
+    }
+  ],
+  "production_code": false,
+  "provider_calls_made": false,
+  "reference_fragments_enumerated": 1028123,
+  "report_kind": "bounded_search_construction_oracle",
+  "resolvable_cases_verified": 40,
+  "unbounded_reference_tool_calls": 45,
+  "wrong_auto_resolutions": 0
+}

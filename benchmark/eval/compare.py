@@ -30,6 +30,8 @@ from benchmark.eval.errors import CohortError
 
 CONFIGURATION_DIMENSIONS = (
     "provider_model",
+    "max_steps",
+    "max_tool_calls_per_step",
     "prompt_version",
     "tool_schema_version",
     "agent_loop_version",
@@ -45,6 +47,7 @@ COMPARED_METRICS = (
     ("wrong_auto_resolutions", "metrics", "wrong_auto_resolutions"),
     ("auto_resolution_accuracy", "metrics", "auto_resolution_accuracy"),
     ("overall_match_rate", "metrics", "overall_match_rate"),
+    ("value_at_risk_paise", "metrics", "value_at_risk_paise"),
     # Termination counts come straight off the recorded trajectory, so they
     # remain comparable even when one side is a recorded-only baseline whose
     # decisions cannot be reproduced under the current contract.
@@ -52,6 +55,10 @@ COMPARED_METRICS = (
     ("investigation_complete", "agent", "investigation_complete"),
     ("tool_validation_failed", "agent", "tool_validation_failed"),
     ("tool_validation_rejections_total", "agent", "tool_validation_rejections_total"),
+    ("tool_calls_executed_total", "agent", "tool_calls_executed_total"),
+    ("tool_calls_mean_per_case", "agent", "tool_calls_mean_per_case"),
+    ("tool_calls_median_per_case", "agent", "tool_calls_median_per_case"),
+    ("tool_budget_exhaustion_rate", "agent", "tool_budget_exhaustion_rate"),
     ("provider_failed_attempts", "telemetry", "provider_failed_attempts"),
     ("tokens_mean_per_case", "telemetry", "tokens_mean_per_case"),
     ("model_steps_mean_per_case", "telemetry", "model_steps_mean_per_case"),
@@ -85,8 +92,11 @@ def _provider_model(report: dict) -> dict:
 
 def _config_signature(report: dict) -> dict:
     versions = report.get("recorded_versions", {})
+    configuration = report.get("configuration", {})
     return {
         "provider_model": _provider_model(report),
+        "max_steps": configuration.get("max_steps"),
+        "max_tool_calls_per_step": configuration.get("max_tool_calls_per_step"),
         "prompt_version": versions.get("prompt_version", []),
         "tool_schema_version": versions.get("tool_schema_version", []),
         "agent_loop_version": versions.get("agent_loop_version", []),
@@ -186,7 +196,40 @@ def compare(
             "differing_dimension_count": len(differing),
         },
         "side_by_side": rows,
+        "by_family_side_by_side": _compare_families(report_a, report_b)
+        if comparable
+        else {},
     }
+
+
+def _compare_families(report_a: dict, report_b: dict) -> dict:
+    """Compare the same safety/coverage counts within every shared family."""
+    block_a = report_a.get("metrics_by_family", {})
+    block_b = report_b.get("metrics_by_family", {})
+    fields = (
+        "cases",
+        "uniquely_resolvable",
+        "auto_resolved",
+        "correct_auto_resolutions",
+        "wrong_auto_resolutions",
+        "escalated",
+        "match_rate",
+        "auto_resolution_accuracy",
+        "value_at_risk_paise",
+        "tool_calls_executed_total",
+        "tool_calls_mean_per_case",
+        "tool_calls_median_per_case",
+        "tool_budget_exhausted_cases",
+        "tool_budget_exhaustion_rate",
+    )
+    result: dict[str, list[dict]] = {}
+    for family in sorted(set(block_a) | set(block_b)):
+        a = block_a.get(family, {})
+        b = block_b.get(family, {})
+        result[family] = [
+            SideBySide(field, a.get(field), b.get(field)).as_dict() for field in fields
+        ]
+    return result
 
 
 __all__ = ["COMPARED_METRICS", "CONFIGURATION_DIMENSIONS", "SideBySide", "compare"]

@@ -1,0 +1,40 @@
+import { Activity, AlertTriangle, FileSearch, LayoutDashboard, Play, Scale } from "lucide-react";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import clsx from "clsx";
+import { useApi } from "../hooks";
+import type { RunSummary } from "../types";
+
+const navigation = [
+  { to: "/", label: "Overview", icon: LayoutDashboard },
+  { to: "/cases", label: "Reconciliation", icon: FileSearch },
+  { to: "/issues", label: "Ingestion issues", icon: AlertTriangle },
+  { to: "/run", label: "Run reconciliation", icon: Play },
+];
+
+export default function Shell() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const batch = new URLSearchParams(location.search).get("batch");
+  const { data: runs } = useApi<RunSummary[]>("/api/runs");
+  const activeBatch = batch ?? runs?.[0]?.batch_id ?? null;
+  const suffix = batch ? `?batch=${encodeURIComponent(batch)}` : "";
+  const selectBatch = (batchId: string) => {
+    const destination = location.pathname.startsWith("/cases/") ? "/cases" : location.pathname;
+    const next = new URLSearchParams(location.search);
+    next.set("batch", batchId);
+    navigate(`${destination}?${next.toString()}`);
+  };
+  return <div className="app-shell">
+    <aside className="sidebar">
+      <div className="brand"><div className="brand-mark"><Scale size={19} /></div><div><strong>FinRecon</strong><span>Operations console</span></div></div>
+      <nav aria-label="Primary navigation">
+        {navigation.map(({ to, label, icon: Icon }) => <NavLink key={to} to={`${to}${suffix}`} end={to === "/"} className={({ isActive }) => clsx("nav-item", isActive && "active")}><Icon size={17} /><span>{label}</span></NavLink>)}
+      </nav>
+      <div className="sidebar-note"><Activity size={16} /><div><strong>Financial authority</strong><span>Deterministic validation</span></div></div>
+    </aside>
+    <div className="workspace">
+      <div className="topbar"><div className="environment"><span /> Ledger connected</div><div className="batch-context"><span>Active batch</span>{runs && runs.length > 1 ? <select aria-label="Active reconciliation batch" value={activeBatch ?? ""} onChange={(event) => selectBatch(event.target.value)}>{runs.map((run) => <option key={run.batch_id} value={run.batch_id}>{run.batch_id}</option>)}</select> : <strong title={activeBatch ?? "Latest recorded"}>{activeBatch ?? "Latest recorded"}</strong>}</div></div>
+      <main><Outlet /></main>
+    </div>
+  </div>;
+}

@@ -16,6 +16,33 @@ frozen and is not part of the v1→v2→v3 lineage. It supersedes nothing, chang
 nothing, and its fingerprint is a reproducibility marker rather than a freeze.
 Entry below.
 
+**Current bounded-search challenge: `bounded-search-v1`**
+(`manifests/bounded-search-v1.json`), also **not frozen** and separate from
+both v3 and the v4 pilot. Entry below.
+
+## bounded-search-v1 — 2026-08-29 — AI search-strategy challenge (NOT FROZEN)
+
+**Status: READY FOR REVIEW; FREEZE BEFORE ANY HOSTED RUN.** This additive
+50-case split asks whether evidence-search strategy adds value under the same
+immutable snapshot, tools, four-call budget, validator.v3 and policy.v1. It has
+40 intended-resolvable and ten intended-ambiguous cases. The evaluation-only
+oracle accepts 40/40 and escalates 10/10; the fixed mechanical investigator
+resolves 20/40 with zero wrong automatic resolutions and zero paise at risk.
+No provider or network call was made.
+
+The pre-freeze fingerprint is:
+
+```text
+e2142a61275a681971cc6d14a02d9c3a8439cb797972a32e072518a09ebb9958
+```
+
+This is a review marker, not yet a freeze declaration. Full construction,
+fairness contract, baseline, leakage audit, hosted-run command and limitations:
+`benchmark/BOUNDED-SEARCH-V1.md`.
+
+**Nothing in frozen v3 changed.** Its fingerprint remains
+`f9eb8770be6cc216d1c8b5486a10b74005382141f7c079844e2748444a44fc5b`.
+
 ## v4.0.0-pilot — 2026-08-26 — compositional-evidence pilot (NOT FROZEN)
 
 **Status: PILOT.** No match rate, precision, coverage or value-at-risk figure

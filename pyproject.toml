@@ -4,11 +4,15 @@ version = "0.0.1"
 description = "FinRecon — deterministic reconciliation controller with a bounded AI investigation agent (Razorpay AI Buildathon Track 04)"
 requires-python = ">=3.11"
 dependencies = [
+    "fastapi>=0.116,<1",
     "pydantic>=2,<3",
+    "python-multipart>=0.0.20,<1",
+    "uvicorn[standard]>=0.35,<1",
 ]
 
 [project.optional-dependencies]
 dev = [
+    "httpx>=0.28,<1",
     "pytest>=8",
 ]
 

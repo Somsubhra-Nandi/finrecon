@@ -37,7 +37,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from finrecon.agent.cache import ReplayMissError, TrajectoryCache, cache_key
-from finrecon.agent.loop import DEFAULT_MAX_STEPS, LoopConfig
+from finrecon.agent.loop import DEFAULT_MAX_STEPS, MAX_TOOL_CALLS_PER_STEP, LoopConfig
 from finrecon.decide.config import DEFAULT_POLICY, Stage3Policy
 from finrecon.ledger.store import LedgerStore
 from finrecon.pipeline import process_batch
@@ -94,6 +94,7 @@ def replay_cohort(
     model: str,
     staging_dir: Path,
     max_steps: int = DEFAULT_MAX_STEPS,
+    max_tool_calls_per_step: int = MAX_TOOL_CALLS_PER_STEP,
     policy: Stage3Policy = DEFAULT_POLICY,
 ) -> ReplayResult:
     """Replay ``cohort`` offline and return the real Stage-3 decisions.
@@ -136,6 +137,7 @@ def replay_cohort(
                 provider=provider_id,
                 model=model,
                 max_steps=max_steps,
+                max_tool_calls_per_step=max_tool_calls_per_step,
                 policy=policy,
             )
             if expected != record.cache_key:
@@ -158,7 +160,10 @@ def replay_cohort(
                 batch_result=batch,
                 chain=None,  # no provider object exists in this call
                 cache=TrajectoryCache(staged),
-                config=LoopConfig(max_steps=max_steps),
+                config=LoopConfig(
+                    max_steps=max_steps,
+                    max_tool_calls_per_step=max_tool_calls_per_step,
+                ),
                 policy=policy,
                 replay_only=True,  # a miss raises; it never reaches out
                 provider_id=provider_id,

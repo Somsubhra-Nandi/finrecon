@@ -1,0 +1,255 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:bounded-search-v1",
+  "cache_key": "769e55dfb61ce01717fbb05979e8e4bed02f59794167f1ae75458d336597ec16",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_bsearch_000038",
+  "max_steps": 4,
+  "max_tool_calls_per_step": 1,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "openrouter:openrouter/free"
+  ],
+  "replayed": false,
+  "snapshot_hash": "8c0dbd6b95ee285dd6ccf6076b11a44f3aa73b107179afcf12407ada4de9ec47",
+  "steps": [
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 1,
+      "latency_ms": 3873,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "minimax/minimax-m2.7:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "call_function_f3ifegp1495s_1",
+          "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000038|setl_bsearch_000129\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 1926,
+        "output_tokens": 129,
+        "raw": {
+          "completion_tokens": 129,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 102
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 1926,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 891,
+            "video_tokens": 0
+          },
+          "total_tokens": 2055
+        },
+        "total_tokens": 2055,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 2,
+      "latency_ms": 2460,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "minimax/minimax-m2.7:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "call_function_n46e6g9kjsny_1",
+          "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000038|setl_bsearch_000130\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 2121,
+        "output_tokens": 63,
+        "raw": {
+          "completion_tokens": 63,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 21
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 2121,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 1787,
+            "video_tokens": 0
+          },
+          "total_tokens": 2184
+        },
+        "total_tokens": 2184,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": "HTTP 429: {\"error\":{\"message\":\"Rate limit exceeded: free-models-per-day. Add 10 credits to unlock 1000 free model requests per day\",\"code\":429,\"metadata\":{\"headers\":{\"X-RateLimit-Limit\":\"50\",\"X-RateLimit-Remaining\":\"0\",\"X-RateLimit-Reset\":\"1788048000000\"},\"limit_source\":\"openrouter_free_tier_daily\",\"remedy_hint\":\"Wait for the daily reset (see X-RateLimit-Reset), or purchase credits to raise your free-model ...",
+          "error_class": "ProviderInfrastructureError",
+          "model": "openrouter/free",
+          "outcome": "rate_limited",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": "rate_limited",
+      "fallback_used": false,
+      "finish_reason": null,
+      "index": 3,
+      "latency_ms": null,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": null,
+      "requested_tool_calls": [],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "raw": null,
+        "total_tokens": null,
+        "usage_source": null
+      }
+    }
+  ],
+  "termination_detail": "all providers failed (openrouter:rate_limited)",
+  "termination_reason": "provider_infrastructure_failure",
+  "tool_invocations": [
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_bsearch_000038|setl_bsearch_000129",
+        "settlement_ids": [
+          "setl_bsearch_000129"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 3957921,
+            "breakup_line_count": 4,
+            "breakup_total_paise": 3957921,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-10-18T09:19:00Z",
+            "settlement_date_utc": "2026-10-18",
+            "settlement_id": "setl_bsearch_000129",
+            "utr": "AXISCN9416575397"
+          }
+        ],
+        "total_paise": 3957921
+      },
+      "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000038|setl_bsearch_000129\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_bsearch_000038|setl_bsearch_000129"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_bsearch_000038|setl_bsearch_000130",
+        "settlement_ids": [
+          "setl_bsearch_000130"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 3957921,
+            "breakup_line_count": 4,
+            "breakup_total_paise": 3957921,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-10-18T09:19:00Z",
+            "settlement_date_utc": "2026-10-18",
+            "settlement_id": "setl_bsearch_000130",
+            "utr": "BARBNB4162345327"
+          }
+        ],
+        "total_paise": 3957921
+      },
+      "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000038|setl_bsearch_000130\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_bsearch_000038|setl_bsearch_000130"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    }
+  ],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 6749,
+  "validator_version": "validator.v3"
+}

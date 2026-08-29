@@ -1,0 +1,854 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:demo-operations",
+  "cache_key": "8eefd808314d2b092dafa45adfedf486020b3d541fceaa458e6991ecf899ea0f",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:finrecon_demo_v1:ref:DEMO-003",
+  "max_steps": 8,
+  "max_tool_calls_per_step": 8,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "mechanical:mechanical-investigator-v1"
+  ],
+  "replayed": false,
+  "snapshot_hash": "e1bd3c9ca1960b843ca8fd56d6e52fecfeee32270380f1bc502d953d53ca2401",
+  "steps": [
+    {
+      "assistant_text": "Looking at what the first candidate carries.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "mechanical-investigator-v1",
+          "outcome": "success",
+          "provider": "mechanical"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 1,
+      "latency_ms": 1,
+      "model": "mechanical-investigator-v1",
+      "provider": "mechanical",
+      "reported_model": null,
+      "requested_tool_calls": [
+        {
+          "call_id": "call_3",
+          "raw_arguments": "{\"candidate_id\": \"finrecon_demo_v1:ref:DEMO-003|setl_demo_human_a\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "raw": null,
+        "total_tokens": 120,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "Testing narration fragment 'SETTLEMENT'.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "mechanical-investigator-v1",
+          "outcome": "success",
+          "provider": "mechanical"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 2,
+      "latency_ms": 1,
+      "model": "mechanical-investigator-v1",
+      "provider": "mechanical",
+      "reported_model": null,
+      "requested_tool_calls": [
+        {
+          "call_id": "call_4",
+          "raw_arguments": "{\"fragment\": \"SETTLEMENT\"}",
+          "tool_name": "compare_reference_fragment"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "raw": null,
+        "total_tokens": 120,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "Testing narration fragment 'RAZORPAY'.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "mechanical-investigator-v1",
+          "outcome": "success",
+          "provider": "mechanical"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 3,
+      "latency_ms": 1,
+      "model": "mechanical-investigator-v1",
+      "provider": "mechanical",
+      "reported_model": null,
+      "requested_tool_calls": [
+        {
+          "call_id": "call_5",
+          "raw_arguments": "{\"fragment\": \"RAZORPAY\"}",
+          "tool_name": "compare_reference_fragment"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "raw": null,
+        "total_tokens": 120,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "Testing narration fragment 'CREDIT'.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "mechanical-investigator-v1",
+          "outcome": "success",
+          "provider": "mechanical"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 4,
+      "latency_ms": 1,
+      "model": "mechanical-investigator-v1",
+      "provider": "mechanical",
+      "reported_model": null,
+      "requested_tool_calls": [
+        {
+          "call_id": "call_6",
+          "raw_arguments": "{\"fragment\": \"CREDIT\"}",
+          "tool_name": "compare_reference_fragment"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "raw": null,
+        "total_tokens": 120,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "Testing narration fragment 'NEFT'.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "mechanical-investigator-v1",
+          "outcome": "success",
+          "provider": "mechanical"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 5,
+      "latency_ms": 1,
+      "model": "mechanical-investigator-v1",
+      "provider": "mechanical",
+      "reported_model": null,
+      "requested_tool_calls": [
+        {
+          "call_id": "call_7",
+          "raw_arguments": "{\"fragment\": \"NEFT\"}",
+          "tool_name": "compare_reference_fragment"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "raw": null,
+        "total_tokens": 120,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "Tested every fragment the narration carries. I make no claim about which candidate is correct.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "mechanical-investigator-v1",
+          "outcome": "success",
+          "provider": "mechanical"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "stop",
+      "index": 6,
+      "latency_ms": 1,
+      "model": "mechanical-investigator-v1",
+      "provider": "mechanical",
+      "reported_model": null,
+      "requested_tool_calls": [],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "raw": null,
+        "total_tokens": 120,
+        "usage_source": null
+      }
+    }
+  ],
+  "termination_detail": null,
+  "termination_reason": "investigation_complete",
+  "tool_invocations": [
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_a",
+        "settlement_ids": [
+          "setl_demo_human_a"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 250000,
+            "breakup_line_count": 1,
+            "breakup_total_paise": 250000,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-08-16T09:00:00Z",
+            "settlement_date_utc": "2026-08-16",
+            "settlement_id": "setl_demo_human_a",
+            "utr": null
+          }
+        ],
+        "total_paise": 250000
+      },
+      "raw_arguments": "{\"candidate_id\": \"finrecon_demo_v1:ref:DEMO-003|setl_demo_human_a\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_a"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "candidate_comparisons": [
+          {
+            "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_a",
+            "comparisons": [
+              {
+                "fragment": "SETTLEMENT",
+                "fragment_alphanumeric_characters": 10,
+                "fragment_folded": "SETTLEMENT",
+                "fragment_length": 10,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_DEMO_HUMAN_A",
+                "reference_kind": "settlement_id",
+                "reference_length": 17,
+                "reference_value": "setl_demo_human_a",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_demo_human_a"
+            ]
+          },
+          {
+            "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_b",
+            "comparisons": [
+              {
+                "fragment": "SETTLEMENT",
+                "fragment_alphanumeric_characters": 10,
+                "fragment_folded": "SETTLEMENT",
+                "fragment_length": 10,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_DEMO_HUMAN_B",
+                "reference_kind": "settlement_id",
+                "reference_length": 17,
+                "reference_value": "setl_demo_human_b",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_demo_human_b"
+            ]
+          }
+        ],
+        "candidates_evaluated": 2,
+        "fragment": "SETTLEMENT",
+        "fragment_offsets": [
+          21
+        ],
+        "fragment_present_in_narration": true,
+        "narration_length": 31
+      },
+      "raw_arguments": "{\"fragment\": \"SETTLEMENT\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "compare_reference_fragment",
+      "validated_arguments": {
+        "fragment": "SETTLEMENT"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "candidate_comparisons": [
+          {
+            "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_a",
+            "comparisons": [
+              {
+                "fragment": "RAZORPAY",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "RAZORPAY",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_DEMO_HUMAN_A",
+                "reference_kind": "settlement_id",
+                "reference_length": 17,
+                "reference_value": "setl_demo_human_a",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_demo_human_a"
+            ]
+          },
+          {
+            "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_b",
+            "comparisons": [
+              {
+                "fragment": "RAZORPAY",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "RAZORPAY",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_DEMO_HUMAN_B",
+                "reference_kind": "settlement_id",
+                "reference_length": 17,
+                "reference_value": "setl_demo_human_b",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_demo_human_b"
+            ]
+          }
+        ],
+        "candidates_evaluated": 2,
+        "fragment": "RAZORPAY",
+        "fragment_offsets": [
+          12
+        ],
+        "fragment_present_in_narration": true,
+        "narration_length": 31
+      },
+      "raw_arguments": "{\"fragment\": \"RAZORPAY\"}",
+      "status": "succeeded",
+      "step_index": 3,
+      "tool_name": "compare_reference_fragment",
+      "validated_arguments": {
+        "fragment": "RAZORPAY"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "candidate_comparisons": [
+          {
+            "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_a",
+            "comparisons": [
+              {
+                "fragment": "CREDIT",
+                "fragment_alphanumeric_characters": 6,
+                "fragment_folded": "CREDIT",
+                "fragment_length": 6,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_DEMO_HUMAN_A",
+                "reference_kind": "settlement_id",
+                "reference_length": 17,
+                "reference_value": "setl_demo_human_a",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_demo_human_a"
+            ]
+          },
+          {
+            "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_b",
+            "comparisons": [
+              {
+                "fragment": "CREDIT",
+                "fragment_alphanumeric_characters": 6,
+                "fragment_folded": "CREDIT",
+                "fragment_length": 6,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_DEMO_HUMAN_B",
+                "reference_kind": "settlement_id",
+                "reference_length": 17,
+                "reference_value": "setl_demo_human_b",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_demo_human_b"
+            ]
+          }
+        ],
+        "candidates_evaluated": 2,
+        "fragment": "CREDIT",
+        "fragment_offsets": [
+          5
+        ],
+        "fragment_present_in_narration": true,
+        "narration_length": 31
+      },
+      "raw_arguments": "{\"fragment\": \"CREDIT\"}",
+      "status": "succeeded",
+      "step_index": 4,
+      "tool_name": "compare_reference_fragment",
+      "validated_arguments": {
+        "fragment": "CREDIT"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "candidate_comparisons": [
+          {
+            "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_a",
+            "comparisons": [
+              {
+                "fragment": "NEFT",
+                "fragment_alphanumeric_characters": 4,
+                "fragment_folded": "NEFT",
+                "fragment_length": 4,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_DEMO_HUMAN_A",
+                "reference_kind": "settlement_id",
+                "reference_length": 17,
+                "reference_value": "setl_demo_human_a",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_demo_human_a"
+            ]
+          },
+          {
+            "candidate_id": "finrecon_demo_v1:ref:DEMO-003|setl_demo_human_b",
+            "comparisons": [
+              {
+                "fragment": "NEFT",
+                "fragment_alphanumeric_characters": 4,
+                "fragment_folded": "NEFT",
+                "fragment_length": 4,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_DEMO_HUMAN_B",
+                "reference_kind": "settlement_id",
+                "reference_length": 17,
+                "reference_value": "setl_demo_human_b",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_demo_human_b"
+            ]
+          }
+        ],
+        "candidates_evaluated": 2,
+        "fragment": "NEFT",
+        "fragment_offsets": [
+          0
+        ],
+        "fragment_present_in_narration": true,
+        "narration_length": 31
+      },
+      "raw_arguments": "{\"fragment\": \"NEFT\"}",
+      "status": "succeeded",
+      "step_index": 5,
+      "tool_name": "compare_reference_fragment",
+      "validated_arguments": {
+        "fragment": "NEFT"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    }
+  ],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 13,
+  "validator_version": "validator.v3"
+}

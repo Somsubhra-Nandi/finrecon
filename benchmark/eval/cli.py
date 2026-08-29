@@ -24,7 +24,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from finrecon.agent.loop import DEFAULT_MAX_STEPS
+from finrecon.agent.loop import DEFAULT_MAX_STEPS, MAX_TOOL_CALLS_PER_STEP
 from finrecon.loader import default_benchmark_dir
 
 from benchmark.eval import EVALUATOR_VERSION
@@ -115,6 +115,11 @@ def print_summary(result: EvaluationResult, stream=sys.stdout) -> None:
     out(f"    by reason:               {nonzero or 'none'}")
     out(f"  accepted relations:        {agent['accepted_evidence_relations'] or 'none'}")
     out(f"  escalation blockers:       {agent['escalation_blockers'] or 'none'}")
+    out(f"  executed tool calls:       total {agent['tool_calls_executed_total']}"
+        f"  mean {agent['tool_calls_mean_per_case']}"
+        f"  median {agent['tool_calls_median_per_case']}")
+    out(f"  budget exhausted:          {agent['tool_budget_exhausted_cases']}"
+        f"  rate {_fmt(agent['tool_budget_exhaustion_rate'])}")
 
     out("\nprovider / model telemetry")
     out(f"  models requested:          {tele['models_requested']}")
@@ -130,6 +135,8 @@ def print_summary(result: EvaluationResult, stream=sys.stdout) -> None:
         f"  mean {tele['model_steps_mean_per_case']}  max {tele['model_steps_max']}")
     out(f"  tokens:                    total {tele['tokens_total']}"
         f"  mean/case {tele['tokens_mean_per_case']}")
+    out(f"  provider-reported cost:    {tele['provider_reported_cost_total']}"
+        f" {tele['provider_reported_cost_currency'] or ''}")
     out(f"  latency:                   total {tele['latency_total_ms']} ms"
         f"  mean/case {_fmt(tele['latency_mean_ms_per_case'])} ms")
 
@@ -148,8 +155,10 @@ def print_comparison(comparison: dict, stream=sys.stdout) -> None:
             f"   only in B: {len(identity['only_in_b'])}")
 
     out("\nconfiguration")
-    for dimension in ("provider_model", "prompt_version", "tool_schema_version",
-                      "agent_loop_version", "validator_version", "policy_version"):
+    for dimension in (
+        "provider_model", "max_steps", "max_tool_calls_per_step", "prompt_version",
+        "tool_schema_version", "agent_loop_version", "validator_version", "policy_version",
+    ):
         a = comparison["configuration"]["a"].get(dimension)
         b = comparison["configuration"]["b"].get(dimension)
         flag = "CHANGED" if dimension in comparison["configuration"]["differing_dimensions"] else "same"
@@ -194,6 +203,9 @@ def build_parser() -> argparse.ArgumentParser:
     ev.add_argument("--provider", default="gorouter", help="cache identity: provider")
     ev.add_argument("--model", default="claude-opus-5-thinking", help="cache identity: model")
     ev.add_argument("--max-steps", type=int, default=DEFAULT_MAX_STEPS)
+    ev.add_argument(
+        "--max-tool-calls-per-step", type=int, default=MAX_TOOL_CALLS_PER_STEP
+    )
     ev.add_argument("--label", default="evaluation", help="label recorded in the report")
     ev.add_argument("--json-out", default=None, type=Path, help="write the JSON report here")
     ev.add_argument("--allow-partial-cohort", action="store_true",
@@ -243,6 +255,7 @@ def _run_evaluate(args: argparse.Namespace) -> int:
         provider_id=args.provider,
         model=args.model,
         max_steps=args.max_steps,
+        max_tool_calls_per_step=args.max_tool_calls_per_step,
         require_exact_cohort=not args.allow_partial_cohort,
         require_expected_tier=not args.allow_tier_contamination,
         allow_frozen_truth=args.allow_frozen_truth,

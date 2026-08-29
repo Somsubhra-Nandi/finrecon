@@ -1,0 +1,196 @@
+"""Purpose-built API contracts; SQLite rows never cross the HTTP boundary."""
+
+from __future__ import annotations
+
+from typing import Any, Literal
+
+from pydantic import BaseModel, ConfigDict, Field
+
+
+ResolutionSource = Literal["deterministic", "ai_assisted", "human", "escalated"]
+
+
+class ApiModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class OutcomeMetrics(ApiModel):
+    total_cases: int
+    deterministic_resolved: int
+    ai_assisted_resolved: int
+    human_resolved: int
+    needs_review: int
+    ingestion_issues: int
+    total_amount_paise: int
+    provider_calls: int
+    model_tokens: int | None
+    model_cost: None = None
+
+
+class RunSummary(ApiModel):
+    batch_id: str
+    split: str
+    content_fingerprint: str
+    record_count: int
+    metrics: OutcomeMetrics
+
+
+class OverviewResponse(ApiModel):
+    selected_batch_id: str | None
+    metrics: OutcomeMetrics
+    recent_runs: list[RunSummary]
+
+
+class CaseSummary(ApiModel):
+    batch_id: str
+    case_id: str
+    bank_record_id: str
+    narration: str | None
+    amount_paise: int
+    status: Literal["resolved", "needs_review"]
+    resolution_source: ResolutionSource
+    candidate_count: int
+    evidence_state: str
+    last_updated: str | None
+
+
+class CaseListResponse(ApiModel):
+    batch_id: str | None
+    total: int
+    cases: list[CaseSummary]
+
+
+class CandidateView(ApiModel):
+    candidate_id: str
+    settlement_ids: list[str]
+    total_paise: int
+    unexplained_delta_paise: int
+    blocking_rule: str
+    settlement_dates: list[str]
+    state: Literal["accepted", "rejected", "available"]
+    settlements: list[dict[str, Any]]
+
+
+class EvidenceSection(ApiModel):
+    deterministic: dict[str, Any]
+    ai_found: list[dict[str, Any]]
+    structured_bank_facts: dict[str, Any]
+    raw_narration: str | None
+
+
+class ValidationView(ApiModel):
+    validator_version: str | None
+    policy_version: str | None
+    outcome: str
+    rule_id: str
+    passed: list[str]
+    failed: list[str]
+    blockers: list[str]
+    resolved_candidate_id: str | None
+    raw_validator: dict[str, Any] | None
+    policy_declaration: dict[str, Any] | None
+
+
+class AgentStep(ApiModel):
+    step_index: int
+    tool_name: str
+    status: str
+    arguments: dict[str, Any] | None
+    validation_error: str | None
+    output: dict[str, Any] | None
+
+
+class AgentTrajectoryView(ApiModel):
+    available: bool
+    replayed: bool | None = None
+    provider: list[str] = Field(default_factory=list)
+    models: list[str] = Field(default_factory=list)
+    termination_reason: str | None = None
+    step_count: int = 0
+    total_tokens: int | None = None
+    assistant_notes: list[str] = Field(default_factory=list)
+    tools: list[AgentStep] = Field(default_factory=list)
+
+
+class HumanResolutionView(ApiModel):
+    resolution_id: str
+    revision: int
+    resolution_type: str
+    selected_candidate_id: str | None
+    reason: str
+    actor: str | None
+    recorded_at: str
+    active: bool
+
+
+class TimelineEvent(ApiModel):
+    sequence: int
+    kind: str
+    title: str
+    detail: str
+    recorded_at: str | None = None
+
+
+class CaseDetailResponse(ApiModel):
+    summary: CaseSummary
+    snapshot_hash: str | None
+    bank_transaction: dict[str, Any]
+    candidates: list[CandidateView]
+    evidence: EvidenceSection
+    validation: ValidationView
+    trajectory: AgentTrajectoryView
+    audit_timeline: list[TimelineEvent]
+    human_resolutions: list[HumanResolutionView]
+    can_resolve: bool
+
+
+class ResolutionRequest(ApiModel):
+    batch_id: str
+    snapshot_hash: str
+    selected_candidate_id: str | None = None
+    reason: str = Field(min_length=1, max_length=1000)
+    actor: str | None = Field(default=None, max_length=120)
+
+
+class ResolutionResponse(ApiModel):
+    resolution: HumanResolutionView
+    case: CaseDetailResponse
+
+
+class IngestionIssue(ApiModel):
+    event_id: str
+    batch_id: str
+    source_kind: Literal["razorpay", "bank"]
+    source_id: str
+    event_type: str
+    subject_id: str | None
+    fingerprint: str
+    problem: str
+    detail: str | None
+    payload: dict[str, Any]
+
+
+class IngestionIssuesResponse(ApiModel):
+    batch_id: str | None
+    total: int
+    issues: list[IngestionIssue]
+
+
+class AuditEvent(ApiModel):
+    channel: Literal["reconciliation", "ingestion", "human"]
+    batch_id: str
+    case_id: str | None
+    event_type: str
+    payload: dict[str, Any]
+
+
+class AuditResponse(ApiModel):
+    batch_id: str | None
+    events: list[AuditEvent]
+
+
+class RunResponse(ApiModel):
+    batch_id: str
+    mode: Literal["replay", "live"]
+    provider_calls_made: bool
+    result: RunSummary

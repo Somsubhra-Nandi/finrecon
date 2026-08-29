@@ -1,4 +1,4 @@
-.PHONY: install test generate-dev generate-frozen verify-frozen test-idempotency test-isolation reconcile-dev test-stage3 investigate-dev investigate-dev-replay test-stage4 eval eval-compare generate-v4-pilot verify-v4-pilot reconcile-v4-pilot baselines-v4-pilot conjunction-rules test-v4 test-validator-v2 test-validator-v3
+.PHONY: install test generate-dev generate-frozen verify-frozen test-idempotency test-isolation reconcile-dev test-stage3 investigate-dev investigate-dev-replay test-stage4 eval eval-live eval-compare generate-v4-pilot verify-v4-pilot reconcile-v4-pilot baselines-v4-pilot conjunction-rules test-v4 test-validator-v2 test-validator-v3 generate-bounded-search verify-bounded-search oracle-bounded-search baseline-bounded-search test-bounded-search
 
 install:
 	pip install -e ".[dev]"
@@ -54,16 +54,16 @@ investigate-dev-replay:
 test-stage4:
 	pytest -q tests/test_stage4_evaluator.py
 
-# `eval` needs a recorded trajectory corpus. It deliberately does NOT fall
-# back to a live run when one is absent -- see DESIGN.md 6.2. Point
-# TRAJECTORIES at a warmed cache directory, or use --run-dump for a
-# transcript.
-TRAJECTORIES ?= fixtures/trajectories
-EVAL_PROVIDER ?= gorouter
-EVAL_MODEL ?= claude-opus-5-thinking
-
+# Authoritative submission evaluation: verifies both dataset fingerprints,
+# records deterministic non-LLM trajectories from visible inputs, then replays
+# them through the real Stage-3 validator/policy. No network or API key.
 eval:
-	python -m benchmark.eval evaluate --split dev --trajectories $(TRAJECTORIES) --provider $(EVAL_PROVIDER) --model $(EVAL_MODEL)
+	python -m benchmark.final_eval
+
+# Explicit live evaluation remains opt-in and is never called by `make eval`.
+# It requires a populated trajectory cache or a separately-run provider command.
+eval-live:
+	@echo "Live evaluation is intentionally not automated. Run investigate_cli with explicit provider credentials, then score its recorded trajectory with python -m benchmark.eval evaluate."
 
 eval-compare:
 	@test -n "$(A)" -a -n "$(B)" || (echo "usage: make eval-compare A=report-a.json B=report-b.json"; exit 2)
@@ -112,3 +112,21 @@ test-validator-v2:
 
 test-validator-v3:
 	pytest -q tests/test_evidence_closure.py tests/test_validator_conjunction.py tests/test_validator_structural.py
+
+# Synthetic bounded-search challenge ---------------------------------------
+# Additive, not frozen, and never invokes a hosted provider from these targets.
+
+generate-bounded-search:
+	python -m finrecon.benchmark.generator_search.generate --write
+
+verify-bounded-search:
+	python -m finrecon.benchmark.generator_search.generate --verify
+
+oracle-bounded-search:
+	python -m benchmark.search_challenge oracle --json-out benchmark/reports/bounded-search-v1-oracle.json
+
+baseline-bounded-search:
+	python -m benchmark.search_challenge mechanical --json-out benchmark/reports/bounded-search-v1-mechanical.json
+
+test-bounded-search:
+	pytest -q tests/test_bounded_search_benchmark.py
