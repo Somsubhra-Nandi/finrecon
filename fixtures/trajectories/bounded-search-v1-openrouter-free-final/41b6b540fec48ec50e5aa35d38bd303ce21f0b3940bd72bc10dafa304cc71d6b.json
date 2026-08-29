@@ -1,0 +1,732 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:bounded-search-v1",
+  "cache_key": "41b6b540fec48ec50e5aa35d38bd303ce21f0b3940bd72bc10dafa304cc71d6b",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_bsearch_000011",
+  "max_steps": 4,
+  "max_tool_calls_per_step": 1,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "openrouter:openrouter/free"
+  ],
+  "replayed": false,
+  "snapshot_hash": "9b90dd0c8f8b584c4913d932fc658c8b72d5831bb2f2f3826961dd29b4cad540",
+  "steps": [
+    {
+      "assistant_text": "I'll investigate this unresolved bank credit by examining the settlement records for each candidate. Since all three candidates have identical totals and zero unexplained delta, I need to look for distinguishing evidence in the narration references.\n\nLet me start by looking at the settlement records for the first candidate:",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 1,
+      "latency_ms": 3419,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "poolside/laguna-xs-2.1:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "chatcmpl-tool-634fea2b4f734bffa42df15b006ad63f",
+          "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000011|setl_bsearch_000034\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 1928,
+        "output_tokens": 419,
+        "raw": {
+          "completion_tokens": 419,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 316
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 1928,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 2347
+        },
+        "total_tokens": 2347,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "\n\n\n",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 2,
+      "latency_ms": 2979,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "dots-studio/dots-3-note-preview:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "call_d03233b331874db8b7692022",
+          "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000011|setl_bsearch_000035\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 2225,
+        "output_tokens": 106,
+        "raw": {
+          "completion_tokens": 106,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 45
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 2225,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 2331
+        },
+        "total_tokens": 2331,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "\n\n\n",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 3,
+      "latency_ms": 2618,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "dots-studio/dots-3-note-preview:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "call_5f4941a5985c4d549300be72",
+          "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000011|setl_bsearch_000036\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 2468,
+        "output_tokens": 59,
+        "raw": {
+          "completion_tokens": 59,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 10
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 2468,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 2048,
+            "video_tokens": 0
+          },
+          "total_tokens": 2527
+        },
+        "total_tokens": 2527,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "Now I can see the UTRs for each candidate:\n- setl_bsearch_000034: UTR \"UTIBCN3827969743\"\n- setl_bsearch_000035: UTR \"KKBKCN6168899589\"\n- setl_bsearch_000036: UTR \"UTIBCN3858122271\"\n\nThe narration contains \"REVERSAL-LINK=UTIBCN38\". Let me test this fragment against all candidates:\n\n",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 4,
+      "latency_ms": 10123,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "nvidia/nemotron-3.5-lightning:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "call-9c789297-bf52-4976-b78a-a47950e7e9c3",
+          "raw_arguments": "{\"fragment\":\"UTIBCN38\"}",
+          "tool_name": "compare_reference_fragment"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 3001,
+        "output_tokens": 502,
+        "raw": {
+          "completion_tokens": 502,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 210
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 3001,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 3503
+        },
+        "total_tokens": 3503,
+        "usage_source": null
+      }
+    }
+  ],
+  "termination_detail": "existing validator/policy reached safe resolution after tool batch at step 4",
+  "termination_reason": "deterministic_policy_resolved",
+  "tool_invocations": [
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_bsearch_000011|setl_bsearch_000034",
+        "settlement_ids": [
+          "setl_bsearch_000034"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 4395531,
+            "breakup_line_count": 4,
+            "breakup_total_paise": 4395531,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-12-27T10:23:00Z",
+            "settlement_date_utc": "2026-12-27",
+            "settlement_id": "setl_bsearch_000034",
+            "utr": "UTIBCN3827969743"
+          }
+        ],
+        "total_paise": 4395531
+      },
+      "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000011|setl_bsearch_000034\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_bsearch_000011|setl_bsearch_000034"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_bsearch_000011|setl_bsearch_000035",
+        "settlement_ids": [
+          "setl_bsearch_000035"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 4395531,
+            "breakup_line_count": 5,
+            "breakup_total_paise": 4395531,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-12-27T09:36:00Z",
+            "settlement_date_utc": "2026-12-27",
+            "settlement_id": "setl_bsearch_000035",
+            "utr": "KKBKCN6168899589"
+          }
+        ],
+        "total_paise": 4395531
+      },
+      "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000011|setl_bsearch_000035\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_bsearch_000011|setl_bsearch_000035"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_bsearch_000011|setl_bsearch_000036",
+        "settlement_ids": [
+          "setl_bsearch_000036"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 4395531,
+            "breakup_line_count": 4,
+            "breakup_total_paise": 4395531,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-12-27T12:37:00Z",
+            "settlement_date_utc": "2026-12-27",
+            "settlement_id": "setl_bsearch_000036",
+            "utr": "UTIBCN3858122271"
+          }
+        ],
+        "total_paise": 4395531
+      },
+      "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000011|setl_bsearch_000036\"}",
+      "status": "succeeded",
+      "step_index": 3,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_bsearch_000011|setl_bsearch_000036"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "candidate_comparisons": [
+          {
+            "candidate_id": "bnk_bsearch_000011|setl_bsearch_000034",
+            "comparisons": [
+              {
+                "fragment": "UTIBCN38",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "UTIBCN38",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [
+                  "prefix_of_reference"
+                ],
+                "max_pinned_reference_characters": 8,
+                "reference_folded": "UTIBCN3827969743",
+                "reference_kind": "utr",
+                "reference_length": 16,
+                "reference_value": "UTIBCN3827969743",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": true,
+                    "pinned_reference_characters": 8,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              },
+              {
+                "fragment": "UTIBCN38",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "UTIBCN38",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_BSEARCH_000034",
+                "reference_kind": "settlement_id",
+                "reference_length": 19,
+                "reference_value": "setl_bsearch_000034",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_bsearch_000034"
+            ]
+          },
+          {
+            "candidate_id": "bnk_bsearch_000011|setl_bsearch_000035",
+            "comparisons": [
+              {
+                "fragment": "UTIBCN38",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "UTIBCN38",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "KKBKCN6168899589",
+                "reference_kind": "utr",
+                "reference_length": 16,
+                "reference_value": "KKBKCN6168899589",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              },
+              {
+                "fragment": "UTIBCN38",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "UTIBCN38",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_BSEARCH_000035",
+                "reference_kind": "settlement_id",
+                "reference_length": 19,
+                "reference_value": "setl_bsearch_000035",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_bsearch_000035"
+            ]
+          },
+          {
+            "candidate_id": "bnk_bsearch_000011|setl_bsearch_000036",
+            "comparisons": [
+              {
+                "fragment": "UTIBCN38",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "UTIBCN38",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [
+                  "prefix_of_reference"
+                ],
+                "max_pinned_reference_characters": 8,
+                "reference_folded": "UTIBCN3858122271",
+                "reference_kind": "utr",
+                "reference_length": 16,
+                "reference_value": "UTIBCN3858122271",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": true,
+                    "pinned_reference_characters": 8,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              },
+              {
+                "fragment": "UTIBCN38",
+                "fragment_alphanumeric_characters": 8,
+                "fragment_folded": "UTIBCN38",
+                "fragment_length": 8,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_BSEARCH_000036",
+                "reference_kind": "settlement_id",
+                "reference_length": 19,
+                "reference_value": "setl_bsearch_000036",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_bsearch_000036"
+            ]
+          }
+        ],
+        "candidates_evaluated": 3,
+        "fragment": "UTIBCN38",
+        "fragment_offsets": [
+          168
+        ],
+        "fragment_present_in_narration": true,
+        "narration_length": 197
+      },
+      "raw_arguments": "{\"fragment\":\"UTIBCN38\"}",
+      "status": "succeeded",
+      "step_index": 4,
+      "tool_name": "compare_reference_fragment",
+      "validated_arguments": {
+        "fragment": "UTIBCN38"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    }
+  ],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 19388,
+  "validator_version": "validator.v3"
+}

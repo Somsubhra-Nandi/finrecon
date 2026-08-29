@@ -1,0 +1,407 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:bounded-search-v1",
+  "cache_key": "d0f894489abcd1c0cde13650daf92d6cc74bb48faaaec124ea0a8e5b73c286ab",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_bsearch_000026",
+  "max_steps": 4,
+  "max_tool_calls_per_step": 1,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "openrouter:openrouter/free"
+  ],
+  "replayed": false,
+  "snapshot_hash": "3f4c5db92cca905f0b42ee662282569e0275c5fc32c9b00ebeddb8d4d1558ed0",
+  "steps": [
+    {
+      "assistant_text": "I'll start by examining the candidate records to understand what references each candidate carries, then test narration fragments against them.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 1,
+      "latency_ms": 14738,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "poolside/laguna-s-2.1:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "chatcmpl-tool-15ec488146954a2ea03a7b17103be741",
+          "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000026|setl_bsearch_000088\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 2028,
+        "output_tokens": 570,
+        "raw": {
+          "completion_tokens": 570,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 500
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 2028,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 2598
+        },
+        "total_tokens": 2598,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 2,
+      "latency_ms": 3025,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "cohere/north-mini-code:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "lookup_candidate_records_wasv2hb4nv3y",
+          "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000026|setl_bsearch_000089\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 1775,
+        "output_tokens": 74,
+        "raw": {
+          "completion_tokens": 74,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 47
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 1775,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 1849
+        },
+        "total_tokens": 1849,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 3,
+      "latency_ms": 1460,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "liquid/lfm-2.5-2.6b:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "chatcmpl-tool-bf6967586033d31b",
+          "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000026|setl_bsearch_000090\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 2328,
+        "output_tokens": 46,
+        "raw": {
+          "completion_tokens": 46,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 14
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 2328,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 2374
+        },
+        "total_tokens": 2374,
+        "usage_source": null
+      }
+    },
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "openrouter/free",
+          "outcome": "success",
+          "provider": "openrouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 4,
+      "latency_ms": 2785,
+      "model": "openrouter/free",
+      "provider": "openrouter",
+      "reported_model": "minimax/minimax-m2.7:free",
+      "requested_tool_calls": [
+        {
+          "call_id": "call_function_a4y78x8mq3n9_1",
+          "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000026|setl_bsearch_000091\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 2511,
+        "output_tokens": 136,
+        "raw": {
+          "completion_tokens": 136,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 76
+          },
+          "cost": 0,
+          "cost_details": {
+            "upstream_inference_completions_cost": 0,
+            "upstream_inference_cost": 0,
+            "upstream_inference_prompt_cost": 0
+          },
+          "is_byok": false,
+          "prompt_tokens": 2511,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cache_write_tokens": 0,
+            "cached_tokens": 0,
+            "video_tokens": 0
+          },
+          "total_tokens": 2647
+        },
+        "total_tokens": 2647,
+        "usage_source": null
+      }
+    }
+  ],
+  "termination_detail": "step budget of 4 exhausted without a terminal model turn",
+  "termination_reason": "step_budget_exhausted",
+  "tool_invocations": [
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_bsearch_000026|setl_bsearch_000088",
+        "settlement_ids": [
+          "setl_bsearch_000088"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 4125039,
+            "breakup_line_count": 4,
+            "breakup_total_paise": 4125039,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-07-30T17:40:00Z",
+            "settlement_date_utc": "2026-07-30",
+            "settlement_id": "setl_bsearch_000088",
+            "utr": "AXISUP5696486681"
+          }
+        ],
+        "total_paise": 4125039
+      },
+      "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000026|setl_bsearch_000088\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_bsearch_000026|setl_bsearch_000088"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_bsearch_000026|setl_bsearch_000089",
+        "settlement_ids": [
+          "setl_bsearch_000089"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 4125039,
+            "breakup_line_count": 4,
+            "breakup_total_paise": 4125039,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-07-30T10:07:00Z",
+            "settlement_date_utc": "2026-07-30",
+            "settlement_id": "setl_bsearch_000089",
+            "utr": "HDFCRT5435685977"
+          }
+        ],
+        "total_paise": 4125039
+      },
+      "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000026|setl_bsearch_000089\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_bsearch_000026|setl_bsearch_000089"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_bsearch_000026|setl_bsearch_000090",
+        "settlement_ids": [
+          "setl_bsearch_000090"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 4125039,
+            "breakup_line_count": 4,
+            "breakup_total_paise": 4125039,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-07-30T00:37:00Z",
+            "settlement_date_utc": "2026-07-30",
+            "settlement_id": "setl_bsearch_000090",
+            "utr": "AXISUP5688623142"
+          }
+        ],
+        "total_paise": 4125039
+      },
+      "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000026|setl_bsearch_000090\"}",
+      "status": "succeeded",
+      "step_index": 3,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_bsearch_000026|setl_bsearch_000090"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_bsearch_000026|setl_bsearch_000091",
+        "settlement_ids": [
+          "setl_bsearch_000091"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 4125039,
+            "breakup_line_count": 4,
+            "breakup_total_paise": 4125039,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-07-30T05:45:00Z",
+            "settlement_date_utc": "2026-07-30",
+            "settlement_id": "setl_bsearch_000091",
+            "utr": "AXISUP5623623142"
+          }
+        ],
+        "total_paise": 4125039
+      },
+      "raw_arguments": "{\"candidate_id\": \"bnk_bsearch_000026|setl_bsearch_000091\"}",
+      "status": "succeeded",
+      "step_index": 4,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_bsearch_000026|setl_bsearch_000091"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    }
+  ],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 22322,
+  "validator_version": "validator.v3"
+}
