@@ -1,7 +1,6 @@
-import { ArrowRight, CheckCircle2, FlaskConical, PlayCircle, Search, ShieldCheck, XCircle } from "lucide-react";
+import { ArrowRight, PlayCircle, Search, ShieldCheck } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { api, money } from "../api";
 import { Card, ErrorState, JsonDetails, LoadingState, PageHeader } from "../components/ui";
 import { useApi } from "../hooks";
 import type { BenchmarkCaseDetail, BenchmarkCasesResponse, BenchmarkDetail, BenchmarkListResponse, BenchmarkReplayDetail, BenchmarkReplaysResponse, BenchmarkReportsResponse } from "../types";
@@ -19,8 +18,8 @@ export default function Benchmarks() {
   const filters = new URLSearchParams(); if (outcome) filters.set("outcome", outcome); if (params.get("replay") === "1") filters.set("replay_only", "true"); if (params.get("demo") === "1") filters.set("controller_rejection", "true");
   const { data: cases } = useApi<BenchmarkCasesResponse>(`/api/benchmarks/${benchmarkId}/cases${filters.size ? `?${filters}` : ""}`);
   const { data: replays } = useApi<BenchmarkReplaysResponse>(`/api/benchmarks/${benchmarkId}/replays`);
-  const { data: selectedCase } = useApi<BenchmarkCaseDetail>(caseId ? `/api/benchmarks/${benchmarkId}/cases/${encodeURIComponent(caseId)}` : `/api/benchmarks/${benchmarkId}/cases`);
-  const { data: replay } = useApi<BenchmarkReplayDetail>(caseId && investigator ? `/api/benchmarks/${benchmarkId}/replays/${investigator}/${encodeURIComponent(caseId)}` : `/api/benchmarks/${benchmarkId}/replays`);
+  const { data: selectedCase } = useApi<BenchmarkCaseDetail>(caseId ? `/api/benchmarks/${benchmarkId}/cases/${encodeURIComponent(caseId)}` : null);
+  const { data: replay } = useApi<BenchmarkReplayDetail>(caseId && investigator ? `/api/benchmarks/${benchmarkId}/replays/${investigator}/${encodeURIComponent(caseId)}` : null);
   const select = (next: Record<string, string | null>) => { const copy = new URLSearchParams(params); Object.entries(next).forEach(([key, value]) => value ? copy.set(key, value) : copy.delete(key)); setParams(copy); };
   const reportRows = useMemo(() => reports?.reports ?? [], [reports]);
   if (loading) return <LoadingState label="Loading benchmark catalog" />;

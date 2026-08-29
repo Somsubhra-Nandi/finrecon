@@ -93,7 +93,7 @@ export default function CaseDetail() {
   };
 
   return <div className="page detail-page">
-    <Link to={`/cases?batch=${encodeURIComponent(data.summary.batch_id)}`} className="back-link"><ArrowLeft size={15} /> Back to queue</Link>
+    <Link to={`/reconciliation?batch=${encodeURIComponent(data.summary.batch_id)}`} className="back-link"><ArrowLeft size={15} /> Back to queue</Link>
     <PageHeader eyebrow={friendlyCaseLabel(data.summary.bank_record_id, data.summary.case_id)} title="Case investigation" description="The full path from source transaction through financial authority and durable review." action={<StatusBadge source={data.summary.resolution_source} />} />
     <details className="case-technical-id"><summary>View technical case ID</summary><code>{data.summary.case_id}</code></details>
     <OutcomePath source={data.summary.resolution_source} />

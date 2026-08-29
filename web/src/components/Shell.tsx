@@ -5,8 +5,8 @@ import { useApi } from "../hooks";
 import type { RunSummary } from "../types";
 
 const navigation = [
-  { to: "/", label: "Overview", icon: LayoutDashboard },
-  { to: "/cases", label: "Reconciliation", icon: FileSearch },
+  { to: "/overview", label: "Overview", icon: LayoutDashboard },
+  { to: "/reconciliation", label: "Reconciliation", icon: FileSearch },
   { to: "/issues", label: "Ingestion issues", icon: AlertTriangle },
   { to: "/run", label: "Run reconciliation", icon: Play },
   { to: "/benchmarks", label: "Benchmarks", icon: Trophy },
@@ -20,7 +20,7 @@ export default function Shell() {
   const activeBatch = batch ?? runs?.[0]?.batch_id ?? null;
   const suffix = batch ? `?batch=${encodeURIComponent(batch)}` : "";
   const selectBatch = (batchId: string) => {
-    const destination = location.pathname.startsWith("/cases/") ? "/cases" : location.pathname;
+    const destination = location.pathname.startsWith("/reconciliation/") ? "/reconciliation" : location.pathname;
     const next = new URLSearchParams(location.search);
     next.set("batch", batchId);
     navigate(`${destination}?${next.toString()}`);
@@ -29,7 +29,7 @@ export default function Shell() {
     <aside className="sidebar">
       <div className="brand"><div className="brand-mark"><Scale size={19} /></div><div><strong>FinRecon</strong><span>Operations console</span></div></div>
       <nav aria-label="Primary navigation">
-        {navigation.map(({ to, label, icon: Icon }) => <NavLink key={to} to={`${to}${suffix}`} end={to === "/"} className={({ isActive }) => clsx("nav-item", isActive && "active")}><Icon size={17} /><span>{label}</span></NavLink>)}
+        {navigation.map(({ to, label, icon: Icon }) => <NavLink key={to} to={`${to}${suffix}`} end={to === "/overview"} className={({ isActive }) => clsx("nav-item", isActive && "active")}><Icon size={17} /><span>{label}</span></NavLink>)}
       </nav>
       <div className="sidebar-note"><Activity size={16} /><div><strong>Financial authority</strong><span>Deterministic validation</span></div></div>
     </aside>
