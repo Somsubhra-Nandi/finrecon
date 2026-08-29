@@ -1,0 +1,15 @@
+{
+  "profile_id": "finrecon_demo_v1",
+  "currency": "INR",
+  "value_date_column": "Value Date",
+  "value_date_format": "%d/%m/%Y",
+  "narration_column": "Narration",
+  "money_columns": {
+    "kind": "debit_credit",
+    "debit_column": "Debit",
+    "credit_column": "Credit"
+  },
+  "reference_id_column": "Ref No",
+  "delimiter": ",",
+  "encoding": "utf-8"
+}
