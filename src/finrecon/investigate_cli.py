@@ -32,7 +32,7 @@ from collections import Counter
 from pathlib import Path
 
 from finrecon.agent.cache import DEFAULT_FIXTURE_DIR, ReplayMissError, TrajectoryCache
-from finrecon.agent.loop import DEFAULT_MAX_STEPS, LoopConfig
+from finrecon.agent.loop import DEFAULT_MAX_STEPS, MAX_TOOL_CALLS_PER_STEP, LoopConfig
 from finrecon.agent.providers.base import ProviderConfigurationError
 from finrecon.agent.providers.config import build_chain, describe_configuration
 from finrecon.decide.config import DEFAULT_POLICY
@@ -58,6 +58,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--max-steps", type=int, default=DEFAULT_MAX_STEPS, help="agent step budget"
+    )
+    parser.add_argument(
+        "--max-tool-calls-per-step",
+        type=int,
+        default=MAX_TOOL_CALLS_PER_STEP,
+        help="maximum tool calls admitted from one model turn",
     )
     parser.add_argument(
         "--limit", type=int, default=None, help="investigate at most N cases (by case ID order)"
@@ -148,7 +154,10 @@ def main(argv: list[str] | None = None) -> int:
                 batch_result=batch,
                 chain=chain,
                 cache=TrajectoryCache(Path(args.fixtures)),
-                config=LoopConfig(max_steps=args.max_steps),
+                config=LoopConfig(
+                    max_steps=args.max_steps,
+                    max_tool_calls_per_step=args.max_tool_calls_per_step,
+                ),
                 policy=DEFAULT_POLICY,
                 replay_only=args.replay_only,
                 provider_id=provider_id,

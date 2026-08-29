@@ -46,6 +46,7 @@ from __future__ import annotations
 
 from collections import Counter
 from dataclasses import dataclass, field
+from statistics import median
 from typing import Iterable
 
 from finrecon.stage3 import CaseOutcome
@@ -99,6 +100,10 @@ class CaseVerdict:
     required_composition: str = ""
     """The evidence combination v4 says this case needs. Empty on v1-v3 cohorts."""
     candidate_count_bucket: str = "unknown"
+    tool_calls_executed: int = 0
+    """Successfully executed evidence calls in this case's recorded trajectory."""
+    tool_budget_exhausted: bool = False
+    """Whether the controller ended because its configured step budget was spent."""
 
     def as_dict(self) -> dict:
         return {
@@ -108,6 +113,8 @@ class CaseVerdict:
             "families": list(self.families),
             "required_composition": self.required_composition,
             "candidate_count_bucket": self.candidate_count_bucket,
+            "tool_calls_executed": self.tool_calls_executed,
+            "tool_budget_exhausted": self.tool_budget_exhausted,
             "resolved": self.resolved,
             "correct": self.correct,
             "wrong_reason": self.wrong_reason,
@@ -245,6 +252,9 @@ def verdict_for(outcome: CaseOutcome, entry: GroundTruthEntry) -> CaseVerdict:
         families=entry.families,
         required_composition=entry.required_composition,
         candidate_count_bucket=entry.candidate_count_bucket,
+        tool_calls_executed=len(outcome.trajectory.successful_tool_invocations()),
+        tool_budget_exhausted=outcome.trajectory.termination_reason
+        == "step_budget_exhausted",
     )
 
 
@@ -304,6 +314,8 @@ def _slice_metrics(items: list[CaseVerdict]) -> dict:
     correct = sum(1 for v in items if v.resolved and v.correct)
     wrong = sum(1 for v in items if v.resolved and v.correct is False)
     correctly_escalated = sum(1 for v in items if not v.resolved and v.escalation_correct)
+    calls = [v.tool_calls_executed for v in items]
+    budget_exhausted = sum(1 for v in items if v.tool_budget_exhausted)
     return {
         "cases": len(items),
         "uniquely_resolvable": resolvable,
@@ -318,6 +330,11 @@ def _slice_metrics(items: list[CaseVerdict]) -> dict:
         "value_at_risk_paise": sum(
             v.value_at_stake_paise for v in items if v.correct is False
         ),
+        "tool_calls_executed_total": sum(calls),
+        "tool_calls_mean_per_case": round(sum(calls) / len(items), 4) if items else 0.0,
+        "tool_calls_median_per_case": median(calls) if calls else 0,
+        "tool_budget_exhausted_cases": budget_exhausted,
+        "tool_budget_exhaustion_rate": _ratio(budget_exhausted, len(items)),
     }
 
 
@@ -654,12 +671,15 @@ def trajectory_metrics(payloads: Iterable[dict]) -> dict:
     cases_with_validation_failure = 0
     skipped_invocations = 0
     total_invocations = 0
+    executed_invocations = 0
+    executed_by_case: list[int] = []
     cases = 0
 
     for payload in payloads:
         cases += 1
         terminations[payload.get("termination_reason", "unknown")] += 1
         invocations = payload.get("tool_invocations") or []
+        case_executed = 0
         case_failed = False
         for invocation in invocations:
             total_invocations += 1
@@ -668,6 +688,11 @@ def trajectory_metrics(payloads: Iterable[dict]) -> dict:
                 reasons[reason] += 1
                 case_failed = True
             status = invocation.get("status")
+            if status == "succeeded" or (
+                status is None and invocation.get("output") is not None
+            ):
+                executed_invocations += 1
+                case_executed += 1
             if status == SKIPPED_DUE_TO_BATCH_REJECTION or (
                 status is None
                 and invocation.get("output") is None
@@ -676,6 +701,7 @@ def trajectory_metrics(payloads: Iterable[dict]) -> dict:
                 skipped_invocations += 1
         if case_failed:
             cases_with_validation_failure += 1
+        executed_by_case.append(case_executed)
 
     return {
         "cases": cases,
@@ -696,6 +722,14 @@ def trajectory_metrics(payloads: Iterable[dict]) -> dict:
         "tool_validation_rejections_total": sum(reasons.values()),
         "tool_invocations_total": total_invocations,
         "tool_invocations_skipped": skipped_invocations,
+        "tool_calls_executed_total": executed_invocations,
+        "tool_calls_mean_per_case": round(executed_invocations / cases, 4) if cases else 0.0,
+        "tool_calls_median_per_case": median(executed_by_case) if executed_by_case else 0,
+        "tool_calls_max_per_case": max(executed_by_case) if executed_by_case else 0,
+        "tool_budget_exhausted_cases": terminations.get("step_budget_exhausted", 0),
+        "tool_budget_exhaustion_rate": _ratio(
+            terminations.get("step_budget_exhausted", 0), cases
+        ),
     }
 
 
@@ -764,6 +798,7 @@ def telemetry_from_payloads(payloads: Iterable[dict]) -> dict:
     output_tokens = 0
     latencies: list[int] = []
     step_counts: list[int] = []
+    reported_costs: list[float] = []
 
     for payload in payloads:
         cases += 1
@@ -802,6 +837,13 @@ def telemetry_from_payloads(payloads: Iterable[dict]) -> dict:
                 input_tokens += usage["input_tokens"]
             if usage.get("output_tokens") is not None:
                 output_tokens += usage["output_tokens"]
+            raw_usage = usage.get("raw")
+            if isinstance(raw_usage, dict):
+                for cost_key in ("cost", "total_cost", "cost_usd"):
+                    value = raw_usage.get(cost_key)
+                    if isinstance(value, (int, float)) and not isinstance(value, bool):
+                        reported_costs.append(float(value))
+                        break
 
         for key in seen_requested:
             requested[key] += 1
@@ -841,6 +883,11 @@ def telemetry_from_payloads(payloads: Iterable[dict]) -> dict:
         "tokens_output_total": output_tokens,
         "tokens_mean_per_case": round(total_tokens / cases, 2),
         "cases_reporting_tokens": cases_with_tokens,
+        "provider_reported_cost_total": (
+            round(sum(reported_costs), 8) if reported_costs else None
+        ),
+        "provider_reported_cost_currency": "USD" if reported_costs else None,
+        "steps_reporting_cost": len(reported_costs),
         "latency_total_ms": sum(latencies),
         "latency_mean_ms_per_case": round(sum(latencies) / len(latencies), 2)
         if latencies

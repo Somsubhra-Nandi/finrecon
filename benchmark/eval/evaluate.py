@@ -25,7 +25,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from finrecon.agent.loop import DEFAULT_MAX_STEPS
+from finrecon.agent.loop import DEFAULT_MAX_STEPS, MAX_TOOL_CALLS_PER_STEP
 from finrecon.decide.config import DEFAULT_POLICY, Stage3Policy
 
 from benchmark.eval import EVALUATOR_VERSION
@@ -73,6 +73,7 @@ class EvaluationConfig:
     provider_id: str = "gorouter"
     model: str = "claude-opus-5-thinking"
     max_steps: int = DEFAULT_MAX_STEPS
+    max_tool_calls_per_step: int = MAX_TOOL_CALLS_PER_STEP
     policy: Stage3Policy = field(default_factory=lambda: DEFAULT_POLICY)
     require_exact_cohort: bool = True
     require_expected_tier: bool = True
@@ -106,6 +107,7 @@ class EvaluationConfig:
             "provider_id_requested": self.provider_id,
             "model_requested": self.model,
             "max_steps": self.max_steps,
+            "max_tool_calls_per_step": self.max_tool_calls_per_step,
             "policy_declaration": self.policy.describe(),
             "expected_tier": self.expected_tier,
             "require_exact_cohort": self.require_exact_cohort,
@@ -313,6 +315,7 @@ def evaluate(config: EvaluationConfig, *, staging_dir: Path) -> EvaluationResult
         model=config.model,
         staging_dir=staging_dir,
         max_steps=config.max_steps,
+        max_tool_calls_per_step=config.max_tool_calls_per_step,
         policy=config.policy,
     )
 

@@ -26,7 +26,7 @@ from finrecon.pipeline import case_id_for
 
 from benchmark.eval.errors import EvaluationInputError, GroundTruthPolicyError
 
-SCORABLE_WITHOUT_OPT_IN = ("dev", "v4-pilot")
+SCORABLE_WITHOUT_OPT_IN = ("dev", "v4-pilot", "bounded-search-v1")
 """Splits whose truth may be read for scoring with no further ceremony.
 
 ``v4-pilot`` is here for the same reason ``dev`` is: it is a *development*

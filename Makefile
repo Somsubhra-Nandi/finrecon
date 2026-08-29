@@ -1,4 +1,4 @@
-.PHONY: install test generate-dev generate-frozen verify-frozen test-idempotency test-isolation reconcile-dev test-stage3 investigate-dev investigate-dev-replay test-stage4 eval eval-live eval-compare generate-v4-pilot verify-v4-pilot reconcile-v4-pilot baselines-v4-pilot conjunction-rules test-v4 test-validator-v2 test-validator-v3
+.PHONY: install test generate-dev generate-frozen verify-frozen test-idempotency test-isolation reconcile-dev test-stage3 investigate-dev investigate-dev-replay test-stage4 eval eval-live eval-compare generate-v4-pilot verify-v4-pilot reconcile-v4-pilot baselines-v4-pilot conjunction-rules test-v4 test-validator-v2 test-validator-v3 generate-bounded-search verify-bounded-search oracle-bounded-search baseline-bounded-search test-bounded-search
 
 install:
 	pip install -e ".[dev]"
@@ -112,3 +112,21 @@ test-validator-v2:
 
 test-validator-v3:
 	pytest -q tests/test_evidence_closure.py tests/test_validator_conjunction.py tests/test_validator_structural.py
+
+# Synthetic bounded-search challenge ---------------------------------------
+# Additive, not frozen, and never invokes a hosted provider from these targets.
+
+generate-bounded-search:
+	python -m finrecon.benchmark.generator_search.generate --write
+
+verify-bounded-search:
+	python -m finrecon.benchmark.generator_search.generate --verify
+
+oracle-bounded-search:
+	python -m benchmark.search_challenge oracle --json-out benchmark/reports/bounded-search-v1-oracle.json
+
+baseline-bounded-search:
+	python -m benchmark.search_challenge mechanical --json-out benchmark/reports/bounded-search-v1-mechanical.json
+
+test-bounded-search:
+	pytest -q tests/test_bounded_search_benchmark.py
