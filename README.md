@@ -746,6 +746,35 @@ python -m venv .venv
 make install
 ```
 
+## Operations console
+
+FinRecon includes a React + TypeScript operations console backed by a thin
+FastAPI layer over the existing orchestration and SQLite ledger boundaries.
+No matching, validation, policy, or human-resolution authority is implemented
+in the browser.
+
+For local development, run these in separate terminals:
+
+```bash
+uv run --extra dev uvicorn finrecon.api.app:app --reload --host 127.0.0.1 --port 8000
+cd web
+npm install
+npm run dev
+```
+
+Open `http://127.0.0.1:5173`. To serve one production-built process instead:
+
+```bash
+cd web
+npm install
+npm run build
+cd ..
+uv run uvicorn finrecon.api.app:app --host 127.0.0.1 --port 8000
+```
+
+Then open `http://127.0.0.1:8000`. The default durable ledger is
+`var/finrecon.sqlite3`; override it with `FINRECON_LEDGER_PATH`.
+
 ## Running tests
 
 ```bash
