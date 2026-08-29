@@ -1,4 +1,4 @@
-import { Activity, AlertTriangle, FileSearch, LayoutDashboard, Play, Scale } from "lucide-react";
+import { Activity, AlertTriangle, FileSearch, LayoutDashboard, Play, Scale, Trophy } from "lucide-react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { useApi } from "../hooks";
@@ -9,6 +9,7 @@ const navigation = [
   { to: "/cases", label: "Reconciliation", icon: FileSearch },
   { to: "/issues", label: "Ingestion issues", icon: AlertTriangle },
   { to: "/run", label: "Run reconciliation", icon: Play },
+  { to: "/benchmarks", label: "Benchmarks", icon: Trophy },
 ];
 
 export default function Shell() {

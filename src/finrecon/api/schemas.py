@@ -194,3 +194,82 @@ class RunResponse(ApiModel):
     mode: Literal["replay", "live"]
     provider_calls_made: bool
     result: RunSummary
+
+
+# Benchmark projections are deliberately separate from ledger projections.
+# They are read-only views over manifests, reports, visible inputs and persisted
+# trajectories; they never load hidden ground truth or call the agent stack.
+class BenchmarkSummary(ApiModel):
+    benchmark_id: str
+    title: str
+    status: Literal["FROZEN", "PILOT"]
+    case_count: int
+    description: str
+    replay_available: bool
+    report_available: bool
+    investigators: list[str] = Field(default_factory=list)
+
+
+class BenchmarkListResponse(ApiModel):
+    benchmarks: list[BenchmarkSummary]
+    evolution: list[dict[str, str]]
+
+
+class BenchmarkDetailResponse(BenchmarkSummary):
+    integrity: dict[str, Any]
+    constraints: dict[str, Any]
+    notices: list[str] = Field(default_factory=list)
+
+
+class BenchmarkReportsResponse(ApiModel):
+    benchmark_id: str
+    reports: list[dict[str, Any]]
+
+
+class BenchmarkCaseSummary(ApiModel):
+    case_id: str
+    bank_record_id: str
+    narration: str
+    amount_paise: int
+    candidate_count: int | None
+    recorded_outcomes: dict[str, str]
+    replay_investigators: list[str]
+    controller_rejection_demo: bool = False
+
+
+class BenchmarkCasesResponse(ApiModel):
+    benchmark_id: str
+    total: int
+    cases: list[BenchmarkCaseSummary]
+
+
+class BenchmarkCaseDetailResponse(BenchmarkCaseSummary):
+    candidate_snapshot: dict[str, Any] | None
+    visible_records: dict[str, Any]
+    evaluation_metadata_notice: str
+
+
+class BenchmarkReplaySummary(ApiModel):
+    investigator: str
+    label: str
+    scored_cohort_cases: int
+    persisted_trajectory_cases: int
+    requested_model: str | None
+    reported_models: list[str]
+    provider: str | None
+    notes: list[str] = Field(default_factory=list)
+
+
+class BenchmarkReplaysResponse(ApiModel):
+    benchmark_id: str
+    replays: list[BenchmarkReplaySummary]
+
+
+class BenchmarkReplayDetailResponse(ApiModel):
+    benchmark_id: str
+    investigator: str
+    replayed: bool
+    provider_calls_made: Literal[False] = False
+    trajectory: dict[str, Any]
+    deterministic_validation: dict[str, Any]
+    policy_result: dict[str, Any]

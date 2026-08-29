@@ -8,7 +8,8 @@ const Issues = lazy(() => import("./pages/Issues"));
 const Overview = lazy(() => import("./pages/Overview"));
 const Queue = lazy(() => import("./pages/Queue"));
 const Run = lazy(() => import("./pages/Run"));
+const Benchmarks = lazy(() => import("./pages/Benchmarks"));
 
 export default function App() {
-  return <Suspense fallback={<LoadingState label="Loading FinRecon workspace" />}><Routes><Route element={<Shell />}><Route index element={<Overview />} /><Route path="cases" element={<Queue />} /><Route path="cases/:caseId" element={<CaseDetail />} /><Route path="issues" element={<Issues />} /><Route path="run" element={<Run />} /><Route path="*" element={<Navigate to="/" replace />} /></Route></Routes></Suspense>;
+  return <Suspense fallback={<LoadingState label="Loading FinRecon workspace" />}><Routes><Route element={<Shell />}><Route index element={<Overview />} /><Route path="cases" element={<Queue />} /><Route path="cases/:caseId" element={<CaseDetail />} /><Route path="issues" element={<Issues />} /><Route path="run" element={<Run />} /><Route path="benchmarks" element={<Benchmarks />} /><Route path="*" element={<Navigate to="/" replace />} /></Route></Routes></Suspense>;
 }

@@ -121,19 +121,23 @@ untouched, and `make verify-frozen` passes before and after. See
 [Benchmark v4 — the compositional-evidence pilot](#benchmark-v4--the-compositional-evidence-pilot)
 below, and `benchmark/V4-PILOT.md` for the design.
 
-**No FROZEN-EVAL benchmark result is reported here.** The headline table —
-match rate, precision, coverage and value at risk on the held-out split —
-requires a frozen run against a frozen system, which has not been made. What
-*has* been measured is a DEV cohort, reported as a DEV engineering result and
-never as a benchmark headline (`notes/STAGE3-FINDINGS.md` §11).
+**The FROZEN-EVAL v3 result is reported in**
+[`benchmark/reports/final-eval.json`](benchmark/reports/final-eval.json) and
+`.md`: 823 correct automatic resolutions, zero wrong automatic resolutions,
+67 escalations, 96.82% match rate across 850 uniquely resolvable cases, zero
+unsafe automatic matches, and zero paise value at risk. It is an offline,
+deterministic recorded/replay evaluation—not a hosted-model quality claim.
 
 **Baseline live smoke tests and a five-case DEV diagnostic have now been
 performed.** They are engineering observations, not benchmark results; the
 provider/model, aggregate steps/tokens, safe failures, and the separate
 orchestration-optimization experiment are recorded in
 [`notes/STAGE3-FINDINGS.md`](./notes/STAGE3-FINDINGS.md) §§8–9. The committed
-trajectory corpus (`fixtures/trajectories/`) remains empty, and no hosted-model
-result is presented as reproducible fixture evidence.
+trajectory corpus additionally contains persisted bounded-search-v1 hosted
+records: OpenRouter Free has 50 persisted files with a 45-case valid
+provider-response scored cohort; Opus has 40 persisted files and a 40-case
+successfully answered scored cohort. They must not be compared as an identical
+cohort without an explicit intersection evaluation.
 
 ## Reproduce the evaluation
 
