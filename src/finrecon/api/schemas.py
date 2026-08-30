@@ -198,7 +198,8 @@ class RunResponse(ApiModel):
 
 # Benchmark projections are deliberately separate from ledger projections.
 # They are read-only views over manifests, reports, visible inputs and persisted
-# trajectories; they never load hidden ground truth or call the agent stack.
+# trajectories. The v3 case projection permits only non-answer tier labels from
+# held-out metadata and never calls the agent stack.
 class BenchmarkSummary(ApiModel):
     benchmark_id: str
     title: str
@@ -235,6 +236,19 @@ class BenchmarkCaseSummary(ApiModel):
     recorded_outcomes: dict[str, str]
     replay_investigators: list[str]
     controller_rejection_demo: bool = False
+    evaluation: "BenchmarkCaseEvaluation | None" = None
+
+
+class BenchmarkCaseEvaluation(ApiModel):
+    """Judge-safe, final evaluation metadata for a single benchmark case."""
+
+    tier: Literal["T0", "T1", "T2", "T3"]
+    final_disposition: Literal["RESOLVED", "ESCALATED", "UNKNOWN"]
+    resolution_stage: Literal["STAGE_2", "STAGE_3", "UNKNOWN"]
+    resolution_method: str | None = None
+    blockers: list[str] = Field(default_factory=list)
+    replay_available: bool = False
+    replay_note: str
 
 
 class BenchmarkCasesResponse(ApiModel):

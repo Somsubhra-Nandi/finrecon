@@ -1,9 +1,10 @@
 """Read-only benchmark catalogue for the product UI.
 
 This module intentionally has no dependency on ``benchmark.eval`` or any
-provider implementation.  It reads only committed manifests, aggregate
-reports, system-visible record files, and persisted trajectory JSON.  That
-keeps hidden truth outside of both browsing and replay payloads.
+provider implementation. It reads committed manifests, reports, visible
+record files, and persisted trajectory JSON. The v3 projection also reads
+only tier labels from held-out metadata; all answer-bearing fields stay
+outside both browsing and replay payloads.
 """
 
 from __future__ import annotations
@@ -155,7 +156,8 @@ class BenchmarkCatalog:
     def _build_cases(self, split: str, batch_id: str) -> dict[str, dict[str, Any]]:
         visible = load_visible_split(self.benchmark_root, split)
         batch = normalize_batch(orders=visible.orders, payments=visible.payments, refunds=visible.refunds, settlements=visible.settlements, bank_records=visible.bank_records)
-        _decisions, snapshots, _candidates = reconcile_batch(batch, batch_id)
+        decisions, snapshots, _candidates = reconcile_batch(batch, batch_id)
+        decision_by_case = {decision.case_id: decision for decision in decisions}
         snapshot_by_case = {snapshot.case_id: snapshot for snapshot in snapshots}
         settlements = {item.settlement_id: item.model_dump(mode="json") for item in visible.settlements}
         result: dict[str, dict[str, Any]] = {}
@@ -169,20 +171,114 @@ class BenchmarkCatalog:
                 "amount_paise": int(bank.amount), "candidate_count": len(candidate_ids) if snapshot else None,
                 "candidate_snapshot": snapshot.model_dump(mode="json") if snapshot else None,
                 "_snapshot": snapshot,
+                "_stage2_decision": decision_by_case.get(case_id),
                 "visible_records": {"bank_record": bank.model_dump(mode="json"), "settlements": [settlements[item] for item in sorted(settlement_ids)]},
             }
         return result
 
-    def cases(self, benchmark_id: str, *, outcome: str | None = None, replay_only: bool = False,
+    @staticmethod
+    def _v3_projection_error(message: str) -> HTTPException:
+        return HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail={
+            "code": "benchmark_v3_projection_unavailable", "message": message,
+        })
+
+    @cached_property
+    def _v3_case_evaluations(self) -> dict[str, dict[str, Any]]:
+        """Build the safe v3 projection from recorded final outcomes only.
+
+        The final report records all Stage-3 residual dispositions. The other
+        cases are recorded Stage-2 decisions recreated from immutable visible
+        inputs. The tier reader retains only a label; candidate, settlement,
+        reference, truth, and correctness values never enter this index.
+        """
+        report = self._json(self.benchmark_root / "reports" / "final-eval.json")
+        core, replay = report.get("frozen_core"), report.get("stage3_replay")
+        if not isinstance(core, dict) or not isinstance(replay, dict):
+            raise self._v3_projection_error("final evaluation sections are missing")
+        per_case = replay.get("per_case")
+        if not isinstance(per_case, list):
+            raise self._v3_projection_error("Stage-3 per-case outcomes are missing")
+
+        tiers: dict[str, str] = {}
+        try:
+            for line in (self.benchmark_root / "ground_truth" / "frozen-eval.jsonl").read_text(encoding="utf-8").splitlines():
+                raw = json.loads(line)
+                bank_ids, tier = raw.get("record_ids", {}).get("bank_records", []), raw.get("tier")
+                if len(bank_ids) != 1 or not isinstance(bank_ids[0], str) or tier not in {"T0", "T1", "T2", "T3"}:
+                    raise ValueError("missing safe tier metadata")
+                tiers[case_id_for(bank_ids[0])] = tier
+        except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:
+            raise self._v3_projection_error("tier metadata cannot be read") from exc
+
+        stage3: dict[str, dict[str, Any]] = {}
+        for item in per_case:
+            if not isinstance(item, dict):
+                raise self._v3_projection_error("a Stage-3 outcome is malformed")
+            case_id, resolved, blockers = item.get("case_id"), item.get("resolved"), item.get("blockers")
+            if not isinstance(case_id, str) or not isinstance(resolved, bool) or not isinstance(blockers, list) or not all(isinstance(x, str) for x in blockers):
+                raise self._v3_projection_error("a Stage-3 outcome lacks safe disposition fields")
+            stage3[case_id] = {
+                "tier": tiers.get(case_id),
+                "final_disposition": "RESOLVED" if resolved else "ESCALATED",
+                "resolution_stage": "STAGE_3",
+                "resolution_method": "Recorded mechanical evaluation" if resolved else None,
+                "blockers": blockers,
+                "replay_available": False,
+                "replay_note": "Step-by-step replay was not persisted for this historical benchmark.",
+            }
+
+        projection: dict[str, dict[str, Any]] = {}
+        for case_id, row in self._cases["frozen-eval-v3"].items():
+            if case_id in stage3:
+                evaluation = stage3[case_id]
+            else:
+                decision = row["_stage2_decision"]
+                if decision is None or decision.status.value != "resolved":
+                    raise self._v3_projection_error(f"no recorded final disposition for {case_id}")
+                evaluation = {
+                    "tier": tiers.get(case_id), "final_disposition": "RESOLVED", "resolution_stage": "STAGE_2",
+                    "resolution_method": decision.rule_id, "blockers": [], "replay_available": False,
+                    "replay_note": "Step-by-step replay was not persisted for this historical benchmark.",
+                }
+            if evaluation["tier"] not in {"T0", "T1", "T2", "T3"}:
+                raise self._v3_projection_error(f"no safe tier is available for {case_id}")
+            projection[case_id] = evaluation
+
+        aggregate = {
+            "total": len(projection),
+            "resolved": sum(item["final_disposition"] == "RESOLVED" for item in projection.values()),
+            "escalated": sum(item["final_disposition"] == "ESCALATED" for item in projection.values()),
+            "stage2": sum(item["resolution_stage"] == "STAGE_2" and item["final_disposition"] == "RESOLVED" for item in projection.values()),
+            "stage3": sum(item["resolution_stage"] == "STAGE_3" and item["final_disposition"] == "RESOLVED" for item in projection.values()),
+        }
+        expected = {
+            "total": core.get("cases"), "resolved": core.get("metrics", {}).get("correct_auto_resolutions"),
+            "escalated": core.get("metrics", {}).get("escalated"),
+            "stage2": core.get("resolution_outcomes", {}).get("deterministic"),
+            "stage3": core.get("resolution_outcomes", {}).get("ai_assisted"),
+        }
+        if aggregate != expected:
+            raise self._v3_projection_error(f"aggregate mismatch: {aggregate!r} != {expected!r}")
+        return projection
+
+    def cases(self, benchmark_id: str, *, outcome: str | None = None, stage: str | None = None,
+              tier: str | None = None, replay_only: bool = False,
               controller_rejection: bool = False, offset: int = 0, limit: int = 50,
               search: str | None = None) -> dict[str, Any]:
         self.detail(benchmark_id)
         rows = []
         for row in self._cases[benchmark_id].values():
+            evaluation = self._v3_case_evaluations.get(row["case_id"]) if benchmark_id == "frozen-eval-v3" else None
+            if evaluation and outcome and evaluation["final_disposition"].casefold() != outcome.casefold():
+                continue
+            if evaluation and stage and evaluation["resolution_stage"].replace("_", "").casefold() != stage.casefold().replace("_", ""):
+                continue
+            if evaluation and tier and evaluation["tier"] != tier.upper():
+                continue
             replay_ids = self._replay_ids(benchmark_id, row["case_id"])
             outcomes = {name: self._trajectory_outcome(benchmark_id, name, row["case_id"]) for name in replay_ids}
             values = {value for value in outcomes.values() if value}
-            if outcome and outcome not in values:
+            if not evaluation and outcome and outcome not in values:
                 continue
             if replay_only and not replay_ids:
                 continue
@@ -191,7 +287,7 @@ class BenchmarkCatalog:
                 continue
             if search and search.casefold() not in row["case_id"].casefold():
                 continue
-            rows.append({**{key: row[key] for key in ("case_id", "bank_record_id", "narration", "amount_paise", "candidate_count")}, "recorded_outcomes": outcomes, "replay_investigators": replay_ids, "controller_rejection_demo": is_demo})
+            rows.append({**{key: row[key] for key in ("case_id", "bank_record_id", "narration", "amount_paise", "candidate_count")}, "recorded_outcomes": outcomes, "replay_investigators": replay_ids, "controller_rejection_demo": is_demo, "evaluation": evaluation})
         ordered = sorted(rows, key=lambda item: item["case_id"])
         return {"benchmark_id": benchmark_id, "total": len(ordered), "offset": offset,
                 "limit": limit, "cases": ordered[offset:offset + limit]}
@@ -202,7 +298,8 @@ class BenchmarkCatalog:
         if row is None:
             raise HTTPException(status_code=404, detail={"code": "benchmark_case_not_found", "message": f"Case {case_id!r} is not in {benchmark_id}."})
         replay_ids = self._replay_ids(benchmark_id, case_id)
-        return {**{key: row[key] for key in ("case_id", "bank_record_id", "narration", "amount_paise", "candidate_count", "candidate_snapshot", "visible_records")}, "recorded_outcomes": {name: self._trajectory_outcome(benchmark_id, name, case_id) for name in replay_ids}, "replay_investigators": replay_ids, "controller_rejection_demo": case_id == CONTROLLER_REJECTION_DEMO, "evaluation_metadata_notice": "This endpoint contains visible benchmark inputs and recorded controller artifacts only. Hidden ground truth and Stage-4 verdicts are not included."}
+        evaluation = self._v3_case_evaluations.get(case_id) if benchmark_id == "frozen-eval-v3" else None
+        return {**{key: row[key] for key in ("case_id", "bank_record_id", "narration", "amount_paise", "candidate_count", "candidate_snapshot", "visible_records")}, "recorded_outcomes": {name: self._trajectory_outcome(benchmark_id, name, case_id) for name in replay_ids}, "replay_investigators": replay_ids, "controller_rejection_demo": case_id == CONTROLLER_REJECTION_DEMO, "evaluation": evaluation, "evaluation_metadata_notice": "This endpoint contains visible benchmark inputs and judge-safe recorded final evaluation metadata only. Private evaluator data is not included."}
 
     @cached_property
     def _trajectory_index(self) -> dict[str, dict[str, Path]]:

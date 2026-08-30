@@ -68,6 +68,41 @@ def test_frozen_case_explorer_paginates_and_searches_case_ids(client: TestClient
     assert [row["case_id"] for row in search.json()["cases"]] == ["case:bnk_frozeneval_000012"]
 
 
+def test_frozen_v3_case_projection_is_complete_safe_and_matches_the_final_report(client: TestClient):
+    response = client.get("/api/benchmarks/frozen-eval-v3/cases", params={"offset": 0, "limit": 100})
+    assert response.status_code == 200, response.text
+    first_page = response.json()
+    assert len(first_page["cases"]) == 100
+    assert all(item["evaluation"] for item in first_page["cases"])
+
+    catalog = client.app.state.benchmark_catalog
+    projection = catalog._v3_case_evaluations
+    assert len(projection) == 890
+    assert sum(item["final_disposition"] == "RESOLVED" for item in projection.values()) == 823
+    assert sum(item["final_disposition"] == "ESCALATED" for item in projection.values()) == 67
+    assert sum(item["resolution_stage"] == "STAGE_2" for item in projection.values()) == 650
+    assert sum(item["resolution_stage"] == "STAGE_3" and item["final_disposition"] == "RESOLVED" for item in projection.values()) == 173
+
+    stage2 = next(case_id for case_id, item in projection.items() if item["resolution_stage"] == "STAGE_2")
+    stage3 = next(case_id for case_id, item in projection.items() if item["resolution_stage"] == "STAGE_3" and item["final_disposition"] == "RESOLVED")
+    escalated = next(case_id for case_id, item in projection.items() if item["final_disposition"] == "ESCALATED")
+    for case_id, expected in ((stage2, ("STAGE_2", "RESOLVED")), (stage3, ("STAGE_3", "RESOLVED")), (escalated, ("STAGE_3", "ESCALATED"))):
+        detail = client.get(f"/api/benchmarks/frozen-eval-v3/cases/{case_id}")
+        assert detail.status_code == 200, detail.text
+        evaluation = detail.json()["evaluation"]
+        assert (evaluation["resolution_stage"], evaluation["final_disposition"]) == expected
+        assert evaluation["replay_available"] is False
+        assert "replay was not persisted" in evaluation["replay_note"]
+        serialized = detail.text.casefold()
+        for forbidden in ("correct_candidate", "ground_truth", "expected_candidate", "answer", "oracle", "true_settlement", "true_group", "truth_reference"):
+            assert forbidden not in serialized
+
+    filtered = client.get("/api/benchmarks/frozen-eval-v3/cases", params={"outcome": "escalated", "tier": "T3", "stage": "stage3", "limit": 100})
+    assert filtered.status_code == 200, filtered.text
+    assert filtered.json()["total"] == 40
+    assert all(case["evaluation"]["final_disposition"] == "ESCALATED" for case in filtered.json()["cases"])
+
+
 def test_recorded_replay_is_offline_and_the_controller_rejection_demo_is_discoverable(client: TestClient, monkeypatch):
     def provider_must_not_be_constructed(*args, **kwargs):
         raise AssertionError("benchmark browsing must never construct a provider chain")
