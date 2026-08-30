@@ -24,7 +24,7 @@ export default function Landing() {
   return <div className="landing">
     <header className="landing-nav">
       <Link className="landing-brand" to="/" aria-label="FinRecon home"><span><Gavel size={18} /></span><strong>FinRecon</strong></Link>
-      <nav aria-label="Landing navigation"><Link to="/benchmarks">Benchmarks</Link><Link to="/overview">Operations console</Link></nav>
+      <nav aria-label="Landing navigation"><Link to="/benchmarks">Evaluation</Link><Link to="/overview">Operations console</Link></nav>
     </header>
 
     <main>
@@ -33,7 +33,7 @@ export default function Landing() {
           <span className="landing-kicker"><ShieldCheck size={14} /> Financial reconciliation controls</span>
           <h1>Reconcile with evidence.<br /><em>Escalate uncertainty.</em></h1>
           <p>FinRecon uses bounded AI evidence search to investigate unresolved cases. Deterministic financial validation and policy retain authority over every decision.</p>
-          <div className="landing-actions"><button className="landing-primary" onClick={exploreDemo} disabled={loadingDemo}>{loadingDemo ? "Loading demo…" : "Explore Demo"} <ArrowRight size={16} /></button><Link className="landing-secondary" to="/benchmarks">View Benchmarks <BookOpen size={16} /></Link></div>
+          <div className="landing-actions"><button className="landing-primary" onClick={exploreDemo} disabled={loadingDemo}>{loadingDemo ? "Loading demo…" : "Explore Demo"} <ArrowRight size={16} /></button><Link className="landing-secondary" to="/benchmarks">Evidence & Evaluation <BookOpen size={16} /></Link></div>
           <p className="landing-assurance"><BadgeCheck size={15} /> No model confidence or prose can determine money movement.</p>
         </div>
         <div className="control-panel" aria-label="FinRecon authority pipeline">

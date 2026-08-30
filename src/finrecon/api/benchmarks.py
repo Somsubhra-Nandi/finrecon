@@ -66,7 +66,9 @@ class BenchmarkCatalog:
 
     def list(self) -> dict[str, Any]:
         summaries = []
-        for benchmark_id in ("frozen-eval-v3", "bounded-search-v1", "v4-pilot"):
+        # The pilot remains addressable for engineering/audit work, but is not
+        # part of the judge-facing evaluation catalogue.
+        for benchmark_id in ("frozen-eval-v3", "bounded-search-v1"):
             item = self.detail(benchmark_id)
             summaries.append({key: item[key] for key in ("benchmark_id", "title", "status", "case_count", "description", "replay_available", "report_available", "investigators")})
         return {

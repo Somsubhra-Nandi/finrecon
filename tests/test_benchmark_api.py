@@ -18,13 +18,13 @@ def client(tmp_path: Path) -> TestClient:
         yield value
 
 
-def test_benchmark_catalog_distinguishes_frozen_pilot_and_replay_availability(client: TestClient):
+def test_judge_catalog_exposes_only_frozen_safety_and_investigation_suites(client: TestClient):
     response = client.get("/api/benchmarks")
     assert response.status_code == 200, response.text
     catalog = {item["benchmark_id"]: item for item in response.json()["benchmarks"]}
     assert {key: catalog["frozen-eval-v3"][key] for key in ("status", "case_count", "replay_available")} == {"status": "FROZEN", "case_count": 890, "replay_available": False}
     assert {key: catalog["bounded-search-v1"][key] for key in ("status", "case_count", "replay_available")} == {"status": "FROZEN", "case_count": 50, "replay_available": True}
-    assert {key: catalog["v4-pilot"][key] for key in ("status", "case_count", "replay_available")} == {"status": "PILOT", "case_count": 64, "replay_available": False}
+    assert set(catalog) == {"frozen-eval-v3", "bounded-search-v1"}
 
 
 def test_bounded_reports_project_the_authoritative_full_opus_cohort(client: TestClient):
