@@ -80,7 +80,7 @@ export interface BenchmarkListResponse { benchmarks: BenchmarkSummary[]; evoluti
 export interface BenchmarkReport { report_id: string; label: string; metrics: Record<string, number | string | null> | null; telemetry: Record<string, unknown>; cohort: Record<string, unknown>; recorded_versions: Record<string, unknown> }
 export interface BenchmarkReportsResponse { benchmark_id: string; reports: BenchmarkReport[] }
 export interface BenchmarkCaseSummary { case_id: string; bank_record_id: string; narration: string; amount_paise: number; candidate_count: number | null; recorded_outcomes: Record<string, string>; replay_investigators: string[]; controller_rejection_demo: boolean }
-export interface BenchmarkCasesResponse { benchmark_id: string; total: number; cases: BenchmarkCaseSummary[] }
+export interface BenchmarkCasesResponse { benchmark_id: string; total: number; offset: number; limit: number; cases: BenchmarkCaseSummary[] }
 export interface BenchmarkCaseDetail extends BenchmarkCaseSummary { candidate_snapshot: Record<string, unknown> | null; visible_records: Record<string, unknown>; evaluation_metadata_notice: string }
 export interface BenchmarkReplaySummary { investigator: string; label: string; scored_cohort_cases: number; persisted_trajectory_cases: number; requested_model: string | null; reported_models: string[]; provider: string | null; notes: string[] }
 export interface BenchmarkReplaysResponse { benchmark_id: string; replays: BenchmarkReplaySummary[] }

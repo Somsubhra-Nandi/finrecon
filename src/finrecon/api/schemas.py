@@ -240,6 +240,8 @@ class BenchmarkCaseSummary(ApiModel):
 class BenchmarkCasesResponse(ApiModel):
     benchmark_id: str
     total: int
+    offset: int = 0
+    limit: int = 50
     cases: list[BenchmarkCaseSummary]
 
 

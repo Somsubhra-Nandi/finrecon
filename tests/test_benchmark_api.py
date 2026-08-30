@@ -38,6 +38,21 @@ def test_bounded_reports_preserve_their_distinct_scored_denominators(client: Tes
     assert "per_case" not in reports["opus"]
 
 
+def test_frozen_case_explorer_paginates_and_searches_case_ids(client: TestClient):
+    first = client.get("/api/benchmarks/frozen-eval-v3/cases", params={"offset": 0, "limit": 50})
+    assert first.status_code == 200, first.text
+    body = first.json()
+    assert (body["total"], body["offset"], body["limit"], len(body["cases"])) == (890, 0, 50, 50)
+
+    next_page = client.get("/api/benchmarks/frozen-eval-v3/cases", params={"offset": 50, "limit": 50})
+    assert next_page.status_code == 200, next_page.text
+    assert next_page.json()["cases"][0]["case_id"] != body["cases"][0]["case_id"]
+
+    search = client.get("/api/benchmarks/frozen-eval-v3/cases", params={"search": "000012"})
+    assert search.status_code == 200, search.text
+    assert [row["case_id"] for row in search.json()["cases"]] == ["case:bnk_frozeneval_000012"]
+
+
 def test_recorded_replay_is_offline_and_the_controller_rejection_demo_is_discoverable(client: TestClient, monkeypatch):
     def provider_must_not_be_constructed(*args, **kwargs):
         raise AssertionError("benchmark browsing must never construct a provider chain")

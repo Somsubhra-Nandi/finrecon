@@ -211,8 +211,13 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
         outcome: str | None = Query(default=None, pattern="^(recorded|tool_validation_failure|budget_exhausted|malformed)$"),
         replay_only: bool = False,
         controller_rejection: bool = False,
+        offset: int = Query(default=0, ge=0),
+        limit: int = Query(default=50, ge=1, le=100),
+        search: str | None = Query(default=None, max_length=200),
     ) -> dict:
-        return app.state.benchmark_catalog.cases(benchmark_id, outcome=outcome, replay_only=replay_only, controller_rejection=controller_rejection)
+        return app.state.benchmark_catalog.cases(benchmark_id, outcome=outcome, replay_only=replay_only,
+                                                  controller_rejection=controller_rejection, offset=offset,
+                                                  limit=limit, search=search)
 
     @app.get("/api/benchmarks/{benchmark_id}/cases/{case_id:path}", response_model=BenchmarkCaseDetailResponse)
     def get_benchmark_case(benchmark_id: str, case_id: str) -> dict:

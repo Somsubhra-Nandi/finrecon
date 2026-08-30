@@ -171,7 +171,9 @@ class BenchmarkCatalog:
             }
         return result
 
-    def cases(self, benchmark_id: str, *, outcome: str | None = None, replay_only: bool = False, controller_rejection: bool = False) -> dict[str, Any]:
+    def cases(self, benchmark_id: str, *, outcome: str | None = None, replay_only: bool = False,
+              controller_rejection: bool = False, offset: int = 0, limit: int = 50,
+              search: str | None = None) -> dict[str, Any]:
         self.detail(benchmark_id)
         rows = []
         for row in self._cases[benchmark_id].values():
@@ -185,8 +187,12 @@ class BenchmarkCatalog:
             is_demo = row["case_id"] == CONTROLLER_REJECTION_DEMO
             if controller_rejection and not is_demo:
                 continue
+            if search and search.casefold() not in row["case_id"].casefold():
+                continue
             rows.append({**{key: row[key] for key in ("case_id", "bank_record_id", "narration", "amount_paise", "candidate_count")}, "recorded_outcomes": outcomes, "replay_investigators": replay_ids, "controller_rejection_demo": is_demo})
-        return {"benchmark_id": benchmark_id, "total": len(rows), "cases": sorted(rows, key=lambda item: item["case_id"])}
+        ordered = sorted(rows, key=lambda item: item["case_id"])
+        return {"benchmark_id": benchmark_id, "total": len(ordered), "offset": offset,
+                "limit": limit, "cases": ordered[offset:offset + limit]}
 
     def case(self, benchmark_id: str, case_id: str) -> dict[str, Any]:
         self.detail(benchmark_id)

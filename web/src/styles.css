@@ -266,6 +266,11 @@ td:first-child span { margin-top: 4px; color: var(--muted); font-size: 10px; }
 .json-details { border-top: 1px solid #e3e9e6; margin-top: 8px; }
 .json-details summary { cursor: pointer; color: #4d626c; font-size: 10px; font-weight: 700; padding: 9px 0 3px; }
 .json-details pre { max-height: 360px; overflow: auto; background: #14242d; color: #cfdddf; border-radius: 4px; padding: 10px; font: 9px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap; word-break: break-word; }
+.decision-path { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.decision-path > div { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; color: #52666d; font-size: 9px; font-weight: 800; letter-spacing: .04em; }
+.decision-path span { display: inline-flex; align-items: center; gap: 5px; }.decision-path small { display: block; margin-top: 6px; color: var(--muted); font-size: 9px; }
+.decision-evidence-section { padding: 11px 0; border-bottom: 1px solid var(--line); }.decision-evidence-section h3 { margin: 0 0 7px; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }.decision-evidence-section p { margin: 5px 0; color: #52646d; font-size: 10px; line-height: 1.45; }
+.evidence-summary-list svg { vertical-align: -2px; }.candidate-matrix { font-size: 9px; }.candidate-matrix th, .candidate-matrix td { padding: 6px; text-align: center; }.candidate-matrix th:first-child { text-align: left; }.pagination { display: flex; justify-content: center; align-items: center; gap: 10px; padding-top: 12px; font-size: 10px; color: var(--muted); }.filter-bar input { flex: 1; min-width: 170px; border: 0; background: transparent; font-size: 11px; outline: 0; }
 .outcome { padding: 5px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; }
 .outcome-resolve { color: var(--green); background: var(--green-soft); }
 .outcome-escalate, .outcome-unresolved { color: var(--red); background: var(--red-soft); }
