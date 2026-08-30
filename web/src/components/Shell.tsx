@@ -5,11 +5,9 @@ import { useApi } from "../hooks";
 import type { RunSummary } from "../types";
 
 const navigation = [
-  { to: "/overview", label: "Overview", icon: LayoutDashboard },
-  { to: "/reconciliation", label: "Reconciliation", icon: FileSearch },
-  { to: "/issues", label: "Ingestion issues", icon: AlertTriangle },
-  { to: "/run", label: "Run reconciliation", icon: Play },
-  { to: "/benchmarks", label: "Benchmarks", icon: Trophy },
+  { group: "Operations", items: [{ to: "/overview", label: "Dashboard", icon: LayoutDashboard }, { to: "/reconciliation", label: "Reconciliation", icon: FileSearch }, { to: "/issues", label: "Source issues", icon: AlertTriangle }] },
+  { group: "Run", items: [{ to: "/run", label: "New reconciliation", icon: Play }] },
+  { group: "Evaluation", items: [{ to: "/benchmarks", label: "Benchmarks", icon: Trophy }] },
 ];
 
 export default function Shell() {
@@ -29,7 +27,7 @@ export default function Shell() {
     <aside className="sidebar">
       <div className="brand"><div className="brand-mark"><Scale size={19} /></div><div><strong>FinRecon</strong><span>Operations console</span></div></div>
       <nav aria-label="Primary navigation">
-        {navigation.map(({ to, label, icon: Icon }) => <NavLink key={to} to={`${to}${suffix}`} end={to === "/overview"} className={({ isActive }) => clsx("nav-item", isActive && "active")}><Icon size={17} /><span>{label}</span></NavLink>)}
+        {navigation.map(({ group, items }) => <div className="nav-group" key={group}><span>{group}</span>{items.map(({ to, label, icon: Icon }) => <NavLink key={to} to={`${to}${suffix}`} end={to === "/overview"} className={({ isActive }) => clsx("nav-item", isActive && "active")}><Icon size={17} /><span>{label}</span></NavLink>)}</div>)}
       </nav>
       <div className="sidebar-note"><Activity size={16} /><div><strong>Financial authority</strong><span>Deterministic validation</span></div></div>
     </aside>

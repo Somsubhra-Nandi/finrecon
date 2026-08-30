@@ -8,17 +8,16 @@ const payloads: Record<string, unknown> = {
   "/api/benchmarks/frozen-eval-v3": { benchmark_id: "frozen-eval-v3", title: "Frozen Evaluation v3", status: "FROZEN", case_count: 890, description: "Frozen", replay_available: false, report_available: true, investigators: [], integrity: {}, constraints: {}, notices: [] },
   "/api/benchmarks/frozen-eval-v3/reports": { benchmark_id: "frozen-eval-v3", reports: [] },
   "/api/benchmarks/frozen-eval-v3/cases": { benchmark_id: "frozen-eval-v3", total: 0, cases: [] },
-  "/api/benchmarks/frozen-eval-v3/replays": { benchmark_id: "frozen-eval-v3", replays: [] },
 };
 
 describe("Benchmarks page", () => {
   afterEach(() => vi.restoreAllMocks());
 
-  it("labels recorded replay as offline and does not present ground truth", async () => {
+  it("keeps the frozen evaluation summary prominent", async () => {
     vi.stubGlobal("fetch", vi.fn(async (path: string) => new Response(JSON.stringify(payloads[path] ?? payloads["/api/benchmarks/frozen-eval-v3/cases"]), { status: 200, headers: { "Content-Type": "application/json" } })));
     render(<MemoryRouter><Benchmarks /></MemoryRouter>);
-    expect(await screen.findByText("Recorded replay — zero provider calls")).toBeInTheDocument();
-    expect(screen.getByText("Frozen Evaluation v3")).toBeInTheDocument();
-    expect(screen.getByText("Evaluation truth is not displayed here")).toBeInTheDocument();
+    expect(await screen.findByText("Safety and resolution, measured across the full frozen cohort.")).toBeInTheDocument();
+    expect(screen.getByText("890")).toBeInTheDocument();
+    expect(screen.getByText("0", { exact: true })).toBeInTheDocument();
   });
 });

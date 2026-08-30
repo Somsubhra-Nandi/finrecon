@@ -1,5 +1,8 @@
 import { ArrowRight, BadgeCheck, BookOpen, FileSearch, Gavel, Landmark, ShieldCheck, TriangleAlert } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { api } from "../api";
+import type { RunResponse } from "../types";
 
 const pipeline = [
   { label: "Razorpay + Bank", detail: "Source records" },
@@ -9,6 +12,15 @@ const pipeline = [
 ];
 
 export default function Landing() {
+  const navigate = useNavigate();
+  const [loadingDemo, setLoadingDemo] = useState(false);
+  const exploreDemo = async () => {
+    setLoadingDemo(true);
+    try {
+      const result = await api<RunResponse>("/api/reconciliation/demo", { method: "POST" });
+      navigate(`/overview?batch=${encodeURIComponent(result.batch_id)}`);
+    } finally { setLoadingDemo(false); }
+  };
   return <div className="landing">
     <header className="landing-nav">
       <Link className="landing-brand" to="/" aria-label="FinRecon home"><span><Gavel size={18} /></span><strong>FinRecon</strong></Link>
@@ -21,7 +33,7 @@ export default function Landing() {
           <span className="landing-kicker"><ShieldCheck size={14} /> Financial reconciliation controls</span>
           <h1>Reconcile with evidence.<br /><em>Escalate uncertainty.</em></h1>
           <p>FinRecon uses bounded AI evidence search to investigate unresolved cases. Deterministic financial validation and policy retain authority over every decision.</p>
-          <div className="landing-actions"><Link className="landing-primary" to="/run">Explore Demo <ArrowRight size={16} /></Link><Link className="landing-secondary" to="/benchmarks">View Benchmarks <BookOpen size={16} /></Link></div>
+          <div className="landing-actions"><button className="landing-primary" onClick={exploreDemo} disabled={loadingDemo}>{loadingDemo ? "Loading demo…" : "Explore Demo"} <ArrowRight size={16} /></button><Link className="landing-secondary" to="/benchmarks">View Benchmarks <BookOpen size={16} /></Link></div>
           <p className="landing-assurance"><BadgeCheck size={15} /> No model confidence or prose can determine money movement.</p>
         </div>
         <div className="control-panel" aria-label="FinRecon authority pipeline">
