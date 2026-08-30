@@ -16,6 +16,7 @@ export default function Shell() {
   const batch = new URLSearchParams(location.search).get("batch");
   const { data: runs } = useApi<RunSummary[]>("/api/runs");
   const activeBatch = batch ?? runs?.[0]?.batch_id ?? null;
+  const isBenchmark = location.pathname.startsWith("/benchmarks");
   const suffix = batch ? `?batch=${encodeURIComponent(batch)}` : "";
   const selectBatch = (batchId: string) => {
     const destination = location.pathname.startsWith("/reconciliation/") ? "/reconciliation" : location.pathname;
@@ -32,7 +33,7 @@ export default function Shell() {
       <div className="sidebar-note"><Activity size={16} /><div><strong>Financial authority</strong><span>Deterministic validation</span></div></div>
     </aside>
     <div className="workspace">
-      <div className="topbar"><div className="environment"><span /> Ledger connected</div><div className="batch-context"><span>Active batch</span>{runs && runs.length > 1 ? <select aria-label="Active reconciliation batch" value={activeBatch ?? ""} onChange={(event) => selectBatch(event.target.value)}>{runs.map((run) => <option key={run.batch_id} value={run.batch_id}>{run.batch_id}</option>)}</select> : <strong title={activeBatch ?? "Latest recorded"}>{activeBatch ?? "Latest recorded"}</strong>}</div></div>
+      <div className="topbar"><div className="environment"><span /> {isBenchmark ? "Offline evaluation" : "Ledger connected"}</div>{isBenchmark ? <div className="batch-context"><span>Zero provider calls</span><strong>Recorded artifacts</strong></div> : <div className="batch-context"><span>Active batch</span>{runs && runs.length > 1 ? <select aria-label="Active reconciliation batch" value={activeBatch ?? ""} onChange={(event) => selectBatch(event.target.value)}>{runs.map((run) => <option key={run.batch_id} value={run.batch_id}>{run.batch_id}</option>)}</select> : <strong title={activeBatch ?? "Latest recorded"}>{activeBatch ?? "Latest recorded"}</strong>}</div>}</div>
       <main><Outlet /></main>
     </div>
   </div>;
