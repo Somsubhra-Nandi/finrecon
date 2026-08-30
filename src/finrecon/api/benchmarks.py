@@ -101,7 +101,7 @@ class BenchmarkCatalog:
                 "investigators": ["mechanical", "openrouter-free", "opus"],
                 "integrity": {"sha256": manifest["benchmark_sha256"], "frozen": bool(manifest["frozen"])},
                 "constraints": {"max_model_steps": manifest["tool_budget"]["max_model_steps"], "max_tool_calls_per_step": manifest["tool_budget"]["max_tool_calls_per_step"], "replay": "Recorded trajectory files only; zero provider calls."},
-                "notices": ["OpenRouter has 50 persisted records but its authoritative scored cohort contains 45 valid provider-response cases.", "Opus has 40 persisted records and a 40-case scored cohort. Mechanical is report/comparison-only."],
+                "notices": ["OpenRouter has 50 persisted records but its authoritative scored cohort contains 45 valid provider-response cases.", "Opus has a complete 50-case frozen scored cohort. Mechanical is report/comparison-only."],
             }
         return {
             "benchmark_id": benchmark_id, "title": "v4 Compositional Evidence Pilot", "status": "PILOT",
@@ -122,7 +122,7 @@ class BenchmarkCatalog:
             paths = [
                 ("mechanical", self.benchmark_root / "reports" / "bounded-search-v1-mechanical.json", "Mechanical baseline; report/comparison only"),
                 ("openrouter-free", self.benchmark_root / "reports" / "bounded-search-v1-openrouter-free-valid-45.json", "45-case valid provider-response scored cohort"),
-                ("opus", self.benchmark_root / "reports" / "bounded-search-v1-opus5-thinking-valid-40.json", "40-case successfully answered scored cohort"),
+                ("opus", self.benchmark_root / "reports" / "bounded-search-v1-opus5-thinking-full-50.json", "Authoritative complete 50-case frozen scored cohort"),
             ]
         reports = []
         for report_id, path, label in paths:
@@ -140,7 +140,7 @@ class BenchmarkCatalog:
             return {}
         # Case IDs are sufficient for denominator transparency. Do not return
         # any per-case Stage-4 verdict/truth fields from reports.
-        return {key: cohort[key] for key in ("requested_count", "found_count", "tier_counts", "sources_contributing") if key in cohort}
+        return {key: cohort[key] for key in ("requested_count", "found_count", "complete", "tier_counts", "sources_contributing") if key in cohort}
 
     @cached_property
     def _cases(self) -> dict[str, dict[str, dict[str, Any]]]:
@@ -247,7 +247,7 @@ class BenchmarkCatalog:
         if benchmark_id != "bounded-search-v1":
             return {"benchmark_id": benchmark_id, "replays": []}
         reports = {item["report_id"]: item for item in self.reports(benchmark_id)["reports"]}
-        specs = [("openrouter-free", "OpenRouter Free", 45, "openrouter", "openrouter/free", "OpenRouter Free has 50 persisted files; five are excluded from the 45-case valid provider-response scored cohort."), ("opus", "Opus", 40, "gorouter", "claude-opus-5-thinking", "40 persisted trajectories; the report distinguishes requested claude-opus-5-thinking from provider-reported claude-opus-5.")]
+        specs = [("openrouter-free", "OpenRouter Free", 45, "openrouter", "openrouter/free", "OpenRouter Free has 50 persisted files; five are excluded from the 45-case valid provider-response scored cohort."), ("opus", "Opus", 50, "gorouter", "claude-opus-5-thinking", "50 persisted trajectories and a complete 50-case scored cohort; requested claude-opus-5-thinking is distinct from provider-reported claude-opus-5.")]
         items = []
         for investigator, label, cohort_cases, provider, requested, note in specs:
             directory = {"openrouter-free": "bounded-search-v1-openrouter-free-final", "opus": "bounded-search-v1-opus5-thinking-final"}[investigator]

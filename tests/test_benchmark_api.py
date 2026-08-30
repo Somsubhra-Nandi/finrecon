@@ -27,15 +27,30 @@ def test_benchmark_catalog_distinguishes_frozen_pilot_and_replay_availability(cl
     assert {key: catalog["v4-pilot"][key] for key in ("status", "case_count", "replay_available")} == {"status": "PILOT", "case_count": 64, "replay_available": False}
 
 
-def test_bounded_reports_preserve_their_distinct_scored_denominators(client: TestClient):
+def test_bounded_reports_project_the_authoritative_full_opus_cohort(client: TestClient):
     response = client.get("/api/benchmarks/bounded-search-v1/reports")
     assert response.status_code == 200, response.text
     reports = {item["report_id"]: item for item in response.json()["reports"]}
     assert reports["openrouter-free"]["metrics"]["investigated"] == 45
     assert reports["openrouter-free"]["metrics"]["uniquely_resolvable_cases"] == 38
-    assert reports["opus"]["metrics"]["investigated"] == 40
-    assert reports["opus"]["metrics"]["uniquely_resolvable_cases"] == 31
+    assert reports["opus"]["metrics"]["investigated"] == 50
+    assert reports["opus"]["metrics"]["uniquely_resolvable_cases"] == 40
+    assert reports["opus"]["metrics"]["correct_auto_resolutions"] == 40
+    assert reports["opus"]["metrics"]["escalated"] == 10
+    assert reports["opus"]["metrics"]["wrong_auto_resolutions"] == 0
+    assert reports["opus"]["metrics"]["value_at_risk_paise"] == 0
+    assert reports["opus"]["cohort"]["complete"] is True
+    assert reports["opus"]["telemetry"]["models_requested"] == {"gorouter:claude-opus-5-thinking": 50}
+    assert reports["opus"]["telemetry"]["models_reported"] == {"gorouter:claude-opus-5": 50}
     assert "per_case" not in reports["opus"]
+
+    replays = client.get("/api/benchmarks/bounded-search-v1/replays")
+    assert replays.status_code == 200, replays.text
+    opus_replay = next(item for item in replays.json()["replays"] if item["investigator"] == "opus")
+    assert opus_replay["scored_cohort_cases"] == 50
+    assert opus_replay["persisted_trajectory_cases"] == 50
+    assert opus_replay["requested_model"] == "claude-opus-5-thinking"
+    assert opus_replay["reported_models"] == ["gorouter:claude-opus-5"]
 
 
 def test_frozen_case_explorer_paginates_and_searches_case_ids(client: TestClient):
