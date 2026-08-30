@@ -17,27 +17,28 @@ nothing, and its fingerprint is a reproducibility marker rather than a freeze.
 Entry below.
 
 **Current bounded-search challenge: `bounded-search-v1`**
-(`manifests/bounded-search-v1.json`), also **not frozen** and separate from
-both v3 and the v4 pilot. Entry below.
+(`manifests/bounded-search-v1.json`), **frozen** and separate from both v3
+and the v4 pilot. Entry below.
 
-## bounded-search-v1 — 2026-08-29 — AI search-strategy challenge (NOT FROZEN)
+## bounded-search-v1 — 2026-08-29 — AI search-strategy challenge (FROZEN)
 
-**Status: READY FOR REVIEW; FREEZE BEFORE ANY HOSTED RUN.** This additive
+**Status: FROZEN BEFORE HOSTED-MODEL EVALUATION.** This additive
 50-case split asks whether evidence-search strategy adds value under the same
 immutable snapshot, tools, four-call budget, validator.v3 and policy.v1. It has
 40 intended-resolvable and ten intended-ambiguous cases. The evaluation-only
 oracle accepts 40/40 and escalates 10/10; the fixed mechanical investigator
 resolves 20/40 with zero wrong automatic resolutions and zero paise at risk.
-No provider or network call was made.
+The frozen construction made no provider or network call. Recorded hosted
+evaluations and their scored cohorts are retained separately.
 
-The pre-freeze fingerprint is:
+The frozen fingerprint is:
 
 ```text
 e2142a61275a681971cc6d14a02d9c3a8439cb797972a32e072518a09ebb9958
 ```
 
-This is a review marker, not yet a freeze declaration. Full construction,
-fairness contract, baseline, leakage audit, hosted-run command and limitations:
+This is the freeze declaration. Full construction, fairness contract, baseline,
+leakage audit, hosted-run command and limitations:
 `benchmark/BOUNDED-SEARCH-V1.md`.
 
 **Nothing in frozen v3 changed.** Its fingerprint remains

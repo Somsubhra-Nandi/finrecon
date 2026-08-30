@@ -28,6 +28,13 @@ from finrecon.orchestrate import run_reconciliation_batch
 
 from .schemas import (
     AuditResponse,
+    BenchmarkCaseDetailResponse,
+    BenchmarkCasesResponse,
+    BenchmarkDetailResponse,
+    BenchmarkListResponse,
+    BenchmarkReplayDetailResponse,
+    BenchmarkReplaysResponse,
+    BenchmarkReportsResponse,
     CaseDetailResponse,
     CaseListResponse,
     IngestionIssuesResponse,
@@ -37,6 +44,7 @@ from .schemas import (
     RunResponse,
     RunSummary,
 )
+from .benchmarks import BenchmarkCatalog
 from .service import (
     audit_events,
     case_detail,
@@ -165,6 +173,7 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
     resolved_ledger = Path(ledger_path or os.environ.get("FINRECON_LEDGER_PATH", DEFAULT_LEDGER))
     app = FastAPI(title="FinRecon Operations API", version="1.0.0")
     app.state.ledger_path = resolved_ledger
+    app.state.benchmark_catalog = BenchmarkCatalog(PROJECT_ROOT)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -183,6 +192,44 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
     @app.get("/api/health")
     def health() -> dict[str, str]:
         return {"status": "ok"}
+
+    @app.get("/api/benchmarks", response_model=BenchmarkListResponse)
+    def get_benchmarks() -> dict:
+        return app.state.benchmark_catalog.list()
+
+    @app.get("/api/benchmarks/{benchmark_id}", response_model=BenchmarkDetailResponse)
+    def get_benchmark(benchmark_id: str) -> dict:
+        return app.state.benchmark_catalog.detail(benchmark_id)
+
+    @app.get("/api/benchmarks/{benchmark_id}/reports", response_model=BenchmarkReportsResponse)
+    def get_benchmark_reports(benchmark_id: str) -> dict:
+        return app.state.benchmark_catalog.reports(benchmark_id)
+
+    @app.get("/api/benchmarks/{benchmark_id}/cases", response_model=BenchmarkCasesResponse)
+    def get_benchmark_cases(
+        benchmark_id: str,
+        outcome: str | None = Query(default=None, pattern="^(recorded|tool_validation_failure|budget_exhausted|malformed)$"),
+        replay_only: bool = False,
+        controller_rejection: bool = False,
+        offset: int = Query(default=0, ge=0),
+        limit: int = Query(default=50, ge=1, le=100),
+        search: str | None = Query(default=None, max_length=200),
+    ) -> dict:
+        return app.state.benchmark_catalog.cases(benchmark_id, outcome=outcome, replay_only=replay_only,
+                                                  controller_rejection=controller_rejection, offset=offset,
+                                                  limit=limit, search=search)
+
+    @app.get("/api/benchmarks/{benchmark_id}/cases/{case_id:path}", response_model=BenchmarkCaseDetailResponse)
+    def get_benchmark_case(benchmark_id: str, case_id: str) -> dict:
+        return app.state.benchmark_catalog.case(benchmark_id, case_id)
+
+    @app.get("/api/benchmarks/{benchmark_id}/replays", response_model=BenchmarkReplaysResponse)
+    def get_benchmark_replays(benchmark_id: str) -> dict:
+        return app.state.benchmark_catalog.replays(benchmark_id)
+
+    @app.get("/api/benchmarks/{benchmark_id}/replays/{investigator}/{case_id:path}", response_model=BenchmarkReplayDetailResponse)
+    def get_benchmark_replay(benchmark_id: str, investigator: str, case_id: str) -> dict:
+        return app.state.benchmark_catalog.replay(benchmark_id, investigator, case_id)
 
     @app.get("/api/overview", response_model=OverviewResponse)
     def get_overview(batch_id: str | None = None, store: LedgerStore = Depends(store_dependency)) -> OverviewResponse:

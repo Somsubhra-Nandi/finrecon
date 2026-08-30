@@ -11,7 +11,15 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
     const message = typeof detail === "object" ? detail?.message : detail;
     throw new ApiError(code ?? "backend_failure", message ?? "The FinRecon service could not complete the request.", response.status);
   }
-  return response.json() as Promise<T>;
+  try {
+    return await response.json() as T;
+  } catch {
+    throw new ApiError(
+      "invalid_api_response",
+      "FinRecon received an invalid response from the server. Check that the backend is running on port 8000.",
+      response.status,
+    );
+  }
 }
 
 export const money = (paise: number) => new Intl.NumberFormat("en-IN", {

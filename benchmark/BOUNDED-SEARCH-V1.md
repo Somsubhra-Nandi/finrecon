@@ -1,9 +1,8 @@
 # bounded-search-v1 — synthetic bounded-search challenge
 
-**Status: READY FOR REVIEW, NOT FROZEN. No hosted-model result has been
-observed.** Freeze the exact hash in this document before making a paid run.
-This split is additive: it does not replace `v4-pilot` and does not modify the
-frozen v3 benchmark.
+**Status: FROZEN.** The exact hash below was frozen before the recorded
+hosted-model evaluation. This split is additive: it does not replace
+`v4-pilot` and does not modify the frozen v3 benchmark.
 
 ## Purpose
 
@@ -173,16 +172,17 @@ hosted run” construction gate; it does not predict that Opus will win.
 - Independent regeneration is byte-identical across all seven hashed files.
 - Frozen v3 remains `f9eb8770be6cc216d1c8b5486a10b74005382141f7c079844e2748444a44fc5b`.
 
-Pre-freeze benchmark fingerprint:
+Frozen benchmark fingerprint:
 
 ```text
 e2142a61275a681971cc6d14a02d9c3a8439cb797972a32e072518a09ebb9958
 ```
 
-Do not mutate the seven hashed files after approval. Record the freeze before
-observing any hosted trajectory.
+Do not mutate the seven hashed files. The frozen manifest and scored cohorts
+are retained exactly as recorded; hosted trajectories are replay artifacts,
+not benchmark inputs.
 
-## Later hosted run (do not run before freeze approval)
+## Historical hosted evaluation commands
 
 PowerShell, all 50 cases:
 
@@ -213,4 +213,3 @@ model step). A planning estimate is 125–175 completions; the hard ceiling is
    result must not be generalized to arbitrary production narrations.
 5. Fifty cases give useful paired evidence but wide family-level confidence
    intervals. Report counts and exact paired outcomes, not only percentages.
-
