@@ -29,8 +29,9 @@ COPY --chown=finrecon:finrecon benchmark/datasets/ ./benchmark/datasets/
 COPY --chown=finrecon:finrecon fixtures/demo/ ./fixtures/demo/
 COPY --chown=finrecon:finrecon fixtures/trajectories/ ./fixtures/trajectories/
 COPY --from=web-build --chown=finrecon:finrecon /web/dist ./web/dist
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/finrecon-entrypoint
 
-USER finrecon
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 CMD python -c "from urllib.request import urlopen; assert urlopen('http://127.0.0.1:8000/api/health', timeout=3).status == 200"
+ENTRYPOINT ["/usr/local/bin/finrecon-entrypoint"]
 CMD ["uvicorn", "finrecon.api.app:app", "--host", "0.0.0.0", "--port", "8000"]

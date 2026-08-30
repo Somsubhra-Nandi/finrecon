@@ -8,7 +8,7 @@ import uuid
 from collections.abc import Iterator
 from pathlib import Path
 
-from fastapi import Depends, FastAPI, File, Form, Query, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -315,6 +315,10 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
     web_dist = PROJECT_ROOT / "web" / "dist"
     if web_dist.exists():
         app.mount("/assets", StaticFiles(directory=web_dist / "assets"), name="assets")
+
+        @app.api_route("/api/{path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE"], include_in_schema=False)
+        def unknown_api(path: str) -> None:
+            raise HTTPException(status_code=404, detail={"code": "api_not_found", "message": f"API path /api/{path} does not exist."})
 
         @app.get("/{path:path}", include_in_schema=False)
         def spa(path: str) -> FileResponse:

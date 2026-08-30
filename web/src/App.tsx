@@ -30,6 +30,7 @@ export default function App() {
       <Route path="reconciliation" element={<Queue />} />
       <Route path="reconciliation/:caseId" element={<CaseDetail />} />
       <Route path="issues" element={<Issues />} />
+      <Route path="source-issues" element={<Issues />} />
       <Route path="run" element={<Run />} />
       <Route path="benchmarks/*" element={<Benchmarks />} />
     </Route>

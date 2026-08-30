@@ -103,6 +103,17 @@ def test_frozen_v3_case_projection_is_complete_safe_and_matches_the_final_report
     assert all(case["evaluation"]["final_disposition"] == "ESCALATED" for case in filtered.json()["cases"])
 
 
+def test_frozen_v3_projection_uses_only_public_runtime_artifacts(client: TestClient, monkeypatch):
+    catalog = client.app.state.benchmark_catalog
+    hidden = catalog.benchmark_root / "ground_truth" / "frozen-eval.jsonl"
+    original_read_text = Path.read_text
+    monkeypatch.setattr(Path, "read_text", lambda path, *args, **kwargs: (_ for _ in ()).throw(AssertionError("hidden truth must not be read")) if path == hidden else original_read_text(path, *args, **kwargs))
+    # The projection is built from the final report plus visible Stage-2 input
+    # records. It must remain available when access to held-out truth is denied.
+    response = client.get("/api/benchmarks/frozen-eval-v3/cases", params={"limit": 1})
+    assert response.status_code == 200, response.text
+
+
 def test_recorded_replay_is_offline_and_the_controller_rejection_demo_is_discoverable(client: TestClient, monkeypatch):
     def provider_must_not_be_constructed(*args, **kwargs):
         raise AssertionError("benchmark browsing must never construct a provider chain")

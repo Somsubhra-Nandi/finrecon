@@ -198,8 +198,7 @@ class RunResponse(ApiModel):
 
 # Benchmark projections are deliberately separate from ledger projections.
 # They are read-only views over manifests, reports, visible inputs and persisted
-# trajectories. The v3 case projection permits only non-answer tier labels from
-# held-out metadata and never calls the agent stack.
+# trajectories; they never load hidden truth or call the agent stack.
 class BenchmarkSummary(ApiModel):
     benchmark_id: str
     title: str
