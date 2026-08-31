@@ -135,9 +135,13 @@ orchestration-optimization experiment are recorded in
 [`notes/STAGE3-FINDINGS.md`](./notes/STAGE3-FINDINGS.md) §§8–9. The committed
 trajectory corpus additionally contains persisted bounded-search-v1 hosted
 records: OpenRouter Free has 50 persisted files with a 45-case valid
-provider-response scored cohort; Opus has 40 persisted files and a 40-case
-successfully answered scored cohort. They must not be compared as an identical
-cohort without an explicit intersection evaluation.
+provider-response scored cohort; Opus has a complete 50-case frozen scored
+cohort. Opus discovered sufficient admissible evidence for all 40 resolvable
+cases, while deterministic validation and policy authorized the resulting
+automatic resolutions; the remaining 10 cases safely escalated. The requested
+model was `claude-opus-5-thinking` and the provider reported `claude-opus-5`.
+The Free Model Pool and Opus cohorts have different recorded configurations,
+which remain visible in the reports.
 
 ## Reproduce the evaluation
 

@@ -158,6 +158,28 @@ This is materially below 40 and inside the predeclared 15–25 design target,
 with no unsafe automatic resolution. It passes the “worth freezing before a
 hosted run” construction gate; it does not predict that Opus will win.
 
+## Current authoritative Opus evaluation
+
+[`bounded-search-v1-opus5-thinking-full-50.json`](reports/bounded-search-v1-opus5-thinking-full-50.json)
+is the current complete offline Stage-4 projection over all 50 recorded frozen
+trajectories. It retains the distinction between the requested model
+`gorouter:claude-opus-5-thinking` and the provider-reported model
+`gorouter:claude-opus-5`.
+
+| Metric | Result |
+|---|---:|
+| Complete frozen cohort | 50 / 50 |
+| Uniquely resolvable cases automatically resolved | 40 / 40 |
+| Wrong automatic resolutions | 0 |
+| Safe escalations | 10 |
+| Tool-validation failures | 0 |
+| Value at risk | 0 paise |
+
+Opus discovered sufficient admissible evidence for all 40 resolvable cases.
+Deterministic validation and policy authorized the resulting automatic
+resolutions; no model itself made a financial decision. The historical 40-case
+report remains retained for audit, but is not the current judge-facing result.
+
 ## Leakage and reproducibility
 
 - No `VALDT`, `TRUTH=`, `WINNER=`, `EXPECTED=`, outcome, family or composition

@@ -31,7 +31,7 @@ export default function App() {
       <Route path="reconciliation/:caseId" element={<CaseDetail />} />
       <Route path="issues" element={<Issues />} />
       <Route path="run" element={<Run />} />
-      <Route path="benchmarks" element={<Benchmarks />} />
+      <Route path="benchmarks/*" element={<Benchmarks />} />
     </Route>
     <Route path="cases" element={<LegacyQueueRedirect />} />
     <Route path="cases/:caseId" element={<LegacyCaseRedirect />} />

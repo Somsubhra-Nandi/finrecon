@@ -1,42 +1,25 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import Benchmarks from "./Benchmarks";
 
+const opus = { report_id: "opus", label: "Authoritative complete 50-case frozen scored cohort", metrics: { investigated: 50, uniquely_resolvable_cases: 40, correct_auto_resolutions: 40, wrong_auto_resolutions: 0, escalated: 10, overall_match_rate: 1, tool_validation_failed: 0, value_at_risk_paise: 0 }, telemetry: {}, cohort: { requested_count: 50, complete: true }, recorded_versions: {} };
+const free = { report_id: "openrouter-free", label: "45-case valid provider-response scored cohort", metrics: { investigated: 45, uniquely_resolvable_cases: 38, correct_auto_resolutions: 30, wrong_auto_resolutions: 0, escalated: 15, overall_match_rate: 30 / 38, tool_validation_failed: 11, value_at_risk_paise: 0 }, telemetry: {}, cohort: {}, recorded_versions: {} };
 const payloads: Record<string, unknown> = {
-  "/api/benchmarks": { benchmarks: [{ benchmark_id: "bounded-search-v1", title: "Bounded Search v1", status: "FROZEN", case_count: 50, description: "Bounded evidence search", replay_available: true, report_available: true, investigators: ["openrouter-free", "opus"] }], evolution: [] },
-  "/api/benchmarks/frozen-eval-v3": { benchmark_id: "frozen-eval-v3", title: "Frozen Evaluation v3", status: "FROZEN", case_count: 890, description: "Frozen", replay_available: false, report_available: true, investigators: [], integrity: {}, constraints: {}, notices: [] },
-  "/api/benchmarks/frozen-eval-v3/reports": { benchmark_id: "frozen-eval-v3", reports: [] },
-  "/api/benchmarks/frozen-eval-v3/cases": { benchmark_id: "frozen-eval-v3", total: 0, cases: [] },
-  "/api/benchmarks/bounded-search-v1": { benchmark_id: "bounded-search-v1", title: "Bounded Search v1", status: "FROZEN", case_count: 50, description: "Bounded", replay_available: true, report_available: true, investigators: ["openrouter-free"], integrity: {}, constraints: {}, notices: [] },
-  "/api/benchmarks/bounded-search-v1/reports": { benchmark_id: "bounded-search-v1", reports: [] },
-  "/api/benchmarks/bounded-search-v1/cases": { benchmark_id: "bounded-search-v1", total: 50, cases: [] },
-  "/api/benchmarks/bounded-search-v1/cases/case%3Abnk_bsearch_000012": { case_id: "case:bnk_bsearch_000012", bank_record_id: "bank:12", narration: "raw", amount_paise: 100, candidate_count: 2, recorded_outcomes: { "openrouter-free": "tool_validation_failure" }, replay_investigators: ["openrouter-free"], controller_rejection_demo: true, candidate_snapshot: null, visible_records: {}, evaluation_metadata_notice: "visible only" },
-  "/api/benchmarks/bounded-search-v1/replays/openrouter-free/case%3Abnk_bsearch_000012": { benchmark_id: "bounded-search-v1", investigator: "openrouter-free", replayed: true, provider_calls_made: false, trajectory: { termination_reason: "tool_validation_failed", steps: [], tool_invocations: [] }, deterministic_validation: {}, policy_result: { outcome: "ESCALATE", blockers: ["tool_validation_failure"] } },
+  "/api/benchmarks": { benchmarks: [{ benchmark_id: "frozen-eval-v3", title: "Frozen Evaluation v3", status: "FROZEN", case_count: 890, description: "Safety", replay_available: false, report_available: true, investigators: [] }, { benchmark_id: "bounded-search-v1", title: "Bounded Search v1", status: "FROZEN", case_count: 50, description: "Search", replay_available: true, report_available: true, investigators: ["opus"] }], evolution: [] },
+  "/api/benchmarks/frozen-eval-v3/reports": { benchmark_id: "frozen-eval-v3", reports: [{ report_id: "final-eval", label: "frozen", metrics: { investigated: 890, correct_auto_resolutions: 823, escalated: 67, wrong_auto_resolutions: 0, value_at_risk_paise: 0, overall_match_rate: .968235 }, telemetry: {}, cohort: {}, recorded_versions: {} }] },
+  "/api/benchmarks/bounded-search-v1/reports": { benchmark_id: "bounded-search-v1", reports: [free, opus, { report_id: "mechanical", label: "baseline", metrics: {}, telemetry: {}, cohort: {}, recorded_versions: {} }] },
+  "/api/benchmarks/frozen-eval-v3/cases?offset=0&limit=50": { benchmark_id: "frozen-eval-v3", total: 890, offset: 0, limit: 50, cases: [{ case_id: "case:bnk_frozeneval_000012", bank_record_id: "bank:12", narration: "recorded", amount_paise: 100, candidate_count: 2, recorded_outcomes: {}, replay_investigators: [], controller_rejection_demo: false }] },
+  "/api/benchmarks/frozen-eval-v3/cases/case%3Abnk_frozeneval_000012": { case_id: "case:bnk_frozeneval_000012", bank_record_id: "bank:12", narration: "recorded", amount_paise: 100, candidate_count: 2, recorded_outcomes: {}, replay_investigators: [], controller_rejection_demo: false, evaluation: { tier: "T1", final_disposition: "RESOLVED", resolution_stage: "STAGE_2", resolution_method: "exact_reference", blockers: [], replay_available: false, replay_note: "Step-by-step replay was not persisted for this historical benchmark." }, candidate_snapshot: null, visible_records: { bank_record: { narration: "recorded" } }, evaluation_metadata_notice: "safe" },
+  "/api/benchmarks/bounded-search-v1/cases/case%3Abnk_bsearch_000012": { case_id: "case:bnk_bsearch_000012", bank_record_id: "bank:12", narration: "reference", amount_paise: 100, candidate_count: 2, recorded_outcomes: { opus: "recorded" }, replay_investigators: ["opus"], controller_rejection_demo: false, candidate_snapshot: { candidates: [{ candidate_id: "a", total_paise: 100 }, { candidate_id: "b", total_paise: 100 }] }, visible_records: { bank_record: { narration: "reference" } }, evaluation_metadata_notice: "safe" },
+  "/api/benchmarks/bounded-search-v1/replays/opus/case%3Abnk_bsearch_000012": { benchmark_id: "bounded-search-v1", investigator: "opus", replayed: true, provider_calls_made: false, trajectory: { termination_reason: "deterministic_policy_resolved", tool_invocations: [{ tool_name: "compare_reference_fragment", status: "succeeded", output: {} }] }, deterministic_validation: { passed: ["unique_candidate"] }, policy_result: { outcome: "RESOLVE", blockers: [], resolved_candidate_id: "a" } },
 };
-
-describe("Benchmarks page", () => {
-  afterEach(() => vi.restoreAllMocks());
-
-  it("keeps the frozen evaluation summary prominent", async () => {
-    vi.stubGlobal("fetch", vi.fn(async (path: string) => new Response(JSON.stringify(payloads[path] ?? payloads["/api/benchmarks/frozen-eval-v3/cases"]), { status: 200, headers: { "Content-Type": "application/json" } })));
-    render(<MemoryRouter><Benchmarks /></MemoryRouter>);
-    expect(await screen.findByText("Safety and resolution, measured across the full frozen cohort.")).toBeInTheDocument();
-    expect(screen.getByText("890")).toBeInTheDocument();
-    expect(screen.getByText("0", { exact: true })).toBeInTheDocument();
-  });
-
-  it("repairs an incomplete replay deep link and shows the controller rejection", async () => {
-    vi.stubGlobal("fetch", vi.fn(async (path: string) => new Response(JSON.stringify(payloads[path] ?? payloads["/api/benchmarks/frozen-eval-v3/cases"]), { status: 200, headers: { "Content-Type": "application/json" } })));
-    render(<MemoryRouter initialEntries={["/benchmarks?tab=replay&case=case:bnk_bsearch_000012&investigator=openrouter-free"]}><Benchmarks /></MemoryRouter>);
-    expect(await screen.findByText("FinRecon rejected a model request.")).toBeInTheDocument();
-  });
-
-  it("offers curated bounded-search replay entries", async () => {
-    vi.stubGlobal("fetch", vi.fn(async (path: string) => new Response(JSON.stringify(payloads[path] ?? payloads["/api/benchmarks/bounded-search-v1/cases"]), { status: 200, headers: { "Content-Type": "application/json" } })));
-    render(<MemoryRouter initialEntries={["/benchmarks?benchmark=bounded-search-v1&tab=replay"]}><Benchmarks /></MemoryRouter>);
-    expect(await screen.findByText("Watch FinRecon reject a model")).toBeInTheDocument();
-    expect(screen.getByText("Successful Opus resolution")).toBeInTheDocument();
-    fireEvent.click(screen.getAllByRole("button", { name: /Replay case/i })[0]);
-  });
+function mock() { vi.stubGlobal("fetch", vi.fn(async (path: string) => new Response(JSON.stringify(payloads[path] ?? payloads["/api/benchmarks"]), { status: 200, headers: { "Content-Type": "application/json" } }))); }
+function renderEvaluation(path: string) { return render(<MemoryRouter initialEntries={[path]}><Routes><Route path="/benchmarks/*" element={<Benchmarks />} /></Routes></MemoryRouter>); }
+describe("Evaluation experience", () => { afterEach(() => vi.restoreAllMocks());
+  it("shows exactly two judge-facing suites", async () => { mock(); renderEvaluation("/benchmarks"); expect(await screen.findByText("Evidence & Evaluation")).toBeInTheDocument(); expect(screen.getByText("Frozen Evaluation v3")).toBeInTheDocument(); expect(screen.getByText("Bounded Search v1")).toBeInTheDocument(); expect(screen.queryByText(/v4/i)).not.toBeInTheDocument(); });
+  it("honors direct suite query URLs and visibly handles unknown suites", async () => { mock(); renderEvaluation("/benchmarks?benchmark=frozen-eval-v3"); expect(await screen.findByText("Frozen Evaluation v3")).toBeInTheDocument(); renderEvaluation("/benchmarks?benchmark=bounded-search-v1"); expect(await screen.findByText("Bounded Search v1")).toBeInTheDocument(); renderEvaluation("/benchmarks?benchmark=unknown"); expect(await screen.findByText("Benchmark not found")).toBeInTheDocument(); expect(screen.getByRole("link", { name: /Back to Evaluation/i })).toBeInTheDocument(); });
+  it("renders full Opus comparison metrics and model distinction", async () => { mock(); renderEvaluation("/benchmarks/bounded-search-v1/compare"); expect(await screen.findByText("Model capability changes resolution.")).toBeInTheDocument(); expect(screen.getByText("40 / 40")).toBeInTheDocument(); expect(screen.getByText(/Requested: claude-opus-5-thinking/)).toBeInTheDocument(); expect(screen.getByText(/No LLM or provider calls/)).toBeInTheDocument(); });
+  it("uses a full-page v3 workspace with its recorded disposition, not replay absence", async () => { mock(); renderEvaluation("/benchmarks/frozen-eval-v3/cases/case%3Abnk_frozeneval_000012"); expect(await screen.findByText("Evaluation Case 012")).toBeInTheDocument(); expect(screen.getAllByText("RESOLVED").length).toBeGreaterThan(0); expect(screen.getByText(/deterministic reconciliation rule resolved/i)).toBeInTheDocument(); expect(screen.getAllByText(/replay was not persisted/i).length).toBeGreaterThan(0); });
+  it("renders observable AI evidence and deterministic authority", async () => { mock(); renderEvaluation("/benchmarks/bounded-search-v1/cases/case%3Abnk_bsearch_000012"); expect(await screen.findByText("What the AI investigator did")).toBeInTheDocument(); expect(screen.getByText("Candidate evidence")).toBeInTheDocument(); expect(screen.getByText("Financial authority remains deterministic")).toBeInTheDocument(); });
 });

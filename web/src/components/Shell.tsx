@@ -7,7 +7,7 @@ import type { RunSummary } from "../types";
 const navigation = [
   { group: "Operations", items: [{ to: "/overview", label: "Dashboard", icon: LayoutDashboard }, { to: "/reconciliation", label: "Reconciliation", icon: FileSearch }, { to: "/issues", label: "Source issues", icon: AlertTriangle }] },
   { group: "Run", items: [{ to: "/run", label: "New reconciliation", icon: Play }] },
-  { group: "Evaluation", items: [{ to: "/benchmarks", label: "Benchmarks", icon: Trophy }] },
+  { group: "Evaluation", items: [{ to: "/benchmarks", label: "Evidence & Evaluation", icon: Trophy }] },
 ];
 
 export default function Shell() {
