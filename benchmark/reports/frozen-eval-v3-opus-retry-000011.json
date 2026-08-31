@@ -1,0 +1,349 @@
+{
+  "agent": {
+    "accepted_evidence_relations": {
+      "separator_normalized_equal": 1
+    },
+    "cases": 1,
+    "cases_with_any_validation_failure": 0,
+    "deterministic_policy_resolved": 1,
+    "escalation_blockers": {},
+    "evidence_detail_available": true,
+    "investigation_complete": 0,
+    "provider_configuration_failure": 0,
+    "provider_infrastructure_failure": 0,
+    "reference_kinds_used": {
+      "utr": 1
+    },
+    "termination_reasons": {
+      "deterministic_policy_resolved": 1
+    },
+    "tool_budget_exhausted_cases": 0,
+    "tool_budget_exhaustion_rate": 0.0,
+    "tool_calls_executed_total": 5,
+    "tool_calls_max_per_case": 5,
+    "tool_calls_mean_per_case": 5.0,
+    "tool_calls_median_per_case": 5,
+    "tool_invocations_skipped": 0,
+    "tool_invocations_total": 5,
+    "tool_validation_failed": 0,
+    "tool_validation_reasons": {
+      "duplicate_argument_key": 0,
+      "malformed_arguments_json": 0,
+      "schema_validation_failed": 0,
+      "tool_call_batch_limit_exceeded": 0,
+      "unknown_candidate": 0,
+      "unknown_settlement": 0,
+      "unknown_tool": 0
+    },
+    "tool_validation_rejections_total": 0
+  },
+  "cohort": {
+    "all_expected_tier": true,
+    "case_ids": [
+      "case:bnk_frozeneval_000011"
+    ],
+    "case_source": {
+      "case:bnk_frozeneval_000011": "cache:frozen-eval-v3-opus5-thinking-retries"
+    },
+    "complete": true,
+    "contamination": [],
+    "duplicate_requested": [],
+    "duplicate_sources": {},
+    "expected_tier": null,
+    "extra": [],
+    "found_count": 1,
+    "missing": [],
+    "requested_count": 1,
+    "requested_explicitly": true,
+    "sources_contributing": {
+      "cache:frozen-eval-v3-opus5-thinking-retries": 1
+    },
+    "sources_offered": {
+      "cache:frozen-eval-v3-opus5-thinking-retries": 1
+    },
+    "tier_counts": {
+      "T2": 1
+    },
+    "unknown_to_ground_truth": []
+  },
+  "configuration": {
+    "allow_frozen_truth": true,
+    "evaluator_version": "stage4-eval.v1",
+    "expected_tier": null,
+    "explicit_cohort_supplied": true,
+    "label": "Frozen v3 Opus infrastructure retry",
+    "max_steps": 8,
+    "max_tool_calls_per_step": 8,
+    "model_requested": "claude-opus-5-thinking",
+    "offline": true,
+    "policy_declaration": {
+      "accepted_relation_ids": [
+        "character_multiset_equal",
+        "contains_reference",
+        "exact",
+        "mask_consistent",
+        "prefix_of_reference",
+        "separator_normalized_equal",
+        "suffix_of_reference"
+      ],
+      "auto_resolution_ceiling_paise": 50000000,
+      "elevated_min_pinned_reference_characters": 8,
+      "elevated_scrutiny_threshold_paise": 10000000,
+      "max_unexplained_delta_paise": 0,
+      "min_pinned_reference_characters": 4,
+      "require_exact_total_blocking_rule": true,
+      "require_fragment_present_in_narration": true
+    },
+    "provider_constructed": false,
+    "provider_id_requested": "gorouter",
+    "replay": true,
+    "require_exact_cohort": true,
+    "require_expected_tier": true,
+    "run_dumps": [],
+    "split": "frozen-eval",
+    "trajectory_dirs": [
+      "frozen-eval-v3-opus5-thinking-retries"
+    ]
+  },
+  "conjunction": {
+    "agent_atom_coverage": 1.0,
+    "cases_with_incomplete_closure": 0,
+    "closure_is_the_decision_input": true,
+    "final_intersection_size": {
+      "1": 1
+    },
+    "independent_narration_spans_per_case": {
+      "1": 1
+    },
+    "informative_atoms_per_case": {
+      "1": 1
+    },
+    "informative_atoms_surfaced_by_agent": 1,
+    "informative_atoms_total": 1,
+    "note": "The agent seeds the reference path and does not select within it, so agent_atom_coverage measures investigation efficiency and nothing about correctness. See src/finrecon/decide/validator.py.",
+    "reference_evidence_states": {
+      "identified": 1
+    },
+    "resolutions_from_a_single_claim": 1,
+    "resolutions_needing_conjunction": 0,
+    "resolutions_total": 1
+  },
+  "evaluator_version": "stage4-eval.v1",
+  "metrics": {
+    "auto_resolution_accuracy": 1.0,
+    "auto_resolution_coverage": 1.0,
+    "auto_resolved": 1,
+    "correct_auto_resolutions": 1,
+    "correctly_escalated": 0,
+    "escalated": 0,
+    "escalation_recall": null,
+    "investigated": 1,
+    "match_rate_denominator": "cases with a uniquely resolvable ground truth",
+    "match_rate_numerator": "correct automatic reconciliations only",
+    "overall_match_rate": 1.0,
+    "scoring_available": true,
+    "scoring_unavailable_reason": null,
+    "truly_ambiguous_cases": 0,
+    "uniquely_resolvable_cases": 1,
+    "unsafe_auto_match_rate": 0.0,
+    "value_at_risk_paise": 0,
+    "wrong_auto_resolutions": 0
+  },
+  "metrics_by_archetype": {
+    "degraded_reference:separator_altered": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 1,
+      "cases": 1,
+      "correct_auto_resolutions": 1,
+      "correctly_escalated": 0,
+      "escalated": 0,
+      "match_rate": 1.0,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 5,
+      "tool_calls_mean_per_case": 5.0,
+      "tool_calls_median_per_case": 5,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 1,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "metrics_by_candidate_count": {
+    "unknown": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 1,
+      "cases": 1,
+      "correct_auto_resolutions": 1,
+      "correctly_escalated": 0,
+      "escalated": 0,
+      "match_rate": 1.0,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 5,
+      "tool_calls_mean_per_case": 5.0,
+      "tool_calls_median_per_case": 5,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 1,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "metrics_by_family": {},
+  "metrics_by_required_composition": {},
+  "metrics_by_tier": {
+    "T2": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 1,
+      "cases": 1,
+      "correct_auto_resolutions": 1,
+      "correctly_escalated": 0,
+      "escalated": 0,
+      "match_rate": 1.0,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 5,
+      "tool_calls_mean_per_case": 5.0,
+      "tool_calls_median_per_case": 5,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 1,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "offline_guarantee": {
+    "cache_hits": 1,
+    "chain": null,
+    "provider_calls_made": false,
+    "replay_only": true
+  },
+  "per_case": [
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000011",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "0V2IEWR-HA43-",
+          "member_fragment_count": 7,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            31
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "0V2IEWRHA43",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000011|setl_frozeneval_000013",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000013"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 5,
+      "truth_reference": "0V2IEWRHA43",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000013"
+      ],
+      "value_at_stake_paise": 1684585,
+      "wrong_reason": null
+    }
+  ],
+  "recorded_versions": {
+    "agent_loop_version": [
+      "loop.v2"
+    ],
+    "cache_schema_version": [
+      "trajectory-cache.v3"
+    ],
+    "policy_version": [
+      "policy.v1"
+    ],
+    "prompt_version": [
+      "investigator.v4"
+    ],
+    "tool_schema_version": [
+      "tools.v3"
+    ],
+    "validator_version": [
+      "validator.v3"
+    ]
+  },
+  "report_kind": "evaluation",
+  "soundness": {
+    "checks_available": true,
+    "checks_unavailable_reason": null,
+    "total_violations": 0,
+    "violations": [],
+    "violations_by_check": {}
+  },
+  "structural": {
+    "breakup_amount_facts": 0,
+    "complete_snapshot_is_structural_axis": true,
+    "reference_only_resolutions": 1,
+    "reference_plus_amount_resolutions": 0,
+    "reference_plus_date_resolutions": 0,
+    "resolution_evidence_basis": {
+      "reference-only": 1
+    },
+    "structural_contradiction_escalations": 0,
+    "structural_evidence_states": {
+      "none": 1
+    },
+    "value_date_facts": 0
+  },
+  "telemetry": {
+    "cases": 1,
+    "cases_reporting_latency": 1,
+    "cases_reporting_tokens": 1,
+    "fallback_reasons": {},
+    "fallback_used_cases": 0,
+    "latency_mean_ms_per_case": 72539.0,
+    "latency_total_ms": 72539,
+    "model_steps_max": 2,
+    "model_steps_mean_per_case": 2.0,
+    "model_steps_total": 2,
+    "models_reported": {
+      "gorouter:claude-opus-5": 1
+    },
+    "models_requested": {
+      "gorouter:claude-opus-5-thinking": 1
+    },
+    "provider_attempt_outcomes": {
+      "success": 2,
+      "timeout": 1
+    },
+    "provider_chains": {
+      "gorouter:claude-opus-5-thinking": 1
+    },
+    "provider_error_classes": {
+      "ProviderInfrastructureError": 1
+    },
+    "provider_failed_attempts": 1,
+    "provider_reported_cost_currency": null,
+    "provider_reported_cost_total": null,
+    "requested_matches_reported": false,
+    "steps_reporting_cost": 0,
+    "tokens_input_total": 22183,
+    "tokens_mean_per_case": 22396.0,
+    "tokens_output_total": 213,
+    "tokens_total": 22396
+  },
+  "wrong_resolutions": []
+}

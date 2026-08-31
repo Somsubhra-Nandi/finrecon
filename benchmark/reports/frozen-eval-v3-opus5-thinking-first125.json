@@ -1,0 +1,5917 @@
+{
+  "agent": {
+    "accepted_evidence_relations": {
+      "character_multiset_equal": 19,
+      "contains_reference": 15,
+      "mask_consistent": 15,
+      "prefix_of_reference": 16,
+      "separator_normalized_equal": 16,
+      "suffix_of_reference": 18
+    },
+    "cases": 125,
+    "cases_with_any_validation_failure": 0,
+    "deterministic_policy_resolved": 99,
+    "escalation_blockers": {
+      "no_reference_link": 26,
+      "provider_failure": 8
+    },
+    "evidence_detail_available": true,
+    "investigation_complete": 18,
+    "provider_configuration_failure": 0,
+    "provider_infrastructure_failure": 8,
+    "reference_kinds_used": {
+      "utr": 99
+    },
+    "termination_reasons": {
+      "deterministic_policy_resolved": 99,
+      "investigation_complete": 18,
+      "provider_infrastructure_failure": 8
+    },
+    "tool_budget_exhausted_cases": 0,
+    "tool_budget_exhaustion_rate": 0.0,
+    "tool_calls_executed_total": 434,
+    "tool_calls_max_per_case": 6,
+    "tool_calls_mean_per_case": 3.472,
+    "tool_calls_median_per_case": 4,
+    "tool_invocations_skipped": 0,
+    "tool_invocations_total": 434,
+    "tool_validation_failed": 0,
+    "tool_validation_reasons": {
+      "duplicate_argument_key": 0,
+      "malformed_arguments_json": 0,
+      "schema_validation_failed": 0,
+      "tool_call_batch_limit_exceeded": 0,
+      "unknown_candidate": 0,
+      "unknown_settlement": 0,
+      "unknown_tool": 0
+    },
+    "tool_validation_rejections_total": 0
+  },
+  "cohort": {
+    "all_expected_tier": true,
+    "case_ids": [
+      "case:bnk_frozeneval_000001",
+      "case:bnk_frozeneval_000011",
+      "case:bnk_frozeneval_000019",
+      "case:bnk_frozeneval_000020",
+      "case:bnk_frozeneval_000023",
+      "case:bnk_frozeneval_000024",
+      "case:bnk_frozeneval_000026",
+      "case:bnk_frozeneval_000029",
+      "case:bnk_frozeneval_000030",
+      "case:bnk_frozeneval_000031",
+      "case:bnk_frozeneval_000036",
+      "case:bnk_frozeneval_000039",
+      "case:bnk_frozeneval_000045",
+      "case:bnk_frozeneval_000056",
+      "case:bnk_frozeneval_000059",
+      "case:bnk_frozeneval_000063",
+      "case:bnk_frozeneval_000065",
+      "case:bnk_frozeneval_000073",
+      "case:bnk_frozeneval_000079",
+      "case:bnk_frozeneval_000080",
+      "case:bnk_frozeneval_000083",
+      "case:bnk_frozeneval_000091",
+      "case:bnk_frozeneval_000092",
+      "case:bnk_frozeneval_000097",
+      "case:bnk_frozeneval_000100",
+      "case:bnk_frozeneval_000101",
+      "case:bnk_frozeneval_000102",
+      "case:bnk_frozeneval_000103",
+      "case:bnk_frozeneval_000107",
+      "case:bnk_frozeneval_000111",
+      "case:bnk_frozeneval_000120",
+      "case:bnk_frozeneval_000122",
+      "case:bnk_frozeneval_000124",
+      "case:bnk_frozeneval_000127",
+      "case:bnk_frozeneval_000129",
+      "case:bnk_frozeneval_000132",
+      "case:bnk_frozeneval_000135",
+      "case:bnk_frozeneval_000136",
+      "case:bnk_frozeneval_000137",
+      "case:bnk_frozeneval_000139",
+      "case:bnk_frozeneval_000143",
+      "case:bnk_frozeneval_000145",
+      "case:bnk_frozeneval_000147",
+      "case:bnk_frozeneval_000150",
+      "case:bnk_frozeneval_000151",
+      "case:bnk_frozeneval_000154",
+      "case:bnk_frozeneval_000161",
+      "case:bnk_frozeneval_000168",
+      "case:bnk_frozeneval_000177",
+      "case:bnk_frozeneval_000186",
+      "case:bnk_frozeneval_000188",
+      "case:bnk_frozeneval_000204",
+      "case:bnk_frozeneval_000208",
+      "case:bnk_frozeneval_000209",
+      "case:bnk_frozeneval_000212",
+      "case:bnk_frozeneval_000214",
+      "case:bnk_frozeneval_000218",
+      "case:bnk_frozeneval_000222",
+      "case:bnk_frozeneval_000224",
+      "case:bnk_frozeneval_000226",
+      "case:bnk_frozeneval_000228",
+      "case:bnk_frozeneval_000230",
+      "case:bnk_frozeneval_000240",
+      "case:bnk_frozeneval_000241",
+      "case:bnk_frozeneval_000245",
+      "case:bnk_frozeneval_000246",
+      "case:bnk_frozeneval_000248",
+      "case:bnk_frozeneval_000251",
+      "case:bnk_frozeneval_000252",
+      "case:bnk_frozeneval_000253",
+      "case:bnk_frozeneval_000254",
+      "case:bnk_frozeneval_000257",
+      "case:bnk_frozeneval_000263",
+      "case:bnk_frozeneval_000267",
+      "case:bnk_frozeneval_000268",
+      "case:bnk_frozeneval_000271",
+      "case:bnk_frozeneval_000273",
+      "case:bnk_frozeneval_000277",
+      "case:bnk_frozeneval_000281",
+      "case:bnk_frozeneval_000286",
+      "case:bnk_frozeneval_000290",
+      "case:bnk_frozeneval_000293",
+      "case:bnk_frozeneval_000294",
+      "case:bnk_frozeneval_000296",
+      "case:bnk_frozeneval_000299",
+      "case:bnk_frozeneval_000303",
+      "case:bnk_frozeneval_000312",
+      "case:bnk_frozeneval_000313",
+      "case:bnk_frozeneval_000316",
+      "case:bnk_frozeneval_000317",
+      "case:bnk_frozeneval_000320",
+      "case:bnk_frozeneval_000327",
+      "case:bnk_frozeneval_000328",
+      "case:bnk_frozeneval_000335",
+      "case:bnk_frozeneval_000338",
+      "case:bnk_frozeneval_000342",
+      "case:bnk_frozeneval_000347",
+      "case:bnk_frozeneval_000349",
+      "case:bnk_frozeneval_000355",
+      "case:bnk_frozeneval_000356",
+      "case:bnk_frozeneval_000357",
+      "case:bnk_frozeneval_000358",
+      "case:bnk_frozeneval_000371",
+      "case:bnk_frozeneval_000375",
+      "case:bnk_frozeneval_000381",
+      "case:bnk_frozeneval_000384",
+      "case:bnk_frozeneval_000385",
+      "case:bnk_frozeneval_000389",
+      "case:bnk_frozeneval_000391",
+      "case:bnk_frozeneval_000395",
+      "case:bnk_frozeneval_000396",
+      "case:bnk_frozeneval_000398",
+      "case:bnk_frozeneval_000400",
+      "case:bnk_frozeneval_000402",
+      "case:bnk_frozeneval_000405",
+      "case:bnk_frozeneval_000410",
+      "case:bnk_frozeneval_000413",
+      "case:bnk_frozeneval_000414",
+      "case:bnk_frozeneval_000418",
+      "case:bnk_frozeneval_000419",
+      "case:bnk_frozeneval_000422",
+      "case:bnk_frozeneval_000432",
+      "case:bnk_frozeneval_000434",
+      "case:bnk_frozeneval_000435",
+      "case:bnk_frozeneval_000436"
+    ],
+    "case_source": {
+      "case:bnk_frozeneval_000001": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000011": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000019": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000020": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000023": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000024": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000026": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000029": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000030": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000031": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000036": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000039": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000045": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000056": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000059": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000063": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000065": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000073": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000079": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000080": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000083": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000091": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000092": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000097": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000100": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000101": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000102": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000103": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000107": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000111": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000120": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000122": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000124": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000127": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000129": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000132": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000135": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000136": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000137": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000139": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000143": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000145": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000147": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000150": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000151": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000154": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000161": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000168": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000177": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000186": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000188": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000204": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000208": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000209": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000212": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000214": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000218": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000222": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000224": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000226": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000228": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000230": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000240": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000241": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000245": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000246": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000248": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000251": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000252": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000253": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000254": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000257": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000263": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000267": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000268": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000271": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000273": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000277": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000281": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000286": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000290": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000293": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000294": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000296": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000299": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000303": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000312": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000313": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000316": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000317": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000320": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000327": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000328": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000335": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000338": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000342": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000347": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000349": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000355": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000356": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000357": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000358": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000371": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000375": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000381": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000384": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000385": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000389": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000391": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000395": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000396": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000398": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000400": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000402": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000405": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000410": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000413": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000414": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000418": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000419": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000422": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000432": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000434": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000435": "cache:frozen-eval-v3-opus5-thinking-final",
+      "case:bnk_frozeneval_000436": "cache:frozen-eval-v3-opus5-thinking-final"
+    },
+    "complete": true,
+    "contamination": [],
+    "duplicate_requested": [],
+    "duplicate_sources": {},
+    "expected_tier": null,
+    "extra": [],
+    "found_count": 125,
+    "missing": [],
+    "requested_count": 125,
+    "requested_explicitly": false,
+    "sources_contributing": {
+      "cache:frozen-eval-v3-opus5-thinking-final": 125
+    },
+    "sources_offered": {
+      "cache:frozen-eval-v3-opus5-thinking-final": 125
+    },
+    "tier_counts": {
+      "T2": 103,
+      "T3": 22
+    },
+    "unknown_to_ground_truth": []
+  },
+  "configuration": {
+    "allow_frozen_truth": true,
+    "evaluator_version": "stage4-eval.v1",
+    "expected_tier": null,
+    "explicit_cohort_supplied": false,
+    "label": "Frozen v3 Opus first 125 residuals",
+    "max_steps": 8,
+    "max_tool_calls_per_step": 8,
+    "model_requested": "claude-opus-5-thinking",
+    "offline": true,
+    "policy_declaration": {
+      "accepted_relation_ids": [
+        "character_multiset_equal",
+        "contains_reference",
+        "exact",
+        "mask_consistent",
+        "prefix_of_reference",
+        "separator_normalized_equal",
+        "suffix_of_reference"
+      ],
+      "auto_resolution_ceiling_paise": 50000000,
+      "elevated_min_pinned_reference_characters": 8,
+      "elevated_scrutiny_threshold_paise": 10000000,
+      "max_unexplained_delta_paise": 0,
+      "min_pinned_reference_characters": 4,
+      "require_exact_total_blocking_rule": true,
+      "require_fragment_present_in_narration": true
+    },
+    "provider_constructed": false,
+    "provider_id_requested": "gorouter",
+    "replay": true,
+    "require_exact_cohort": false,
+    "require_expected_tier": true,
+    "run_dumps": [],
+    "split": "frozen-eval",
+    "trajectory_dirs": [
+      "frozen-eval-v3-opus5-thinking-final"
+    ]
+  },
+  "conjunction": {
+    "agent_atom_coverage": 0.961165,
+    "cases_with_incomplete_closure": 0,
+    "closure_is_the_decision_input": true,
+    "final_intersection_size": {
+      "0": 22,
+      "1": 103
+    },
+    "independent_narration_spans_per_case": {
+      "0": 22,
+      "1": 103
+    },
+    "informative_atoms_per_case": {
+      "0": 22,
+      "1": 103
+    },
+    "informative_atoms_surfaced_by_agent": 99,
+    "informative_atoms_total": 103,
+    "note": "The agent seeds the reference path and does not select within it, so agent_atom_coverage measures investigation efficiency and nothing about correctness. See src/finrecon/decide/validator.py.",
+    "reference_evidence_states": {
+      "identified": 99,
+      "no_admissible_agent_evidence": 26
+    },
+    "resolutions_from_a_single_claim": 99,
+    "resolutions_needing_conjunction": 0,
+    "resolutions_total": 99
+  },
+  "evaluator_version": "stage4-eval.v1",
+  "metrics": {
+    "auto_resolution_accuracy": 1.0,
+    "auto_resolution_coverage": 0.792,
+    "auto_resolved": 99,
+    "correct_auto_resolutions": 99,
+    "correctly_escalated": 22,
+    "escalated": 26,
+    "escalation_recall": 1.0,
+    "investigated": 125,
+    "match_rate_denominator": "cases with a uniquely resolvable ground truth",
+    "match_rate_numerator": "correct automatic reconciliations only",
+    "overall_match_rate": 0.961165,
+    "scoring_available": true,
+    "scoring_unavailable_reason": null,
+    "truly_ambiguous_cases": 22,
+    "uniquely_resolvable_cases": 103,
+    "unsafe_auto_match_rate": 0.0,
+    "value_at_risk_paise": 0,
+    "wrong_auto_resolutions": 0
+  },
+  "metrics_by_archetype": {
+    "ambiguous_same_amount_same_date": {
+      "auto_resolution_accuracy": null,
+      "auto_resolved": 0,
+      "cases": 22,
+      "correct_auto_resolutions": 0,
+      "correctly_escalated": 22,
+      "escalated": 22,
+      "match_rate": null,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 70,
+      "tool_calls_mean_per_case": 3.1818,
+      "tool_calls_median_per_case": 4.0,
+      "truly_ambiguous": 22,
+      "uniquely_resolvable": 0,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "degraded_reference:embedded_in_narration": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 15,
+      "cases": 15,
+      "correct_auto_resolutions": 15,
+      "correctly_escalated": 0,
+      "escalated": 0,
+      "match_rate": 1.0,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 45,
+      "tool_calls_mean_per_case": 3.0,
+      "tool_calls_median_per_case": 3,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 15,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "degraded_reference:masked": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 15,
+      "cases": 16,
+      "correct_auto_resolutions": 15,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.9375,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 68,
+      "tool_calls_mean_per_case": 4.25,
+      "tool_calls_median_per_case": 4.0,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 16,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "degraded_reference:reordered": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 19,
+      "cases": 21,
+      "correct_auto_resolutions": 19,
+      "correctly_escalated": 0,
+      "escalated": 2,
+      "match_rate": 0.904762,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 65,
+      "tool_calls_mean_per_case": 3.0952,
+      "tool_calls_median_per_case": 3,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 21,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "degraded_reference:separator_altered": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 16,
+      "cases": 17,
+      "correct_auto_resolutions": 16,
+      "correctly_escalated": 0,
+      "escalated": 1,
+      "match_rate": 0.941176,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 61,
+      "tool_calls_mean_per_case": 3.5882,
+      "tool_calls_median_per_case": 3,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 17,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "degraded_reference:truncated_left": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 18,
+      "cases": 18,
+      "correct_auto_resolutions": 18,
+      "correctly_escalated": 0,
+      "escalated": 0,
+      "match_rate": 1.0,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 67,
+      "tool_calls_mean_per_case": 3.7222,
+      "tool_calls_median_per_case": 4.0,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 18,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "degraded_reference:truncated_right": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 16,
+      "cases": 16,
+      "correct_auto_resolutions": 16,
+      "correctly_escalated": 0,
+      "escalated": 0,
+      "match_rate": 1.0,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 58,
+      "tool_calls_mean_per_case": 3.625,
+      "tool_calls_median_per_case": 4.0,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 16,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "metrics_by_candidate_count": {
+    "unknown": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 99,
+      "cases": 125,
+      "correct_auto_resolutions": 99,
+      "correctly_escalated": 22,
+      "escalated": 26,
+      "match_rate": 0.961165,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 434,
+      "tool_calls_mean_per_case": 3.472,
+      "tool_calls_median_per_case": 4,
+      "truly_ambiguous": 22,
+      "uniquely_resolvable": 103,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "metrics_by_family": {},
+  "metrics_by_required_composition": {},
+  "metrics_by_tier": {
+    "T2": {
+      "auto_resolution_accuracy": 1.0,
+      "auto_resolved": 99,
+      "cases": 103,
+      "correct_auto_resolutions": 99,
+      "correctly_escalated": 0,
+      "escalated": 4,
+      "match_rate": 0.961165,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 364,
+      "tool_calls_mean_per_case": 3.534,
+      "tool_calls_median_per_case": 3,
+      "truly_ambiguous": 0,
+      "uniquely_resolvable": 103,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    },
+    "T3": {
+      "auto_resolution_accuracy": null,
+      "auto_resolved": 0,
+      "cases": 22,
+      "correct_auto_resolutions": 0,
+      "correctly_escalated": 22,
+      "escalated": 22,
+      "match_rate": null,
+      "tool_budget_exhausted_cases": 0,
+      "tool_budget_exhaustion_rate": 0.0,
+      "tool_calls_executed_total": 70,
+      "tool_calls_mean_per_case": 3.1818,
+      "tool_calls_median_per_case": 4.0,
+      "truly_ambiguous": 22,
+      "uniquely_resolvable": 0,
+      "value_at_risk_paise": 0,
+      "wrong_auto_resolutions": 0
+    }
+  },
+  "offline_guarantee": {
+    "cache_hits": 125,
+    "chain": null,
+    "provider_calls_made": false,
+    "replay_only": true
+  },
+  "per_case": [
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000001",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": " 0-12GJNG0HMD2 ",
+          "member_fragment_count": 12,
+          "narration_offsets": [
+            11
+          ],
+          "narration_span": [
+            11,
+            26
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "012GJNG0HMD2",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000001|setl_frozeneval_000002",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000002"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "012GJNG0HMD2",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000002"
+      ],
+      "value_at_stake_paise": 4020058,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [
+        "provider_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000011",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "provider_infrastructure_failure",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "0V2IEWRHA43",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000013"
+      ],
+      "value_at_stake_paise": 1684585,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000019",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "PZ6K8E9IB75O",
+          "member_fragment_count": 9,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            28
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "PZ6K8E9IB75OZU",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000019|setl_frozeneval_000023",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000023"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "PZ6K8E9IB75OZU",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000023"
+      ],
+      "value_at_stake_paise": 807990,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000020",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETUL8PMKFOJDET9YG-MUM",
+          "member_fragment_count": 117,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            37
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "UL8PMKFOJDET9YG",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000020|setl_frozeneval_000024",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000024"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "UL8PMKFOJDET9YG",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000024"
+      ],
+      "value_at_stake_paise": 2722263,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000023",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "U9A178JUL00O",
+          "member_fragment_count": 4,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            32
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "JUL00O178U9A",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000023|setl_frozeneval_000028",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000028"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "JUL00O178U9A",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000028"
+      ],
+      "value_at_stake_paise": 338196,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000024",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "H74Z2K0ITDY",
+          "member_fragment_count": 8,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            27
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "K96H74Z2K0ITDY",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000024|setl_frozeneval_000031",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000031"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "K96H74Z2K0ITDY",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000031"
+      ],
+      "value_at_stake_paise": 3399148,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000026",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "HPH6OVPU0RG",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            23
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "VPUH6O0RGHP",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000026|setl_frozeneval_000034",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000034"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "VPUH6O0RGHP",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000034"
+      ],
+      "value_at_stake_paise": 4586415,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000029",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "8OPCSSF0S8MSUO4",
+          "member_fragment_count": 7,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            31
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "F0S8MSUO4CSS8OP",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000029|setl_frozeneval_000038",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000038"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "F0S8MSUO4CSS8OP",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000038"
+      ],
+      "value_at_stake_paise": 3822867,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000030",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETKG1UXS5DALQHD68-MUM",
+          "member_fragment_count": 117,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            37
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "KG1UXS5DALQHD68",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000030|setl_frozeneval_000039",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000039"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "KG1UXS5DALQHD68",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000039"
+      ],
+      "value_at_stake_paise": 976072,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000031",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "EA6TCW0CTCSMGX",
+          "member_fragment_count": 11,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            30
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "REA6TCW0CTCSMGX",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000031|setl_frozeneval_000041",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000041"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "REA6TCW0CTCSMGX",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000041"
+      ],
+      "value_at_stake_paise": 3022557,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000036",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "5UGRI1ILDU",
+          "member_fragment_count": 7,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            30
+          ],
+          "pinned_reference_characters": 10,
+          "reference_kind": "utr",
+          "reference_value": "5UGRI1ILDU62T4D",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000036|setl_frozeneval_000048",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000048"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "5UGRI1ILDU62T4D",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000048"
+      ],
+      "value_at_stake_paise": 601651,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000039",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "Z16VH5NVIUKJ7V4",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            31
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "Z16NVIUKJVH57V4",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000039|setl_frozeneval_000051",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000051"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "Z16NVIUKJVH57V4",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000051"
+      ],
+      "value_at_stake_paise": 4408671,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000045",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "QW2XXDS",
+          "member_fragment_count": 4,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            23
+          ],
+          "pinned_reference_characters": 7,
+          "reference_kind": "utr",
+          "reference_value": "DN2A33OEQW2XXDS",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000045|setl_frozeneval_000058",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000058"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "DN2A33OEQW2XXDS",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000058"
+      ],
+      "value_at_stake_paise": 3171012,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000056",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETZ8RITRSXMDZG-MUM",
+          "member_fragment_count": 111,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            34
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "Z8RITRSXMDZG",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000056|setl_frozeneval_000072",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000072"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "Z8RITRSXMDZG",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000072"
+      ],
+      "value_at_stake_paise": 4785550,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000059",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "RPGH7HH2DS5H",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            22
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "RPGH7HS5HH2D",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000059|setl_frozeneval_000075",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000075"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": "RPGH7HS5HH2D",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000075"
+      ],
+      "value_at_stake_paise": 1503327,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000063",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 1912676,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000065",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 4031768,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000073",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 3905946,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000079",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETW7T1WTRAV7IIS-MUM",
+          "member_fragment_count": 113,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            35
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "W7T1WTRAV7IIS",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000079|setl_frozeneval_000103",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000103"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "W7T1WTRAV7IIS",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000103"
+      ],
+      "value_at_stake_paise": 4012864,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000080",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "/XBMNH-BG43RNCH2T1",
+          "member_fragment_count": 12,
+          "narration_offsets": [
+            15
+          ],
+          "narration_span": [
+            15,
+            33
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "XBMNHBG43RNCH2T1",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000080|setl_frozeneval_000105",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000105"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "XBMNHBG43RNCH2T1",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000105"
+      ],
+      "value_at_stake_paise": 239280,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000083",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "BH5-9K4U0UEX-",
+          "member_fragment_count": 7,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            31
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "BH59K4U0UEX",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000083|setl_frozeneval_000108",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000108"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "BH59K4U0UEX",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000108"
+      ],
+      "value_at_stake_paise": 1107856,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000091",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "T784PTS80Q1X",
+          "member_fragment_count": 9,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            30
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "T784PTS80Q1XWBM",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000091|setl_frozeneval_000119",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000119"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 5,
+      "truth_reference": "T784PTS80Q1XWBM",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000119"
+      ],
+      "value_at_stake_paise": 100088,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000092",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "CQTBF64F",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            18
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "CQTBF64F2GF2J",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000092|setl_frozeneval_000121",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000121"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "CQTBF64F2GF2J",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000121"
+      ],
+      "value_at_stake_paise": 4160113,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000097",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "IBM8KPMQYW0K",
+          "member_fragment_count": 9,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            24
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "O9S8IBM8KPMQYW0K",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000097|setl_frozeneval_000127",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000127"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "O9S8IBM8KPMQYW0K",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000127"
+      ],
+      "value_at_stake_paise": 3801957,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000100",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "AAIAUOSI6WJ0QNEA",
+          "member_fragment_count": 2,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            32
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "AAISI6WJ0AUOQNEA",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000100|setl_frozeneval_000132",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000132"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "AAISI6WJ0AUOQNEA",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000132"
+      ],
+      "value_at_stake_paise": 3039770,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000101",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 4131191,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000102",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "KY313RY3V0A",
+          "member_fragment_count": 2,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            21
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "KY3V0ARY313",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000102|setl_frozeneval_000136",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000136"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "KY3V0ARY313",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000136"
+      ],
+      "value_at_stake_paise": 1994194,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000103",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "2B*********Y7",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            29
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "2BTVG8EFSMHY7",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000103|setl_frozeneval_000137",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000137"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "2BTVG8EFSMHY7",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000137"
+      ],
+      "value_at_stake_paise": 3332473,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000107",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "AHGI0G0HIP77DRJ",
+          "member_fragment_count": 4,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            27
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "AHGI0GDRJP770HI",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000107|setl_frozeneval_000143",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000143"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "AHGI0GDRJP770HI",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000143"
+      ],
+      "value_at_stake_paise": 1980381,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000111",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETQIDSILCWJWJ0AOF-MUM",
+          "member_fragment_count": 117,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            37
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "QIDSILCWJWJ0AOF",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000111|setl_frozeneval_000148",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000148"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "QIDSILCWJWJ0AOF",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000148"
+      ],
+      "value_at_stake_paise": 3945766,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000120",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "YT8OVGU",
+          "member_fragment_count": 4,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            17
+          ],
+          "pinned_reference_characters": 7,
+          "reference_kind": "utr",
+          "reference_value": "YT8OVGULNE4G",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000120|setl_frozeneval_000160",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000160"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "YT8OVGULNE4G",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000160"
+      ],
+      "value_at_stake_paise": 883563,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000122",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "IA-WV6DPM5O1YDF-",
+          "member_fragment_count": 11,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            34
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "IAWV6DPM5O1YDF",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000122|setl_frozeneval_000162",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000162"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "IAWV6DPM5O1YDF",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000162"
+      ],
+      "value_at_stake_paise": 1943915,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000124",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "G8HMP8MML-01IN2-",
+          "member_fragment_count": 10,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            34
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "G8HMP8MML01IN2",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000124|setl_frozeneval_000166",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000166"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 5,
+      "truth_reference": "G8HMP8MML01IN2",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000166"
+      ],
+      "value_at_stake_paise": 2747129,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000127",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "GV48CP",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            22
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "B6C638P5K2GV48CP",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000127|setl_frozeneval_000169",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000169"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "B6C638P5K2GV48CP",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000169"
+      ],
+      "value_at_stake_paise": 786628,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000129",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "U8I5ANFTR66",
+          "member_fragment_count": 8,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            31
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "U8I5ANFTR66O",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000129|setl_frozeneval_000172",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000172"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "U8I5ANFTR66O",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000172"
+      ],
+      "value_at_stake_paise": 3775817,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000132",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETE89O5TCCCSV4KOD-MUM",
+          "member_fragment_count": 117,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            37
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "E89O5TCCCSV4KOD",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000132|setl_frozeneval_000176",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000176"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "E89O5TCCCSV4KOD",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000176"
+      ],
+      "value_at_stake_paise": 918913,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000135",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "/QB6-Q8RKWDWH2/",
+          "member_fragment_count": 10,
+          "narration_offsets": [
+            19
+          ],
+          "narration_span": [
+            19,
+            34
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "QB6Q8RKWDWH2",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000135|setl_frozeneval_000181",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000181"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "QB6Q8RKWDWH2",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000181"
+      ],
+      "value_at_stake_paise": 1678028,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000136",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETWE72MFN8YVTZATME-MUM",
+          "member_fragment_count": 119,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            38
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "WE72MFN8YVTZATME",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000136|setl_frozeneval_000182",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000182"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "WE72MFN8YVTZATME",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000182"
+      ],
+      "value_at_stake_paise": 3430613,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000137",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 4539990,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000139",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 3481482,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000143",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "27YQHMPJ7",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            25
+          ],
+          "pinned_reference_characters": 9,
+          "reference_kind": "utr",
+          "reference_value": "MEM927YQHMPJ7",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000143|setl_frozeneval_000194",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000194"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "MEM927YQHMPJ7",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000194"
+      ],
+      "value_at_stake_paise": 1138201,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000145",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETRABYKYADLC1T2-MUM",
+          "member_fragment_count": 113,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            35
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "RABYKYADLC1T2",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000145|setl_frozeneval_000197",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000197"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "RABYKYADLC1T2",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000197"
+      ],
+      "value_at_stake_paise": 2727020,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000147",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "E8FK",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            22
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "UJH3Y0FBYE8FK",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000147|setl_frozeneval_000199",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000199"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "UJH3Y0FBYE8FK",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000199"
+      ],
+      "value_at_stake_paise": 2616241,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000150",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "Y61SGMJWQ0DZ9RY",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            25
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "0DZJWQ9RYSGMY61",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000150|setl_frozeneval_000204",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000204"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "0DZJWQ9RYSGMY61",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000204"
+      ],
+      "value_at_stake_paise": 4528837,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000151",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "WAGF7HFK6N0EQUSZ",
+          "member_fragment_count": 2,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            34
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "K6NWAGUSZ0EQF7HF",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000151|setl_frozeneval_000206",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000206"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "K6NWAGUSZ0EQF7HF",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000206"
+      ],
+      "value_at_stake_paise": 1569274,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000154",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 3166666,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000161",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETFJ4JJLK0743GO3B-MUM",
+          "member_fragment_count": 117,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            37
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "FJ4JJLK0743GO3B",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000161|setl_frozeneval_000219",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000219"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "FJ4JJLK0743GO3B",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000219"
+      ],
+      "value_at_stake_paise": 3445353,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000168",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "7UMA",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            22
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "19LHN5NAMPC7UMA",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000168|setl_frozeneval_000226",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000226"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "19LHN5NAMPC7UMA",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000226"
+      ],
+      "value_at_stake_paise": 353976,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000177",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETSEM0JX1BP394J1Q-MUM",
+          "member_fragment_count": 117,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            37
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "SEM0JX1BP394J1Q",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000177|setl_frozeneval_000237",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000237"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "SEM0JX1BP394J1Q",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000237"
+      ],
+      "value_at_stake_paise": 4016660,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000186",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SET9RSU670QOYRI-MUM",
+          "member_fragment_count": 111,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            34
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "9RSU670QOYRI",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000186|setl_frozeneval_000247",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000247"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "9RSU670QOYRI",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000247"
+      ],
+      "value_at_stake_paise": 1406234,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000188",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "JD1HNS4AGLD191",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            32
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "191GLDJD1S4AHN",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000188|setl_frozeneval_000250",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000250"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "191GLDJD1S4AHN",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000250"
+      ],
+      "value_at_stake_paise": 1840080,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000204",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "43GTUK2FF",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            21
+          ],
+          "pinned_reference_characters": 9,
+          "reference_kind": "utr",
+          "reference_value": "3X843GTUK2FF",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000204|setl_frozeneval_000268",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000268"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "3X843GTUK2FF",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000268"
+      ],
+      "value_at_stake_paise": 1589039,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000208",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "V4***********NB",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            27
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "V4BPIDSQOO1QFNB",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000208|setl_frozeneval_000273",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000273"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 5,
+      "truth_reference": "V4BPIDSQOO1QFNB",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000273"
+      ],
+      "value_at_stake_paise": 2902869,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000209",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "VH***********6V",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            33
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "VHFE881QILZ0G6V",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000209|setl_frozeneval_000276",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000276"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 6,
+      "truth_reference": "VHFE881QILZ0G6V",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000276"
+      ],
+      "value_at_stake_paise": 2897017,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000212",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "2NV5OBY7H",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            25
+          ],
+          "pinned_reference_characters": 9,
+          "reference_kind": "utr",
+          "reference_value": "2NV5OBY7HY4NP",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000212|setl_frozeneval_000280",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000280"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "2NV5OBY7HY4NP",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000280"
+      ],
+      "value_at_stake_paise": 2813064,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000214",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "PQ8KDSH8OZCHW",
+          "member_fragment_count": 2,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            25
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "DSHCHW8OZPQ8K",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000214|setl_frozeneval_000282",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000282"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "DSHCHW8OZPQ8K",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000282"
+      ],
+      "value_at_stake_paise": 3790600,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000218",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "0F********X3",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            32
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "0FIR6O846BX3",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000218|setl_frozeneval_000287",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000287"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "0FIR6O846BX3",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000287"
+      ],
+      "value_at_stake_paise": 3061499,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000222",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NP2ZCTPRZCCOV",
+          "member_fragment_count": 10,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            23
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "J4CNP2ZCTPRZCCOV",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000222|setl_frozeneval_000293",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000293"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "J4CNP2ZCTPRZCCOV",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000293"
+      ],
+      "value_at_stake_paise": 534684,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000224",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": " XV3Q-A5B52XOO ",
+          "member_fragment_count": 10,
+          "narration_offsets": [
+            11
+          ],
+          "narration_span": [
+            11,
+            26
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "XV3QA5B52XOO",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000224|setl_frozeneval_000296",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000296"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "XV3QA5B52XOO",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000296"
+      ],
+      "value_at_stake_paise": 2105412,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000226",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "N91KQY48710J4",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            25
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "10JKQY487N914",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000226|setl_frozeneval_000299",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000299"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "10JKQY487N914",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000299"
+      ],
+      "value_at_stake_paise": 1305138,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000228",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": " CQ71AMS2-R56 ",
+          "member_fragment_count": 9,
+          "narration_offsets": [
+            11
+          ],
+          "narration_span": [
+            11,
+            25
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "CQ71AMS2R56",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000228|setl_frozeneval_000302",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000302"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "CQ71AMS2R56",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000302"
+      ],
+      "value_at_stake_paise": 3553335,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000230",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "LP************VR",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            36
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "LPHFKRKAT53X54VR",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000230|setl_frozeneval_000306",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000306"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "LPHFKRKAT53X54VR",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000306"
+      ],
+      "value_at_stake_paise": 4295875,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000240",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETH18VA90EJSMPD3FS-MUM",
+          "member_fragment_count": 119,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            38
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "H18VA90EJSMPD3FS",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000240|setl_frozeneval_000317",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000317"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "H18VA90EJSMPD3FS",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000317"
+      ],
+      "value_at_stake_paise": 2735370,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000241",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 1358138,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000245",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "7TXZTJJ1Y8KCI",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            31
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "TXZ1Y8TJJKCI7",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000245|setl_frozeneval_000325",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000325"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "TXZ1Y8TJJKCI7",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000325"
+      ],
+      "value_at_stake_paise": 222501,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000246",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "B0N6",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            20
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "AHQJQDOQTPD8B0N6",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000246|setl_frozeneval_000327",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000327"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "AHQJQDOQTPD8B0N6",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000327"
+      ],
+      "value_at_stake_paise": 1162542,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000248",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "R2**********RN",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            32
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "R29UZOWVB86VRN",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000248|setl_frozeneval_000329",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000329"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 5,
+      "truth_reference": "R29UZOWVB86VRN",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000329"
+      ],
+      "value_at_stake_paise": 4549697,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000251",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "8M**********O2",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            34
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "8MAS8IY6ACZXO2",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000251|setl_frozeneval_000333",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000333"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "8MAS8IY6ACZXO2",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000333"
+      ],
+      "value_at_stake_paise": 3257634,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000252",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "67*********X9",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            33
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "670FMLQ0CJMX9",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000252|setl_frozeneval_000336",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000336"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "670FMLQ0CJMX9",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000336"
+      ],
+      "value_at_stake_paise": 1766825,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000253",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "S573B",
+          "member_fragment_count": 2,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            25
+          ],
+          "pinned_reference_characters": 5,
+          "reference_kind": "utr",
+          "reference_value": "S573BJ00MV5",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000253|setl_frozeneval_000337",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000337"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "S573BJ00MV5",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000337"
+      ],
+      "value_at_stake_paise": 3039402,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000254",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "E0MMWUV-Q1N9-",
+          "member_fragment_count": 7,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            31
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "E0MMWUVQ1N9",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000254|setl_frozeneval_000340",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000340"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 5,
+      "truth_reference": "E0MMWUVQ1N9",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000340"
+      ],
+      "value_at_stake_paise": 235199,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000257",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "UE************D5",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            32
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "UE3F4RK772W5HZD5",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000257|setl_frozeneval_000343",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000343"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "UE3F4RK772W5HZD5",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000343"
+      ],
+      "value_at_stake_paise": 3580171,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000263",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "CN************O2",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            36
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "CNM8EA244BTZUYO2",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000263|setl_frozeneval_000351",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000351"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 6,
+      "truth_reference": "CNM8EA244BTZUYO2",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000351"
+      ],
+      "value_at_stake_paise": 1730307,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000267",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "7W721D",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            18
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "7W721D329INYWT",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000267|setl_frozeneval_000356",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000356"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "7W721D329INYWT",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000356"
+      ],
+      "value_at_stake_paise": 838298,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000268",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "ODTF8CLQXUZ4K",
+          "member_fragment_count": 10,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            25
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "JODTF8CLQXUZ4K",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000268|setl_frozeneval_000359",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000359"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "JODTF8CLQXUZ4K",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000359"
+      ],
+      "value_at_stake_paise": 3447669,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000271",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "B75QQQ7",
+          "member_fragment_count": 4,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            27
+          ],
+          "pinned_reference_characters": 7,
+          "reference_kind": "utr",
+          "reference_value": "B75QQQ7QSOZPBN",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000271|setl_frozeneval_000363",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000363"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "B75QQQ7QSOZPBN",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000363"
+      ],
+      "value_at_stake_paise": 3394259,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000273",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "XEZ4",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            24
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "XEZ4B2ZXWG0",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000273|setl_frozeneval_000366",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000366"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "XEZ4B2ZXWG0",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000366"
+      ],
+      "value_at_stake_paise": 774222,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000277",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 814141,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000281",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "JL**********FU",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            34
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "JLLZY832WTZJFU",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000281|setl_frozeneval_000377",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000377"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 6,
+      "truth_reference": "JLLZY832WTZJFU",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000377"
+      ],
+      "value_at_stake_paise": 1212644,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000286",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "/QTPHB-VRGPIC ",
+          "member_fragment_count": 9,
+          "narration_offsets": [
+            9
+          ],
+          "narration_span": [
+            9,
+            23
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "QTPHBVRGPIC",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000286|setl_frozeneval_000385",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000385"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "QTPHBVRGPIC",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000385"
+      ],
+      "value_at_stake_paise": 3063902,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000290",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "WT*******XE",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            23
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "WT1S6Q88BXE",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000290|setl_frozeneval_000391",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000391"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 5,
+      "truth_reference": "WT1S6Q88BXE",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000391"
+      ],
+      "value_at_stake_paise": 1914580,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000293",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "KXFE2MY6H",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            29
+          ],
+          "pinned_reference_characters": 9,
+          "reference_kind": "utr",
+          "reference_value": "N7FKXFE2MY6H",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000293|setl_frozeneval_000395",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000395"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "N7FKXFE2MY6H",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000395"
+      ],
+      "value_at_stake_paise": 76545,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000294",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 139359,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000296",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 2864105,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000299",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "7J1P",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            22
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "7J1PPECJ0J2P2Q",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000299|setl_frozeneval_000403",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000403"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "7J1PPECJ0J2P2Q",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000403"
+      ],
+      "value_at_stake_paise": 3633767,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000303",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "R3***********TY",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            35
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "R3HQDKJ9SZQJITY",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000303|setl_frozeneval_000409",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000409"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "R3HQDKJ9SZQJITY",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000409"
+      ],
+      "value_at_stake_paise": 1751759,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000312",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "/X-0QH52AWS1MB/",
+          "member_fragment_count": 12,
+          "narration_offsets": [
+            19
+          ],
+          "narration_span": [
+            19,
+            34
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "X0QH52AWS1MB",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000312|setl_frozeneval_000421",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000421"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "X0QH52AWS1MB",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000421"
+      ],
+      "value_at_stake_paise": 4413126,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000313",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "WPK0ZABI4G89UY",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            24
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "4G8WPKABI9UY0Z",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000313|setl_frozeneval_000422",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000422"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "4G8WPKABI9UY0Z",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000422"
+      ],
+      "value_at_stake_paise": 3481500,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000316",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "GSV27IMT6II5HS3Q",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            26
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "GSVS3QI5H27IT6IM",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000316|setl_frozeneval_000427",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000427"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "GSVS3QI5H27IT6IM",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000427"
+      ],
+      "value_at_stake_paise": 3666393,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000317",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETDRVT8TRWAET4A2L-MUM",
+          "member_fragment_count": 117,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            37
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "DRVT8TRWAET4A2L",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000317|setl_frozeneval_000428",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000428"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "DRVT8TRWAET4A2L",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000428"
+      ],
+      "value_at_stake_paise": 1696281,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000320",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "HT7WV66XKAIS",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            22
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "HT76XKWV6AIS",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000320|setl_frozeneval_000432",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000432"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "HT76XKWV6AIS",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000432"
+      ],
+      "value_at_stake_paise": 3882203,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000327",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "YZASEF",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            18
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "RB29TAJ59JYZASEF",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000327|setl_frozeneval_000441",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000441"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "RB29TAJ59JYZASEF",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000441"
+      ],
+      "value_at_stake_paise": 1422190,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000328",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "VRXU7M1T0N",
+          "member_fragment_count": 7,
+          "narration_offsets": [
+            12
+          ],
+          "narration_span": [
+            12,
+            22
+          ],
+          "pinned_reference_characters": 10,
+          "reference_kind": "utr",
+          "reference_value": "VRXU7M1T0N7T",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000328|setl_frozeneval_000442",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000442"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "VRXU7M1T0N7T",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000442"
+      ],
+      "value_at_stake_paise": 3753200,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000335",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "P2MJGN36SA8E9L",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            34
+          ],
+          "pinned_reference_characters": 14,
+          "reference_kind": "utr",
+          "reference_value": "E9LJGN36SP2MA8",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000335|setl_frozeneval_000451",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000451"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "E9LJGN36SP2MA8",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000451"
+      ],
+      "value_at_stake_paise": 2671995,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000338",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "6ZIQ86W7VEKY",
+          "member_fragment_count": 9,
+          "narration_offsets": [
+            20
+          ],
+          "narration_span": [
+            20,
+            32
+          ],
+          "pinned_reference_characters": 12,
+          "reference_kind": "utr",
+          "reference_value": "6ZIQ86W7VEKYDO",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000338|setl_frozeneval_000455",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000455"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "6ZIQ86W7VEKYDO",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000455"
+      ],
+      "value_at_stake_paise": 463150,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000342",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 4273462,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000347",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "HPI6FMUM-1DSKMYD-",
+          "member_fragment_count": 11,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            35
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "HPI6FMUM1DSKMYD",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000347|setl_frozeneval_000468",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000468"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "HPI6FMUM1DSKMYD",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000468"
+      ],
+      "value_at_stake_paise": 3441442,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000349",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "8DUNG",
+          "member_fragment_count": 2,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            23
+          ],
+          "pinned_reference_characters": 5,
+          "reference_kind": "utr",
+          "reference_value": "676FE9H8DUNG",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000349|setl_frozeneval_000471",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000471"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "676FE9H8DUNG",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000471"
+      ],
+      "value_at_stake_paise": 1866964,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000355",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 3520085,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000356",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "5JW9OU",
+          "member_fragment_count": 3,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            16
+          ],
+          "pinned_reference_characters": 6,
+          "reference_kind": "utr",
+          "reference_value": "V5TN15JW9OU",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000356|setl_frozeneval_000480",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000480"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "V5TN15JW9OU",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000480"
+      ],
+      "value_at_stake_paise": 3617388,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000357",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "O9T1JA8Z",
+          "member_fragment_count": 5,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            18
+          ],
+          "pinned_reference_characters": 8,
+          "reference_kind": "utr",
+          "reference_value": "K04AO9T1JA8Z",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000357|setl_frozeneval_000482",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000482"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "K04AO9T1JA8Z",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000482"
+      ],
+      "value_at_stake_paise": 3287017,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [
+        "provider_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000358",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "provider_infrastructure_failure",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "L48OXLG2QPC7",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000483"
+      ],
+      "value_at_stake_paise": 941690,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "provider_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000371",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "provider_infrastructure_failure",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 1469873,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [
+        "provider_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000375",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "provider_infrastructure_failure",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": "UX6VMFQARUX",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000502"
+      ],
+      "value_at_stake_paise": 1721994,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "provider_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000381",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "provider_infrastructure_failure",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 1818472,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000384",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 2,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 4767876,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000385",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "/79M7ZVTMPL6A-F ",
+          "member_fragment_count": 13,
+          "narration_offsets": [
+            9
+          ],
+          "narration_span": [
+            9,
+            25
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "79M7ZVTMPL6AF",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000385|setl_frozeneval_000516",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000516"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "79M7ZVTMPL6AF",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000516"
+      ],
+      "value_at_stake_paise": 1306862,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000389",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "JXI5BNLA7OJ",
+          "member_fragment_count": 8,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            29
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "JXI5BNLA7OJ1R",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000389|setl_frozeneval_000523",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000523"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "JXI5BNLA7OJ1R",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000523"
+      ],
+      "value_at_stake_paise": 3867704,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000391",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": " 67BF2XRO5N14-7BZ8 ",
+          "member_fragment_count": 14,
+          "narration_offsets": [
+            11
+          ],
+          "narration_span": [
+            11,
+            30
+          ],
+          "pinned_reference_characters": 16,
+          "reference_kind": "utr",
+          "reference_value": "67BF2XRO5N147BZ8",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000391|setl_frozeneval_000526",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000526"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "67BF2XRO5N147BZ8",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000526"
+      ],
+      "value_at_stake_paise": 3898584,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000395",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 2862671,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_left",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000396",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "E5CWNBVR6",
+          "member_fragment_count": 6,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            27
+          ],
+          "pinned_reference_characters": 9,
+          "reference_kind": "utr",
+          "reference_value": "4F8LPBE5CWNBVR6",
+          "relation_id": "suffix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000396|setl_frozeneval_000533",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000533"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "4F8LPBE5CWNBVR6",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000533"
+      ],
+      "value_at_stake_paise": 3858136,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "provider_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000398",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "provider_infrastructure_failure",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 2119679,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000400",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "DP***********NI",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            25
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "DPYDB006HK0FFNI",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000400|setl_frozeneval_000539",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000539"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "DPYDB006HK0FFNI",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000539"
+      ],
+      "value_at_stake_paise": 737858,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:truncated_right",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000402",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "65N681V",
+          "member_fragment_count": 4,
+          "narration_offsets": [
+            18
+          ],
+          "narration_span": [
+            18,
+            25
+          ],
+          "pinned_reference_characters": 7,
+          "reference_kind": "utr",
+          "reference_value": "65N681V0K2P0G95",
+          "relation_id": "prefix_of_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000402|setl_frozeneval_000543",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000543"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "65N681V0K2P0G95",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000543"
+      ],
+      "value_at_stake_paise": 1252840,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000405",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 2881106,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000410",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "/GK3KH4-VVJLY ",
+          "member_fragment_count": 9,
+          "narration_offsets": [
+            9
+          ],
+          "narration_span": [
+            9,
+            23
+          ],
+          "pinned_reference_characters": 11,
+          "reference_kind": "utr",
+          "reference_value": "GK3KH4VVJLY",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000410|setl_frozeneval_000554",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000554"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "GK3KH4VVJLY",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000554"
+      ],
+      "value_at_stake_paise": 1043985,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [
+        "provider_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000413",
+      "correct": null,
+      "escalation_correct": false,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "provider_infrastructure_failure",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 0,
+      "truth_reference": "OI71P11PM7AQFQP",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000558"
+      ],
+      "value_at_stake_paise": 1008945,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:reordered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000414",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "1QDK5GSEMX2OC",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            10
+          ],
+          "narration_span": [
+            10,
+            23
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "5GS2OC1QDEMXK",
+          "relation_id": "character_multiset_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000414|setl_frozeneval_000560",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000560"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "5GS2OC1QDEMXK",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000560"
+      ],
+      "value_at_stake_paise": 1078144,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:masked",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000418",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "5T************DH",
+          "member_fragment_count": 1,
+          "narration_offsets": [
+            16
+          ],
+          "narration_span": [
+            16,
+            32
+          ],
+          "pinned_reference_characters": 4,
+          "reference_kind": "utr",
+          "reference_value": "5TE5KRWC4CGGJLDH",
+          "relation_id": "mask_consistent"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000418|setl_frozeneval_000566",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000566"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": "5TE5KRWC4CGGJLDH",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000566"
+      ],
+      "value_at_stake_paise": 3638824,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000419",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 1831349,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000422",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "investigation_complete",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 1394579,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "ambiguous_same_amount_same_date",
+      "blockers": [
+        "provider_failure",
+        "no_reference_link"
+      ],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000432",
+      "correct": null,
+      "escalation_correct": true,
+      "evidence_relations": [],
+      "families": [],
+      "is_uniquely_resolvable": false,
+      "predicted_candidate_id": null,
+      "predicted_settlement_ids": [],
+      "required_composition": "",
+      "resolved": false,
+      "termination_reason": "provider_infrastructure_failure",
+      "tier": "T3",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 4,
+      "truth_reference": null,
+      "truth_settlement_ids": [],
+      "value_at_stake_paise": 640992,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000434",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETVQAX2FURHKCDH-MUM",
+          "member_fragment_count": 113,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            35
+          ],
+          "pinned_reference_characters": 13,
+          "reference_kind": "utr",
+          "reference_value": "VQAX2FURHKCDH",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000434|setl_frozeneval_000587",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000587"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "VQAX2FURHKCDH",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000587"
+      ],
+      "value_at_stake_paise": 621060,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:separator_altered",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000435",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:1",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "/7R-YMDT2KD3T8TCT ",
+          "member_fragment_count": 14,
+          "narration_offsets": [
+            9
+          ],
+          "narration_span": [
+            9,
+            27
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "7RYMDT2KD3T8TCT",
+          "relation_id": "separator_normalized_equal"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000435|setl_frozeneval_000589",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000589"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "7RYMDT2KD3T8TCT",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000589"
+      ],
+      "value_at_stake_paise": 906947,
+      "wrong_reason": null
+    },
+    {
+      "archetype": "degraded_reference:embedded_in_narration",
+      "blockers": [],
+      "candidate_count_bucket": "unknown",
+      "case_id": "case:bnk_frozeneval_000436",
+      "correct": true,
+      "escalation_correct": null,
+      "evidence_relations": [
+        {
+          "atom_id": "atom:0",
+          "candidates_reached": 1,
+          "evidence_kind": "reference",
+          "fragment": "NEFT CR-RZRPAY-SETH7QQB89LWY5ZTEH-MUM",
+          "member_fragment_count": 117,
+          "narration_offsets": [
+            0
+          ],
+          "narration_span": [
+            0,
+            37
+          ],
+          "pinned_reference_characters": 15,
+          "reference_kind": "utr",
+          "reference_value": "H7QQB89LWY5ZTEH",
+          "relation_id": "contains_reference"
+        }
+      ],
+      "families": [],
+      "is_uniquely_resolvable": true,
+      "predicted_candidate_id": "bnk_frozeneval_000436|setl_frozeneval_000591",
+      "predicted_settlement_ids": [
+        "setl_frozeneval_000591"
+      ],
+      "required_composition": "",
+      "resolved": true,
+      "termination_reason": "deterministic_policy_resolved",
+      "tier": "T2",
+      "tool_budget_exhausted": false,
+      "tool_calls_executed": 3,
+      "truth_reference": "H7QQB89LWY5ZTEH",
+      "truth_settlement_ids": [
+        "setl_frozeneval_000591"
+      ],
+      "value_at_stake_paise": 4733417,
+      "wrong_reason": null
+    }
+  ],
+  "recorded_versions": {
+    "agent_loop_version": [
+      "loop.v2"
+    ],
+    "cache_schema_version": [
+      "trajectory-cache.v3"
+    ],
+    "policy_version": [
+      "policy.v1"
+    ],
+    "prompt_version": [
+      "investigator.v4"
+    ],
+    "tool_schema_version": [
+      "tools.v3"
+    ],
+    "validator_version": [
+      "validator.v3"
+    ]
+  },
+  "report_kind": "evaluation",
+  "soundness": {
+    "checks_available": true,
+    "checks_unavailable_reason": null,
+    "total_violations": 0,
+    "violations": [],
+    "violations_by_check": {}
+  },
+  "structural": {
+    "breakup_amount_facts": 0,
+    "complete_snapshot_is_structural_axis": true,
+    "reference_only_resolutions": 99,
+    "reference_plus_amount_resolutions": 0,
+    "reference_plus_date_resolutions": 0,
+    "resolution_evidence_basis": {
+      "reference-only": 99,
+      "unresolved": 26
+    },
+    "structural_contradiction_escalations": 0,
+    "structural_evidence_states": {
+      "none": 125
+    },
+    "value_date_facts": 0
+  },
+  "telemetry": {
+    "cases": 125,
+    "cases_reporting_latency": 125,
+    "cases_reporting_tokens": 120,
+    "fallback_reasons": {
+      "server_error": 7,
+      "timeout": 1
+    },
+    "fallback_used_cases": 0,
+    "latency_mean_ms_per_case": 18248.97,
+    "latency_total_ms": 2281121,
+    "model_steps_max": 3,
+    "model_steps_mean_per_case": 1.432,
+    "model_steps_total": 179,
+    "models_reported": {
+      "gorouter:claude-opus-5": 120
+    },
+    "models_requested": {
+      "gorouter:claude-opus-5-thinking": 125
+    },
+    "provider_attempt_outcomes": {
+      "server_error": 17,
+      "success": 171,
+      "timeout": 3
+    },
+    "provider_chains": {
+      "gorouter:claude-opus-5-thinking": 125
+    },
+    "provider_error_classes": {
+      "ProviderInfrastructureError": 20
+    },
+    "provider_failed_attempts": 20,
+    "provider_reported_cost_currency": null,
+    "provider_reported_cost_total": null,
+    "requested_matches_reported": false,
+    "steps_reporting_cost": 0,
+    "tokens_input_total": 1764166,
+    "tokens_mean_per_case": 14356.57,
+    "tokens_output_total": 30405,
+    "tokens_total": 1794571
+  },
+  "wrong_resolutions": []
+}
