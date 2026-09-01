@@ -10,6 +10,7 @@ from .csv_profile import (
     AmountDirectionColumns,
     BankCsvProfile,
     DebitCreditColumns,
+    InactiveSideMarker,
     MoneyColumns,
 )
 from .manifest import BankIngestConflict, BankIngestManifest, BankRowProvenance
@@ -23,6 +24,7 @@ __all__ = [
     "BankIngestManifest",
     "BankRowProvenance",
     "DebitCreditColumns",
+    "InactiveSideMarker",
     "MoneyColumns",
     "RejectedBankRow",
     "parse_bank_csv",

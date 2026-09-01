@@ -51,7 +51,7 @@ from finrecon.adapters.bank.csv_parser import (
     RejectedBankRow,
     parse_bank_csv,
 )
-from finrecon.adapters.bank.csv_profile import BankCsvProfile
+from finrecon.adapters.bank.csv_profile import BankCsvProfile, DebitCreditColumns
 from finrecon.adapters.bank.manifest import BankIngestConflict, BankIngestManifest
 from finrecon.adapters.manifest import IngestConflict, IngestManifest, IngestWarning
 from finrecon.adapters.razorpay.recon import (
@@ -264,17 +264,26 @@ def _persist_ingestion_audit(*, store: LedgerStore, batch_id: str,
         store.record_ingestion_audit(batch_id=batch_id, source_kind="razorpay", source_id=razorpay.manifest.source_id,
             event_type="unresolved_refund_companion", subject_id=item.refund_id,
             fingerprint=hashlib.sha256(canonical_json(payload).encode()).hexdigest(), payload=payload)
+    # The declared debit/credit inactive-side semantic travels with the
+    # bank-row audit facts, so a reviewer reading a row's evidence can see
+    # which reading produced it. Interpretation only -- raw values below are
+    # never rewritten.
+    money_semantics = (
+        {"inactive_side_marker": bank_profile.money_columns.inactive_side_marker.value}
+        if isinstance(bank_profile.money_columns, DebitCreditColumns)
+        else {}
+    )
     for item in bank.manifest.rows:
         store.record_ingestion_audit(batch_id=batch_id, source_kind="bank", source_id=item.source_id,
             event_type="accepted_bank_row" if item.produced else "bank_row_not_produced", subject_id=str(item.row_index),
             fingerprint=item.row_fingerprint, payload={"profile_id": bank_profile.profile_id, "row_index": item.row_index,
             "produced": list(item.produced), "source_fields_used": list(item.source_fields_used),
-            "dropped_fields": list(item.dropped_fields)})
+            "dropped_fields": list(item.dropped_fields), **money_semantics})
     for item in bank.rejected_rows:
         store.record_ingestion_audit(batch_id=batch_id, source_kind="bank", source_id=bank.manifest.source_id,
             event_type="rejected_bank_row", subject_id=str(item.row_index), fingerprint=item.row_fingerprint,
             payload={"profile_id": bank_profile.profile_id, "row_index": item.row_index, "reason": item.reason,
-                     "detail": item.detail})
+                     "detail": item.detail, **money_semantics})
     for item in bank.conflicts:
         payload = item.model_dump(mode="json")
         store.record_ingestion_audit(batch_id=batch_id, source_kind="bank", source_id=bank.manifest.source_id,

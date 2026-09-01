@@ -23,11 +23,13 @@ from finrecon.adapters.bank.csv_profile import (
     AmountDirectionColumns,
     BankCsvProfile,
     DebitCreditColumns,
+    InactiveSideMarker,
 )
 from finrecon.adapters.razorpay.recon_row import RazorpayReconRow
 from finrecon.agent.cache import DEFAULT_FIXTURE_DIR, ReplayMissError
 from finrecon.agent.providers.base import ProviderConfigurationError
 from finrecon.agent.providers.config import describe_configuration
+from finrecon.json_text import JSON_TEXT_ENCODING
 from finrecon.ledger.store import open_ledger
 from finrecon.orchestrate import run_reconciliation_batch
 
@@ -38,7 +40,7 @@ class OrchestrationInputError(RuntimeError):
 
 def _load_razorpay_rows(path: Path) -> list[RazorpayReconRow]:
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload = json.loads(path.read_text(encoding=JSON_TEXT_ENCODING))
     except (OSError, json.JSONDecodeError) as error:
         raise OrchestrationInputError(f"could not read {path} as JSON: {error}") from error
     if not isinstance(payload, list):
@@ -51,12 +53,31 @@ def _load_razorpay_rows(path: Path) -> list[RazorpayReconRow]:
         raise OrchestrationInputError(f"{path}: invalid Razorpay recon row: {error}") from error
 
 
+def _inactive_side_marker(payload: dict) -> InactiveSideMarker:
+    """Read ``money_columns.inactive_side_marker``, defaulting to empty-only.
+
+    Same contract as the API's reader in :mod:`finrecon.api.app`: an
+    omitted field keeps the pre-existing behaviour, and an unrecognised
+    value is a hard input error rather than a silent fallback.
+    """
+    raw = payload.get("inactive_side_marker", InactiveSideMarker.EMPTY_ONLY.value)
+    try:
+        return InactiveSideMarker(raw)
+    except ValueError as error:
+        valid = [member.value for member in InactiveSideMarker]
+        raise OrchestrationInputError(
+            f"bank profile money_columns.inactive_side_marker must be one of "
+            f"{valid}, got {raw!r}"
+        ) from error
+
+
 def _money_columns_from_payload(payload: dict):
     kind = payload.get("kind")
     if kind == "debit_credit":
         return DebitCreditColumns(
             debit_column=payload["debit_column"],
             credit_column=payload["credit_column"],
+            inactive_side_marker=_inactive_side_marker(payload),
         )
     if kind == "amount_direction":
         return AmountDirectionColumns(
@@ -73,7 +94,7 @@ def _money_columns_from_payload(payload: dict):
 
 def _load_bank_profile(path: Path) -> BankCsvProfile:
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload = json.loads(path.read_text(encoding=JSON_TEXT_ENCODING))
     except (OSError, json.JSONDecodeError) as error:
         raise OrchestrationInputError(f"could not read {path} as JSON: {error}") from error
     try:
@@ -93,7 +114,7 @@ def _load_bank_profile(path: Path) -> BankCsvProfile:
         )
     except OrchestrationInputError:
         raise
-    except (KeyError, TypeError) as error:
+    except (KeyError, TypeError, ValueError) as error:
         raise OrchestrationInputError(f"{path}: invalid bank profile: {error}") from error
 
 

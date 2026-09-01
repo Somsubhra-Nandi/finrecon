@@ -71,11 +71,17 @@ from collections import defaultdict
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import date, datetime
+from enum import Enum
 
 from finrecon.models import BankRecord, BankRecordDirection
 from finrecon.models.money import MoneyError, Paise
 
-from .csv_profile import AmountDirectionColumns, BankCsvProfile, DebitCreditColumns
+from .csv_profile import (
+    AmountDirectionColumns,
+    BankCsvProfile,
+    DebitCreditColumns,
+    InactiveSideMarker,
+)
 from .manifest import BankIngestConflict, BankIngestManifest, BankRowProvenance
 
 
@@ -142,6 +148,125 @@ def _clean_money_text(profile: BankCsvProfile, raw: str | None) -> str:
     return text
 
 
+class _SideState(Enum):
+    """What one debit/credit column says about its own side, for a row.
+
+    Classification is separated from direction resolution on purpose: a
+    side's *populated-ness* and its *value* are two different questions,
+    and conflating them is exactly the bug this distinction closes. Under
+    :attr:`~finrecon.adapters.bank.csv_profile.InactiveSideMarker.EMPTY_OR_ZERO`,
+    ``"0.0"`` is populated text but an inactive side, which can only be
+    decided after the money text is exactly parsed -- never before.
+    """
+
+    ABSENT = "absent"
+    """Textually empty after cleaning."""
+    ZERO = "zero"
+    """Parsed exactly, to zero paise."""
+    ACTIVE = "active"
+    """Parsed exactly, to a non-zero amount."""
+    MALFORMED = "malformed"
+    """Not a value this parser will convert to exact paise."""
+
+
+@dataclass(frozen=True)
+class _SideReading:
+    """One side's classification plus the exact ``Paise`` it produced.
+
+    ``amount`` is carried so the direction resolver reuses this object
+    rather than parsing the same text a second time (a second parse is
+    both wasted work and a place for the two reads to disagree).
+    """
+
+    state: _SideState
+    amount: Paise | None
+    text: str
+    error: str | None = None
+
+
+def _classify_money_side(profile: BankCsvProfile, raw: str | None) -> _SideReading:
+    """Classify one debit/credit column value, using the exact money parser.
+
+    No ``float`` anywhere: rupee text goes through
+    :meth:`finrecon.models.money.Paise.from_rupees`, the same exact-decimal
+    boundary conversion the rest of the codebase uses.
+
+    ``ArithmeticError`` is caught alongside ``MoneyError`` because
+    ``Decimal("Infinity")`` is a *valid* decimal that then overflows on
+    conversion to ``int``; text like that is malformed money as far as this
+    boundary is concerned, and quarantining the row is the correct answer.
+    Malformed text is never silently coerced into "inactive".
+    """
+    text = _clean_money_text(profile, raw)
+    if text == "":
+        return _SideReading(_SideState.ABSENT, None, text)
+    try:
+        amount = Paise.from_rupees(text)
+    except MoneyError as exc:
+        return _SideReading(_SideState.MALFORMED, None, text, str(exc))
+    except ArithmeticError as exc:
+        return _SideReading(
+            _SideState.MALFORMED,
+            None,
+            text,
+            f"{text!r} is not a finite amount representable as integer paise: {exc}",
+        )
+    state = _SideState.ZERO if int(amount) == 0 else _SideState.ACTIVE
+    return _SideReading(state, amount, text)
+
+
+def _resolve_zero_filled_debit_credit(
+    profile: BankCsvProfile, row: Mapping[str, str | None], columns: DebitCreditColumns
+) -> tuple[BankRecordDirection, Paise]:
+    """Direction for a source that zero-fills its inactive side.
+
+    Only reached when the profile declares
+    :attr:`~finrecon.adapters.bank.csv_profile.InactiveSideMarker.EMPTY_OR_ZERO`.
+    An explicit zero and an empty cell mean the same thing here -- "not
+    this side" -- because that is what the profile says this source does.
+    Everything else keeps the same fail-closed shape as the empty-only
+    path: two active sides have no declared meaning, no active side is not
+    a financial movement, and malformed text is rejected rather than
+    reinterpreted.
+
+    Note what is *not* relaxed: a non-zero value is active whatever its
+    sign, exactly as under the empty-only reading. This declares how a
+    source marks an inactive side; it does not redefine money.
+    """
+    debit = _classify_money_side(profile, row.get(columns.debit_column))
+    credit = _classify_money_side(profile, row.get(columns.credit_column))
+
+    for column, reading in ((columns.debit_column, debit), (columns.credit_column, credit)):
+        if reading.state is _SideState.MALFORMED:
+            raise _RowRejected("malformed_money", f"{column!r}: {reading.error}")
+
+    debit_active = debit.state is _SideState.ACTIVE
+    credit_active = credit.state is _SideState.ACTIVE
+
+    if debit_active and credit_active:
+        raise _RowRejected(
+            "both_debit_and_credit_populated",
+            f"both {columns.debit_column!r} ({debit.text!r}) and "
+            f"{columns.credit_column!r} ({credit.text!r}) carry a non-zero "
+            "amount; this profile declares that an inactive side is empty or "
+            "zero, so it has no documented meaning for two active sides and "
+            "the row is rejected rather than guessed at",
+        )
+    if debit_active:
+        assert debit.amount is not None  # ACTIVE implies an exactly parsed amount
+        return BankRecordDirection.DEBIT, debit.amount
+    if credit_active:
+        assert credit.amount is not None
+        return BankRecordDirection.CREDIT, credit.amount
+    raise _RowRejected(
+        "neither_amount_populated",
+        f"neither {columns.debit_column!r} ({debit.text!r}) nor "
+        f"{columns.credit_column!r} ({credit.text!r}) carries a non-zero "
+        "amount; under this profile's declared empty-or-zero inactive side "
+        "that is not a financial movement this adapter can canonicalize",
+    )
+
+
 def _resolve_direction_and_amount(
     profile: BankCsvProfile, row: Mapping[str, str | None]
 ) -> tuple[BankRecordDirection, Paise]:
@@ -150,7 +275,12 @@ def _resolve_direction_and_amount(
     Two-column case: exactly one of debit/credit populated determines
     direction; neither populated is not a financial movement this adapter
     can canonicalize; both populated has no profile-documented meaning, so
-    it is rejected rather than resolved by preference.
+    it is rejected rather than resolved by preference. What counts as
+    "populated" is the profile's ``inactive_side_marker`` declaration, not
+    a guess: under the default ``EMPTY_ONLY`` any text at all is populated,
+    while ``EMPTY_OR_ZERO`` routes to
+    :func:`_resolve_zero_filled_debit_credit`, where an exactly-parsed zero
+    marks the inactive side.
 
     One-column case: the direction marker must be exactly one of the
     profile's declared ``credit_values``/``debit_values`` -- never inferred
@@ -158,6 +288,8 @@ def _resolve_direction_and_amount(
     """
     columns = profile.money_columns
     if isinstance(columns, DebitCreditColumns):
+        if columns.inactive_side_marker is InactiveSideMarker.EMPTY_OR_ZERO:
+            return _resolve_zero_filled_debit_credit(profile, row, columns)
         debit_text = _clean_money_text(profile, row.get(columns.debit_column))
         credit_text = _clean_money_text(profile, row.get(columns.credit_column))
         debit_populated = debit_text != ""

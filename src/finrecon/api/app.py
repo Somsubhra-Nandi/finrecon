@@ -19,10 +19,12 @@ from finrecon.adapters.bank.csv_profile import (
     AmountDirectionColumns,
     BankCsvProfile,
     DebitCreditColumns,
+    InactiveSideMarker,
 )
 from finrecon.adapters.razorpay.recon_row import RazorpayReconRow
 from finrecon.agent.cache import ReplayMissError, TrajectoryCache
 from finrecon.agent.providers.base import ProviderConfigurationError
+from finrecon.json_text import decode_json_bytes
 from finrecon.ledger import BatchIdentityError, LedgerStore, open_ledger
 from finrecon.orchestrate import run_reconciliation_batch
 
@@ -66,6 +68,25 @@ def _api_error(code: str, message: str, status_code: int) -> Exception:
     return HTTPException(status_code=status_code, detail={"code": code, "message": message})
 
 
+def _inactive_side_marker(money_payload: dict) -> InactiveSideMarker:
+    """Read ``money_columns.inactive_side_marker`` off the wire.
+
+    Omitted means :attr:`InactiveSideMarker.EMPTY_ONLY`, which is the
+    behaviour every profile written before this field existed already has.
+    An unrecognised value is invalid profile input and says so -- it is
+    never quietly folded back into the default, because that would silently
+    parse a zero-filled statement under the wrong semantics.
+    """
+    raw = money_payload.get("inactive_side_marker", InactiveSideMarker.EMPTY_ONLY.value)
+    try:
+        return InactiveSideMarker(raw)
+    except ValueError as exc:
+        valid = [member.value for member in InactiveSideMarker]
+        raise ValueError(
+            f"money_columns.inactive_side_marker must be one of {valid}, got {raw!r}"
+        ) from exc
+
+
 def _profile_from_payload(payload: dict) -> BankCsvProfile:
     try:
         money_payload = payload["money_columns"]
@@ -74,6 +95,7 @@ def _profile_from_payload(payload: dict) -> BankCsvProfile:
             money_columns = DebitCreditColumns(
                 debit_column=money_payload["debit_column"],
                 credit_column=money_payload["credit_column"],
+                inactive_side_marker=_inactive_side_marker(money_payload),
             )
         elif kind == "amount_direction":
             money_columns = AmountDirectionColumns(
@@ -100,7 +122,7 @@ def _profile_from_payload(payload: dict) -> BankCsvProfile:
 
 def _razorpay_rows(raw: bytes) -> list[RazorpayReconRow]:
     try:
-        decoded = raw.decode("utf-8")
+        decoded = decode_json_bytes(raw)
         payload = json.loads(decoded)
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise _api_error("malformed_razorpay_upload", f"Razorpay file must be UTF-8 JSON: {exc}", 422) from exc
@@ -128,7 +150,7 @@ def _run(
     profile_bytes: bytes, batch_id: str, mode: str, demo: bool = False,
 ) -> RunResponse:
     try:
-        profile_payload = json.loads(profile_bytes.decode("utf-8"))
+        profile_payload = json.loads(decode_json_bytes(profile_bytes))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise _api_error("invalid_bank_profile", f"Bank profile must be UTF-8 JSON: {exc}", 422) from exc
     profile = _profile_from_payload(profile_payload)
