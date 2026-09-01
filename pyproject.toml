@@ -23,5 +23,11 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# The built-in bank-profile registry is data, not code: without this the
+# wheel would install the package and silently ship an empty registry, so
+# automatic schema detection would never match anything in a container.
+[tool.setuptools.package-data]
+"finrecon.adapters.bank" = ["profiles/*.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

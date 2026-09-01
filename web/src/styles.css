@@ -340,6 +340,27 @@ td:first-child span { margin-top: 4px; color: var(--muted); font-size: 10px; }
 .run-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; align-items: start; }.run-main { display: grid; gap: 12px; }.run-main > .card, .demo-card { padding: 20px; }
 .step-label { width: 25px; height: 25px; display: inline-grid; place-items: center; color: var(--green); background: var(--green-soft); border-radius: 4px; font-size: 9px; font-weight: 800; float: left; margin-right: 10px; }
 .file-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.file-grid-two { grid-template-columns: repeat(2, 1fr); }
+
+/* Bank-schema recognition disclosure. Three visually distinct states,
+   because "recognized", "ambiguous" and "unrecognized" must never be
+   mistaken for one another at a glance. */
+.schema-panel { display: flex; align-items: flex-start; gap: 10px; margin-top: 11px; padding: 11px; border-radius: 6px; border: 1px solid #ccd6d2; background: #fafcfb; font-size: 11px; color: var(--ink); }
+.schema-panel > div { flex: 1; }
+.schema-panel strong { display: block; font-size: 11px; }
+.schema-panel small { display: block; color: var(--muted); font-size: 10px; margin-top: 3px; line-height: 1.45; }
+.schema-matched { border-color: #86ae9f; background: #f4f9f7; color: #2f5c4c; }
+.schema-ambiguous { border-color: #d9c08a; background: #fdf9ef; color: #7a5c1e; }
+.schema-unknown { border-color: #ccd6d2; background: #f7f9f9; }
+.schema-headers { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-word; }
+.schema-candidates { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.schema-candidates li { padding: 7px 9px; border: 1px solid #e3ded1; border-radius: 5px; background: #fff; }
+.profile-line { margin-top: 4px; }
+.profile-line strong { font-size: 11px; }
+.profile-line small { color: var(--muted); font-size: 10px; }
+.manual-profile { margin-top: 11px; border: 1px solid #ccd6d2; border-radius: 6px; padding: 10px; background: #fafcfb; }
+.manual-profile summary { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 10px; font-weight: 700; color: #51646d; }
+.manual-profile p { font-size: 10px; color: var(--muted); line-height: 1.45; margin: 8px 0; }
 .file-field { min-height: 87px; border: 1px dashed #b9c6c2; background: #fafcfb; border-radius: 6px; display: grid; grid-template-columns: 32px 1fr 18px; align-items: center; gap: 9px; text-align: left; padding: 10px; color: var(--ink); cursor: pointer; }
 .file-field:hover { border-color: #5c927f; background: #f6faf8; }.file-field.has-file { border-style: solid; border-color: #86ae9f; background: #f4f9f7; }
 .file-icon { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 5px; background: #edf2f0; color: #546a72; }.has-file .file-icon { color: var(--green); background: var(--green-soft); }

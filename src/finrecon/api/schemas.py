@@ -189,11 +189,64 @@ class AuditResponse(ApiModel):
     events: list[AuditEvent]
 
 
+# Bank-schema recognition projections. Read-only: nothing below creates a
+# batch, a case or a canonical record, and none of it reaches a model.
+class BuiltInProfileView(ApiModel):
+    """One registry entry, as disclosed to the operator.
+
+    ``verification`` is surfaced verbatim rather than collapsed into a
+    "supported" flag: an operator about to reconcile money is entitled to
+    know whether a profile is vendor-verified, partially verified, or (as
+    everything shipped today is) a synthetic demo schema.
+    """
+
+    profile_id: str
+    label: str
+    version: str
+    verification: Literal["vendor_verified", "partially_verified", "demo_fixture"]
+    description: str
+    evidence: str
+
+
+class BankStatementInspectionResponse(ApiModel):
+    """The outcome of inspecting one uploaded statement's header row.
+
+    ``raw_headers`` is always present, matched or not, so an unrecognised
+    file can still be explained to the operator in its own words.
+    """
+
+    status: Literal["matched", "ambiguous", "unknown"]
+    raw_headers: list[str]
+    normalized_headers: list[str]
+    signature: str
+    field_count: int
+    match_tier: Literal["exact", "safe_normalized"] | None
+    profile: BuiltInProfileView | None
+    candidates: list[BuiltInProfileView]
+    """The tied entries for an ambiguous statement; empty otherwise. Never
+    a nearest-match suggestion."""
+
+
+class BankProfileSelectionView(ApiModel):
+    """Which profile a run actually used, and how it was chosen."""
+
+    profile_id: str
+    selection_mode: Literal["built_in", "manual_upload"]
+    match_tier: Literal["exact", "safe_normalized"] | None
+    version: str | None
+    label: str | None
+    verification: str | None
+    schema_signature: str | None
+
+
 class RunResponse(ApiModel):
     batch_id: str
     mode: Literal["replay", "live"]
     provider_calls_made: bool
     result: RunSummary
+    bank_profile_selection: BankProfileSelectionView | None = None
+    """How the bank profile for this run was chosen. Optional so existing
+    clients that ignore it, and existing response snapshots, are unaffected."""
 
 
 # Benchmark projections are deliberately separate from ledger projections.

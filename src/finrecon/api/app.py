@@ -15,11 +15,18 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import ValidationError
 
 from finrecon.adapters.bank.csv_parser import BankCsvDecodeError
-from finrecon.adapters.bank.csv_profile import (
-    AmountDirectionColumns,
-    BankCsvProfile,
-    DebitCreditColumns,
-    InactiveSideMarker,
+from finrecon.adapters.bank.csv_profile import BankCsvProfile
+from finrecon.adapters.bank.profile_json import (
+    BankProfileFormatError,
+    profile_from_payload,
+)
+from finrecon.adapters.bank.schema import (
+    BankProfileRegistry,
+    BankProfileSelection,
+    BuiltInProfileVerificationError,
+    built_in_registry,
+    inspect_bank_csv,
+    resolve_verified_built_in,
 )
 from finrecon.adapters.razorpay.recon_row import RazorpayReconRow
 from finrecon.agent.cache import ReplayMissError, TrajectoryCache
@@ -30,6 +37,8 @@ from finrecon.orchestrate import run_reconciliation_batch
 
 from .schemas import (
     AuditResponse,
+    BankProfileSelectionView,
+    BankStatementInspectionResponse,
     BenchmarkCaseDetailResponse,
     BenchmarkCasesResponse,
     BenchmarkDetailResponse,
@@ -37,6 +46,7 @@ from .schemas import (
     BenchmarkReplayDetailResponse,
     BenchmarkReplaysResponse,
     BenchmarkReportsResponse,
+    BuiltInProfileView,
     CaseDetailResponse,
     CaseListResponse,
     IngestionIssuesResponse,
@@ -68,55 +78,18 @@ def _api_error(code: str, message: str, status_code: int) -> Exception:
     return HTTPException(status_code=status_code, detail={"code": code, "message": message})
 
 
-def _inactive_side_marker(money_payload: dict) -> InactiveSideMarker:
-    """Read ``money_columns.inactive_side_marker`` off the wire.
-
-    Omitted means :attr:`InactiveSideMarker.EMPTY_ONLY`, which is the
-    behaviour every profile written before this field existed already has.
-    An unrecognised value is invalid profile input and says so -- it is
-    never quietly folded back into the default, because that would silently
-    parse a zero-filled statement under the wrong semantics.
-    """
-    raw = money_payload.get("inactive_side_marker", InactiveSideMarker.EMPTY_ONLY.value)
-    try:
-        return InactiveSideMarker(raw)
-    except ValueError as exc:
-        valid = [member.value for member in InactiveSideMarker]
-        raise ValueError(
-            f"money_columns.inactive_side_marker must be one of {valid}, got {raw!r}"
-        ) from exc
-
-
 def _profile_from_payload(payload: dict) -> BankCsvProfile:
+    """Manual profile upload -> declaration, via the one shared reader.
+
+    The decoding itself lives in
+    :mod:`finrecon.adapters.bank.profile_json` so the API, the CLI and the
+    built-in registry cannot drift on what a profile payload means; this
+    wrapper only turns its error into this boundary's error, exactly as
+    before.
+    """
     try:
-        money_payload = payload["money_columns"]
-        kind = money_payload["kind"]
-        if kind == "debit_credit":
-            money_columns = DebitCreditColumns(
-                debit_column=money_payload["debit_column"],
-                credit_column=money_payload["credit_column"],
-                inactive_side_marker=_inactive_side_marker(money_payload),
-            )
-        elif kind == "amount_direction":
-            money_columns = AmountDirectionColumns(
-                amount_column=money_payload["amount_column"],
-                direction_column=money_payload["direction_column"],
-                credit_values=frozenset(money_payload["credit_values"]),
-                debit_values=frozenset(money_payload["debit_values"]),
-            )
-        else:
-            raise ValueError("money_columns.kind must be debit_credit or amount_direction")
-        return BankCsvProfile(
-            profile_id=payload["profile_id"], currency=payload["currency"],
-            value_date_column=payload["value_date_column"],
-            value_date_format=payload["value_date_format"],
-            narration_column=payload["narration_column"], money_columns=money_columns,
-            reference_id_column=payload.get("reference_id_column"),
-            currency_column=payload.get("currency_column"),
-            thousands_separator=payload.get("thousands_separator"),
-            delimiter=payload.get("delimiter", ","), encoding=payload.get("encoding", "utf-8"),
-        )
-    except (KeyError, TypeError, ValueError) as exc:
+        return profile_from_payload(payload)
+    except BankProfileFormatError as exc:
         raise _api_error("invalid_bank_profile", f"Bank profile is invalid: {exc}", 422) from exc
 
 
@@ -145,15 +118,93 @@ async def _bounded_read(upload: UploadFile) -> bytes:
     return data
 
 
-def _run(
-    *, store: LedgerStore, razorpay_bytes: bytes, bank_bytes: bytes,
-    profile_bytes: bytes, batch_id: str, mode: str, demo: bool = False,
-) -> RunResponse:
+def _profile_view(entry) -> BuiltInProfileView:
+    return BuiltInProfileView(
+        profile_id=entry.profile_id, label=entry.label, version=entry.version,
+        verification=entry.verification.value, description=entry.description,
+        evidence=entry.evidence,
+    )
+
+
+def _inspection_response(inspection) -> BankStatementInspectionResponse:
+    observed = inspection.observed
+    return BankStatementInspectionResponse(
+        status=inspection.status.value,
+        raw_headers=list(observed.raw_headers),
+        normalized_headers=list(observed.normalized_headers),
+        signature=observed.digest,
+        field_count=observed.field_count,
+        match_tier=inspection.match_tier.value if inspection.match_tier else None,
+        profile=_profile_view(inspection.profile) if inspection.profile else None,
+        candidates=[_profile_view(entry) for entry in inspection.candidates],
+    )
+
+
+def _selection_view(selection) -> BankProfileSelectionView:
+    return BankProfileSelectionView(
+        profile_id=selection.profile_id,
+        selection_mode=selection.selection_mode.value,
+        match_tier=selection.match_tier.value if selection.match_tier else None,
+        version=selection.version, label=selection.label,
+        verification=selection.verification,
+        schema_signature=selection.schema_signature,
+    )
+
+
+def _resolve_bank_profile(
+    *, registry: BankProfileRegistry, bank_bytes: bytes,
+    profile_bytes: bytes | None, built_in_profile_id: str | None,
+) -> tuple[BankCsvProfile, BankProfileSelection]:
+    """Decide which profile this run uses, and record how it was decided.
+
+    Exactly one of the two paths must be taken. The manual path is the
+    pre-existing one and is unchanged. The built-in path treats the
+    client's ``built_in_profile_id`` as a *claim* and re-verifies it
+    server-side against the uploaded bytes -- see
+    :func:`~finrecon.adapters.bank.schema.detect.resolve_verified_built_in`
+    for why trusting it would let a client have one bank's columns read
+    under another bank's mapping.
+    """
+    if profile_bytes is not None and built_in_profile_id is not None:
+        raise _api_error(
+            "conflicting_bank_profile",
+            "Supply either a bank_profile upload or a built_in_profile_id, not both.",
+            422,
+        )
+    if built_in_profile_id is not None:
+        try:
+            entry, inspection = resolve_verified_built_in(
+                built_in_profile_id, bank_bytes, registry
+            )
+        except BuiltInProfileVerificationError as exc:
+            raise _api_error(
+                exc.code, str(exc), 404 if exc.code == "unknown_built_in_profile" else 422
+            ) from exc
+        return entry.profile, BankProfileSelection.detected(entry, inspection)
+    if profile_bytes is None:
+        raise _api_error(
+            "missing_bank_profile",
+            "Supply a bank_profile upload, or a built_in_profile_id for a "
+            "recognised bank format.",
+            422,
+        )
     try:
         profile_payload = json.loads(decode_json_bytes(profile_bytes))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise _api_error("invalid_bank_profile", f"Bank profile must be UTF-8 JSON: {exc}", 422) from exc
     profile = _profile_from_payload(profile_payload)
+    return profile, BankProfileSelection.manual(profile.profile_id)
+
+
+def _run(
+    *, store: LedgerStore, registry: BankProfileRegistry, razorpay_bytes: bytes,
+    bank_bytes: bytes, profile_bytes: bytes | None, batch_id: str, mode: str,
+    built_in_profile_id: str | None = None, demo: bool = False,
+) -> RunResponse:
+    profile, selection = _resolve_bank_profile(
+        registry=registry, bank_bytes=bank_bytes, profile_bytes=profile_bytes,
+        built_in_profile_id=built_in_profile_id,
+    )
     rows = _razorpay_rows(razorpay_bytes)
     try:
         result = run_reconciliation_batch(
@@ -169,6 +220,7 @@ def _run(
             fixtures_dir=(DEMO_ROOT / "trajectories") if demo else None,
             provider_id="mechanical" if demo else None,
             model="mechanical-investigator-v1" if demo else None,
+            profile_selection=selection,
         )
     except ReplayMissError as exc:
         raise _api_error(
@@ -188,6 +240,7 @@ def _run(
         batch_id=batch_id, mode=mode,
         provider_calls_made=result.stage3_result.provider_calls_made(),
         result=summary,
+        bank_profile_selection=_selection_view(selection),
     )
 
 
@@ -196,6 +249,11 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
     app = FastAPI(title="FinRecon Operations API", version="1.0.0")
     app.state.ledger_path = resolved_ledger
     app.state.benchmark_catalog = BenchmarkCatalog(PROJECT_ROOT)
+    # Loaded once at startup so a malformed shipped artifact fails the
+    # build loudly rather than at somebody's first upload. Held on
+    # app.state so a test can install its own registry without reaching
+    # into the module-level cache.
+    app.state.bank_profile_registry = built_in_registry()
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -299,25 +357,55 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
                   store: LedgerStore = Depends(store_dependency)) -> AuditResponse:
         return audit_events(store, batch_id, case_id)
 
+    @app.post("/api/bank-statement/inspect", response_model=BankStatementInspectionResponse)
+    async def post_bank_statement_inspect(
+        bank_file: UploadFile = File(...),
+    ) -> BankStatementInspectionResponse:
+        """Recognise an uploaded statement's schema. Read-only, no side effects.
+
+        Creates no batch, no case and no canonical record, writes nothing
+        to the ledger, and reaches no model or provider -- it reads the
+        file's header row and compares it with the shipped registry. It
+        therefore takes no ``store`` dependency at all, which is the
+        structural version of that promise rather than a comment about it.
+
+        Uses the same bounded read as every other upload, so the existing
+        15 MB cap and empty-file rejection apply unchanged.
+        """
+        raw = await _bounded_read(bank_file)
+        return _inspection_response(inspect_bank_csv(raw, app.state.bank_profile_registry))
+
     @app.post("/api/reconciliation/run", response_model=RunResponse)
     async def post_run(
         razorpay_file: UploadFile = File(...),
         bank_file: UploadFile = File(...),
-        bank_profile: UploadFile = File(...),
+        bank_profile: UploadFile | None = File(None),
+        built_in_profile_id: str | None = Form(None),
         mode: str = Form("replay"),
         batch_id: str | None = Form(None),
         store: LedgerStore = Depends(store_dependency),
     ) -> RunResponse:
+        """Run a batch under either an uploaded profile or a built-in one.
+
+        ``bank_profile`` is now optional purely so the second path can
+        exist; a request that supplies it behaves exactly as it always did.
+        ``built_in_profile_id`` is never trusted on its own -- the server
+        re-inspects the uploaded bytes and requires that detection would
+        independently have selected that profile before any ingestion runs.
+        """
         if mode not in {"replay", "live"}:
             raise _api_error("invalid_mode", "Mode must be replay or live.", 422)
         resolved_batch = (batch_id or f"batch:upload:{uuid.uuid4().hex[:12]}").strip()
         if not resolved_batch:
             raise _api_error("invalid_batch_id", "Batch ID must not be blank.", 422)
+        requested_built_in = (built_in_profile_id or "").strip() or None
         return _run(
             store=store,
+            registry=app.state.bank_profile_registry,
             razorpay_bytes=await _bounded_read(razorpay_file),
             bank_bytes=await _bounded_read(bank_file),
-            profile_bytes=await _bounded_read(bank_profile),
+            profile_bytes=(await _bounded_read(bank_profile)) if bank_profile is not None else None,
+            built_in_profile_id=requested_built_in,
             batch_id=resolved_batch,
             mode=mode,
         )
@@ -326,6 +414,7 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
     def post_demo(store: LedgerStore = Depends(store_dependency)) -> RunResponse:
         return _run(
             store=store,
+            registry=app.state.bank_profile_registry,
             razorpay_bytes=(DEMO_ROOT / "razorpay.json").read_bytes(),
             bank_bytes=(DEMO_ROOT / "bank.csv").read_bytes(),
             profile_bytes=(DEMO_ROOT / "bank-profile.json").read_bytes(),

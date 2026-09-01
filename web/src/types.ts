@@ -72,7 +72,7 @@ export interface CaseDetailResponse {
 
 export interface IngestionIssue { event_id: string; batch_id: string; source_kind: "razorpay" | "bank"; source_id: string; event_type: string; subject_id: string | null; fingerprint: string; problem: string; detail: string | null; payload: Record<string, unknown> }
 export interface IngestionIssuesResponse { batch_id: string | null; total: number; issues: IngestionIssue[] }
-export interface RunResponse { batch_id: string; mode: "replay" | "live"; provider_calls_made: boolean; result: RunSummary }
+export interface RunResponse { batch_id: string; mode: "replay" | "live"; provider_calls_made: boolean; result: RunSummary; bank_profile_selection?: BankProfileSelectionView | null }
 
 export interface BenchmarkSummary { benchmark_id: string; title: string; status: "FROZEN" | "PILOT"; case_count: number; description: string; replay_available: boolean; report_available: boolean; investigators: string[] }
 export interface BenchmarkDetail extends BenchmarkSummary { integrity: Record<string, unknown>; constraints: Record<string, unknown>; notices: string[] }
@@ -86,3 +86,35 @@ export interface BenchmarkCaseDetail extends BenchmarkCaseSummary { candidate_sn
 export interface BenchmarkReplaySummary { investigator: string; label: string; scored_cohort_cases: number; persisted_trajectory_cases: number; requested_model: string | null; reported_models: string[]; provider: string | null; notes: string[] }
 export interface BenchmarkReplaysResponse { benchmark_id: string; replays: BenchmarkReplaySummary[] }
 export interface BenchmarkReplayDetail { benchmark_id: string; investigator: string; replayed: true; provider_calls_made: false; trajectory: Record<string, unknown>; deterministic_validation: Record<string, unknown>; policy_result: Record<string, unknown> }
+
+// Bank-schema recognition. Detection identifies an already-reviewed
+// profile; it never proposes a column mapping for an unknown schema.
+export interface BuiltInProfileView {
+  profile_id: string;
+  label: string;
+  version: string;
+  verification: "vendor_verified" | "partially_verified" | "demo_fixture";
+  description: string;
+  evidence: string;
+}
+
+export interface BankStatementInspection {
+  status: "matched" | "ambiguous" | "unknown";
+  raw_headers: string[];
+  normalized_headers: string[];
+  signature: string;
+  field_count: number;
+  match_tier: "exact" | "safe_normalized" | null;
+  profile: BuiltInProfileView | null;
+  candidates: BuiltInProfileView[];
+}
+
+export interface BankProfileSelectionView {
+  profile_id: string;
+  selection_mode: "built_in" | "manual_upload";
+  match_tier: "exact" | "safe_normalized" | null;
+  version: string | null;
+  label: string | null;
+  verification: string | null;
+  schema_signature: string | null;
+}

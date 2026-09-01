@@ -19,11 +19,10 @@ import argparse
 import json
 from pathlib import Path
 
-from finrecon.adapters.bank.csv_profile import (
-    AmountDirectionColumns,
-    BankCsvProfile,
-    DebitCreditColumns,
-    InactiveSideMarker,
+from finrecon.adapters.bank.csv_profile import BankCsvProfile
+from finrecon.adapters.bank.profile_json import (
+    BankProfileFormatError,
+    profile_from_payload,
 )
 from finrecon.adapters.razorpay.recon_row import RazorpayReconRow
 from finrecon.agent.cache import DEFAULT_FIXTURE_DIR, ReplayMissError
@@ -53,68 +52,23 @@ def _load_razorpay_rows(path: Path) -> list[RazorpayReconRow]:
         raise OrchestrationInputError(f"{path}: invalid Razorpay recon row: {error}") from error
 
 
-def _inactive_side_marker(payload: dict) -> InactiveSideMarker:
-    """Read ``money_columns.inactive_side_marker``, defaulting to empty-only.
-
-    Same contract as the API's reader in :mod:`finrecon.api.app`: an
-    omitted field keeps the pre-existing behaviour, and an unrecognised
-    value is a hard input error rather than a silent fallback.
-    """
-    raw = payload.get("inactive_side_marker", InactiveSideMarker.EMPTY_ONLY.value)
-    try:
-        return InactiveSideMarker(raw)
-    except ValueError as error:
-        valid = [member.value for member in InactiveSideMarker]
-        raise OrchestrationInputError(
-            f"bank profile money_columns.inactive_side_marker must be one of "
-            f"{valid}, got {raw!r}"
-        ) from error
-
-
-def _money_columns_from_payload(payload: dict):
-    kind = payload.get("kind")
-    if kind == "debit_credit":
-        return DebitCreditColumns(
-            debit_column=payload["debit_column"],
-            credit_column=payload["credit_column"],
-            inactive_side_marker=_inactive_side_marker(payload),
-        )
-    if kind == "amount_direction":
-        return AmountDirectionColumns(
-            amount_column=payload["amount_column"],
-            direction_column=payload["direction_column"],
-            credit_values=frozenset(payload["credit_values"]),
-            debit_values=frozenset(payload["debit_values"]),
-        )
-    raise OrchestrationInputError(
-        f"bank profile money_columns.kind must be 'debit_credit' or "
-        f"'amount_direction', got {kind!r}"
-    )
-
-
 def _load_bank_profile(path: Path) -> BankCsvProfile:
+    """Read ``--bank-profile`` through the one shared profile reader.
+
+    The wire shape is decoded in
+    :mod:`finrecon.adapters.bank.profile_json` -- shared with the API and
+    the built-in profile registry so the three cannot drift -- and only the
+    CLI's own error type is applied here. An omitted
+    ``inactive_side_marker`` still means ``empty_only`` and an unrecognised
+    one is still a hard input error, unchanged.
+    """
     try:
         payload = json.loads(path.read_text(encoding=JSON_TEXT_ENCODING))
     except (OSError, json.JSONDecodeError) as error:
         raise OrchestrationInputError(f"could not read {path} as JSON: {error}") from error
     try:
-        money_columns = _money_columns_from_payload(payload["money_columns"])
-        return BankCsvProfile(
-            profile_id=payload["profile_id"],
-            currency=payload["currency"],
-            value_date_column=payload["value_date_column"],
-            value_date_format=payload["value_date_format"],
-            narration_column=payload["narration_column"],
-            money_columns=money_columns,
-            reference_id_column=payload.get("reference_id_column"),
-            currency_column=payload.get("currency_column"),
-            thousands_separator=payload.get("thousands_separator"),
-            delimiter=payload.get("delimiter", ","),
-            encoding=payload.get("encoding", "utf-8"),
-        )
-    except OrchestrationInputError:
-        raise
-    except (KeyError, TypeError, ValueError) as error:
+        return profile_from_payload(payload)
+    except BankProfileFormatError as error:
         raise OrchestrationInputError(f"{path}: invalid bank profile: {error}") from error
 
 
