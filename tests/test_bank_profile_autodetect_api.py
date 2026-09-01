@@ -187,10 +187,17 @@ class TestReconciliationUnderADetectedProfile:
         assert response.status_code == 200, response.text
         body = response.json()
         assert body["result"]["metrics"]["deterministic_resolved"] == 1
+        # Asserted as a whole dict on purpose: the manual path must acquire no
+        # provenance it has not earned. The saved-mapping fields exist on the
+        # view now, and every one of them is null here -- an uploaded profile
+        # JSON names no saved mapping, carries no version, and makes no
+        # confirmation claim.
         assert body["bank_profile_selection"] == {
             "profile_id": "finrecon_demo_v1", "selection_mode": "manual_upload",
             "match_tier": None, "version": None, "label": None,
             "verification": None, "schema_signature": None,
+            "mapping_id": None, "mapping_version": None,
+            "provenance": None, "source": None,
         }
 
     def test_a_verified_built_in_profile_id_reconciles_without_a_profile_upload(

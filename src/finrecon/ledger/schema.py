@@ -8,7 +8,10 @@ scaffolding for work that does not exist.
 
 **Schema v2 added the four Stage-3 tables. Schema v3 adds distinct ingestion
 audit and snapshot-bound human-resolution tables, and changes none of the Stage-2
-ones.** That is deliberate. Stage-2 rows are the record of what the
+ones. Schema v5 adds the two saved-bank-mapping tables and, again, changes
+none of the existing ones -- a user-confirmed column mapping is input
+provenance, not a decision, so it joins the schema alongside rather than
+inside anything the reconciliation path reads.** That is deliberate. Stage-2 rows are the record of what the
 deterministic core decided, and a later stage overwriting `cases.status`
 would destroy the ability to say *which* layer settled a case — the exact
 per-rule mechanism claim the benchmark v3 correction was about. So a
@@ -34,7 +37,7 @@ caller remembering it is not an invariant.
 
 from __future__ import annotations
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 SCHEMA_STATEMENTS: tuple[str, ...] = (
     """
@@ -282,6 +285,65 @@ SCHEMA_STATEMENTS: tuple[str, ...] = (
         PRIMARY KEY (resolution_id, settlement_id),
         FOREIGN KEY (resolution_id) REFERENCES human_resolution_events (resolution_id)
     )
+    """,
+    # --- saved bank mappings (schema v5) --------------------------------
+    # A user-confirmed column mapping for a bank CSV whose schema ships with
+    # no built-in profile.  Two tables rather than one, because a *logical*
+    # mapping ("HDFC Current Account") and one *version* of its column
+    # mapping are different things with different lifetimes: the name is
+    # what an operator recognises across months, and the version is what a
+    # historical batch must still be able to name exactly.
+    """
+    CREATE TABLE IF NOT EXISTS bank_mappings (
+        mapping_id TEXT PRIMARY KEY,
+        name       TEXT NOT NULL,
+        created_at TEXT NOT NULL
+    )
+    """,
+    # Names are unique among mappings so the Run page can show one
+    # unambiguous label.  Deliberately NOT part of schema matching -- see
+    # `finrecon.adapters.bank.schema.saved`: a recognised file is recognised
+    # by its header signature, never by what somebody called the mapping.
+    """
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_bank_mapping_name
+    ON bank_mappings (name)
+    """,
+    # Versions are append-only and immutable.  Editing a mapping writes a
+    # new row and retires the old one; it never rewrites a row, because a
+    # batch recorded months ago names (mapping_id, version) and silently
+    # changing what that pair means would rewrite the meaning of recorded
+    # evidence -- the same rule `schema/registry.py` states for built-ins.
+    """
+    CREATE TABLE IF NOT EXISTS bank_mapping_versions (
+        mapping_id              TEXT NOT NULL,
+        version                 INTEGER NOT NULL CHECK (version >= 1),
+        profile_id              TEXT NOT NULL UNIQUE,
+        schema_signature        TEXT NOT NULL,
+        raw_headers_json        TEXT NOT NULL,
+        normalized_headers_json TEXT NOT NULL,
+        delimiter               TEXT NOT NULL,
+        encoding                TEXT NOT NULL,
+        profile_json            TEXT NOT NULL,
+        status                  TEXT NOT NULL CHECK (status IN ('active', 'superseded', 'disabled')),
+        provenance              TEXT NOT NULL CHECK (provenance IN ('human_confirmed')),
+        source                  TEXT NOT NULL CHECK (source IN ('user_saved')),
+        llm_proposal_json       TEXT,
+        created_at              TEXT NOT NULL,
+        PRIMARY KEY (mapping_id, version),
+        FOREIGN KEY (mapping_id) REFERENCES bank_mappings (mapping_id)
+    )
+    """,
+    # At most one active version per logical mapping.  A partial unique
+    # index rather than application logic: "exactly one version is current"
+    # is the invariant every reuse decision rests on, and an invariant that
+    # depends on every caller remembering it is not an invariant.
+    """
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_bank_mapping_active_version
+    ON bank_mapping_versions (mapping_id) WHERE status = 'active'
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_bank_mapping_signature
+    ON bank_mapping_versions (schema_signature, status)
     """,
     "CREATE INDEX IF NOT EXISTS idx_ingestion_audit_batch ON ingestion_audit_events (batch_id, event_type)",
 )

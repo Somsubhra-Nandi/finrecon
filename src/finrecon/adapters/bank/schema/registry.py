@@ -82,6 +82,16 @@ class ProfileSelectionMode(str, Enum):
     """Supplied as profile JSON with the request -- the existing escape
     hatch, unchanged."""
 
+    USER_SAVED = "user_saved"
+    """Resolved from a mapping this deployment's operator confirmed and
+    saved (see :mod:`finrecon.adapters.bank.schema.saved`), and re-verified
+    server-side against the uploaded bytes exactly as a built-in is.
+
+    A separate mode rather than a flag on ``BUILT_IN`` because the two make
+    different claims: a built-in was reviewed by whoever shipped this build,
+    a saved mapping by whoever runs it. A reader of an audit row is entitled
+    to know which."""
+
 
 class BankProfileRegistryError(RuntimeError):
     """A registry artifact is unloadable, or the registry is inconsistent.

@@ -17,10 +17,13 @@ from .detect import (
     BankProfileSelection,
     BankSchemaInspection,
     BuiltInProfileVerificationError,
+    MappingCorpus,
+    MappingEntry,
     MatchStatus,
     MatchTier,
     inspect_bank_csv,
     resolve_verified_built_in,
+    resolve_verified_saved_mapping,
 )
 from .normalize import encoding_family, normalize_header, normalize_headers
 from .registry import (
@@ -33,6 +36,12 @@ from .registry import (
     built_in_registry,
     load_built_in_profile,
 )
+from .saved import (
+    SAVED_MAPPING_PROVENANCE,
+    SAVED_MAPPING_SOURCE,
+    CombinedMappingRegistry,
+    SavedMappingEntry,
+)
 from .signature import (
     BankSchemaReadError,
     SchemaSignature,
@@ -42,6 +51,8 @@ from .signature import (
 
 __all__ = [
     "BUILT_IN_PROFILE_DIR",
+    "SAVED_MAPPING_PROVENANCE",
+    "SAVED_MAPPING_SOURCE",
     "BankProfileRegistry",
     "BankProfileRegistryError",
     "BankProfileSelection",
@@ -49,10 +60,14 @@ __all__ = [
     "BankSchemaReadError",
     "BuiltInProfile",
     "BuiltInProfileVerificationError",
+    "CombinedMappingRegistry",
+    "MappingCorpus",
+    "MappingEntry",
     "MatchStatus",
     "MatchTier",
     "ProfileSelectionMode",
     "ProfileVerification",
+    "SavedMappingEntry",
     "SchemaSignature",
     "built_in_registry",
     "encoding_family",
@@ -62,5 +77,6 @@ __all__ = [
     "normalize_headers",
     "read_signature",
     "resolve_verified_built_in",
+    "resolve_verified_saved_mapping",
     "signature_from_headers",
 ]

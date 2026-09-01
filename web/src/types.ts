@@ -98,6 +98,39 @@ export interface BuiltInProfileView {
   evidence: string;
 }
 
+// A mapping this deployment's operator confirmed and saved. Authoritative
+// for the same reason a built-in is -- a person reviewed the column mapping
+// and it is versioned -- and carries `provenance` rather than a
+// `verification` level, because FinRecon has no evidence to grade about a
+// mapping it did not ship.
+export interface SavedMappingView {
+  mapping_id: string;
+  name: string;
+  version: number;
+  profile_id: string;
+  status: "active" | "superseded" | "disabled";
+  provenance: "human_confirmed";
+  source: "user_saved";
+  schema_signature: string;
+  expected_headers: string[];
+  // The mapping itself, as confirmed. The edit flow prefills from this so
+  // "Change" starts from what the mapping says, not from a fresh guess.
+  profile: Record<string, unknown>;
+  created_at: string | null;
+  llm_proposal: Record<string, unknown> | null;
+}
+
+export interface MappingMatchView {
+  kind: "built_in" | "user_saved";
+  profile_id: string;
+  label: string;
+  version: string;
+  verification: string | null;
+  description: string;
+  evidence: string;
+  saved_mapping: SavedMappingView | null;
+}
+
 export interface BankStatementInspection {
   status: "matched" | "ambiguous" | "unknown";
   raw_headers: string[];
@@ -105,16 +138,132 @@ export interface BankStatementInspection {
   signature: string;
   field_count: number;
   match_tier: "exact" | "safe_normalized" | null;
+  // Built-ins only, for backwards compatibility; `match`/`matches` see both
+  // kinds and are what this UI reads.
   profile: BuiltInProfileView | null;
   candidates: BuiltInProfileView[];
+  match?: MappingMatchView | null;
+  matches?: MappingMatchView[];
 }
 
 export interface BankProfileSelectionView {
   profile_id: string;
-  selection_mode: "built_in" | "manual_upload";
+  selection_mode: "built_in" | "manual_upload" | "user_saved";
   match_tier: "exact" | "safe_normalized" | null;
   version: string | null;
   label: string | null;
   verification: string | null;
   schema_signature: string | null;
+  mapping_id?: string | null;
+  mapping_version?: number | null;
+  provenance?: string | null;
+  source?: string | null;
+}
+
+// --- Unknown-schema mapping proposal and confirmation --------------------
+
+export type MoneyKind = "debit_credit" | "amount_direction";
+export type InactiveSideMarker = "empty_only" | "empty_or_zero";
+
+export interface MappingIssueView { field: string; code: string; message: string }
+
+export interface MappingDateFormatView {
+  proposed: string;
+  plausible: string[];
+  contradicted: boolean;
+  ambiguous_with: string[];
+  evidence_rows: number;
+  requires_human_choice: boolean;
+}
+
+export interface MappingValidationView {
+  ok: boolean;
+  errors: MappingIssueView[];
+  warnings: MappingIssueView[];
+  fields_requiring_human_choice: string[];
+  date_format: MappingDateFormatView | null;
+}
+
+export interface ProposedMoneyView {
+  kind: MoneyKind;
+  debit_column: string | null;
+  credit_column: string | null;
+  inactive_side_marker: InactiveSideMarker | null;
+  amount_column: string | null;
+  direction_column: string | null;
+  credit_values: string[] | null;
+  debit_values: string[] | null;
+}
+
+export interface ProposedMappingView {
+  value_date_column: string;
+  value_date_format: string;
+  value_date_format_certain: boolean;
+  narration_column: string;
+  reference_id_column: string | null;
+  money: ProposedMoneyView;
+}
+
+export interface MappingProposalView {
+  mapping: ProposedMappingView;
+  // Display text only. It explains why a column was suggested so a reviewer
+  // can judge the suggestion; nothing downstream reads it.
+  reasoning_summary: Record<string, string>;
+  uncertainties: string[];
+  provider: string | null;
+  model: string | null;
+  reported_model: string | null;
+  proposed_at: string | null;
+}
+
+export interface BankMappingProposalResponse {
+  schema_status: "matched" | "ambiguous" | "unknown";
+  sample: { headers: string[]; rows: string[][]; bounds: Record<string, unknown> };
+  supported_date_formats: { value: string; label: string }[];
+  raw_headers: string[];
+  normalized_headers: string[];
+  signature: string;
+  delimiter: string;
+  encoding: string;
+  proposal: MappingProposalView | null;
+  validation: MappingValidationView | null;
+  failure_code: string | null;
+  failure_message: string | null;
+  provider_calls_made: boolean;
+  model_calls: number;
+}
+
+export interface BankMappingSaveResponse {
+  saved: SavedMappingView;
+  validation: MappingValidationView;
+  created_version: number;
+}
+
+export interface BankMappingListResponse { mappings: SavedMappingView[] }
+
+export interface BankMappingDetailResponse {
+  mapping_id: string;
+  name: string;
+  active: SavedMappingView | null;
+  versions: SavedMappingView[];
+}
+
+// The editor's own working state. Deliberately a separate shape from
+// `ProposedMappingView`: a proposal is what a model said, this is what the
+// operator currently has on screen, and conflating them would make it easy
+// to submit the former believing it was the latter.
+export interface MappingDraft {
+  name: string;
+  value_date_column: string;
+  value_date_format: string;
+  narration_column: string;
+  reference_id_column: string;
+  money_kind: MoneyKind;
+  debit_column: string;
+  credit_column: string;
+  inactive_side_marker: InactiveSideMarker;
+  amount_column: string;
+  direction_column: string;
+  credit_values: string;
+  debit_values: string;
 }

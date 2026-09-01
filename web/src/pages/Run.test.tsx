@@ -118,7 +118,7 @@ describe("Run page bank-format detection", () => {
     upload(/Razorpay recon file/i, razorpayFile());
     upload(/Bank statement/i, bankFile());
 
-    expect(await screen.findByText(/Bank format not recognized/i)).toBeInTheDocument();
+    expect(await screen.findByText(/We don't recognize this bank format/i)).toBeInTheDocument();
     expect(screen.getByText(/does not guess column meanings/i)).toBeInTheDocument();
     expect(screen.getByText(/Advanced · Manual bank profile/i)).toBeInTheDocument();
     // Nothing is runnable until the operator declares the mapping.
