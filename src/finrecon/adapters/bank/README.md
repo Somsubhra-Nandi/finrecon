@@ -171,6 +171,108 @@ rejected, gets a `BankRowProvenance` entry: `row_index`, `row_fingerprint`
 the profile's closed mapping — automatic, since the profile already
 declares its columns exhaustively). Never read by the reconciliation path.
 
+## Automatic profile detection (schema/)
+
+`parse_bank_csv` still never guesses. What was added alongside it is a
+separate, read-only *recognition* layer that picks **which already-reviewed
+profile applies**, and nothing else:
+
+```
+uploaded bank CSV bytes
+        |
+        v
+schema/normalize.py     BOM, whitespace shape, letter case -- and nothing else
+        |
+        v
+schema/signature.py     raw headers + normalized headers + delimiter +
+        |               field count + encoding family -> SHA-256 digest
+        v
+schema/registry.py      profiles/*.json -- static, versioned, read-only
+        |
+        v
+schema/detect.py        exact -> safe_normalized, fail closed
+        |
+        v
+matched / ambiguous / unknown
+```
+
+Three things that are easy to conflate, and only the first is implemented:
+
+1. **Detection** — "this file's header row is profile X's header row".
+2. **Inference** — "these columns probably mean debit and credit". Not
+   built. Debit, credit, value date, narration, reference, date format and
+   inactive-side semantics come only from a reviewed registry artifact.
+3. **Authorization** — detection returns a finding; the caller decides.
+
+### Two tiers may auto-select, nothing weaker
+
+| Tier | Folds away | May auto-select |
+| --- | --- | --- |
+| `exact` | nothing — header row is byte-identical, in order | yes, if exactly one profile matches |
+| `safe_normalized` | UTF-8 BOM, leading/trailing whitespace, repeated whitespace, letter case | yes, if exactly one profile matches |
+
+Explicitly **not** grounds for auto-selection: punctuation stripping,
+abbreviations, synonyms, fuzzy/edit-distance similarity, subset or superset
+matching, and reordered columns. Each is a claim about *meaning*, and a
+wrong claim there reads someone's debit column as their credit column.
+Those belong to a future unknown-schema *proposal* layer where a human
+confirms the mapping before it is used.
+
+Tiers are tried strongest-first and never mixed, so a normalized
+near-neighbour can never dilute a clean exact match into an ambiguity.
+
+### Ambiguity fails closed
+
+Two or more profiles matching at the same strongest tier returns
+`ambiguous`, names every tied candidate, and selects nothing. There is no
+tie-break of any kind — not newest version, not highest version, not
+alphabetical, not registration order. No match returns `unknown` and the
+"closest" profile is deliberately not offered. Both outcomes route to the
+manual bank-profile path, which is the only thing that can safely resolve
+them.
+
+### The registry
+
+`profiles/*.json` — each artifact is an envelope (`profile_id`, `label`,
+`version`, `verification`, `description`, `evidence`, `expected_headers`)
+wrapping a `profile` object in exactly the same wire shape as a manual
+upload, read by the one shared reader in `profile_json.py`. Artifacts are
+immutable by convention: a schema change ships as a **new** versioned
+`profile_id` (`..._v1` → `..._v2`), never as an edit, because audit rows
+name that pair and silently changing what it means would rewrite recorded
+evidence. Duplicate ids, malformed artifacts, and a profile declaring a
+column its own `expected_headers` lacks are all load-time failures.
+
+`verification` is stated, never implied:
+
+- `vendor_verified` — the bank's own documentation, or a real export
+  sample checked in here. **Nothing ships at this level.**
+- `partially_verified` — evidenced by something real but incomplete.
+  **Nothing ships at this level.**
+- `demo_fixture` — a synthetic schema authored in this repository.
+
+Exactly one profile ships today: `finrecon_demo_v1`, the demo batch's
+synthetic layout, classified `demo_fixture`. It is verifiable *here*
+(`fixtures/demo/bank.csv` is the file it describes) and makes no claim
+about any bank. See the next section for why nothing else does.
+
+### Server-side re-verification
+
+`/api/reconciliation/run` accepts `built_in_profile_id` as an alternative
+to a `bank_profile` upload. The id is treated as a *claim*: the server
+re-inspects the uploaded bytes and requires that detection would
+independently have **selected** that profile. Requiring selection rather
+than mere membership also means an ambiguous upload cannot be settled by
+the client picking a side over the wire.
+
+### Header location
+
+Recognition reads the *first* row only. Real exports that begin with an
+account-details preamble and place the transaction header lower will not
+match — which is the correct fail-closed answer until header-location
+support exists. No preamble scanner was built here (see the ICICI section
+below: no shipped profile needs one).
+
 ## ICICI: not shipped, and why
 
 This task's brief was explicit: build the generic adapter first, then add
@@ -211,3 +313,23 @@ sample (or authoritative documentation) becomes available — checked into
 `fixtures/bank/` and clearly labeled — a concrete `BankCsvProfile` for it
 is a small, mechanical follow-up: declare the columns, the exact date
 format, and the debit/credit convention it actually uses.
+
+**Still true after automatic detection was added.** The registry ships no
+ICICI profile, and no real-bank profile of any kind, for exactly the
+reasons above — automatic *detection* does not lower the evidence bar for
+what may be detected, it raises the cost of getting that evidence wrong.
+Two further consequences worth stating plainly:
+
+- Because the only shipped profile is a synthetic demo schema, automatic
+  detection currently recognises the demo statement and nothing else. The
+  architecture is complete; the profile library is empty of real banks.
+- The third-party column lists cited above also disagree on whether an
+  ICICI export carries a preamble. Since no ICICI profile can honestly
+  ship, no preamble/header-location support was built to serve one, and
+  the synthetic transaction-table fixture was deliberately not used to
+  fake such support.
+
+Adding a real bank remains a small, mechanical follow-up once evidence
+exists: check in the export sample or documentation, write one
+`profiles/<bank>_v1.json` declaring the columns, exact date format and
+debit/credit convention it actually uses, and classify it honestly.

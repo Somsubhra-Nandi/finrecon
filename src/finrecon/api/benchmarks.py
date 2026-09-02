@@ -1,10 +1,9 @@
 """Read-only benchmark catalogue for the product UI.
 
 This module intentionally has no dependency on ``benchmark.eval`` or any
-provider implementation. It reads committed manifests, reports, visible
-record files, and persisted trajectory JSON. The v3 projection also reads
-only tier labels from held-out metadata; all answer-bearing fields stay
-outside both browsing and replay payloads.
+provider implementation. It reads only committed manifests, reports, visible
+record files, and persisted trajectory JSON. Hidden truth stays outside both
+browsing and replay payloads.
 """
 
 from __future__ import annotations
@@ -186,10 +185,11 @@ class BenchmarkCatalog:
     def _v3_case_evaluations(self) -> dict[str, dict[str, Any]]:
         """Build the safe v3 projection from recorded final outcomes only.
 
-        The final report records all Stage-3 residual dispositions. The other
-        cases are recorded Stage-2 decisions recreated from immutable visible
-        inputs. The tier reader retains only a label; candidate, settlement,
-        reference, truth, and correctness values never enter this index.
+        The final report records all Stage-3 residual dispositions and tiers.
+        The other cases are recorded Stage-2 decisions recreated from immutable
+        visible inputs; their two recorded matcher categories map to the public
+        T0/T1 benchmark categories. Candidate, settlement, reference, truth,
+        and correctness values never enter this index.
         """
         report = self._json(self.benchmark_root / "reports" / "final-eval.json")
         core, replay = report.get("frozen_core"), report.get("stage3_replay")
@@ -199,26 +199,15 @@ class BenchmarkCatalog:
         if not isinstance(per_case, list):
             raise self._v3_projection_error("Stage-3 per-case outcomes are missing")
 
-        tiers: dict[str, str] = {}
-        try:
-            for line in (self.benchmark_root / "ground_truth" / "frozen-eval.jsonl").read_text(encoding="utf-8").splitlines():
-                raw = json.loads(line)
-                bank_ids, tier = raw.get("record_ids", {}).get("bank_records", []), raw.get("tier")
-                if len(bank_ids) != 1 or not isinstance(bank_ids[0], str) or tier not in {"T0", "T1", "T2", "T3"}:
-                    raise ValueError("missing safe tier metadata")
-                tiers[case_id_for(bank_ids[0])] = tier
-        except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:
-            raise self._v3_projection_error("tier metadata cannot be read") from exc
-
         stage3: dict[str, dict[str, Any]] = {}
         for item in per_case:
             if not isinstance(item, dict):
                 raise self._v3_projection_error("a Stage-3 outcome is malformed")
-            case_id, resolved, blockers = item.get("case_id"), item.get("resolved"), item.get("blockers")
-            if not isinstance(case_id, str) or not isinstance(resolved, bool) or not isinstance(blockers, list) or not all(isinstance(x, str) for x in blockers):
+            case_id, tier, resolved, blockers = item.get("case_id"), item.get("tier"), item.get("resolved"), item.get("blockers")
+            if not isinstance(case_id, str) or tier not in {"T2", "T3"} or not isinstance(resolved, bool) or not isinstance(blockers, list) or not all(isinstance(x, str) for x in blockers):
                 raise self._v3_projection_error("a Stage-3 outcome lacks safe disposition fields")
             stage3[case_id] = {
-                "tier": tiers.get(case_id),
+                "tier": tier,
                 "final_disposition": "RESOLVED" if resolved else "ESCALATED",
                 "resolution_stage": "STAGE_3",
                 "resolution_method": "Recorded mechanical evaluation" if resolved else None,
@@ -235,8 +224,12 @@ class BenchmarkCatalog:
                 decision = row["_stage2_decision"]
                 if decision is None or decision.status.value != "resolved":
                     raise self._v3_projection_error(f"no recorded final disposition for {case_id}")
+                tier = {
+                    "direct_key.v1": "T0",
+                    "derived_reconciliation.v1": "T1",
+                }.get(decision.matcher_id)
                 evaluation = {
-                    "tier": tiers.get(case_id), "final_disposition": "RESOLVED", "resolution_stage": "STAGE_2",
+                    "tier": tier, "final_disposition": "RESOLVED", "resolution_stage": "STAGE_2",
                     "resolution_method": decision.rule_id, "blockers": [], "replay_available": False,
                     "replay_note": "Step-by-step replay was not persisted for this historical benchmark.",
                 }

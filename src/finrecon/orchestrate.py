@@ -51,8 +51,9 @@ from finrecon.adapters.bank.csv_parser import (
     RejectedBankRow,
     parse_bank_csv,
 )
-from finrecon.adapters.bank.csv_profile import BankCsvProfile
+from finrecon.adapters.bank.csv_profile import BankCsvProfile, DebitCreditColumns
 from finrecon.adapters.bank.manifest import BankIngestConflict, BankIngestManifest
+from finrecon.adapters.bank.schema import BankProfileSelection
 from finrecon.adapters.manifest import IngestConflict, IngestManifest, IngestWarning
 from finrecon.adapters.razorpay.recon import (
     QuarantinedSettlement,
@@ -234,7 +235,8 @@ def _ingestion_fingerprint(*, razorpay_rows: Sequence[RazorpayReconRow], razorpa
 
 def _persist_ingestion_audit(*, store: LedgerStore, batch_id: str,
                              razorpay: RazorpayReconAdapterResult,
-                             bank: BankCsvAdapterResult, bank_profile: BankCsvProfile) -> None:
+                             bank: BankCsvAdapterResult, bank_profile: BankCsvProfile,
+                             profile_selection: BankProfileSelection | None = None) -> None:
     """Persist bounded provenance/finding facts; never feed them to decisions."""
     for item in razorpay.manifest.rows:
         store.record_ingestion_audit(batch_id=batch_id, source_kind="razorpay", source_id=item.source_id,
@@ -264,22 +266,46 @@ def _persist_ingestion_audit(*, store: LedgerStore, batch_id: str,
         store.record_ingestion_audit(batch_id=batch_id, source_kind="razorpay", source_id=razorpay.manifest.source_id,
             event_type="unresolved_refund_companion", subject_id=item.refund_id,
             fingerprint=hashlib.sha256(canonical_json(payload).encode()).hexdigest(), payload=payload)
+    # The declared debit/credit inactive-side semantic travels with the
+    # bank-row audit facts, so a reviewer reading a row's evidence can see
+    # which reading produced it. Interpretation only -- raw values below are
+    # never rewritten.
+    money_semantics = (
+        {"inactive_side_marker": bank_profile.money_columns.inactive_side_marker.value}
+        if isinstance(bank_profile.money_columns, DebitCreditColumns)
+        else {}
+    )
     for item in bank.manifest.rows:
         store.record_ingestion_audit(batch_id=batch_id, source_kind="bank", source_id=item.source_id,
             event_type="accepted_bank_row" if item.produced else "bank_row_not_produced", subject_id=str(item.row_index),
             fingerprint=item.row_fingerprint, payload={"profile_id": bank_profile.profile_id, "row_index": item.row_index,
             "produced": list(item.produced), "source_fields_used": list(item.source_fields_used),
-            "dropped_fields": list(item.dropped_fields)})
+            "dropped_fields": list(item.dropped_fields), **money_semantics})
     for item in bank.rejected_rows:
         store.record_ingestion_audit(batch_id=batch_id, source_kind="bank", source_id=bank.manifest.source_id,
             event_type="rejected_bank_row", subject_id=str(item.row_index), fingerprint=item.row_fingerprint,
             payload={"profile_id": bank_profile.profile_id, "row_index": item.row_index, "reason": item.reason,
-                     "detail": item.detail})
+                     "detail": item.detail, **money_semantics})
     for item in bank.conflicts:
         payload = item.model_dump(mode="json")
         store.record_ingestion_audit(batch_id=batch_id, source_kind="bank", source_id=bank.manifest.source_id,
             event_type="conflict", subject_id=",".join(str(index) for index in item.row_indices),
             fingerprint=hashlib.sha256(canonical_json(payload).encode()).hexdigest(), payload=payload)
+    # How this batch's profile was chosen -- recorded once per batch, and
+    # deliberately *not* an ingestion issue: a successfully recognised
+    # schema is provenance, not a finding (see `ISSUE_EVENT_TYPES` in
+    # `finrecon.api.service`, an allowlist this event type stays out of).
+    # A built-in profile_id is immutable-by-convention and version-bearing,
+    # so recording the pair here is enough to reconstruct the exact mapping
+    # a run used; the batch's own ingestion fingerprint already binds the
+    # profile_id together with a hash of the source bytes.
+    if profile_selection is not None:
+        payload = profile_selection.audit_payload()
+        store.record_ingestion_audit(batch_id=batch_id, source_kind="bank",
+            source_id=bank.manifest.source_id, event_type="bank_profile_selection",
+            subject_id=profile_selection.profile_id,
+            fingerprint=hashlib.sha256(canonical_json(payload).encode()).hexdigest(),
+            payload=payload)
 
 def run_reconciliation_batch(
     *,
@@ -301,6 +327,7 @@ def run_reconciliation_batch(
     policy: Stage3Policy = DEFAULT_POLICY,
     case_ids: frozenset[str] | None = None,
     write_cache: bool = True,
+    profile_selection: BankProfileSelection | None = None,
 ) -> BatchOrchestrationResult:
     """Run one batch from raw Razorpay recon rows + a bank CSV to final outcomes.
 
@@ -317,6 +344,13 @@ def run_reconciliation_batch(
     in either mode: ``run_stage3`` only ever reads ``batch_result.snapshots``
     (the Stage-2-unresolved cases), and an empty snapshot set means its
     internal loop never runs -- no cache path is touched, no chain is used.
+
+    ``profile_selection`` is pure provenance: an optional record of *how*
+    the caller arrived at ``bank_profile`` (a reviewed built-in entry that
+    the caller re-verified against these bytes, or an uploaded profile
+    JSON), written to the ingestion audit trail and read by nothing in the
+    decision path. Omitting it -- as the CLI and every existing caller do --
+    changes nothing about the run.
     """
     if mode not in VALID_MODES:
         raise ValueError(f"unsupported mode {mode!r}; expected one of {VALID_MODES}")
@@ -396,6 +430,7 @@ def run_reconciliation_batch(
         razorpay=razorpay_result,
         bank=bank_result,
         bank_profile=bank_profile,
+        profile_selection=profile_selection,
     )
 
     batch_result = BatchResult(

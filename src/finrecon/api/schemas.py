@@ -189,17 +189,272 @@ class AuditResponse(ApiModel):
     events: list[AuditEvent]
 
 
+# Bank-schema recognition projections. Read-only: nothing below creates a
+# batch, a case or a canonical record, and none of it reaches a model.
+class BuiltInProfileView(ApiModel):
+    """One registry entry, as disclosed to the operator.
+
+    ``verification`` is surfaced verbatim rather than collapsed into a
+    "supported" flag: an operator about to reconcile money is entitled to
+    know whether a profile is vendor-verified, partially verified, or (as
+    everything shipped today is) a synthetic demo schema.
+    """
+
+    profile_id: str
+    label: str
+    version: str
+    verification: Literal["vendor_verified", "partially_verified", "demo_fixture"]
+    description: str
+    evidence: str
+
+
+class SavedMappingView(ApiModel):
+    """One user-confirmed saved mapping version, as disclosed to the operator.
+
+    ``verification`` has no counterpart here on purpose. That field states
+    how well a *shipped* profile's schema is evidenced by documentation this
+    build can point at; FinRecon has no such evidence about a mapping the
+    operator wrote, and inventing a level for it would be a claim it cannot
+    support. ``provenance`` states the honest thing instead: a person here
+    confirmed this mapping.
+    """
+
+    mapping_id: str
+    name: str
+    version: int
+    profile_id: str
+    status: Literal["active", "superseded", "disabled"]
+    provenance: Literal["human_confirmed"]
+    source: Literal["user_saved"]
+    schema_signature: str
+    expected_headers: list[str]
+    profile: dict[str, Any] = Field(default_factory=dict)
+    """The mapping itself, as the operator confirmed it.
+
+    Disclosed because it is theirs: the edit flow prefills from it, and a
+    reviewer asking "what does this mapping actually say" should not have to
+    read a database. It is the same wire shape a manual profile upload
+    carries, minus nothing."""
+    created_at: str | None = None
+    llm_proposal: dict[str, Any] | None = None
+    """Metadata about a model proposal a human then confirmed or corrected.
+    Context for review; never authority. Absent when no model was consulted."""
+
+
+class MappingMatchView(ApiModel):
+    """One entry that matched an uploaded statement, of either kind.
+
+    A single shape for built-ins and saved mappings so the Run page renders
+    a tie between one of each without a special case -- and so the ambiguity
+    path cannot accidentally acquire a preference for one kind.
+    """
+
+    kind: Literal["built_in", "user_saved"]
+    profile_id: str
+    label: str
+    version: str
+    verification: str | None = None
+    """Set for built-ins only. See :class:`SavedMappingView`."""
+    description: str = ""
+    evidence: str = ""
+    saved_mapping: SavedMappingView | None = None
+    """Set for a saved mapping only, carrying its id and version."""
+
+
+class BankStatementInspectionResponse(ApiModel):
+    """The outcome of inspecting one uploaded statement's header row.
+
+    ``raw_headers`` is always present, matched or not, so an unrecognised
+    file can still be explained to the operator in its own words.
+    """
+
+    status: Literal["matched", "ambiguous", "unknown"]
+    raw_headers: list[str]
+    normalized_headers: list[str]
+    signature: str
+    field_count: int
+    match_tier: Literal["exact", "safe_normalized"] | None
+    profile: BuiltInProfileView | None
+    """The matched entry when it is a shipped built-in. Kept exactly as it
+    was, so a client written before saved mappings existed still reads the
+    built-in path correctly and simply never sees a saved match."""
+    candidates: list[BuiltInProfileView]
+    """The tied *built-in* entries for an ambiguous statement; empty
+    otherwise. Never a nearest-match suggestion."""
+    match: MappingMatchView | None = None
+    """The matched entry of either kind. The field newer clients read."""
+    matches: list[MappingMatchView] = Field(default_factory=list)
+    """Every tied entry of either kind when ``status`` is ambiguous."""
+
+
+class BankProfileSelectionView(ApiModel):
+    """Which profile a run actually used, and how it was chosen."""
+
+    profile_id: str
+    selection_mode: Literal["built_in", "manual_upload", "user_saved"]
+    match_tier: Literal["exact", "safe_normalized"] | None
+    version: str | None
+    label: str | None
+    verification: str | None
+    schema_signature: str | None
+    mapping_id: str | None = None
+    mapping_version: int | None = None
+    provenance: str | None = None
+    source: str | None = None
+
+
+class MappingIssueView(ApiModel):
+    """One problem with a candidate mapping, addressed to one editor field."""
+
+    field: str
+    code: str
+    message: str
+
+
+class MappingDateFormatView(ApiModel):
+    """What the sampled rows can and cannot settle about a date format."""
+
+    proposed: str
+    plausible: list[str]
+    contradicted: bool
+    ambiguous_with: list[str]
+    evidence_rows: int
+    requires_human_choice: bool
+
+
+class MappingValidationView(ApiModel):
+    """The deterministic verdict on a candidate mapping.
+
+    ``warnings`` never block confirmation -- a five-row excerpt is not proof
+    about a whole statement -- but they are shown, because the operator is
+    the one entitled to decide whether an observation matters.
+    """
+
+    ok: bool
+    errors: list[MappingIssueView] = Field(default_factory=list)
+    warnings: list[MappingIssueView] = Field(default_factory=list)
+    fields_requiring_human_choice: list[str] = Field(default_factory=list)
+    date_format: MappingDateFormatView | None = None
+
+
+class ProposedMoneyView(ApiModel):
+    kind: Literal["debit_credit", "amount_direction"]
+    debit_column: str | None = None
+    credit_column: str | None = None
+    inactive_side_marker: Literal["empty_only", "empty_or_zero"] | None = None
+    amount_column: str | None = None
+    direction_column: str | None = None
+    credit_values: list[str] | None = None
+    debit_values: list[str] | None = None
+
+
+class ProposedMappingView(ApiModel):
+    """The mapping a model suggested. Every field is editable by the operator."""
+
+    value_date_column: str
+    value_date_format: str
+    value_date_format_certain: bool
+    narration_column: str
+    reference_id_column: str | None
+    money: ProposedMoneyView
+
+
+class MappingProposalView(ApiModel):
+    """A suggestion plus its rationale. Never a mapping FinRecon will use.
+
+    Note what this response does *not* contain: any identifier a later
+    request could submit in place of a mapping. There is no proposal id,
+    because a proposal has no server-side existence to refer to -- the only
+    way forward is to post a complete confirmed mapping, which is then
+    validated against the file from scratch.
+    """
+
+    mapping: ProposedMappingView
+    reasoning_summary: dict[str, str]
+    """Short per-field rationale for display. Explanatory only; it is not
+    evidence and nothing downstream reads it."""
+    uncertainties: list[str] = Field(default_factory=list)
+    provider: str | None = None
+    model: str | None = None
+    reported_model: str | None = None
+    proposed_at: str | None = None
+
+
+class MappingSampleView(ApiModel):
+    """The bounded excerpt shown as a preview, and the bounds it obeyed."""
+
+    headers: list[str]
+    rows: list[list[str]]
+    bounds: dict[str, Any]
+
+
+class BankMappingProposalResponse(ApiModel):
+    """The unknown-schema proposal response. Authorizes nothing.
+
+    At most one of ``proposal`` / ``failure_code`` is set. A failure is not
+    an HTTP error: the mapping editor stays fully usable with no proposal in
+    it, which is the whole point of not blocking the product on model
+    availability.
+    """
+
+    schema_status: Literal["matched", "ambiguous", "unknown"]
+    """The inspection result. A proposal is only ever generated for
+    ``unknown``; the other two are returned so the client can show why no
+    proposal was requested."""
+    sample: MappingSampleView
+    supported_date_formats: list[dict[str, str]]
+    raw_headers: list[str]
+    normalized_headers: list[str]
+    signature: str
+    delimiter: str
+    encoding: str
+    proposal: MappingProposalView | None = None
+    validation: MappingValidationView | None = None
+    failure_code: str | None = None
+    failure_message: str | None = None
+    provider_calls_made: bool = False
+    model_calls: int = 0
+
+
+class BankMappingListResponse(ApiModel):
+    mappings: list[SavedMappingView]
+
+
+class BankMappingDetailResponse(ApiModel):
+    """One logical mapping: its active version, and its whole history.
+
+    ``versions`` includes superseded entries and is ordered oldest first,
+    because "what did this mapping used to say" is the question an audit
+    reader arrives with.
+    """
+
+    mapping_id: str
+    name: str
+    active: SavedMappingView | None
+    versions: list[SavedMappingView]
+
+
+class BankMappingSaveResponse(ApiModel):
+    """A mapping that is now authoritative, because a person confirmed it."""
+
+    saved: SavedMappingView
+    validation: MappingValidationView
+    created_version: int
+
+
 class RunResponse(ApiModel):
     batch_id: str
     mode: Literal["replay", "live"]
     provider_calls_made: bool
     result: RunSummary
+    bank_profile_selection: BankProfileSelectionView | None = None
+    """How the bank profile for this run was chosen. Optional so existing
+    clients that ignore it, and existing response snapshots, are unaffected."""
 
 
 # Benchmark projections are deliberately separate from ledger projections.
 # They are read-only views over manifests, reports, visible inputs and persisted
-# trajectories. The v3 case projection permits only non-answer tier labels from
-# held-out metadata and never calls the agent stack.
+# trajectories; they never load hidden truth or call the agent stack.
 class BenchmarkSummary(ApiModel):
     benchmark_id: str
     title: str

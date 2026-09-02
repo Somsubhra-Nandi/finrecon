@@ -1,0 +1,26 @@
+{
+  "registry_artifact_version": 1,
+  "profile_id": "finrecon_demo_v1",
+  "label": "FinRecon demo statement (synthetic)",
+  "version": "v1",
+  "verification": "demo_fixture",
+  "description": "The synthetic statement layout used by FinRecon's demo batch. Not a real bank's export.",
+  "evidence": "Schema is verifiable inside this repository: fixtures/demo/bank.csv is the file this profile describes, and fixtures/demo/bank-profile.json is the same column mapping in its manual-upload form. It is authored demo data, so it makes no claim about any bank's real CSV export. No real-bank profile ships in this registry: see src/finrecon/adapters/bank/README.md, 'ICICI: not shipped, and why'.",
+  "expected_headers": ["Ref No", "Value Date", "Narration", "Debit", "Credit"],
+  "profile": {
+    "profile_id": "finrecon_demo_v1",
+    "currency": "INR",
+    "value_date_column": "Value Date",
+    "value_date_format": "%d/%m/%Y",
+    "narration_column": "Narration",
+    "money_columns": {
+      "kind": "debit_credit",
+      "debit_column": "Debit",
+      "credit_column": "Credit",
+      "inactive_side_marker": "empty_only"
+    },
+    "reference_id_column": "Ref No",
+    "delimiter": ",",
+    "encoding": "utf-8"
+  }
+}

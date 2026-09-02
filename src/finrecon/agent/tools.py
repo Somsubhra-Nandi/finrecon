@@ -414,15 +414,23 @@ def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
     return result
 
 
-def validate_call(tool_name: str, raw_arguments: str) -> tuple[ToolDefinition, ToolInput]:
-    """Parse and validate one requested call. Raises before anything executes."""
-    definition = TOOLS_BY_NAME.get(tool_name)
-    if definition is None:
-        raise ToolValidationError(
-            ToolValidationError.UNKNOWN_TOOL,
-            f"{tool_name!r} is not a registered tool; known tools: {sorted(TOOLS_BY_NAME)}",
-        )
+def decode_tool_arguments(tool_name: str, raw_arguments: str) -> dict[str, Any]:
+    """Strictly decode one tool call's raw argument text into an object.
 
+    The decode half of :func:`validate_call`, extracted so the two callers
+    that need *this* guarantee -- Stage-3 tool validation, and the bank
+    schema-mapping proposal in
+    :mod:`finrecon.adapters.bank.mapping.service` -- share one decoder
+    rather than each writing their own. That matters specifically because of
+    :func:`_reject_duplicate_keys`: a second, forgiving decoder elsewhere in
+    the codebase would silently accept the ambiguous-object-key shape this
+    one exists to refuse.
+
+    Raises :class:`ToolValidationError` for text that is not a JSON object,
+    contains a duplicate key at any nesting level, or does not parse. Does
+    no schema validation -- the caller owns the model the object must
+    satisfy.
+    """
     text = raw_arguments.strip() or "{}"
     try:
         parsed = json.loads(text, object_pairs_hook=_reject_duplicate_keys)
@@ -442,6 +450,19 @@ def validate_call(tool_name: str, raw_arguments: str) -> tuple[ToolDefinition, T
             ToolValidationError.MALFORMED_ARGUMENTS_JSON,
             f"arguments for {tool_name!r} decoded to {type(parsed).__name__}, not an object",
         )
+    return parsed
+
+
+def validate_call(tool_name: str, raw_arguments: str) -> tuple[ToolDefinition, ToolInput]:
+    """Parse and validate one requested call. Raises before anything executes."""
+    definition = TOOLS_BY_NAME.get(tool_name)
+    if definition is None:
+        raise ToolValidationError(
+            ToolValidationError.UNKNOWN_TOOL,
+            f"{tool_name!r} is not a registered tool; known tools: {sorted(TOOLS_BY_NAME)}",
+        )
+
+    parsed = decode_tool_arguments(tool_name, raw_arguments)
 
     try:
         arguments = definition.input_model.model_validate(parsed)
@@ -513,6 +534,7 @@ __all__ = [
     "ToolContext",
     "ToolDefinition",
     "ToolValidationError",
+    "decode_tool_arguments",
     "execute",
     "execute_prepared",
     "prepare_call",

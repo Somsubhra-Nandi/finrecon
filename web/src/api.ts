@@ -1,15 +1,26 @@
 export class ApiError extends Error {
-  constructor(public code: string, message: string, public status: number) { super(message); }
+  constructor(
+    public code: string,
+    message: string,
+    public status: number,
+    // The error body's own fields, beyond code and message. Some rejections
+    // carry structured context a form can act on -- the mapping-confirmation
+    // endpoints return the deterministic validation that refused the save,
+    // so the editor can point at the offending control instead of showing a
+    // bare sentence.
+    public detail: Record<string, unknown> = {},
+  ) { super(message); }
 }
 
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(path, init);
   if (!response.ok) {
-    const body = await response.json().catch(() => null) as { detail?: { code?: string; message?: string } | string } | null;
+    const body = await response.json().catch(() => null) as { detail?: Record<string, unknown> | string } | null;
     const detail = body?.detail;
-    const code = typeof detail === "object" ? detail?.code : undefined;
-    const message = typeof detail === "object" ? detail?.message : detail;
-    throw new ApiError(code ?? "backend_failure", message ?? "The FinRecon service could not complete the request.", response.status);
+    const structured = (detail && typeof detail === "object" ? detail : {}) as Record<string, unknown>;
+    const code = typeof structured.code === "string" ? structured.code : undefined;
+    const message = typeof structured.message === "string" ? structured.message : (typeof detail === "string" ? detail : undefined);
+    throw new ApiError(code ?? "backend_failure", message ?? "The FinRecon service could not complete the request.", response.status, structured);
   }
   try {
     return await response.json() as T;

@@ -19,6 +19,33 @@ those choices an explicit, reviewable, per-bank declaration instead.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import Enum
+
+
+class InactiveSideMarker(str, Enum):
+    """How a debit/credit source marks the side a row does *not* use.
+
+    Two conventions exist in real statement exports and they cannot be
+    told apart from the data, only declared:
+
+    * :attr:`EMPTY_ONLY` -- the inactive side is textually empty. A value
+      present in a column means that column is in play, whatever the value
+      is. This is the historical (and default) reading.
+    * :attr:`EMPTY_OR_ZERO` -- the source *zero-fills* the inactive side,
+      so ``debit="0.0", credit="1250.00"`` is one credit of ₹1250, not a
+      contradiction. Sources that do this never leave the inactive column
+      blank, so an explicit zero is their declared way of saying "not this
+      side".
+
+    Deliberately **not** named ``zero_is_empty``: zero is not textually
+    empty, it is one source's chosen representation of an inactive side.
+    The distinction is a per-profile declaration and is never sniffed --
+    reading a zero as "inactive" against a source that means "a genuine
+    ₹0 movement", or vice versa, silently changes what the statement says.
+    """
+
+    EMPTY_ONLY = "empty_only"
+    EMPTY_OR_ZERO = "empty_or_zero"
 
 
 @dataclass(frozen=True)
@@ -26,14 +53,45 @@ class DebitCreditColumns:
     """Separate debit/credit rupee-text columns.
 
     Per row, exactly one of ``debit_column``/``credit_column`` is expected
-    to be populated -- see
+    to be *active* -- see
     :func:`finrecon.adapters.bank.csv_parser._resolve_direction_and_amount`
-    for the exact populated/neither/both semantics, which are never
-    guessed.
+    for the exact active/neither/both semantics, which are never guessed.
+
+    ``inactive_side_marker`` declares what "not this side" looks like in
+    this source; see :class:`InactiveSideMarker`. It defaults to
+    :attr:`InactiveSideMarker.EMPTY_ONLY`, so a profile written before this
+    field existed (and any profile JSON that omits it) keeps exactly its
+    previous behaviour.
     """
 
     debit_column: str
     credit_column: str
+    inactive_side_marker: InactiveSideMarker = InactiveSideMarker.EMPTY_ONLY
+
+    def __post_init__(self) -> None:
+        """Narrow construction-time checks for the degenerate declarations.
+
+        Only the two that would make this mapping meaningless: a marker
+        that is not one of the declared semantics (so an unknown wire
+        value can never be silently treated as the default), and one
+        column standing in for both sides (under which "exactly one side
+        is active" cannot be expressed at all). Everything else about a
+        profile is still validated where it always was.
+        """
+        if not isinstance(self.inactive_side_marker, InactiveSideMarker):
+            raise ValueError(
+                "inactive_side_marker must be an InactiveSideMarker, got "
+                f"{self.inactive_side_marker!r}; valid values are "
+                f"{[member.value for member in InactiveSideMarker]}"
+            )
+        if not self.debit_column or not self.credit_column:
+            raise ValueError("debit_column and credit_column must both be non-empty")
+        if self.debit_column == self.credit_column:
+            raise ValueError(
+                f"debit_column and credit_column are both {self.debit_column!r}; "
+                "a single column cannot declare both sides of a debit/credit "
+                "mapping"
+            )
 
 
 @dataclass(frozen=True)
@@ -124,5 +182,6 @@ __all__ = [
     "AmountDirectionColumns",
     "BankCsvProfile",
     "DebitCreditColumns",
+    "InactiveSideMarker",
     "MoneyColumns",
 ]

@@ -8,26 +8,46 @@ import uuid
 from collections.abc import Iterator
 from pathlib import Path
 
-from fastapi import Depends, FastAPI, File, Form, Query, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import ValidationError
 
 from finrecon.adapters.bank.csv_parser import BankCsvDecodeError
-from finrecon.adapters.bank.csv_profile import (
-    AmountDirectionColumns,
-    BankCsvProfile,
-    DebitCreditColumns,
+from finrecon.adapters.bank.csv_profile import BankCsvProfile
+from finrecon.adapters.bank.profile_json import (
+    BankProfileFormatError,
+    profile_from_payload,
+)
+from finrecon.adapters.bank.schema import (
+    BankProfileSelection,
+    BuiltInProfile,
+    BuiltInProfileVerificationError,
+    CombinedMappingRegistry,
+    SavedMappingEntry,
+    built_in_registry,
+    inspect_bank_csv,
+    resolve_verified_built_in,
+    resolve_verified_saved_mapping,
 )
 from finrecon.adapters.razorpay.recon_row import RazorpayReconRow
 from finrecon.agent.cache import ReplayMissError, TrajectoryCache
 from finrecon.agent.providers.base import ProviderConfigurationError
+from finrecon.json_text import decode_json_bytes
 from finrecon.ledger import BatchIdentityError, LedgerStore, open_ledger
+from finrecon.ledger.bank_mappings import BankMappingStore
 from finrecon.orchestrate import run_reconciliation_batch
 
+from . import bank_mappings as mapping_api
 from .schemas import (
     AuditResponse,
+    BankMappingDetailResponse,
+    BankMappingListResponse,
+    BankMappingProposalResponse,
+    BankMappingSaveResponse,
+    BankProfileSelectionView,
+    BankStatementInspectionResponse,
     BenchmarkCaseDetailResponse,
     BenchmarkCasesResponse,
     BenchmarkDetailResponse,
@@ -35,9 +55,11 @@ from .schemas import (
     BenchmarkReplayDetailResponse,
     BenchmarkReplaysResponse,
     BenchmarkReportsResponse,
+    BuiltInProfileView,
     CaseDetailResponse,
     CaseListResponse,
     IngestionIssuesResponse,
+    MappingMatchView,
     OverviewResponse,
     ResolutionRequest,
     ResolutionResponse,
@@ -67,40 +89,23 @@ def _api_error(code: str, message: str, status_code: int) -> Exception:
 
 
 def _profile_from_payload(payload: dict) -> BankCsvProfile:
+    """Manual profile upload -> declaration, via the one shared reader.
+
+    The decoding itself lives in
+    :mod:`finrecon.adapters.bank.profile_json` so the API, the CLI and the
+    built-in registry cannot drift on what a profile payload means; this
+    wrapper only turns its error into this boundary's error, exactly as
+    before.
+    """
     try:
-        money_payload = payload["money_columns"]
-        kind = money_payload["kind"]
-        if kind == "debit_credit":
-            money_columns = DebitCreditColumns(
-                debit_column=money_payload["debit_column"],
-                credit_column=money_payload["credit_column"],
-            )
-        elif kind == "amount_direction":
-            money_columns = AmountDirectionColumns(
-                amount_column=money_payload["amount_column"],
-                direction_column=money_payload["direction_column"],
-                credit_values=frozenset(money_payload["credit_values"]),
-                debit_values=frozenset(money_payload["debit_values"]),
-            )
-        else:
-            raise ValueError("money_columns.kind must be debit_credit or amount_direction")
-        return BankCsvProfile(
-            profile_id=payload["profile_id"], currency=payload["currency"],
-            value_date_column=payload["value_date_column"],
-            value_date_format=payload["value_date_format"],
-            narration_column=payload["narration_column"], money_columns=money_columns,
-            reference_id_column=payload.get("reference_id_column"),
-            currency_column=payload.get("currency_column"),
-            thousands_separator=payload.get("thousands_separator"),
-            delimiter=payload.get("delimiter", ","), encoding=payload.get("encoding", "utf-8"),
-        )
-    except (KeyError, TypeError, ValueError) as exc:
+        return profile_from_payload(payload)
+    except BankProfileFormatError as exc:
         raise _api_error("invalid_bank_profile", f"Bank profile is invalid: {exc}", 422) from exc
 
 
 def _razorpay_rows(raw: bytes) -> list[RazorpayReconRow]:
     try:
-        decoded = raw.decode("utf-8")
+        decoded = decode_json_bytes(raw)
         payload = json.loads(decoded)
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise _api_error("malformed_razorpay_upload", f"Razorpay file must be UTF-8 JSON: {exc}", 422) from exc
@@ -123,15 +128,173 @@ async def _bounded_read(upload: UploadFile) -> bytes:
     return data
 
 
-def _run(
-    *, store: LedgerStore, razorpay_bytes: bytes, bank_bytes: bytes,
-    profile_bytes: bytes, batch_id: str, mode: str, demo: bool = False,
-) -> RunResponse:
+def _profile_view(entry) -> BuiltInProfileView:
+    return BuiltInProfileView(
+        profile_id=entry.profile_id, label=entry.label, version=entry.version,
+        verification=entry.verification.value, description=entry.description,
+        evidence=entry.evidence,
+    )
+
+
+def _match_view(entry) -> MappingMatchView:
+    """One matched entry, in the shape that covers both kinds.
+
+    Built-ins and saved mappings differ in what they can honestly claim --
+    a built-in states an evidence level for its schema, a saved mapping
+    states that a person here confirmed it -- so the fields differ, but the
+    envelope does not, and neither does the ambiguity handling above it.
+    """
+    if isinstance(entry, SavedMappingEntry):
+        return MappingMatchView(
+            kind="user_saved",
+            profile_id=entry.profile_id,
+            label=entry.name,
+            version=entry.version,
+            description="Saved by this deployment's operator.",
+            evidence="",
+            saved_mapping=mapping_api.saved_mapping_view(entry),
+        )
+    return MappingMatchView(
+        kind="built_in",
+        profile_id=entry.profile_id,
+        label=entry.label,
+        version=entry.version,
+        verification=entry.verification.value,
+        description=entry.description,
+        evidence=entry.evidence,
+    )
+
+
+def _inspection_response(inspection) -> BankStatementInspectionResponse:
+    """Project an inspection, keeping the pre-existing built-in fields exact.
+
+    ``profile``/``candidates`` continue to carry *built-ins only*, so a
+    client written before saved mappings existed reads them with exactly
+    their old meaning rather than silently receiving an entry whose
+    ``verification`` FinRecon cannot vouch for. ``match``/``matches`` are
+    the fields that see both kinds.
+    """
+    observed = inspection.observed
+    built_in_match = (
+        inspection.profile if isinstance(inspection.profile, BuiltInProfile) else None
+    )
+    return BankStatementInspectionResponse(
+        status=inspection.status.value,
+        raw_headers=list(observed.raw_headers),
+        normalized_headers=list(observed.normalized_headers),
+        signature=observed.digest,
+        field_count=observed.field_count,
+        match_tier=inspection.match_tier.value if inspection.match_tier else None,
+        profile=_profile_view(built_in_match) if built_in_match else None,
+        candidates=[
+            _profile_view(entry)
+            for entry in inspection.candidates
+            if isinstance(entry, BuiltInProfile)
+        ],
+        match=_match_view(inspection.profile) if inspection.profile else None,
+        matches=[_match_view(entry) for entry in inspection.candidates],
+    )
+
+
+def _selection_view(selection) -> BankProfileSelectionView:
+    return BankProfileSelectionView(
+        profile_id=selection.profile_id,
+        selection_mode=selection.selection_mode.value,
+        match_tier=selection.match_tier.value if selection.match_tier else None,
+        version=selection.version, label=selection.label,
+        verification=selection.verification,
+        schema_signature=selection.schema_signature,
+        mapping_id=selection.mapping_id,
+        mapping_version=selection.mapping_version,
+        provenance=selection.provenance,
+        source=selection.source,
+    )
+
+
+def _resolve_bank_profile(
+    *, registry: CombinedMappingRegistry, bank_bytes: bytes,
+    profile_bytes: bytes | None, built_in_profile_id: str | None,
+    saved_mapping_id: str | None = None,
+    mapping_store: BankMappingStore | None = None,
+) -> tuple[BankCsvProfile, BankProfileSelection]:
+    """Decide which profile this run uses, and record how it was decided.
+
+    Exactly one of the three paths must be taken. The manual path is the
+    pre-existing one and is unchanged. The built-in and saved-mapping paths
+    both treat the client's identifier as a *claim* and re-verify it
+    server-side against the uploaded bytes -- see
+    :func:`~finrecon.adapters.bank.schema.detect.resolve_verified_built_in`
+    for why trusting it would let a client have one bank's columns read
+    under another bank's mapping. The saved-mapping path needs that check
+    at least as much: nobody outside this deployment has reviewed the
+    mapping, and its id is one the browser is holding.
+    """
+    supplied = [
+        name
+        for name, value in (
+            ("bank_profile", profile_bytes),
+            ("built_in_profile_id", built_in_profile_id),
+            ("saved_mapping_id", saved_mapping_id),
+        )
+        if value is not None
+    ]
+    if len(supplied) > 1:
+        raise _api_error(
+            "conflicting_bank_profile",
+            f"Supply exactly one bank profile source; got {supplied}.",
+            422,
+        )
+    if saved_mapping_id is not None:
+        assert mapping_store is not None  # provided together by the endpoint
+        try:
+            entry, inspection = resolve_verified_saved_mapping(
+                saved_mapping_id,
+                bank_bytes,
+                registry,
+                mapping_store.active_version(saved_mapping_id),
+            )
+        except BuiltInProfileVerificationError as exc:
+            raise _api_error(
+                exc.code, str(exc), 404 if exc.code == "unknown_bank_mapping" else 422
+            ) from exc
+        return entry.profile, BankProfileSelection.saved_mapping(entry, inspection)
+    if built_in_profile_id is not None:
+        try:
+            entry, inspection = resolve_verified_built_in(
+                built_in_profile_id, bank_bytes, registry
+            )
+        except BuiltInProfileVerificationError as exc:
+            raise _api_error(
+                exc.code, str(exc), 404 if exc.code == "unknown_built_in_profile" else 422
+            ) from exc
+        return entry.profile, BankProfileSelection.detected(entry, inspection)
+    if profile_bytes is None:
+        raise _api_error(
+            "missing_bank_profile",
+            "Supply a bank_profile upload, a built_in_profile_id for a "
+            "recognised bank format, or a saved_mapping_id for a mapping you "
+            "have confirmed.",
+            422,
+        )
     try:
-        profile_payload = json.loads(profile_bytes.decode("utf-8"))
+        profile_payload = json.loads(decode_json_bytes(profile_bytes))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise _api_error("invalid_bank_profile", f"Bank profile must be UTF-8 JSON: {exc}", 422) from exc
     profile = _profile_from_payload(profile_payload)
+    return profile, BankProfileSelection.manual(profile.profile_id)
+
+
+def _run(
+    *, store: LedgerStore, registry: CombinedMappingRegistry, razorpay_bytes: bytes,
+    bank_bytes: bytes, profile_bytes: bytes | None, batch_id: str, mode: str,
+    built_in_profile_id: str | None = None, saved_mapping_id: str | None = None,
+    mapping_store: BankMappingStore | None = None, demo: bool = False,
+) -> RunResponse:
+    profile, selection = _resolve_bank_profile(
+        registry=registry, bank_bytes=bank_bytes, profile_bytes=profile_bytes,
+        built_in_profile_id=built_in_profile_id,
+        saved_mapping_id=saved_mapping_id, mapping_store=mapping_store,
+    )
     rows = _razorpay_rows(razorpay_bytes)
     try:
         result = run_reconciliation_batch(
@@ -147,6 +310,7 @@ def _run(
             fixtures_dir=(DEMO_ROOT / "trajectories") if demo else None,
             provider_id="mechanical" if demo else None,
             model="mechanical-investigator-v1" if demo else None,
+            profile_selection=selection,
         )
     except ReplayMissError as exc:
         raise _api_error(
@@ -166,6 +330,7 @@ def _run(
         batch_id=batch_id, mode=mode,
         provider_calls_made=result.stage3_result.provider_calls_made(),
         result=summary,
+        bank_profile_selection=_selection_view(selection),
     )
 
 
@@ -174,6 +339,11 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
     app = FastAPI(title="FinRecon Operations API", version="1.0.0")
     app.state.ledger_path = resolved_ledger
     app.state.benchmark_catalog = BenchmarkCatalog(PROJECT_ROOT)
+    # Loaded once at startup so a malformed shipped artifact fails the
+    # build loudly rather than at somebody's first upload. Held on
+    # app.state so a test can install its own registry without reaching
+    # into the module-level cache.
+    app.state.bank_profile_registry = built_in_registry()
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
@@ -277,25 +447,159 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
                   store: LedgerStore = Depends(store_dependency)) -> AuditResponse:
         return audit_events(store, batch_id, case_id)
 
+    def mapping_store_for(store: LedgerStore) -> BankMappingStore:
+        """Saved-mapping access over the request's existing ledger connection.
+
+        Not a separate dependency: sharing the one request-scoped connection
+        keeps a mapping write and everything else in the request under the
+        same schema creation and the same transaction boundaries, and avoids
+        a second connection to the same SQLite file.
+        """
+        return BankMappingStore(store.connection)
+
+    def detection_corpus(store: LedgerStore) -> CombinedMappingRegistry:
+        return mapping_api.combined_registry(
+            app.state.bank_profile_registry, mapping_store_for(store)
+        )
+
+    @app.post("/api/bank-mappings/propose", response_model=BankMappingProposalResponse)
+    async def post_bank_mapping_propose(
+        bank_file: UploadFile = File(...),
+        store: LedgerStore = Depends(store_dependency),
+    ) -> BankMappingProposalResponse:
+        """Propose a column mapping for a statement FinRecon does not recognise.
+
+        Persists nothing and returns no identifier that could stand in for a
+        mapping. A recognised or ambiguous schema returns without contacting
+        a provider at all -- the server re-inspects the file rather than
+        taking the client's word that a proposal is needed, so no browser can
+        provoke a model call for a file that already has a mapping.
+        """
+        raw = await _bounded_read(bank_file)
+        return mapping_api.propose_response(
+            raw_bytes=raw, registry=detection_corpus(store)
+        )
+
+    @app.get("/api/bank-mappings", response_model=BankMappingListResponse)
+    def get_bank_mappings(
+        store: LedgerStore = Depends(store_dependency),
+    ) -> BankMappingListResponse:
+        return mapping_api.list_mappings(mapping_store_for(store))
+
+    @app.get("/api/bank-mappings/{mapping_id}", response_model=BankMappingDetailResponse)
+    def get_bank_mapping(
+        mapping_id: str, store: LedgerStore = Depends(store_dependency)
+    ) -> BankMappingDetailResponse:
+        return mapping_api.mapping_detail(mapping_store_for(store), mapping_id)
+
+    @app.post("/api/bank-mappings", response_model=BankMappingSaveResponse)
+    async def post_bank_mapping(
+        bank_file: UploadFile = File(...),
+        mapping: str = Form(...),
+        store: LedgerStore = Depends(store_dependency),
+    ) -> BankMappingSaveResponse:
+        """Persist a human-confirmed mapping as version 1 of a named mapping.
+
+        This endpoint *is* the confirmation boundary. The bank file is
+        required so the server reads the header row itself instead of
+        believing the browser's account of it, and the mapping is validated
+        against that read before anything is written.
+        """
+        raw = await _bounded_read(bank_file)
+        return mapping_api.create_mapping(
+            store=mapping_store_for(store),
+            request=mapping_api.parse_save_request(mapping),
+            raw_bytes=raw,
+        )
+
+    @app.post(
+        "/api/bank-mappings/{mapping_id}/versions",
+        response_model=BankMappingSaveResponse,
+    )
+    async def post_bank_mapping_version(
+        mapping_id: str,
+        bank_file: UploadFile = File(...),
+        mapping: str = Form(...),
+        store: LedgerStore = Depends(store_dependency),
+    ) -> BankMappingSaveResponse:
+        """Confirm an edit as the next version; the previous one is retired.
+
+        Retired, not replaced. A batch reconciled under the old version keeps
+        naming exactly the mapping it used, which is the whole reason
+        versions exist rather than an editable row.
+        """
+        raw = await _bounded_read(bank_file)
+        return mapping_api.add_mapping_version(
+            store=mapping_store_for(store),
+            mapping_id=mapping_id,
+            request=mapping_api.parse_save_request(mapping),
+            raw_bytes=raw,
+        )
+
+    @app.post("/api/bank-statement/inspect", response_model=BankStatementInspectionResponse)
+    async def post_bank_statement_inspect(
+        bank_file: UploadFile = File(...),
+        store: LedgerStore = Depends(store_dependency),
+    ) -> BankStatementInspectionResponse:
+        """Recognise an uploaded statement's schema. Read-only, no side effects.
+
+        Creates no batch, no case and no canonical record, writes nothing to
+        the ledger, and reaches no model or provider -- it reads the file's
+        header row and compares it with the shipped registry *and* the
+        mappings this deployment's operator has confirmed.
+
+        It now takes a ``store`` dependency, which it previously refused, for
+        exactly one reason: saved mappings live in the ledger and have to be
+        read to be matched. The read-only promise is unchanged and is worth
+        restating because the structural guarantee weakened -- this handler
+        performs no write, and every function it calls is a query or a
+        signature comparison.
+
+        Uses the same bounded read as every other upload, so the existing
+        15 MB cap and empty-file rejection apply unchanged.
+        """
+        raw = await _bounded_read(bank_file)
+        return _inspection_response(inspect_bank_csv(raw, detection_corpus(store)))
+
     @app.post("/api/reconciliation/run", response_model=RunResponse)
     async def post_run(
         razorpay_file: UploadFile = File(...),
         bank_file: UploadFile = File(...),
-        bank_profile: UploadFile = File(...),
+        bank_profile: UploadFile | None = File(None),
+        built_in_profile_id: str | None = Form(None),
+        saved_mapping_id: str | None = Form(None),
         mode: str = Form("replay"),
         batch_id: str | None = Form(None),
         store: LedgerStore = Depends(store_dependency),
     ) -> RunResponse:
+        """Run a batch under an uploaded profile, a built-in, or a saved mapping.
+
+        ``bank_profile`` remains optional purely so the other paths can
+        exist; a request that supplies it behaves exactly as it always did.
+        Neither ``built_in_profile_id`` nor ``saved_mapping_id`` is trusted
+        on its own -- the server re-inspects the uploaded bytes and requires
+        that detection would independently have selected that exact profile
+        or mapping version before any ingestion runs. A statement whose
+        columns have changed since a mapping was confirmed is therefore
+        refused here, before a single ``BankRecord`` exists, rather than
+        being read under a mapping that no longer describes it.
+        """
         if mode not in {"replay", "live"}:
             raise _api_error("invalid_mode", "Mode must be replay or live.", 422)
         resolved_batch = (batch_id or f"batch:upload:{uuid.uuid4().hex[:12]}").strip()
         if not resolved_batch:
             raise _api_error("invalid_batch_id", "Batch ID must not be blank.", 422)
+        requested_built_in = (built_in_profile_id or "").strip() or None
+        requested_mapping = (saved_mapping_id or "").strip() or None
         return _run(
             store=store,
+            registry=detection_corpus(store),
+            mapping_store=mapping_store_for(store),
             razorpay_bytes=await _bounded_read(razorpay_file),
             bank_bytes=await _bounded_read(bank_file),
-            profile_bytes=await _bounded_read(bank_profile),
+            profile_bytes=(await _bounded_read(bank_profile)) if bank_profile is not None else None,
+            built_in_profile_id=requested_built_in,
+            saved_mapping_id=requested_mapping,
             batch_id=resolved_batch,
             mode=mode,
         )
@@ -304,6 +608,7 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
     def post_demo(store: LedgerStore = Depends(store_dependency)) -> RunResponse:
         return _run(
             store=store,
+            registry=detection_corpus(store),
             razorpay_bytes=(DEMO_ROOT / "razorpay.json").read_bytes(),
             bank_bytes=(DEMO_ROOT / "bank.csv").read_bytes(),
             profile_bytes=(DEMO_ROOT / "bank-profile.json").read_bytes(),
@@ -315,6 +620,10 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
     web_dist = PROJECT_ROOT / "web" / "dist"
     if web_dist.exists():
         app.mount("/assets", StaticFiles(directory=web_dist / "assets"), name="assets")
+
+        @app.api_route("/api/{path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE"], include_in_schema=False)
+        def unknown_api(path: str) -> None:
+            raise HTTPException(status_code=404, detail={"code": "api_not_found", "message": f"API path /api/{path} does not exist."})
 
         @app.get("/{path:path}", include_in_schema=False)
         def spa(path: str) -> FileResponse:
