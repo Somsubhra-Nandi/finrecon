@@ -1,0 +1,647 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:frozen-eval",
+  "cache_key": "dc4e3359c895682359d3cffd78b58535b9ad04acd85b4d2971d037cb57e7f7cb",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_frozeneval_000792",
+  "max_steps": 8,
+  "max_tool_calls_per_step": 8,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "gorouter:claude-opus-5-thinking"
+  ],
+  "replayed": false,
+  "snapshot_hash": "491a607de0e3760a6fb46211ffc9132f4f59d2e6ec6f0c6865021d35bfb37f55",
+  "steps": [
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 1,
+      "latency_ms": 14151,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [
+        {
+          "call_id": "toolu_bdrk_01GPdjP23hq2w9jbr36vaAdt",
+          "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000792|setl_frozeneval_001059\"}",
+          "tool_name": "lookup_candidate_records"
+        },
+        {
+          "call_id": "toolu_bdrk_01RVYd8vyXxVZEPeTdtGbJvo",
+          "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000792|setl_frozeneval_001060\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 10300,
+        "output_tokens": 322,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 10300,
+              "output_tokens": 322
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 322,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 10300,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 10300,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 10622,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 10622,
+        "usage_source": "anthropic"
+      }
+    },
+    {
+      "assistant_text": "No reference token exists in the narration \u2014 it is pure boilerplate (\"NEFT CR - PAYMENT GATEWAY SETTLEMENT\"), and both settlements carry `utr: null`, so there is no fragment to test. The only evidence left is inside the break-ups.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 2,
+      "latency_ms": 16063,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [
+        {
+          "call_id": "toolu_bdrk_01UaBnqzusBd4kKgAtQXT4Sk",
+          "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_001059\"}",
+          "tool_name": "inspect_settlement_breakup"
+        },
+        {
+          "call_id": "toolu_bdrk_019978KkKG61b56XDsXito1m",
+          "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_001060\"}",
+          "tool_name": "inspect_settlement_breakup"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 10722,
+        "output_tokens": 424,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 10722,
+              "output_tokens": 424
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 424,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 10722,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 10722,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 11146,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 11146,
+        "usage_source": "anthropic"
+      }
+    },
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 3,
+      "latency_ms": 22333,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [
+        {
+          "call_id": "toolu_bdrk_017tmvYgW7JKD6MLA6ChX4b9",
+          "raw_arguments": "{\"fragment\":\"PAYMENT GATEWAY SETTLEMENT\"}",
+          "tool_name": "compare_reference_fragment"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 11678,
+        "output_tokens": 318,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 11678,
+              "output_tokens": 318
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 318,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 11678,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 11678,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 11996,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 11996,
+        "usage_source": "anthropic"
+      }
+    },
+    {
+      "assistant_text": "Evidence gathered; the candidates do not separate.\n\nWhat I tested:\n\n- Canonical records for both candidates. They are structural twins: both 768237 paise, both `settlement_date_utc` 2026-09-04, both `created_at_utc` 2026-09-04T20:13:00Z, both carry `utr: null`. Neither exposes a UTR that could be matched against the narration.\n- Both break-ups, line by line. Identical shapes and identical amounts: payment +785855, fee \u221214931, tax \u22122687, declared adjustment 0, zero unexplained delta. The only difference anywhere is the payment record each references \u2014 `pay_frozeneval_001114` for setl_frozeneval_001059 versus `pay_frozeneval_001115` for setl_frozeneval_001060 \u2014 and both of those are `captured`, so status does not favour either.\n- The narration for a surviving reference. `NEFT CR - PAYMENT GATEWAY SETTLEMENT` carries no damaged or masked identifier; it is a generic transport descriptor. I tested the only identifier-shaped substring, `PAYMENT GATEWAY SETTLEMENT`, against every candidate: zero relations hold and zero reference characters are pinned for both. The remaining tokens (`NEFT`, `CR`) are transport keywords, not references, and there is no partial digit run to test verbatim.\n\nI did not re-run `compute_expected_net`, since the exact totals and zero deltas are trusted Stage-2 facts and they are equal across both candidates by construction.\n\nConclusion: there is no reference evidence in this case, and the amount, date, and break-up facts are identical to the paise. Nothing distinguishes bnk_frozeneval_000792|setl_frozeneval_001059 from bnk_frozeneval_000792|setl_frozeneval_001060. This one needs a human \u2014 the discriminator, if it exists, lives outside the data these tools expose (e.g. which of the two underlying payments actually funded the credit).",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "stop",
+      "index": 4,
+      "latency_ms": 18876,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 12930,
+        "output_tokens": 756,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 12930,
+              "output_tokens": 756
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 756,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 12930,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 12930,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 13686,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 13686,
+        "usage_source": "anthropic"
+      }
+    }
+  ],
+  "termination_detail": null,
+  "termination_reason": "investigation_complete",
+  "tool_invocations": [
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_frozeneval_000792|setl_frozeneval_001059",
+        "settlement_ids": [
+          "setl_frozeneval_001059"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 768237,
+            "breakup_line_count": 3,
+            "breakup_total_paise": 768237,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-09-04T20:13:00Z",
+            "settlement_date_utc": "2026-09-04",
+            "settlement_id": "setl_frozeneval_001059",
+            "utr": null
+          }
+        ],
+        "total_paise": 768237
+      },
+      "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000792|setl_frozeneval_001059\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_frozeneval_000792|setl_frozeneval_001059"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 1,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_frozeneval_000792|setl_frozeneval_001060",
+        "settlement_ids": [
+          "setl_frozeneval_001060"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 768237,
+            "breakup_line_count": 3,
+            "breakup_total_paise": 768237,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-09-04T20:13:00Z",
+            "settlement_date_utc": "2026-09-04",
+            "settlement_id": "setl_frozeneval_001060",
+            "utr": null
+          }
+        ],
+        "total_paise": 768237
+      },
+      "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000792|setl_frozeneval_001060\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_frozeneval_000792|setl_frozeneval_001060"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "breakup_total_paise": 768237,
+        "declared_adjustment_paise": 0,
+        "lines": [
+          {
+            "amount_paise": 785855,
+            "line_type": "payment",
+            "reference_id": "pay_frozeneval_001114",
+            "reference_status": "captured"
+          },
+          {
+            "amount_paise": -14931,
+            "line_type": "fee",
+            "reference_id": null,
+            "reference_status": null
+          },
+          {
+            "amount_paise": -2687,
+            "line_type": "tax",
+            "reference_id": null,
+            "reference_status": null
+          }
+        ],
+        "settlement_amount_paise": 768237,
+        "settlement_id": "setl_frozeneval_001059",
+        "totals_by_line_type": [
+          [
+            "fee",
+            -14931
+          ],
+          [
+            "payment",
+            785855
+          ],
+          [
+            "tax",
+            -2687
+          ]
+        ],
+        "unexplained_delta_paise": 0
+      },
+      "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_001059\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "inspect_settlement_breakup",
+      "validated_arguments": {
+        "settlement_id": "setl_frozeneval_001059"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 1,
+      "latency_ms": 0,
+      "output": {
+        "breakup_total_paise": 768237,
+        "declared_adjustment_paise": 0,
+        "lines": [
+          {
+            "amount_paise": 785855,
+            "line_type": "payment",
+            "reference_id": "pay_frozeneval_001115",
+            "reference_status": "captured"
+          },
+          {
+            "amount_paise": -14931,
+            "line_type": "fee",
+            "reference_id": null,
+            "reference_status": null
+          },
+          {
+            "amount_paise": -2687,
+            "line_type": "tax",
+            "reference_id": null,
+            "reference_status": null
+          }
+        ],
+        "settlement_amount_paise": 768237,
+        "settlement_id": "setl_frozeneval_001060",
+        "totals_by_line_type": [
+          [
+            "fee",
+            -14931
+          ],
+          [
+            "payment",
+            785855
+          ],
+          [
+            "tax",
+            -2687
+          ]
+        ],
+        "unexplained_delta_paise": 0
+      },
+      "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_001060\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "inspect_settlement_breakup",
+      "validated_arguments": {
+        "settlement_id": "setl_frozeneval_001060"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "candidate_comparisons": [
+          {
+            "candidate_id": "bnk_frozeneval_000792|setl_frozeneval_001059",
+            "comparisons": [
+              {
+                "fragment": "PAYMENT GATEWAY SETTLEMENT",
+                "fragment_alphanumeric_characters": 24,
+                "fragment_folded": "PAYMENT GATEWAY SETTLEMENT",
+                "fragment_length": 26,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 2,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_FROZENEVAL_001059",
+                "reference_kind": "settlement_id",
+                "reference_length": 22,
+                "reference_value": "setl_frozeneval_001059",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_frozeneval_001059"
+            ]
+          },
+          {
+            "candidate_id": "bnk_frozeneval_000792|setl_frozeneval_001060",
+            "comparisons": [
+              {
+                "fragment": "PAYMENT GATEWAY SETTLEMENT",
+                "fragment_alphanumeric_characters": 24,
+                "fragment_folded": "PAYMENT GATEWAY SETTLEMENT",
+                "fragment_length": 26,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 2,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_FROZENEVAL_001060",
+                "reference_kind": "settlement_id",
+                "reference_length": 22,
+                "reference_value": "setl_frozeneval_001060",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_frozeneval_001060"
+            ]
+          }
+        ],
+        "candidates_evaluated": 2,
+        "fragment": "PAYMENT GATEWAY SETTLEMENT",
+        "fragment_offsets": [
+          10
+        ],
+        "fragment_present_in_narration": true,
+        "narration_length": 36
+      },
+      "raw_arguments": "{\"fragment\":\"PAYMENT GATEWAY SETTLEMENT\"}",
+      "status": "succeeded",
+      "step_index": 3,
+      "tool_name": "compare_reference_fragment",
+      "validated_arguments": {
+        "fragment": "PAYMENT GATEWAY SETTLEMENT"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    }
+  ],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 71441,
+  "validator_version": "validator.v3"
+}

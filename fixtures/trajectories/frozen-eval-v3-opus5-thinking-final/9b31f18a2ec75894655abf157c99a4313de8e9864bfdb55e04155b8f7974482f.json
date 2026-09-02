@@ -1,0 +1,436 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:frozen-eval",
+  "cache_key": "9b31f18a2ec75894655abf157c99a4313de8e9864bfdb55e04155b8f7974482f",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_frozeneval_000776",
+  "max_steps": 8,
+  "max_tool_calls_per_step": 8,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "gorouter:claude-opus-5-thinking"
+  ],
+  "replayed": false,
+  "snapshot_hash": "75c39ace24ed1f45b16801fd3fa65122575c4fd83badc02a0c293fc2ec2969af",
+  "steps": [
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 1,
+      "latency_ms": 8208,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [
+        {
+          "call_id": "toolu_bdrk_01VwjevfWiBFGFn9TcaP6VFW",
+          "raw_arguments": "{\"fragment\":\"SETO60T36P05AVOK\"}",
+          "tool_name": "compare_reference_fragment"
+        },
+        {
+          "call_id": "toolu_bdrk_01BU9WY26NWbDYvX3ueQTcCU",
+          "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000776|setl_frozeneval_001037\"}",
+          "tool_name": "lookup_candidate_records"
+        },
+        {
+          "call_id": "toolu_bdrk_013VfM6vpk6m9csHBwwvA8iE",
+          "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000776|setl_frozeneval_001038\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 9830,
+        "output_tokens": 164,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 9830,
+              "output_tokens": 164
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 164,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 9830,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 9830,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 9994,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 9994,
+        "usage_source": "anthropic"
+      }
+    }
+  ],
+  "termination_detail": "existing validator/policy reached safe resolution after tool batch at step 1",
+  "termination_reason": "deterministic_policy_resolved",
+  "tool_invocations": [
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "candidate_comparisons": [
+          {
+            "candidate_id": "bnk_frozeneval_000776|setl_frozeneval_001037",
+            "comparisons": [
+              {
+                "fragment": "SETO60T36P05AVOK",
+                "fragment_alphanumeric_characters": 16,
+                "fragment_folded": "SETO60T36P05AVOK",
+                "fragment_length": 16,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [
+                  "contains_reference"
+                ],
+                "max_pinned_reference_characters": 13,
+                "reference_folded": "O60T36P05AVOK",
+                "reference_kind": "utr",
+                "reference_length": 13,
+                "reference_value": "O60T36P05AVOK",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": true,
+                    "pinned_reference_characters": 13,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              },
+              {
+                "fragment": "SETO60T36P05AVOK",
+                "fragment_alphanumeric_characters": 16,
+                "fragment_folded": "SETO60T36P05AVOK",
+                "fragment_length": 16,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_FROZENEVAL_001037",
+                "reference_kind": "settlement_id",
+                "reference_length": 22,
+                "reference_value": "setl_frozeneval_001037",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_frozeneval_001037"
+            ]
+          },
+          {
+            "candidate_id": "bnk_frozeneval_000776|setl_frozeneval_001038",
+            "comparisons": [
+              {
+                "fragment": "SETO60T36P05AVOK",
+                "fragment_alphanumeric_characters": 16,
+                "fragment_folded": "SETO60T36P05AVOK",
+                "fragment_length": 16,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "ANJ31TZ2DKT6PLVY",
+                "reference_kind": "utr",
+                "reference_length": 16,
+                "reference_value": "ANJ31TZ2DKT6PLVY",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              },
+              {
+                "fragment": "SETO60T36P05AVOK",
+                "fragment_alphanumeric_characters": 16,
+                "fragment_folded": "SETO60T36P05AVOK",
+                "fragment_length": 16,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 0,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_FROZENEVAL_001038",
+                "reference_kind": "settlement_id",
+                "reference_length": 22,
+                "reference_value": "setl_frozeneval_001038",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_frozeneval_001038"
+            ]
+          }
+        ],
+        "candidates_evaluated": 2,
+        "fragment": "SETO60T36P05AVOK",
+        "fragment_offsets": [
+          15
+        ],
+        "fragment_present_in_narration": true,
+        "narration_length": 35
+      },
+      "raw_arguments": "{\"fragment\":\"SETO60T36P05AVOK\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "compare_reference_fragment",
+      "validated_arguments": {
+        "fragment": "SETO60T36P05AVOK"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 1,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_frozeneval_000776|setl_frozeneval_001037",
+        "settlement_ids": [
+          "setl_frozeneval_001037"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 1460975,
+            "breakup_line_count": 3,
+            "breakup_total_paise": 1460975,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-10-26T08:16:00Z",
+            "settlement_date_utc": "2026-10-26",
+            "settlement_id": "setl_frozeneval_001037",
+            "utr": "O60T36P05AVOK"
+          }
+        ],
+        "total_paise": 1460975
+      },
+      "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000776|setl_frozeneval_001037\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_frozeneval_000776|setl_frozeneval_001037"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 2,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_frozeneval_000776|setl_frozeneval_001038",
+        "settlement_ids": [
+          "setl_frozeneval_001038"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 1460975,
+            "breakup_line_count": 3,
+            "breakup_total_paise": 1460975,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-10-26T23:04:00Z",
+            "settlement_date_utc": "2026-10-26",
+            "settlement_id": "setl_frozeneval_001038",
+            "utr": "ANJ31TZ2DKT6PLVY"
+          }
+        ],
+        "total_paise": 1460975
+      },
+      "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000776|setl_frozeneval_001038\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_frozeneval_000776|setl_frozeneval_001038"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    }
+  ],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 8217,
+  "validator_version": "validator.v3"
+}

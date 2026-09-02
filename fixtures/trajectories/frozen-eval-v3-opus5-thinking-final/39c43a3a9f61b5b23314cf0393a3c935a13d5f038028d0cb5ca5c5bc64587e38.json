@@ -1,0 +1,434 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:frozen-eval",
+  "cache_key": "39c43a3a9f61b5b23314cf0393a3c935a13d5f038028d0cb5ca5c5bc64587e38",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_frozeneval_000685",
+  "max_steps": 8,
+  "max_tool_calls_per_step": 8,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "gorouter:claude-opus-5-thinking"
+  ],
+  "replayed": false,
+  "snapshot_hash": "4d861fa79cf03a59d95ccbf91515c397c652f25757cf49f5c1f8195e013df30f",
+  "steps": [
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 1,
+      "latency_ms": 7075,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [
+        {
+          "call_id": "toolu_bdrk_01TVrg61RonftNpF8tfCWJhJ",
+          "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000685|setl_frozeneval_000919\"}",
+          "tool_name": "lookup_candidate_records"
+        },
+        {
+          "call_id": "toolu_bdrk_01MkbPA7sdVWHsDoJr4y7kfc",
+          "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000685|setl_frozeneval_000920\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 9847,
+        "output_tokens": 226,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 9847,
+              "output_tokens": 226
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 226,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 9847,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 9847,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 10073,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 10073,
+        "usage_source": "anthropic"
+      }
+    },
+    {
+      "assistant_text": "No reference token exists in the narration (\"NEFT CREDIT - SETTLEMENT\" is three generic words, no UTR/reference substring), and both settlements carry `utr: null`, so there is nothing to test with `compare_reference_fragment`. Checking whether the break-up composition differs at all:",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 2,
+      "latency_ms": 11656,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [
+        {
+          "call_id": "toolu_bdrk_01BeBMbv9Yk75WM79R2MdH52",
+          "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_000919\"}",
+          "tool_name": "inspect_settlement_breakup"
+        },
+        {
+          "call_id": "toolu_bdrk_01Pq4Ajqffa2cC7EjyG2xvyz",
+          "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_000920\"}",
+          "tool_name": "inspect_settlement_breakup"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 10734,
+        "output_tokens": 493,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 10734,
+              "output_tokens": 493
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 493,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 10734,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 10734,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 11227,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 11227,
+        "usage_source": "anthropic"
+      }
+    },
+    {
+      "assistant_text": "No distinguishing evidence exists in this case.\n\nWhat I tested:\n\n- Candidate records for both candidates: each is a single settlement, both 809259 paise, both dated 2026-08-22, both created at 2026-08-22T10:43:00Z, and both carry `utr: null`. There is no UTR on either side to match against the credit.\n- Break-ups for `setl_frozeneval_000919` and `setl_frozeneval_000920`: structurally identical \u2014 payment 827818, fee \u221215728, tax \u22122831, total 809259, declared adjustment 0, unexplained delta 0. The only difference is the captured payment each references (`pay_frozeneval_000962` vs `pay_frozeneval_000963`), and neither identifier appears in the narration.\n\nI did not call `compare_reference_fragment`. The narration is `NEFT CREDIT - SETTLEMENT` \u2014 tokens `NEFT`, `CREDIT`, `SETTLEMENT` only. It carries no reference, no masked or truncated identifier, and no digits, so there is no surviving reference substring to test. Testing the generic word `SETTLEMENT` would not be reference evidence. I also did not run `compute_expected_net`, since the exact totals and zero deltas are already trusted Stage-2 facts and are identical for both candidates.\n\nThe two candidates are indistinguishable on amount, date, timestamp, UTR (absent on both) and break-up shape, and the narration supplies no reference to break the tie. This needs a human.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "stop",
+      "index": 3,
+      "latency_ms": 17018,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 11634,
+        "output_tokens": 665,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 11634,
+              "output_tokens": 665
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 665,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 11634,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 11634,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 12299,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 12299,
+        "usage_source": "anthropic"
+      }
+    }
+  ],
+  "termination_detail": null,
+  "termination_reason": "investigation_complete",
+  "tool_invocations": [
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_frozeneval_000685|setl_frozeneval_000919",
+        "settlement_ids": [
+          "setl_frozeneval_000919"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 809259,
+            "breakup_line_count": 3,
+            "breakup_total_paise": 809259,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-08-22T10:43:00Z",
+            "settlement_date_utc": "2026-08-22",
+            "settlement_id": "setl_frozeneval_000919",
+            "utr": null
+          }
+        ],
+        "total_paise": 809259
+      },
+      "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000685|setl_frozeneval_000919\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_frozeneval_000685|setl_frozeneval_000919"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 1,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_frozeneval_000685|setl_frozeneval_000920",
+        "settlement_ids": [
+          "setl_frozeneval_000920"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 809259,
+            "breakup_line_count": 3,
+            "breakup_total_paise": 809259,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-08-22T10:43:00Z",
+            "settlement_date_utc": "2026-08-22",
+            "settlement_id": "setl_frozeneval_000920",
+            "utr": null
+          }
+        ],
+        "total_paise": 809259
+      },
+      "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000685|setl_frozeneval_000920\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_frozeneval_000685|setl_frozeneval_000920"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "breakup_total_paise": 809259,
+        "declared_adjustment_paise": 0,
+        "lines": [
+          {
+            "amount_paise": 827818,
+            "line_type": "payment",
+            "reference_id": "pay_frozeneval_000962",
+            "reference_status": "captured"
+          },
+          {
+            "amount_paise": -15728,
+            "line_type": "fee",
+            "reference_id": null,
+            "reference_status": null
+          },
+          {
+            "amount_paise": -2831,
+            "line_type": "tax",
+            "reference_id": null,
+            "reference_status": null
+          }
+        ],
+        "settlement_amount_paise": 809259,
+        "settlement_id": "setl_frozeneval_000919",
+        "totals_by_line_type": [
+          [
+            "fee",
+            -15728
+          ],
+          [
+            "payment",
+            827818
+          ],
+          [
+            "tax",
+            -2831
+          ]
+        ],
+        "unexplained_delta_paise": 0
+      },
+      "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_000919\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "inspect_settlement_breakup",
+      "validated_arguments": {
+        "settlement_id": "setl_frozeneval_000919"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 1,
+      "latency_ms": 0,
+      "output": {
+        "breakup_total_paise": 809259,
+        "declared_adjustment_paise": 0,
+        "lines": [
+          {
+            "amount_paise": 827818,
+            "line_type": "payment",
+            "reference_id": "pay_frozeneval_000963",
+            "reference_status": "captured"
+          },
+          {
+            "amount_paise": -15728,
+            "line_type": "fee",
+            "reference_id": null,
+            "reference_status": null
+          },
+          {
+            "amount_paise": -2831,
+            "line_type": "tax",
+            "reference_id": null,
+            "reference_status": null
+          }
+        ],
+        "settlement_amount_paise": 809259,
+        "settlement_id": "setl_frozeneval_000920",
+        "totals_by_line_type": [
+          [
+            "fee",
+            -15728
+          ],
+          [
+            "payment",
+            827818
+          ],
+          [
+            "tax",
+            -2831
+          ]
+        ],
+        "unexplained_delta_paise": 0
+      },
+      "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_000920\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "inspect_settlement_breakup",
+      "validated_arguments": {
+        "settlement_id": "setl_frozeneval_000920"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    }
+  ],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 35757,
+  "validator_version": "validator.v3"
+}

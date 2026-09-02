@@ -1,0 +1,12 @@
+﻿Frozen Eval v3 - Claude Opus 5 Thinking
+
+Hash algorithm for trajectory directories:
+1. Sort *.json files by filename.
+2. SHA-256 each file's raw bytes.
+3. Emit: <filename><TAB><lowercase-file-sha256><LF>
+4. SHA-256 the UTF-8 concatenation.
+
+canonical_240_trajectory_corpus_sha256=712db853df1e77431f6ac27b7f965c866674569a577fcd8d207b4e956b164d5d
+original_13_t2_provider_failures_sha256=9fa481e7f2b1206cbb99817a92027327b33c3dc8cc0c2e20a3ab8180c935eb57
+operational_raw_report_sha256=c4fe6cdd93529a197e529afb60637883ac3d543fde8f199136033a7bc031a8c7
+provider_recovered_report_sha256=0b6d4b706a87c2e7977e08310d0c113a833f162bb7a9f88c085e64fdfc5cd825

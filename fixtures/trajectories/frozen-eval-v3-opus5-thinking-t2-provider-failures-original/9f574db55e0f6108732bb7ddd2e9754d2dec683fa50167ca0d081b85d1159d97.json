@@ -1,0 +1,80 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:frozen-eval",
+  "cache_key": "9f574db55e0f6108732bb7ddd2e9754d2dec683fa50167ca0d081b85d1159d97",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_frozeneval_000481",
+  "max_steps": 8,
+  "max_tool_calls_per_step": 8,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "gorouter:claude-opus-5-thinking"
+  ],
+  "replayed": false,
+  "snapshot_hash": "ec2994879ab17faaa476cf64649ca528e1d5d078edab801efb63bcfbdb5d0355",
+  "steps": [
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": "no response within 60.0s",
+          "error_class": "ProviderInfrastructureError",
+          "model": "claude-opus-5-thinking",
+          "outcome": "timeout",
+          "provider": "gorouter"
+        },
+        {
+          "attempt": 2,
+          "detail": "HTTP 502: error code: 502",
+          "error_class": "ProviderInfrastructureError",
+          "model": "claude-opus-5-thinking",
+          "outcome": "server_error",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": "timeout",
+      "fallback_used": false,
+      "finish_reason": null,
+      "index": 1,
+      "latency_ms": null,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": null,
+      "requested_tool_calls": [],
+      "transport_attempts": 2,
+      "usage": {
+        "input_tokens": null,
+        "output_tokens": null,
+        "raw": null,
+        "total_tokens": null,
+        "usage_source": null
+      }
+    }
+  ],
+  "termination_detail": "all providers failed (gorouter:timeout, gorouter:server_error)",
+  "termination_reason": "provider_infrastructure_failure",
+  "tool_invocations": [],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 63203,
+  "validator_version": "validator.v3"
+}
