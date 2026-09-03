@@ -12,7 +12,7 @@ export function Button({ className, variant = "primary", ...props }: ButtonHTMLA
 }
 
 const labels: Record<ResolutionSource, string> = {
-  deterministic: "Deterministic", ai_assisted: "AI-assisted", human: "Human resolved", escalated: "Needs review",
+  deterministic: "Deterministic", ai_assisted: "Evidence-assisted", human: "Human resolved", escalated: "Requires human review",
 };
 export function StatusBadge({ source }: { source: ResolutionSource }) {
   return <span className={clsx("status-badge", `status-${source}`)}><span aria-hidden="true" />{labels[source]}</span>;
