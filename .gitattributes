@@ -1,0 +1,32 @@
+# Line-ending policy for FinRecon.
+#
+# This repo has no prior .gitattributes, so checkout line endings were only
+# ever governed by each developer's local core.autocrlf. That let two
+# incompatible representations of the same LF-stored git blobs exist:
+# CRLF on a Windows checkout (autocrlf=true) and LF on a Linux checkout
+# (Railway, CI, containers). Most files don't care, but two classes of
+# files are byte-sensitive to this difference and must be pinned instead
+# of left to the platform default.
+
+# Frozen Eval v3 hash-verified artifacts.
+# The expected SHA-256 values in
+# benchmark/reports/frozen-eval-v3-opus5-thinking-hashes.txt were computed
+# against CRLF bytes (the representation these files have always had on a
+# Windows checkout). The git blobs themselves store LF, so a Linux
+# checkout previously materialized LF bytes that didn't match those
+# published hashes and benchmark/eval/frozen_v3_replay.py failed closed
+# with "one or more Frozen Eval v3 artifact hashes changed". Pinning
+# eol=crlf makes checkout produce the same CRLF bytes the hashes were
+# computed from, on every OS, with no change to the stored git objects or
+# the published hash values.
+benchmark/reports/frozen-eval-v3-opus5-thinking-operational-raw-240.json text eol=crlf
+benchmark/reports/frozen-eval-v3-opus5-thinking-provider-recovered-240.json text eol=crlf
+fixtures/trajectories/frozen-eval-v3-opus5-thinking-final/*.json text eol=crlf
+fixtures/trajectories/frozen-eval-v3-opus5-thinking-t2-provider-failures-original/*.json text eol=crlf
+
+# Shell entrypoints must always check out as LF. A CRLF shebang line
+# ("#!/bin/sh\r") is not a valid interpreter path on Linux, which is what
+# produced "exec /usr/local/bin/finrecon-entrypoint: no such file or
+# directory" in the container despite the COPY succeeding.
+*.sh text eol=lf
+docker-entrypoint.sh text eol=lf
