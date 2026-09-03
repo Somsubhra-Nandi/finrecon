@@ -79,13 +79,27 @@ export interface BenchmarkDetail extends BenchmarkSummary { integrity: Record<st
 export interface BenchmarkListResponse { benchmarks: BenchmarkSummary[]; evolution: { version: string; status: string; summary: string }[] }
 export interface BenchmarkReport { report_id: string; label: string; metrics: Record<string, number | string | null> | null; telemetry: Record<string, unknown>; cohort: Record<string, unknown>; recorded_versions: Record<string, unknown> }
 export interface BenchmarkReportsResponse { benchmark_id: string; reports: BenchmarkReport[] }
-export interface BenchmarkCaseEvaluation { tier: "T0" | "T1" | "T2" | "T3"; final_disposition: "RESOLVED" | "ESCALATED" | "UNKNOWN"; resolution_stage: "STAGE_2" | "STAGE_3" | "UNKNOWN"; resolution_method: string | null; blockers: string[]; replay_available: boolean; replay_note: string }
+export interface BenchmarkCaseEvaluation { tier: "T0" | "T1" | "T2" | "T3"; final_disposition: "RESOLVED" | "ESCALATED" | "UNKNOWN"; resolution_stage: "STAGE_2" | "STAGE_3" | "UNKNOWN"; resolution_method: string | null; blockers: string[]; replay_available: boolean; replay_note: string; termination_reason?: string | null; tool_call_count?: number; evidence_relations?: string[]; frozen_trajectory?: boolean }
 export interface BenchmarkCaseSummary { case_id: string; bank_record_id: string; narration: string; amount_paise: number; candidate_count: number | null; recorded_outcomes: Record<string, string>; replay_investigators: string[]; controller_rejection_demo: boolean; evaluation: BenchmarkCaseEvaluation | null }
-export interface BenchmarkCasesResponse { benchmark_id: string; total: number; offset: number; limit: number; cases: BenchmarkCaseSummary[] }
-export interface BenchmarkCaseDetail extends BenchmarkCaseSummary { candidate_snapshot: Record<string, unknown> | null; visible_records: Record<string, unknown>; evaluation_metadata_notice: string }
+export interface BenchmarkCasesResponse { benchmark_id: string; total: number; offset: number; limit: number; counts: Record<string, number>; cases: BenchmarkCaseSummary[] }
+export interface BenchmarkCaseDetail extends BenchmarkCaseSummary { candidate_snapshot: Record<string, unknown> | null; visible_records: Record<string, unknown>; trajectory_metadata?: Record<string, unknown> | null; evaluation_metadata_notice: string }
 export interface BenchmarkReplaySummary { investigator: string; label: string; scored_cohort_cases: number; persisted_trajectory_cases: number; requested_model: string | null; reported_models: string[]; provider: string | null; notes: string[] }
 export interface BenchmarkReplaysResponse { benchmark_id: string; replays: BenchmarkReplaySummary[] }
-export interface BenchmarkReplayDetail { benchmark_id: string; investigator: string; replayed: true; provider_calls_made: false; trajectory: Record<string, unknown>; deterministic_validation: Record<string, unknown>; policy_result: Record<string, unknown> }
+export interface BenchmarkReplayDetail { benchmark_id: string; investigator: string; replayed: true; provider_calls_made: false; trajectory: Record<string, unknown>; deterministic_validation: Record<string, unknown>; policy_result: Record<string, unknown>; provenance?: Record<string, unknown> | null }
+export interface BenchmarkFullReplay {
+  benchmark_id: "frozen-eval-v3";
+  mode: "offline_replay";
+  provider_calls: 0;
+  provider_calls_made: false;
+  total_cases: number;
+  total_correct_auto_resolutions: number;
+  stage2: { cases: number; resolved: number };
+  stage3: { residual_cases: number; trajectory_cache_hits: number; t2: { cases: number; correctly_resolved: number }; t3: { cases: number; safely_escalated: number; termination_reasons: Record<string, number> } };
+  evaluation: { resolvable_cases: number; correct_resolutions: number; ambiguous_cases: number; safely_escalated: number; wrong_auto_resolutions: number; resolvable_match_rate: number; auto_resolution_precision: number; unsafe_auto_match_rate: number; value_at_risk_paise: number; soundness_violations: number; tool_validation_failures: number; validation_rejections: number; budget_exhausted: number };
+  phases: { id: string; label: string; count?: number; total?: number; unit?: string; status?: string }[];
+  provenance: { provider_recovered: Record<string, unknown>; operational: Record<string, unknown>; retry_contract: string[]; original_failed_trajectories_preserved: number };
+  integrity: Record<string, string | boolean>;
+}
 
 // Bank-schema recognition. Detection identifies an already-reviewed
 // profile; it never proposes a column mapping for an unknown schema.
