@@ -22,8 +22,8 @@ describe("case authority presentation", () => {
 
   it("states that deterministic validation authorized an AI-assisted outcome", () => {
     render(<ResolutionSummary source="ai_assisted" />);
-    expect(screen.getByText("AI investigation completed")).toBeInTheDocument();
-    expect(screen.getByText(/Deterministic validation and policy authorized/)).toBeInTheDocument();
+    expect(screen.getByText("Evidence-assisted resolution")).toBeInTheDocument();
+    expect(screen.getByText(/Evidence found; deterministic validation passed/)).toBeInTheDocument();
     expect(screen.queryByText(/sufficient deterministic authority/)).not.toBeInTheDocument();
   });
 });

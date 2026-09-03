@@ -6,7 +6,7 @@ import { EvidenceSection } from "./DecisionEvidence";
 describe("StatusBadge", () => {
   it("uses explicit authority language", () => {
     render(<StatusBadge source="ai_assisted" />);
-    expect(screen.getByText("AI-assisted")).toBeInTheDocument();
+    expect(screen.getByText("Evidence-assisted")).toBeInTheDocument();
   });
 
   it("marks raw technical payloads for contained, readable wrapping", () => {
