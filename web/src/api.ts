@@ -43,6 +43,9 @@ export const compactMoney = (paise: number) => new Intl.NumberFormat("en-IN", {
 
 export const shortId = (value: string, size = 20) => value.length > size ? `${value.slice(0, size)}…` : value;
 
+export const countLabel = (count: number, singular: string, plural = `${singular}s`) =>
+  `${count.toLocaleString("en-IN")} ${count === 1 ? singular : plural}`;
+
 export function query(batchId: string | null, extra: Record<string, string | boolean | null> = {}) {
   const params = new URLSearchParams();
   if (batchId) params.set("batch_id", batchId);
