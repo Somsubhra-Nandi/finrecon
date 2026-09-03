@@ -2,7 +2,7 @@ import { ArrowRight, CheckCircle2, CircleX } from "lucide-react";
 import type { ReactNode } from "react";
 
 export function EvidenceSection({ title, children }: { title: string; children: ReactNode }) {
-  return <section className="decision-evidence-section"><h3>{title}</h3>{children}</section>;
+  return <section className={title === "Source facts" ? "decision-evidence-section source-facts" : "decision-evidence-section"}><h3>{title}</h3>{children}</section>;
 }
 
 export function DecisionPath({ stages, note }: { stages: string[]; note?: string }) {

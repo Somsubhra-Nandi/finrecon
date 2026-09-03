@@ -15,7 +15,7 @@ function JsonDetails({ label = "View raw evidence JSON", value }: { label?: stri
   return (
     <details className="json-details">
       <summary>{label}</summary>
-      <pre>{JSON.stringify(value, null, 2)}</pre>
+      <pre className="technical-payload">{JSON.stringify(value, null, 2)}</pre>
     </details>
   );
 }
