@@ -35,5 +35,5 @@ export function PageHeader({ eyebrow, title, description, action }: { eyebrow?: 
 }
 
 export function JsonDetails({ label, value }: { label: string; value: unknown }) {
-  return <details className="json-details"><summary>{label}</summary><pre>{JSON.stringify(value, null, 2)}</pre></details>;
+  return <details className="json-details"><summary>{label}</summary><pre className="technical-payload">{JSON.stringify(value, null, 2)}</pre></details>;
 }

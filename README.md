@@ -121,12 +121,22 @@ untouched, and `make verify-frozen` passes before and after. See
 [Benchmark v4 — the compositional-evidence pilot](#benchmark-v4--the-compositional-evidence-pilot)
 below, and `benchmark/V4-PILOT.md` for the design.
 
-**The FROZEN-EVAL v3 result is reported in**
-[`benchmark/reports/final-eval.json`](benchmark/reports/final-eval.json) and
-`.md`: 823 correct automatic resolutions, zero wrong automatic resolutions,
-67 escalations, 96.82% match rate across 850 uniquely resolvable cases, zero
-unsafe automatic matches, and zero paise value at risk. It is an offline,
-deterministic recorded/replay evaluation—not a hosted-model quality claim.
+**The canonical provider-recovered FROZEN-EVAL v3 Stage-3 result is reported
+in** [`benchmark/reports/frozen-eval-v3-opus5-thinking-provider-recovered-240.json`](benchmark/reports/frozen-eval-v3-opus5-thinking-provider-recovered-240.json):
+200 / 200 evidence-recoverable residual cases resolved correctly and 40 / 40
+genuinely ambiguous cases safely escalated, with zero wrong automatic
+resolutions and zero paise value at risk. Combined with the unchanged 650 / 650
+Stage-2 resolutions, the complete result is 850 / 850 resolvable cases
+reconciled correctly and 40 / 40 ambiguity cases safely escalated. The
+original operational run remains separately preserved; its 13 T2 misses were
+provider infrastructure failures, not wrong resolutions.
+
+The product API and Evaluation workspace can replay this complete 890-case
+result offline. It requires 240 / 240 immutable trajectory cache hits, passes
+`chain=None` with replay-only enforcement, reruns the real deterministic
+validator and financial policy, and reads hidden truth only afterward inside
+the Stage-4 boundary. It is a reproducible recorded-trajectory result—not a
+claim of 100% accuracy on arbitrary real-world data.
 
 **Baseline live smoke tests and a five-case DEV diagnostic have now been
 performed.** They are engineering observations, not benchmark results; the

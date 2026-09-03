@@ -22,10 +22,14 @@ COPY --chown=finrecon:finrecon src/ ./src/
 RUN pip install --no-cache-dir .
 
 # The product needs public manifests/reports, visible benchmark inputs and
-# replay fixtures. Hidden ground truth is intentionally not packaged.
+# replay fixtures. The Stage-4 package and hidden truth are included solely
+# for the explicit offline benchmark endpoint; reconciliation modules neither
+# import them nor receive their values.
 COPY --chown=finrecon:finrecon benchmark/manifests/ ./benchmark/manifests/
 COPY --chown=finrecon:finrecon benchmark/reports/ ./benchmark/reports/
 COPY --chown=finrecon:finrecon benchmark/datasets/ ./benchmark/datasets/
+COPY --chown=finrecon:finrecon benchmark/ground_truth/ ./benchmark/ground_truth/
+COPY --chown=finrecon:finrecon benchmark/eval/ ./benchmark/eval/
 COPY --chown=finrecon:finrecon fixtures/demo/ ./fixtures/demo/
 COPY --chown=finrecon:finrecon fixtures/trajectories/ ./fixtures/trajectories/
 COPY --from=web-build --chown=finrecon:finrecon /web/dist ./web/dist

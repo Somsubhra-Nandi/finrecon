@@ -22,7 +22,7 @@ def test_judge_catalog_exposes_only_frozen_safety_and_investigation_suites(clien
     response = client.get("/api/benchmarks")
     assert response.status_code == 200, response.text
     catalog = {item["benchmark_id"]: item for item in response.json()["benchmarks"]}
-    assert {key: catalog["frozen-eval-v3"][key] for key in ("status", "case_count", "replay_available")} == {"status": "FROZEN", "case_count": 890, "replay_available": False}
+    assert {key: catalog["frozen-eval-v3"][key] for key in ("status", "case_count", "replay_available")} == {"status": "FROZEN", "case_count": 890, "replay_available": True}
     assert {key: catalog["bounded-search-v1"][key] for key in ("status", "case_count", "replay_available")} == {"status": "FROZEN", "case_count": 50, "replay_available": True}
     assert set(catalog) == {"frozen-eval-v3", "bounded-search-v1"}
 
@@ -78,10 +78,10 @@ def test_frozen_v3_case_projection_is_complete_safe_and_matches_the_final_report
     catalog = client.app.state.benchmark_catalog
     projection = catalog._v3_case_evaluations
     assert len(projection) == 890
-    assert sum(item["final_disposition"] == "RESOLVED" for item in projection.values()) == 823
-    assert sum(item["final_disposition"] == "ESCALATED" for item in projection.values()) == 67
+    assert sum(item["final_disposition"] == "RESOLVED" for item in projection.values()) == 850
+    assert sum(item["final_disposition"] == "ESCALATED" for item in projection.values()) == 40
     assert sum(item["resolution_stage"] == "STAGE_2" for item in projection.values()) == 650
-    assert sum(item["resolution_stage"] == "STAGE_3" and item["final_disposition"] == "RESOLVED" for item in projection.values()) == 173
+    assert sum(item["resolution_stage"] == "STAGE_3" and item["final_disposition"] == "RESOLVED" for item in projection.values()) == 200
 
     stage2 = next(case_id for case_id, item in projection.items() if item["resolution_stage"] == "STAGE_2")
     stage3 = next(case_id for case_id, item in projection.items() if item["resolution_stage"] == "STAGE_3" and item["final_disposition"] == "RESOLVED")
@@ -91,8 +91,11 @@ def test_frozen_v3_case_projection_is_complete_safe_and_matches_the_final_report
         assert detail.status_code == 200, detail.text
         evaluation = detail.json()["evaluation"]
         assert (evaluation["resolution_stage"], evaluation["final_disposition"]) == expected
-        assert evaluation["replay_available"] is False
-        assert "replay was not persisted" in evaluation["replay_note"]
+        assert evaluation["replay_available"] is (expected[0] == "STAGE_3")
+        if expected[0] == "STAGE_3":
+            assert "provider calls" in evaluation["replay_note"]
+        else:
+            assert "Stage 2" in evaluation["replay_note"]
         serialized = detail.text.casefold()
         for forbidden in ("correct_candidate", "ground_truth", "expected_candidate", "answer", "oracle", "true_settlement", "true_group", "truth_reference"):
             assert forbidden not in serialized
@@ -138,6 +141,13 @@ def test_unavailable_replay_fails_closed_instead_of_fabricating_data(client: Tes
     response = client.get("/api/benchmarks/frozen-eval-v3/replays/openrouter-free/case:bnk_frozen_000001")
     assert response.status_code == 404
     assert response.json()["detail"]["code"] == "benchmark_replay_unavailable"
+
+
+def test_frozen_v3_case_filters_include_provider_failures(client: TestClient):
+    provider = client.get("/api/benchmarks/frozen-eval-v3/cases", params={"termination": "provider_failure", "limit": 100})
+    assert provider.status_code == 200, provider.text
+    assert provider.json()["total"] == 7
+    assert all(item["evaluation"]["tier"] == "T3" for item in provider.json()["cases"])
 
 
 def test_malformed_trajectory_is_not_returned(tmp_path: Path):

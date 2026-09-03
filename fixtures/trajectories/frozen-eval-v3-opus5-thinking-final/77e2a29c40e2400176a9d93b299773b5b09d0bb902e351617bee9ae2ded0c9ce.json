@@ -1,0 +1,581 @@
+{
+  "agent_loop_version": "loop.v2",
+  "batch_id": "batch:frozen-eval",
+  "cache_key": "77e2a29c40e2400176a9d93b299773b5b09d0bb902e351617bee9ae2ded0c9ce",
+  "cache_schema_version": "trajectory-cache.v3",
+  "case_id": "case:bnk_frozeneval_000565",
+  "max_steps": 8,
+  "max_tool_calls_per_step": 8,
+  "policy_declaration": {
+    "accepted_relation_ids": [
+      "character_multiset_equal",
+      "contains_reference",
+      "exact",
+      "mask_consistent",
+      "prefix_of_reference",
+      "separator_normalized_equal",
+      "suffix_of_reference"
+    ],
+    "auto_resolution_ceiling_paise": 50000000,
+    "elevated_min_pinned_reference_characters": 8,
+    "elevated_scrutiny_threshold_paise": 10000000,
+    "max_unexplained_delta_paise": 0,
+    "min_pinned_reference_characters": 4,
+    "require_exact_total_blocking_rule": true,
+    "require_fragment_present_in_narration": true
+  },
+  "policy_version": "policy.v1",
+  "prompt_version": "investigator.v4",
+  "provider_chain": [
+    "gorouter:claude-opus-5-thinking"
+  ],
+  "replayed": false,
+  "snapshot_hash": "e02eab5a596615bfdb690e8a8601a4f78551b8f2a4b8f355082955b026f095cb",
+  "steps": [
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 1,
+      "latency_ms": 12462,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [
+        {
+          "call_id": "toolu_bdrk_01Nd7uDaGHgGQjF3j6mZ8u3c",
+          "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000565|setl_frozeneval_000765\"}",
+          "tool_name": "lookup_candidate_records"
+        },
+        {
+          "call_id": "toolu_bdrk_01YPkLkyLRA2pNPwNrTRKPZZ",
+          "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000565|setl_frozeneval_000766\"}",
+          "tool_name": "lookup_candidate_records"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 10268,
+        "output_tokens": 326,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 10268,
+              "output_tokens": 326
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 326,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 10268,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 10268,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 10594,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 10594,
+        "usage_source": "anthropic"
+      }
+    },
+    {
+      "assistant_text": "",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "tool_calls",
+      "index": 2,
+      "latency_ms": 12960,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [
+        {
+          "call_id": "toolu_bdrk_01P33cf3WQ5vwePBhpF1Bkg3",
+          "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_000765\"}",
+          "tool_name": "inspect_settlement_breakup"
+        },
+        {
+          "call_id": "toolu_bdrk_01RBPUnpoq7EyFUjPhB8RYMc",
+          "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_000766\"}",
+          "tool_name": "inspect_settlement_breakup"
+        },
+        {
+          "call_id": "toolu_bdrk_014AiMs6oU42LmRTeKW7yWBm",
+          "raw_arguments": "{\"fragment\":\"VENDOR PAYOUT\"}",
+          "tool_name": "compare_reference_fragment"
+        }
+      ],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 10831,
+        "output_tokens": 283,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 10831,
+              "output_tokens": 283
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 283,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 10831,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 10831,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 11114,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 11114,
+        "usage_source": "anthropic"
+      }
+    },
+    {
+      "assistant_text": "No distinguishing evidence exists in this case.\n\nWhat I tested:\n\n- Candidate records for both candidates: identical in every field that could separate them \u2014 amount 2396492 paise each, settlement_date 2026-03-16, created_at 2026-03-16T09:47:00Z, 3 break-up lines, zero unexplained delta, and `utr: null` on both. Neither settlement carries a UTR to match against the credit.\n- The narration `RTGS CR - VENDOR PAYOUT` contains no reference-like token: no digits, no masked characters, no partial identifier. Nothing survived to reconstruct, and I did not invent anything. The only substantive substring, `VENDOR PAYOUT`, pins 0 reference characters against both candidates; all seven relations (exact, prefix, suffix, contains, mask-consistent, separator-normalized, character-multiset) fail for both. `RTGS` and `CR` are scheme/direction tokens, not references.\n- Break-ups for both settlements, since the amount facts were already known to be non-discriminating and I wanted to check whether the composition differed: they are line-for-line identical \u2014 payment +2451452, fee \u221246577, tax \u22128383, declared adjustment 0. The sole difference anywhere is the payment reference the payment line points at: `pay_frozeneval_000804` for setl_frozeneval_000765 versus `pay_frozeneval_000805` for setl_frozeneval_000766. Both are status `captured`, and nothing in the bank record ties the credit to either payment.\n\nThe two candidates are indistinguishable on amount, date, reference, UTR and break-up structure. This one needs a human, ideally someone who can pull the RTGS UTR from the bank statement or the payout instruction behind pay_frozeneval_000804/000805.",
+      "attempts": [
+        {
+          "attempt": 1,
+          "detail": null,
+          "error_class": null,
+          "model": "claude-opus-5-thinking",
+          "outcome": "success",
+          "provider": "gorouter"
+        }
+      ],
+      "fallback_reason": null,
+      "fallback_used": false,
+      "finish_reason": "stop",
+      "index": 3,
+      "latency_ms": 16827,
+      "model": "claude-opus-5-thinking",
+      "provider": "gorouter",
+      "reported_model": "claude-opus-5",
+      "requested_tool_calls": [],
+      "transport_attempts": 1,
+      "usage": {
+        "input_tokens": 12731,
+        "output_tokens": 641,
+        "raw": {
+          "billing_usage": {
+            "claude_usage": {
+              "cache_creation_input_tokens": 0,
+              "cache_read_input_tokens": 0,
+              "claude_cache_creation_1_h_tokens": 0,
+              "claude_cache_creation_5_m_tokens": 0,
+              "input_tokens": 12731,
+              "output_tokens": 641
+            },
+            "semantic": "anthropic",
+            "source": "claude_messages"
+          },
+          "claude_cache_creation_1_h_tokens": 0,
+          "claude_cache_creation_5_m_tokens": 0,
+          "completion_tokens": 641,
+          "completion_tokens_details": {
+            "audio_tokens": 0,
+            "image_tokens": 0,
+            "reasoning_tokens": 0,
+            "text_tokens": 0
+          },
+          "input_tokens": 12731,
+          "input_tokens_details": null,
+          "output_tokens": 0,
+          "prompt_tokens": 12731,
+          "prompt_tokens_details": {
+            "audio_tokens": 0,
+            "cached_tokens": 0,
+            "image_tokens": 0,
+            "text_tokens": 0
+          },
+          "total_tokens": 13372,
+          "usage_semantic": "openai",
+          "usage_source": "anthropic"
+        },
+        "total_tokens": 13372,
+        "usage_source": "anthropic"
+      }
+    }
+  ],
+  "termination_detail": null,
+  "termination_reason": "investigation_complete",
+  "tool_invocations": [
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_frozeneval_000565|setl_frozeneval_000765",
+        "settlement_ids": [
+          "setl_frozeneval_000765"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 2396492,
+            "breakup_line_count": 3,
+            "breakup_total_paise": 2396492,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-03-16T09:47:00Z",
+            "settlement_date_utc": "2026-03-16",
+            "settlement_id": "setl_frozeneval_000765",
+            "utr": null
+          }
+        ],
+        "total_paise": 2396492
+      },
+      "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000565|setl_frozeneval_000765\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_frozeneval_000565|setl_frozeneval_000765"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 1,
+      "latency_ms": 0,
+      "output": {
+        "blocking_rule": "exact_total_in_window",
+        "candidate_id": "bnk_frozeneval_000565|setl_frozeneval_000766",
+        "settlement_ids": [
+          "setl_frozeneval_000766"
+        ],
+        "settlements": [
+          {
+            "amount_paise": 2396492,
+            "breakup_line_count": 3,
+            "breakup_total_paise": 2396492,
+            "breakup_unexplained_delta_paise": 0,
+            "created_at_utc": "2026-03-16T09:47:00Z",
+            "settlement_date_utc": "2026-03-16",
+            "settlement_id": "setl_frozeneval_000766",
+            "utr": null
+          }
+        ],
+        "total_paise": 2396492
+      },
+      "raw_arguments": "{\"candidate_id\":\"bnk_frozeneval_000565|setl_frozeneval_000766\"}",
+      "status": "succeeded",
+      "step_index": 1,
+      "tool_name": "lookup_candidate_records",
+      "validated_arguments": {
+        "candidate_id": "bnk_frozeneval_000565|setl_frozeneval_000766"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 0,
+      "latency_ms": 0,
+      "output": {
+        "breakup_total_paise": 2396492,
+        "declared_adjustment_paise": 0,
+        "lines": [
+          {
+            "amount_paise": 2451452,
+            "line_type": "payment",
+            "reference_id": "pay_frozeneval_000804",
+            "reference_status": "captured"
+          },
+          {
+            "amount_paise": -46577,
+            "line_type": "fee",
+            "reference_id": null,
+            "reference_status": null
+          },
+          {
+            "amount_paise": -8383,
+            "line_type": "tax",
+            "reference_id": null,
+            "reference_status": null
+          }
+        ],
+        "settlement_amount_paise": 2396492,
+        "settlement_id": "setl_frozeneval_000765",
+        "totals_by_line_type": [
+          [
+            "fee",
+            -46577
+          ],
+          [
+            "payment",
+            2451452
+          ],
+          [
+            "tax",
+            -8383
+          ]
+        ],
+        "unexplained_delta_paise": 0
+      },
+      "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_000765\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "inspect_settlement_breakup",
+      "validated_arguments": {
+        "settlement_id": "setl_frozeneval_000765"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 1,
+      "latency_ms": 0,
+      "output": {
+        "breakup_total_paise": 2396492,
+        "declared_adjustment_paise": 0,
+        "lines": [
+          {
+            "amount_paise": 2451452,
+            "line_type": "payment",
+            "reference_id": "pay_frozeneval_000805",
+            "reference_status": "captured"
+          },
+          {
+            "amount_paise": -46577,
+            "line_type": "fee",
+            "reference_id": null,
+            "reference_status": null
+          },
+          {
+            "amount_paise": -8383,
+            "line_type": "tax",
+            "reference_id": null,
+            "reference_status": null
+          }
+        ],
+        "settlement_amount_paise": 2396492,
+        "settlement_id": "setl_frozeneval_000766",
+        "totals_by_line_type": [
+          [
+            "fee",
+            -46577
+          ],
+          [
+            "payment",
+            2451452
+          ],
+          [
+            "tax",
+            -8383
+          ]
+        ],
+        "unexplained_delta_paise": 0
+      },
+      "raw_arguments": "{\"settlement_id\":\"setl_frozeneval_000766\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "inspect_settlement_breakup",
+      "validated_arguments": {
+        "settlement_id": "setl_frozeneval_000766"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    },
+    {
+      "call_index": 2,
+      "latency_ms": 0,
+      "output": {
+        "candidate_comparisons": [
+          {
+            "candidate_id": "bnk_frozeneval_000565|setl_frozeneval_000765",
+            "comparisons": [
+              {
+                "fragment": "VENDOR PAYOUT",
+                "fragment_alphanumeric_characters": 12,
+                "fragment_folded": "VENDOR PAYOUT",
+                "fragment_length": 13,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 1,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_FROZENEVAL_000765",
+                "reference_kind": "settlement_id",
+                "reference_length": 22,
+                "reference_value": "setl_frozeneval_000765",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_frozeneval_000765"
+            ]
+          },
+          {
+            "candidate_id": "bnk_frozeneval_000565|setl_frozeneval_000766",
+            "comparisons": [
+              {
+                "fragment": "VENDOR PAYOUT",
+                "fragment_alphanumeric_characters": 12,
+                "fragment_folded": "VENDOR PAYOUT",
+                "fragment_length": 13,
+                "fragment_mask_characters": 0,
+                "fragment_separator_characters": 1,
+                "holding_relation_ids": [],
+                "max_pinned_reference_characters": 0,
+                "reference_folded": "SETL_FROZENEVAL_000766",
+                "reference_kind": "settlement_id",
+                "reference_length": 22,
+                "reference_value": "setl_frozeneval_000766",
+                "relations": [
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "exact"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "prefix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "suffix_of_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "contains_reference"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "mask_consistent"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "separator_normalized_equal"
+                  },
+                  {
+                    "holds": false,
+                    "pinned_reference_characters": 0,
+                    "relation_id": "character_multiset_equal"
+                  }
+                ]
+              }
+            ],
+            "settlement_ids": [
+              "setl_frozeneval_000766"
+            ]
+          }
+        ],
+        "candidates_evaluated": 2,
+        "fragment": "VENDOR PAYOUT",
+        "fragment_offsets": [
+          10
+        ],
+        "fragment_present_in_narration": true,
+        "narration_length": 23
+      },
+      "raw_arguments": "{\"fragment\":\"VENDOR PAYOUT\"}",
+      "status": "succeeded",
+      "step_index": 2,
+      "tool_name": "compare_reference_fragment",
+      "validated_arguments": {
+        "fragment": "VENDOR PAYOUT"
+      },
+      "validation_error_detail": null,
+      "validation_error_reason": null
+    }
+  ],
+  "tool_schema_version": "tools.v3",
+  "total_latency_ms": 42258,
+  "validator_version": "validator.v3"
+}
