@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 ResolutionSource = Literal["deterministic", "ai_assisted", "human", "escalated"]
@@ -504,6 +504,10 @@ class BenchmarkCaseEvaluation(ApiModel):
     blockers: list[str] = Field(default_factory=list)
     replay_available: bool = False
     replay_note: str
+    termination_reason: str | None = None
+    tool_call_count: int = 0
+    evidence_relations: list[str] = Field(default_factory=list)
+    frozen_trajectory: bool = False
 
 
 class BenchmarkCasesResponse(ApiModel):
@@ -511,12 +515,14 @@ class BenchmarkCasesResponse(ApiModel):
     total: int
     offset: int = 0
     limit: int = 50
+    counts: dict[str, int] = Field(default_factory=dict)
     cases: list[BenchmarkCaseSummary]
 
 
 class BenchmarkCaseDetailResponse(BenchmarkCaseSummary):
     candidate_snapshot: dict[str, Any] | None
     visible_records: dict[str, Any]
+    trajectory_metadata: dict[str, Any] | None = None
     evaluation_metadata_notice: str
 
 
@@ -544,3 +550,88 @@ class BenchmarkReplayDetailResponse(ApiModel):
     trajectory: dict[str, Any]
     deterministic_validation: dict[str, Any]
     policy_result: dict[str, Any]
+    provenance: dict[str, Any] | None = None
+
+
+class BenchmarkReplayStage2(ApiModel):
+    cases: int
+    resolved: int
+
+
+class BenchmarkReplayT2(ApiModel):
+    cases: int
+    correctly_resolved: int
+
+
+class BenchmarkReplayT3(ApiModel):
+    cases: int
+    safely_escalated: int
+    termination_reasons: dict[str, int]
+
+
+class BenchmarkReplayStage3(ApiModel):
+    residual_cases: int
+    trajectory_cache_hits: int
+    t2: BenchmarkReplayT2
+    t3: BenchmarkReplayT3
+
+
+class BenchmarkReplayEvaluation(ApiModel):
+    resolvable_cases: int
+    correct_resolutions: int
+    ambiguous_cases: int
+    safely_escalated: int
+    wrong_auto_resolutions: int
+    resolvable_match_rate: float
+    auto_resolution_precision: float
+    unsafe_auto_match_rate: float
+    value_at_risk_paise: int
+    soundness_violations: int
+    tool_validation_failures: int
+    validation_rejections: int
+    budget_exhausted: int
+
+
+class BenchmarkFullReplayResponse(ApiModel):
+    benchmark_id: Literal["frozen-eval-v3"]
+    mode: Literal["offline_replay"]
+    provider_calls: Literal[0]
+    provider_calls_made: Literal[False]
+    total_cases: int
+    total_correct_auto_resolutions: int
+    stage2: BenchmarkReplayStage2
+    stage3: BenchmarkReplayStage3
+    evaluation: BenchmarkReplayEvaluation
+    phases: list[dict[str, Any]]
+    provenance: dict[str, Any]
+    integrity: dict[str, Any]
+
+    @model_validator(mode="after")
+    def validate_full_suite_cohort(self) -> "BenchmarkFullReplayResponse":
+        if self.stage2.cases != self.stage2.resolved:
+            raise ValueError("Frozen Eval v3 Stage 2 must resolve its complete cohort")
+        if self.stage3.residual_cases != self.stage3.t2.cases + self.stage3.t3.cases:
+            raise ValueError("Stage-3 residual cohort is incompatible with its T2/T3 cohorts")
+        if self.total_cases != (
+            self.stage2.resolved
+            + self.stage3.t2.correctly_resolved
+            + self.stage3.t3.safely_escalated
+        ):
+            raise ValueError("full-suite case counts do not reconcile")
+        if self.total_correct_auto_resolutions != (
+            self.stage2.resolved + self.stage3.t2.correctly_resolved
+        ):
+            raise ValueError("full-suite automatic-resolution counts do not reconcile")
+        if self.evaluation.correct_resolutions != self.total_correct_auto_resolutions:
+            raise ValueError("Stage-4 result is incompatible with full-suite resolution counts")
+        if self.evaluation.safely_escalated != self.stage3.t3.safely_escalated:
+            raise ValueError("Stage-4 result is incompatible with the T3 escalation cohort")
+        if self.evaluation.resolvable_cases != (
+            self.evaluation.correct_resolutions + self.evaluation.wrong_auto_resolutions
+        ):
+            raise ValueError("Stage-4 resolvable cohort does not reconcile")
+        if self.evaluation.ambiguous_cases != self.stage3.t3.cases:
+            raise ValueError("Stage-4 ambiguity cohort is incompatible with T3")
+        if self.total_cases != self.evaluation.resolvable_cases + self.evaluation.ambiguous_cases:
+            raise ValueError("Stage-4 evaluation is incompatible with the full suite")
+        return self

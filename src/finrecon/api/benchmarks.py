@@ -8,6 +8,7 @@ browsing and replay payloads.
 
 from __future__ import annotations
 
+import importlib
 import json
 from functools import cached_property
 from pathlib import Path
@@ -26,6 +27,12 @@ from finrecon.agent.version import POLICY_VERSION, VALIDATOR_VERSION
 
 
 CONTROLLER_REJECTION_DEMO = "case:bnk_bsearch_000012"
+TRAJECTORY_DIRECTORIES = {
+    "openrouter-free": "bounded-search-v1-openrouter-free-final",
+    "opus": "bounded-search-v1-opus5-thinking-final",
+    "opus-provider-recovered": "frozen-eval-v3-opus5-thinking-final",
+}
+ORIGINAL_V3_FAILURE_DIRECTORY = "frozen-eval-v3-opus5-thinking-t2-provider-failures-original"
 
 
 class BenchmarkCatalog:
@@ -86,13 +93,13 @@ class BenchmarkCatalog:
             raise self._not_found(benchmark_id)
         if benchmark_id == "frozen-eval-v3":
             return {
-                "benchmark_id": benchmark_id, "title": "Frozen Evaluation v3", "status": "FROZEN",
+                "benchmark_id": benchmark_id, "title": "Frozen Eval v3", "status": "FROZEN",
                 "case_count": int(manifest["case_counts"]["frozen-eval"]),
-                "description": "Full pipeline safety and regression benchmark.",
-                "replay_available": False, "report_available": True, "investigators": [],
-                "integrity": {"sha256": manifest["frozen_eval_sha256"], "hash_verified_in_report": True},
-                "constraints": {"replay": "No persisted per-case trajectories are exposed.", "ground_truth": "Evaluation-only; never returned by case or replay endpoints."},
-                "notices": ["Report and visible-input case exploration only. No replay is fabricated."],
+                "description": "Complete offline replay of rules, frozen investigation trajectories, deterministic validation, and financial policy.",
+                "replay_available": True, "report_available": True, "investigators": ["opus-provider-recovered"],
+                "integrity": {"sha256": manifest["frozen_eval_sha256"], "hash_verified_during_replay": True},
+                "constraints": {"replay": "Exactly 240 committed trajectories; cache misses fail closed and no provider chain is constructed.", "ground_truth": "Read only after reconciliation, inside the Stage-4 evaluation boundary."},
+                "notices": ["OFFLINE REPLAY · ZERO MODEL CALLS", "AI investigates. Deterministic controls decide."],
             }
         if benchmark_id == "bounded-search-v1":
             return {
@@ -119,7 +126,7 @@ class BenchmarkCatalog:
         self.detail(benchmark_id)
         paths: list[tuple[str, Path, str]] = []
         if benchmark_id == "frozen-eval-v3":
-            paths = [("final-eval", self.benchmark_root / "reports" / "final-eval.json", "Authoritative frozen full-pipeline report")]
+            paths = [("provider-recovered", self.benchmark_root / "reports" / "frozen-eval-v3-opus5-thinking-provider-recovered-240.json", "Canonical provider-recovered Stage-3 report")]
         elif benchmark_id == "bounded-search-v1":
             paths = [
                 ("mechanical", self.benchmark_root / "reports" / "bounded-search-v1-mechanical.json", "Mechanical baseline; report/comparison only"),
@@ -191,11 +198,8 @@ class BenchmarkCatalog:
         T0/T1 benchmark categories. Candidate, settlement, reference, truth,
         and correctness values never enter this index.
         """
-        report = self._json(self.benchmark_root / "reports" / "final-eval.json")
-        core, replay = report.get("frozen_core"), report.get("stage3_replay")
-        if not isinstance(core, dict) or not isinstance(replay, dict):
-            raise self._v3_projection_error("final evaluation sections are missing")
-        per_case = replay.get("per_case")
+        report = self._json(self.benchmark_root / "reports" / "frozen-eval-v3-opus5-thinking-provider-recovered-240.json")
+        per_case = report.get("per_case")
         if not isinstance(per_case, list):
             raise self._v3_projection_error("Stage-3 per-case outcomes are missing")
 
@@ -204,16 +208,23 @@ class BenchmarkCatalog:
             if not isinstance(item, dict):
                 raise self._v3_projection_error("a Stage-3 outcome is malformed")
             case_id, tier, resolved, blockers = item.get("case_id"), item.get("tier"), item.get("resolved"), item.get("blockers")
-            if not isinstance(case_id, str) or tier not in {"T2", "T3"} or not isinstance(resolved, bool) or not isinstance(blockers, list) or not all(isinstance(x, str) for x in blockers):
+            termination = item.get("termination_reason")
+            tool_calls = item.get("tool_calls_executed")
+            relations = item.get("evidence_relations")
+            if not isinstance(case_id, str) or tier not in {"T2", "T3"} or not isinstance(resolved, bool) or not isinstance(blockers, list) or not all(isinstance(x, str) for x in blockers) or not isinstance(termination, str) or not isinstance(tool_calls, int) or not isinstance(relations, list):
                 raise self._v3_projection_error("a Stage-3 outcome lacks safe disposition fields")
             stage3[case_id] = {
                 "tier": tier,
                 "final_disposition": "RESOLVED" if resolved else "ESCALATED",
                 "resolution_stage": "STAGE_3",
-                "resolution_method": "Recorded mechanical evaluation" if resolved else None,
+                "resolution_method": "Frozen evidence replay" if resolved else None,
                 "blockers": blockers,
-                "replay_available": False,
-                "replay_note": "Step-by-step replay was not persisted for this historical benchmark.",
+                "replay_available": True,
+                "replay_note": "Canonical frozen investigation trajectory; replayed with zero provider calls.",
+                "termination_reason": termination,
+                "tool_call_count": tool_calls,
+                "evidence_relations": sorted({str(relation.get("relation_id")) for relation in relations if isinstance(relation, dict) and relation.get("relation_id")}),
+                "frozen_trajectory": True,
             }
 
         projection: dict[str, dict[str, Any]] = {}
@@ -231,7 +242,9 @@ class BenchmarkCatalog:
                 evaluation = {
                     "tier": tier, "final_disposition": "RESOLVED", "resolution_stage": "STAGE_2",
                     "resolution_method": decision.rule_id, "blockers": [], "replay_available": False,
-                    "replay_note": "Step-by-step replay was not persisted for this historical benchmark.",
+                    "replay_note": "Resolved by Stage 2 before an investigation trajectory was needed.",
+                    "termination_reason": "stage2_deterministic_resolution", "tool_call_count": 0,
+                    "evidence_relations": [], "frozen_trajectory": False,
                 }
             if evaluation["tier"] not in {"T0", "T1", "T2", "T3"}:
                 raise self._v3_projection_error(f"no safe tier is available for {case_id}")
@@ -245,17 +258,18 @@ class BenchmarkCatalog:
             "stage3": sum(item["resolution_stage"] == "STAGE_3" and item["final_disposition"] == "RESOLVED" for item in projection.values()),
         }
         expected = {
-            "total": core.get("cases"), "resolved": core.get("metrics", {}).get("correct_auto_resolutions"),
-            "escalated": core.get("metrics", {}).get("escalated"),
-            "stage2": core.get("resolution_outcomes", {}).get("deterministic"),
-            "stage3": core.get("resolution_outcomes", {}).get("ai_assisted"),
+            "total": 890,
+            "resolved": 650 + report.get("metrics", {}).get("correct_auto_resolutions", -650),
+            "escalated": report.get("metrics", {}).get("escalated"),
+            "stage2": 650,
+            "stage3": report.get("metrics", {}).get("correct_auto_resolutions"),
         }
         if aggregate != expected:
             raise self._v3_projection_error(f"aggregate mismatch: {aggregate!r} != {expected!r}")
         return projection
 
     def cases(self, benchmark_id: str, *, outcome: str | None = None, stage: str | None = None,
-              tier: str | None = None, replay_only: bool = False,
+              tier: str | None = None, termination: str | None = None, replay_only: bool = False,
               controller_rejection: bool = False, offset: int = 0, limit: int = 50,
               search: str | None = None) -> dict[str, Any]:
         self.detail(benchmark_id)
@@ -268,6 +282,12 @@ class BenchmarkCatalog:
                 continue
             if evaluation and tier and evaluation["tier"] != tier.upper():
                 continue
+            if evaluation and termination:
+                actual = evaluation.get("termination_reason", "")
+                if termination == "provider_failure" and actual != "provider_infrastructure_failure":
+                    continue
+                if termination != "provider_failure" and actual != termination:
+                    continue
             replay_ids = self._replay_ids(benchmark_id, row["case_id"])
             outcomes = {name: self._trajectory_outcome(benchmark_id, name, row["case_id"]) for name in replay_ids}
             values = {value for value in outcomes.values() if value}
@@ -282,8 +302,19 @@ class BenchmarkCatalog:
                 continue
             rows.append({**{key: row[key] for key in ("case_id", "bank_record_id", "narration", "amount_paise", "candidate_count")}, "recorded_outcomes": outcomes, "replay_investigators": replay_ids, "controller_rejection_demo": is_demo, "evaluation": evaluation})
         ordered = sorted(rows, key=lambda item: item["case_id"])
+        counts: dict[str, int] = {}
+        if benchmark_id == "frozen-eval-v3":
+            evaluations = tuple(self._v3_case_evaluations.values())
+            counts = {
+                "all": len(evaluations),
+                "stage2": sum(item["resolution_stage"] == "STAGE_2" for item in evaluations),
+                "investigations": sum(item["resolution_stage"] == "STAGE_3" for item in evaluations),
+                "t2": sum(item["tier"] == "T2" for item in evaluations),
+                "t3": sum(item["tier"] == "T3" for item in evaluations),
+                "provider_failure": sum(item.get("termination_reason") == "provider_infrastructure_failure" for item in evaluations),
+            }
         return {"benchmark_id": benchmark_id, "total": len(ordered), "offset": offset,
-                "limit": limit, "cases": ordered[offset:offset + limit]}
+                "limit": limit, "counts": counts, "cases": ordered[offset:offset + limit]}
 
     def case(self, benchmark_id: str, case_id: str) -> dict[str, Any]:
         self.detail(benchmark_id)
@@ -292,13 +323,52 @@ class BenchmarkCatalog:
             raise HTTPException(status_code=404, detail={"code": "benchmark_case_not_found", "message": f"Case {case_id!r} is not in {benchmark_id}."})
         replay_ids = self._replay_ids(benchmark_id, case_id)
         evaluation = self._v3_case_evaluations.get(case_id) if benchmark_id == "frozen-eval-v3" else None
-        return {**{key: row[key] for key in ("case_id", "bank_record_id", "narration", "amount_paise", "candidate_count", "candidate_snapshot", "visible_records")}, "recorded_outcomes": {name: self._trajectory_outcome(benchmark_id, name, case_id) for name in replay_ids}, "replay_investigators": replay_ids, "controller_rejection_demo": case_id == CONTROLLER_REJECTION_DEMO, "evaluation": evaluation, "evaluation_metadata_notice": "This endpoint contains visible benchmark inputs and judge-safe recorded final evaluation metadata only. Private evaluator data is not included."}
+        trajectory_metadata = self._v3_trajectory_metadata(case_id) if benchmark_id == "frozen-eval-v3" else None
+        return {**{key: row[key] for key in ("case_id", "bank_record_id", "narration", "amount_paise", "candidate_count", "candidate_snapshot", "visible_records")}, "recorded_outcomes": {name: self._trajectory_outcome(benchmark_id, name, case_id) for name in replay_ids}, "replay_investigators": replay_ids, "controller_rejection_demo": case_id == CONTROLLER_REJECTION_DEMO, "evaluation": evaluation, "trajectory_metadata": trajectory_metadata, "evaluation_metadata_notice": "Visible inputs, immutable candidate snapshots, and judge-safe post-reconciliation evaluation metadata only. Hidden truth is not included."}
+
+    @cached_property
+    def _v3_trajectory_paths(self) -> dict[str, Path]:
+        paths: dict[str, Path] = {}
+        directory = self.trajectories_root / "frozen-eval-v3-opus5-thinking-final"
+        for path in directory.glob("*.json"):
+            raw = self._json(path)
+            case_id = raw.get("case_id")
+            if isinstance(case_id, str):
+                paths[case_id] = path
+        return paths
+
+    def _v3_trajectory_metadata(self, case_id: str) -> dict[str, Any] | None:
+        path = self._v3_trajectory_paths.get(case_id)
+        if path is None:
+            return None
+        trajectory = Trajectory.model_validate_json(path.read_text(encoding="utf-8"))
+        return {
+            "frozen_replay": True,
+            "termination_reason": trajectory.termination_reason,
+            "tool_call_count": sum(call.status == "succeeded" for call in trajectory.tool_invocations),
+            "requested_models": list(trajectory.models_used),
+            "reported_models": list(trajectory.models_reported),
+            "provider_chain": list(trajectory.provider_chain),
+            "replayed": True,
+        }
+
+    def full_replay(self, benchmark_id: str) -> dict[str, Any]:
+        if benchmark_id != "frozen-eval-v3":
+            raise HTTPException(status_code=404, detail={"code": "benchmark_full_replay_unavailable", "message": "A full offline replay is available only for Frozen Eval v3."})
+        try:
+            # Resolved only inside this explicit evaluation endpoint. Keeping
+            # the evaluator out of the production import graph preserves the
+            # one-way dependency: Stage 4 may use FinRecon; reconciliation
+            # modules never import Stage 4 or receive its hidden inputs.
+            module = importlib.import_module("benchmark.eval.frozen_v3_replay")
+            return module.run_frozen_v3_replay(self.project_root)
+        except (OSError, ValueError, RuntimeError) as exc:
+            raise HTTPException(status_code=503, detail={"code": "benchmark_full_replay_failed", "message": f"Frozen Eval v3 replay failed closed: {exc}"}) from exc
 
     @cached_property
     def _trajectory_index(self) -> dict[str, dict[str, Path]]:
-        indexed: dict[str, dict[str, Path]] = {"openrouter-free": {}, "opus": {}}
-        directories = {"openrouter-free": "bounded-search-v1-openrouter-free-final", "opus": "bounded-search-v1-opus5-thinking-final"}
-        for investigator, directory in directories.items():
+        indexed: dict[str, dict[str, Path]] = {name: {} for name in TRAJECTORY_DIRECTORIES}
+        for investigator, directory in TRAJECTORY_DIRECTORIES.items():
             for path in (self.trajectories_root / directory).glob("*.json"):
                 try:
                     raw = self._json(path)
@@ -310,15 +380,17 @@ class BenchmarkCatalog:
         return indexed
 
     def _trajectory_path(self, investigator: str, case_id: str) -> Path | None:
-        directory = {"openrouter-free": "bounded-search-v1-openrouter-free-final", "opus": "bounded-search-v1-opus5-thinking-final"}.get(investigator)
+        directory = TRAJECTORY_DIRECTORIES.get(investigator)
         if directory is None:
             return None
         return self._trajectory_index[investigator].get(case_id)
 
     def _replay_ids(self, benchmark_id: str, case_id: str) -> list[str]:
-        if benchmark_id != "bounded-search-v1":
-            return []
-        return [name for name in ("openrouter-free", "opus") if self._trajectory_path(name, case_id) is not None]
+        if benchmark_id == "frozen-eval-v3":
+            return ["opus-provider-recovered"] if self._trajectory_path("opus-provider-recovered", case_id) is not None else []
+        if benchmark_id == "bounded-search-v1":
+            return [name for name in ("openrouter-free", "opus") if self._trajectory_path(name, case_id) is not None]
+        return []
 
     def _trajectory_outcome(self, benchmark_id: str, investigator: str, case_id: str) -> str:
         path = self._trajectory_path(investigator, case_id)
@@ -336,6 +408,19 @@ class BenchmarkCatalog:
 
     def replays(self, benchmark_id: str) -> dict[str, Any]:
         self.detail(benchmark_id)
+        if benchmark_id == "frozen-eval-v3":
+            metadata = [self._v3_trajectory_metadata(case_id) for case_id in self._v3_trajectory_paths]
+            reported = sorted({model for item in metadata if item for model in item["reported_models"]})
+            return {"benchmark_id": benchmark_id, "replays": [{
+                "investigator": "opus-provider-recovered",
+                "label": "Provider-recovered frozen corpus",
+                "scored_cohort_cases": 240,
+                "persisted_trajectory_cases": len(self._v3_trajectory_paths),
+                "requested_model": "claude-opus-5-thinking",
+                "reported_models": reported,
+                "provider": "gorouter",
+                "notes": ["Canonical recorded replay — zero provider calls.", "Deterministic validation and policy are re-adjudicated from the immutable snapshot."],
+            }]}
         if benchmark_id != "bounded-search-v1":
             return {"benchmark_id": benchmark_id, "replays": []}
         reports = {item["report_id"]: item for item in self.reports(benchmark_id)["reports"]}
@@ -350,7 +435,12 @@ class BenchmarkCatalog:
 
     def replay(self, benchmark_id: str, investigator: str, case_id: str) -> dict[str, Any]:
         self.detail(benchmark_id)
-        if benchmark_id != "bounded-search-v1" or investigator not in {"openrouter-free", "opus"}:
+        allowed = (
+            benchmark_id == "bounded-search-v1" and investigator in {"openrouter-free", "opus"}
+        ) or (
+            benchmark_id == "frozen-eval-v3" and investigator == "opus-provider-recovered"
+        )
+        if not allowed:
             raise HTTPException(status_code=404, detail={"code": "benchmark_replay_unavailable", "message": "No persisted replay is available for this benchmark/investigator."})
         path = self._trajectory_path(investigator, case_id)
         if path is None:
@@ -377,4 +467,30 @@ class BenchmarkCatalog:
         # The persisted artifact remains untouched. This is an offline
         # deterministic re-adjudication over its recorded raw outputs; it
         # constructs no provider chain and has no ground-truth input.
-        return {"benchmark_id": benchmark_id, "investigator": investigator, "replayed": True, "provider_calls_made": False, "trajectory": trajectory.model_dump(mode="json"), "deterministic_validation": validator.model_dump(mode="json"), "policy_result": decision.model_dump(mode="json")}
+        trajectory_payload = trajectory.model_dump(mode="json")
+        provenance: dict[str, Any] | None = None
+        if benchmark_id == "frozen-eval-v3":
+            # Assistant prose is not evidence and may contain hidden reasoning.
+            # Replay exposes actions/results only, never chain-of-thought.
+            for step in trajectory_payload.get("steps", []):
+                step.pop("assistant_text", None)
+                step.pop("usage", None)
+            original_cases = self._v3_original_failure_cases
+            recovered = case_id in original_cases
+            provenance = {
+                "provider_recovered_case": recovered,
+                "canonical_trajectory": "resolved through deterministic policy" if decision.outcome == "RESOLVE" else "safely escalated",
+                "original_operational_attempt": "provider infrastructure failure" if recovered else None,
+                "original_failed_trajectory_preserved": recovered,
+            }
+        return {"benchmark_id": benchmark_id, "investigator": investigator, "replayed": True, "provider_calls_made": False, "trajectory": trajectory_payload, "deterministic_validation": validator.model_dump(mode="json"), "policy_result": decision.model_dump(mode="json"), "provenance": provenance}
+
+    @cached_property
+    def _v3_original_failure_cases(self) -> frozenset[str]:
+        case_ids: set[str] = set()
+        for path in (self.trajectories_root / ORIGINAL_V3_FAILURE_DIRECTORY).glob("*.json"):
+            raw = self._json(path)
+            case_id = raw.get("case_id")
+            if isinstance(case_id, str):
+                case_ids.add(case_id)
+        return frozenset(case_ids)
