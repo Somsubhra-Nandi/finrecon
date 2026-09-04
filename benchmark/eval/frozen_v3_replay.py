@@ -58,15 +58,34 @@ def _read_hash_manifest(path: Path) -> dict[str, str]:
     return hashes
 
 
+def _canonical_bytes(data: bytes) -> bytes:
+    """Return ``data`` with line endings normalised to CRLF.
+
+    The published Frozen Eval v3 hashes were computed against CRLF bytes.  How
+    a machine materialises those same committed blobs is a delivery detail, not
+    a change of content: a git checkout honours the ``eol=crlf`` pin in
+    ``.gitattributes`` and produces CRLF, while a source tarball or archive
+    export of the identical commit produces the stored LF bytes.  Hashing raw
+    bytes therefore made the integrity check depend on how the code arrived
+    rather than on whether an artifact had actually changed, and it failed
+    closed on tarball-based deploys.  Normalising first removes that variable
+    and leaves the published hash values unchanged; a real edit to an artifact
+    still changes the digest.
+    """
+
+    return data.replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+
+
 def _directory_hash(directory: Path) -> str:
     lines = []
     for path in sorted(directory.glob("*.json"), key=lambda item: item.name):
-        lines.append(f"{path.name}\t{hashlib.sha256(path.read_bytes()).hexdigest()}\n")
+        digest = hashlib.sha256(_canonical_bytes(path.read_bytes())).hexdigest()
+        lines.append(f"{path.name}\t{digest}\n")
     return hashlib.sha256("".join(lines).encode("utf-8")).hexdigest()
 
 
 def _file_hash(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hashlib.sha256(_canonical_bytes(path.read_bytes())).hexdigest()
 
 
 def _stage2_verdict(decision: Any, truth: Any) -> CaseVerdict:

@@ -71,3 +71,69 @@ def test_shell_entrypoints_pin_lf(pattern: str) -> None:
 def test_docker_entrypoint_has_no_crlf() -> None:
     content = (PROJECT_ROOT / "docker-entrypoint.sh").read_bytes()
     assert b"\r\n" not in content, "docker-entrypoint.sh must stay LF or its shebang breaks on Linux"
+
+def test_frozen_artifact_hashes_survive_lf_delivery(tmp_path):
+    """The Frozen Eval v3 integrity check must not depend on how files arrived.
+
+    A git checkout honours the eol=crlf pin and yields CRLF bytes, but a source
+    tarball or archive export of the same commit yields the stored LF bytes.
+    Hashing raw bytes made a tarball-based deploy fail closed with "one or more
+    Frozen Eval v3 artifact hashes changed" even though nothing had changed.
+    """
+
+    from benchmark.eval.frozen_v3_replay import _directory_hash, _file_hash
+
+    manifest = {}
+    manifest_path = (
+        PROJECT_ROOT
+        / "benchmark"
+        / "reports"
+        / "frozen-eval-v3-opus5-thinking-hashes.txt"
+    )
+    for line in manifest_path.read_text(encoding="utf-8").splitlines():
+        if "_sha256=" in line:
+            key, value = line.split("=", 1)
+            manifest[key] = value
+
+    sources = {
+        "canonical_240_trajectory_corpus_sha256": (
+            "fixtures/trajectories/frozen-eval-v3-opus5-thinking-final",
+        ),
+        "original_13_t2_provider_failures_sha256": (
+            "fixtures/trajectories/"
+            "frozen-eval-v3-opus5-thinking-t2-provider-failures-original",
+        ),
+    }
+
+    for index, (key, (relative,)) in enumerate(sources.items()):
+        source = PROJECT_ROOT / relative
+        # A short target name: the mirrored path would exceed the Windows
+        # MAX_PATH limit once the 64-character trajectory filenames are added.
+        target = tmp_path / f"corpus{index}"
+        target.mkdir(parents=True, exist_ok=True)
+        for item in source.glob("*.json"):
+            lf = item.read_bytes().replace(b"\r\n", b"\n")
+            (target / item.name).write_bytes(lf)
+        assert _directory_hash(target) == manifest[key], key
+
+    reports = {
+        "operational_raw_report_sha256": (
+            "frozen-eval-v3-opus5-thinking-operational-raw-240.json"
+        ),
+        "provider_recovered_report_sha256": (
+            "frozen-eval-v3-opus5-thinking-provider-recovered-240.json"
+        ),
+    }
+    for key, name in reports.items():
+        source = PROJECT_ROOT / "benchmark" / "reports" / name
+        target = tmp_path / name
+        target.write_bytes(source.read_bytes().replace(b"\r\n", b"\n"))
+        assert _file_hash(target) == manifest[key], key
+
+    tampered = tmp_path / "tampered.json"
+    tampered.write_bytes(
+        (PROJECT_ROOT / "benchmark" / "reports" / reports["operational_raw_report_sha256"])
+        .read_bytes()
+        .replace(b"tier", b"Tier", 1)
+    )
+    assert _file_hash(tampered) != manifest["operational_raw_report_sha256"]
