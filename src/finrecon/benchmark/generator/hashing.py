@@ -41,7 +41,20 @@ from finrecon.benchmark.generator.serialize import dataset_file_names
 
 
 def _file_sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    """SHA-256 of ``path`` with line endings normalised to LF.
+
+    The published fingerprint was computed from LF bytes.  Whether a given
+    machine materialises the same committed blob as LF or CRLF depends on how
+    the repository was delivered -- a checkout under ``core.autocrlf=true`` and
+    ``git archive`` on Windows both produce CRLF -- which is a delivery detail
+    rather than a change of benchmark content.  Normalising before hashing
+    keeps the published value valid everywhere while still detecting any real
+    edit to the data.
+    """
+
+    return hashlib.sha256(
+        path.read_bytes().replace(b"\r\n", b"\n")
+    ).hexdigest()
 
 
 def hashed_file_list(split: str = "frozen-eval") -> tuple[str, ...]:
