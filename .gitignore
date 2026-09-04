@@ -14,6 +14,9 @@ node_modules/
 *.sqlite3
 .coverage
 htmlcov/
+demo-output/
+demo/
+.tmp/
 
 # Secrets. `.env.example` is the committed template and holds only empty
 # placeholders; anything that could carry a real key stays out.
