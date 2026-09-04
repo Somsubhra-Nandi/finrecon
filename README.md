@@ -15,14 +15,16 @@ FinRecon is a reconciliation controller built around one invariant:
 <details>
 <summary><b>Short on time? The three-minute version.</b></summary>
 
-- **The claim** — 890 cases, 850 / 850 resolvable ones reconciled correctly,
-  40 / 40 ambiguous ones escalated, **0 wrong automatic resolutions**, ₹0 at risk.
+- **The claim** — one finance-ops loop closed across an **890-record** synthetic
+  batch: **100% match rate** on resolvable records (850 / 850), all **40**
+  unresolvable ones escalated as a named exception list, **0 wrong automatic
+  resolutions**, ₹0 at risk.
 - **The idea** — AI investigates evidence; deterministic code holds the sole
   authority to resolve or escalate. [Safety model](#safety-model) lists how each
   half of that is enforced rather than asserted.
 - **See it yourself** — `docker compose up --build`, open `localhost:8000`, hit
-  Replay in the Evaluation workspace: all 890 cases, from committed artifacts,
-  **no API key and no network call**, in a few seconds.
+  Replay in the Evaluation workspace: the whole 890-record batch, from committed
+  artifacts, **no API key and no network call**, in about three seconds.
 - **The honest part** — the benchmark is synthetic and frozen, the no-model
   baseline (823 / 850) is reported next to the model result, and
   [Limitations](#limitations) says what this does not cover.
@@ -37,14 +39,24 @@ policy, never by model confidence. When the evidence is insufficient, unsafe,
 ambiguous, or unavailable because a provider call failed, the system escalates
 instead of guessing.
 
-**Frozen Eval v3 — 890 synthetic cases, provider-recovered result:**
+FinRecon closes **one finance-ops loop** — Razorpay records against a bank
+statement — end to end, and reports both halves of the outcome: what it matched,
+and what it could not.
+
+**Frozen Eval v3 — 890-record synthetic batch, provider-recovered result:**
 
 | Measure | Result |
 |---|---:|
-| Resolvable cases reconciled correctly | **850 / 850** |
-| Genuinely ambiguous cases safely escalated | **40 / 40** |
+| Batch size | **890 records** |
+| Match rate on resolvable cases | **850 / 850 — 100%** |
+| Exceptions it could not resolve, escalated rather than guessed | **40 / 40** |
 | Wrong automatic resolutions | **0** |
 | Value at risk | **₹0** |
+
+The exception list is not a count. Every escalated case is inspectable
+individually — the evidence that was found, the evidence that was missing, and
+the deterministic rule that refused to close it. That refusal is recorded in the
+audit ledger with the same rigour as a resolution.
 
 **Reproducing this offline.** Two committed paths replay the same 890 cases with no
 credential and no network, and they deliberately answer different questions:
