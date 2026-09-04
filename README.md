@@ -2,6 +2,10 @@
 
 **Reconcile with evidence. Escalate uncertainty.**
 
+**Live: [finrecon-production.up.railway.app](https://finrecon-production.up.railway.app/)** — nothing to install and no
+credential needed. *Explore Demo* populates the operations console; *Evidence &
+Evaluation* replays all 890 benchmark cases offline, with zero model calls.
+
 Every payments business runs a version of the same reconciliation problem: Razorpay
 records say one thing, the bank statement says another, and someone has to decide —
 case by case — whether the difference is explainable or dangerous. Get it wrong in
@@ -22,9 +26,10 @@ FinRecon is a reconciliation controller built around one invariant:
 - **The idea** — AI investigates evidence; deterministic code holds the sole
   authority to resolve or escalate. [Safety model](#safety-model) lists how each
   half of that is enforced rather than asserted.
-- **See it yourself** — `docker compose up --build`, open `localhost:8000`, hit
-  Replay in the Evaluation workspace: the whole 890-record batch, from committed
-  artifacts, **no API key and no network call**, in about three seconds.
+- **See it yourself** — open the [live instance](https://finrecon-production.up.railway.app/)
+  and hit Replay in the Evaluation workspace, or run `docker compose up --build`
+  locally: either way it is the whole 890-record batch, from committed artifacts,
+  **no API key and no network call**.
 - **The honest part** — the benchmark is synthetic and frozen, the no-model
   baseline (823 / 850) is reported next to the model result, and
   [Limitations](#limitations) says what this does not cover.
@@ -377,6 +382,9 @@ Suggested walkthrough for a judge:
 ---
 
 ## Run locally
+
+A hosted instance runs at **[finrecon-production.up.railway.app](https://finrecon-production.up.railway.app/)** if you would
+rather not build anything. Everything below is for running it yourself.
 
 Docker is the primary path. No provider credential is required to start —
 Replay, Demo, and Benchmarks all work without one; only Live investigation needs
