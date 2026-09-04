@@ -1,7 +1,7 @@
 import { ArrowRight, BadgeCheck, BookOpen, FileSearch, Gavel, Landmark, ShieldCheck, TriangleAlert } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { api } from "../api";
+import { ApiError, api } from "../api";
 import type { RunResponse } from "../types";
 
 const pipeline = [
@@ -14,11 +14,19 @@ const pipeline = [
 export default function Landing() {
   const navigate = useNavigate();
   const [loadingDemo, setLoadingDemo] = useState(false);
+  const [demoError, setDemoError] = useState<string | null>(null);
   const exploreDemo = async () => {
     setLoadingDemo(true);
+    setDemoError(null);
     try {
       const result = await api<RunResponse>("/api/reconciliation/demo", { method: "POST" });
       navigate(`/overview?batch=${encodeURIComponent(result.batch_id)}`);
+    } catch (e) {
+      // Without this the button failed silently: the rejection skipped the
+      // navigation, `finally` cleared the spinner, and nothing told the
+      // operator anything had gone wrong. Run reconciliation already reports
+      // this same call's failures; the landing page has to as well.
+      setDemoError(e instanceof ApiError ? e.message : "The demo batch could not be loaded.");
     } finally { setLoadingDemo(false); }
   };
   return <div className="landing">
@@ -34,6 +42,7 @@ export default function Landing() {
           <h1>Reconcile with evidence.<br /><em>Escalate uncertainty.</em></h1>
           <p>FinRecon uses bounded AI evidence search to investigate unresolved cases. Deterministic financial validation and policy retain authority over every decision.</p>
           <div className="landing-actions"><button className="landing-primary" onClick={exploreDemo} disabled={loadingDemo}>{loadingDemo ? "Loading demo…" : "Explore Demo"} <ArrowRight size={16} /></button><Link className="landing-secondary" to="/benchmarks">Evidence & Evaluation <BookOpen size={16} /></Link></div>
+          {demoError && <p className="landing-error" role="alert"><TriangleAlert size={15} /> {demoError} <Link to="/run">Open Run reconciliation</Link></p>}
           <p className="landing-assurance"><BadgeCheck size={15} /> No model confidence or prose can determine money movement.</p>
         </div>
         <div className="control-panel" aria-label="FinRecon authority pipeline">
