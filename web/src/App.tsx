@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
+import ChunkBoundary from "./components/ChunkBoundary";
 import Shell from "./components/Shell";
 import { LoadingState } from "./components/ui";
 
@@ -23,7 +24,7 @@ function LegacyCaseRedirect() {
 }
 
 export default function App() {
-  return <Suspense fallback={<LoadingState label="Loading FinRecon workspace" />}><Routes>
+  return <ChunkBoundary><Suspense fallback={<LoadingState label="Loading FinRecon workspace" />}><Routes>
     <Route path="/" element={<Landing />} />
     <Route element={<Shell />}>
       <Route path="overview" element={<Overview />} />
@@ -37,5 +38,5 @@ export default function App() {
     <Route path="cases" element={<LegacyQueueRedirect />} />
     <Route path="cases/:caseId" element={<LegacyCaseRedirect />} />
     <Route path="*" element={<Navigate to="/" replace />} />
-  </Routes></Suspense>;
+  </Routes></Suspense></ChunkBoundary>;
 }
