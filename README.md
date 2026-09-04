@@ -29,8 +29,18 @@ instead of guessing.
 | Wrong automatic resolutions | **0** |
 | Value at risk | **₹0** |
 
-Full provenance, including the original operational run and how the numbers above
-were reached, is in [Frozen Eval v3](#frozen-eval-v3) below.
+**Reproducing this offline.** Two committed paths replay the same 890 cases with no
+credential and no network, and they deliberately answer different questions:
+
+| Command | What it replays | Result |
+|---|---|---:|
+| `uv run python -m benchmark.final_eval` | the deterministic mechanical investigator — no model involved at any point | 823 / 850 |
+| `POST /api/benchmarks/frozen-eval-v3/replay`, or the Evaluation workspace in the UI | the committed Opus trajectory cache | **850 / 850** |
+
+The headline above is the second row. The first is the no-model baseline it is
+measured against — the gap between them is exactly what the model contributed, and
+both are reported rather than one. Full provenance, including the original
+operational run, is in [Frozen Eval v3](#frozen-eval-v3) below.
 
 ---
 
@@ -320,15 +330,6 @@ Suggested walkthrough for a judge:
 6. **Bank schema mapping** — upload a CSV with an unrecognized schema, review the
    AI's proposed mapping, and confirm it.
 
-No screenshots are committed yet. Recommended additions under `docs/assets/` before
-a public submission, five is enough:
-
-1. Overview dashboard
-2. Frozen Eval v3 replay result
-3. A T2 case's evidence trail (resolved)
-4. A T3 case's evidence trail (safely escalated)
-5. Bank schema mapping review screen
-
 ---
 
 ## Run locally
@@ -338,7 +339,7 @@ Replay, Demo, and Benchmarks all work without one; only Live investigation needs
 one.
 
 ```bash
-git clone <this-repo-url> finrecon
+git clone https://github.com/Somsubhra-Nandi/finrecon.git finrecon
 cd finrecon
 docker compose up --build
 ```
@@ -374,7 +375,7 @@ Open `http://127.0.0.1:5173`.
 
 ```bash
 uv sync --extra dev
-uv run python -m benchmark.final_eval   # the one-command submission path — no network, no API key
+uv run python -m benchmark.final_eval   # deterministic no-model baseline → 823 / 850; no network, no API key
 uv run pytest                           # full repository test suite
 ```
 
@@ -455,3 +456,11 @@ Stated plainly, not to be found later:
   multi-currency, late correction files).
 - Provider cost/latency telemetry surfaced alongside trajectories, not just in
   raw reports.
+
+---
+
+## Author and license
+
+Built by **Somsubhra Nandi** ([@Somsubhra-Nandi](https://github.com/Somsubhra-Nandi)).
+
+Released under the [MIT License](./LICENSE).
