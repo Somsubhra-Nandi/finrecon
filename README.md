@@ -190,10 +190,10 @@ latter failed closed without authorizing a match.
 ### Provider-failure provenance
 
 **Both runs — the original and the recovered — produced zero wrong automatic
-resolutions and ₹0 at risk.** The retry described below changed how many cases
-were *investigated*, never what any of them was allowed to decide: every provider
-failure had already failed closed to an escalation, which is the designed
-behaviour, not a lost result being recovered into a better one.
+resolutions and ₹0 at risk.** In the raw run, provider failures produced no
+automatic resolution; retrying only those infrastructure-failure cases under
+the identical frozen configuration recovered availability without changing the
+deterministic decision boundary.
 
 The original operational run — before any retry — is preserved separately rather
 than discarded:
@@ -215,7 +215,7 @@ against hidden ground truth confirmed all 13 correct, producing the provider-rec
 **200 / 200**. Nothing about the deterministic decision layer changed between the two
 runs; only the provider calls that had previously failed were re-attempted.
 
-### What a model actually bought here
+### Where AI adds value
 
 The model is used in exactly one place: recovering a reference fragment from
 free-text bank narration when no deterministic rule can reach it. Everywhere else
@@ -390,7 +390,7 @@ variables only, never accepted from the browser.
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-make install
+uv sync --extra dev
 ```
 
 ```bash
