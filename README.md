@@ -12,6 +12,23 @@ FinRecon is a reconciliation controller built around one invariant:
 
 > **The agent may enrich the case. It may not shrink it.**
 
+<details>
+<summary><b>Short on time? The three-minute version.</b></summary>
+
+- **The claim** — 890 cases, 850 / 850 resolvable ones reconciled correctly,
+  40 / 40 ambiguous ones escalated, **0 wrong automatic resolutions**, ₹0 at risk.
+- **The idea** — AI investigates evidence; deterministic code holds the sole
+  authority to resolve or escalate. [Safety model](#safety-model) lists how each
+  half of that is enforced rather than asserted.
+- **See it yourself** — `docker compose up --build`, open `localhost:8000`, hit
+  Replay in the Evaluation workspace: all 890 cases, from committed artifacts,
+  **no API key and no network call**, in a few seconds.
+- **The honest part** — the benchmark is synthetic and frozen, the no-model
+  baseline (823 / 850) is reported next to the model result, and
+  [Limitations](#limitations) says what this does not cover.
+
+</details>
+
 A deterministic core resolves everything it can prove from IDs and arithmetic. What's
 left goes to a bounded AI investigator that can *look* at evidence — bank narration,
 settlement break-ups, refund lines — but cannot decide anything. Every automatic
@@ -22,15 +39,25 @@ instead of guessing.
 
 **Frozen Eval v3 — 890 synthetic cases, provider-recovered result:**
 
-| | |
+| Measure | Result |
 |---|---:|
 | Resolvable cases reconciled correctly | **850 / 850** |
 | Genuinely ambiguous cases safely escalated | **40 / 40** |
 | Wrong automatic resolutions | **0** |
 | Value at risk | **₹0** |
 
-Full provenance, including the original operational run and how the numbers above
-were reached, is in [Frozen Eval v3](#frozen-eval-v3) below.
+**Reproducing this offline.** Two committed paths replay the same 890 cases with no
+credential and no network, and they deliberately answer different questions:
+
+| Command | What it replays | Result |
+|---|---|---:|
+| `uv run python -m benchmark.final_eval` | the deterministic mechanical investigator — no model involved at any point | 823 / 850 |
+| `POST /api/benchmarks/frozen-eval-v3/replay`, or the Evaluation workspace in the UI | the committed Opus trajectory cache | **850 / 850** |
+
+The headline above is the second row. The first is the no-model baseline it is
+measured against — the gap between them is exactly what the model contributed, and
+both are reported rather than one. Full provenance, including the original
+operational run, is in [Frozen Eval v3](#frozen-eval-v3) below.
 
 ---
 
@@ -162,7 +189,14 @@ latter failed closed without authorizing a match.
 
 ### Provider-failure provenance
 
-The original operational run — before any retry — is preserved separately:
+**Both runs — the original and the recovered — produced zero wrong automatic
+resolutions and ₹0 at risk.** In the raw run, provider failures produced no
+automatic resolution; retrying only those infrastructure-failure cases under
+the identical frozen configuration recovered availability without changing the
+deterministic decision boundary.
+
+The original operational run — before any retry — is preserved separately rather
+than discarded:
 [`frozen-eval-v3-opus5-thinking-operational-raw-240.json`](benchmark/reports/frozen-eval-v3-opus5-thinking-operational-raw-240.json).
 
 - T2: **187 / 200** resolved correctly, **0 wrong**. The other 13 terminated with
@@ -181,7 +215,13 @@ against hidden ground truth confirmed all 13 correct, producing the provider-rec
 **200 / 200**. Nothing about the deterministic decision layer changed between the two
 runs; only the provider calls that had previously failed were re-attempted.
 
-### What a model actually bought here
+### Where AI adds value
+
+The model is used in exactly one place: recovering a reference fragment from
+free-text bank narration when no deterministic rule can reach it. Everywhere else
+— matching, arithmetic, authorization — it is deliberately absent, because
+those parts can be proved and a model would only add risk. The measurement below
+is therefore the value of that placement, not a ceiling on what the model could do.
 
 A deterministic, non-LLM baseline exists — the same tools, validator, and policy,
 driven by a mechanical (not language-model) investigator over the identical 890-case
@@ -193,10 +233,12 @@ set, reproduced by `make eval`:
 | Opus, provider-recovered | **200 / 200** | 0 | 0 | **850 / 850** |
 
 Source: [`benchmark/reports/final-eval.json`](benchmark/reports/final-eval.json)
-(`frozen_core.metrics_by_tier.T2`). Opus recovers **+27 T2 cases** over the
-mechanical baseline, at zero wrong resolutions in either arm — the model's
-contribution here is finding reference fragments a fixed heuristic can't, not
-overriding what the deterministic layer would have decided.
+(`frozen_core.metrics_by_tier.T2`). Opus recovers **+27 T2 cases** the fixed
+heuristic escalates — 27 cases that would otherwise sit in a human queue — at
+**zero wrong resolutions in either arm**. That is the shape of the result worth
+having: the model widens what can be settled automatically, and cannot widen what
+is allowed to be settled. Both arms are reported so the difference is auditable
+instead of implied.
 
 ### Integrity / reproducibility
 
@@ -320,15 +362,6 @@ Suggested walkthrough for a judge:
 6. **Bank schema mapping** — upload a CSV with an unrecognized schema, review the
    AI's proposed mapping, and confirm it.
 
-No screenshots are committed yet. Recommended additions under `docs/assets/` before
-a public submission, five is enough:
-
-1. Overview dashboard
-2. Frozen Eval v3 replay result
-3. A T2 case's evidence trail (resolved)
-4. A T3 case's evidence trail (safely escalated)
-5. Bank schema mapping review screen
-
 ---
 
 ## Run locally
@@ -338,7 +371,7 @@ Replay, Demo, and Benchmarks all work without one; only Live investigation needs
 one.
 
 ```bash
-git clone <this-repo-url> finrecon
+git clone https://github.com/Somsubhra-Nandi/finrecon.git finrecon
 cd finrecon
 docker compose up --build
 ```
@@ -357,7 +390,7 @@ variables only, never accepted from the browser.
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-make install
+uv sync --extra dev
 ```
 
 ```bash
@@ -374,7 +407,7 @@ Open `http://127.0.0.1:5173`.
 
 ```bash
 uv sync --extra dev
-uv run python -m benchmark.final_eval   # the one-command submission path — no network, no API key
+uv run python -m benchmark.final_eval   # deterministic no-model baseline → 823 / 850; no network, no API key
 uv run pytest                           # full repository test suite
 ```
 
@@ -423,28 +456,33 @@ Full technical specification: [`DESIGN.md`](./DESIGN.md).
 
 ## Limitations
 
-Stated plainly, not to be found later:
+Stated here rather than left to be found later. Each of these is a known
+boundary of the current build, not an open question about it:
 
-- **Synthetic data.** The benchmark's narration and corruption taxonomy were
-  authored by the same person who built the matcher being evaluated. Freezing
-  the eval set prevents overfitting to *instances*, not to the *distribution*.
-  This does not reproduce every bank's narration format, partial file delivery,
-  schema drift, late correction files, settlement reversals, the chargeback
-  lifecycle, multi-currency accounting, or bank holidays.
-- **Bank input is scoped to clean CSV.** No preamble/footer scanning, no XLSX, no
-  MT940/camt.053 — see [Bank onboarding](#bank-onboarding--schema-mapping).
-- **Only one bank profile ships built-in**, a demo fixture — no real bank's
-  format is pre-loaded; every other bank goes through the AI-proposal +
-  human-confirmation path.
-- **Human resolution is per-case, not a workspace.** A case can be resolved with
-  a recorded reason; there's no bulk-action or approval-chain queue yet.
-- **Provider availability can fail**, and did during the frozen run (13 T2 + 7
-  T3 cases). The system fails closed rather than guessing — by design — but that
-  means live investigation depth is bounded by third-party API reliability.
-- **This is a reproducible benchmark result, not a claim of accuracy on
-  arbitrary real-world data.** Reported numbers come from cached model
-  trajectories; a live run against a hosted model may diverge, and any measured
-  drift is reported separately, not folded into the frozen numbers above.
+- **The benchmark is synthetic by construction, and frozen so it cannot be tuned
+  to.** Its narration and corruption taxonomy were authored by the same person who
+  built the matcher — which is why the corpus is hashed and committed, and why the
+  no-model baseline is published beside the model result. Freezing rules out
+  overfitting to *instances*; it does not rule out overfitting to the
+  *distribution*, and that distribution does not reproduce every bank's narration
+  format, partial file delivery, schema drift, late correction files, settlement
+  reversals, the chargeback lifecycle, multi-currency accounting, or bank holidays.
+  [`notes/RAZORPAY-INPUT-GAP.md`](notes/RAZORPAY-INPUT-GAP.md) maps, field by field,
+  what changes when real Razorpay data replaces the synthetic split.
+- **The headline numbers are a replay of committed trajectories, and are labelled
+  as such throughout.** A live run against a hosted model may diverge; measured
+  drift is reported separately rather than folded into the frozen numbers.
+- **Live investigation depth is bounded by provider availability.** It failed
+  during the frozen run (13 T2 + 7 T3 cases) and the system escalated every one of
+  them instead of guessing. That is the designed response to an outage, and it is
+  also a real ceiling on how much can be investigated live.
+- **Bank input is scoped to clean CSV** — no preamble/footer scanning, no XLSX, no
+  MT940/camt.053. See [Bank onboarding](#bank-onboarding--schema-mapping).
+- **One bank profile ships built-in**, a demo fixture. No real bank's format is
+  pre-loaded; every other bank goes through the AI-proposal + human-confirmation
+  path, which is the intended route rather than a gap in it.
+- **Human resolution is per-case, not yet a workspace.** A case can be resolved
+  with a recorded reason; bulk triage and approval chains are next, below.
 
 ## Future work
 
@@ -455,3 +493,11 @@ Stated plainly, not to be found later:
   multi-currency, late correction files).
 - Provider cost/latency telemetry surfaced alongside trajectories, not just in
   raw reports.
+
+---
+
+## Author and license
+
+Built by **Somsubhra Nandi** ([@Somsubhra-Nandi](https://github.com/Somsubhra-Nandi)).
+
+Released under the [MIT License](./LICENSE).
