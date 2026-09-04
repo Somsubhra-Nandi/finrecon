@@ -524,3 +524,6 @@ td:first-child span { margin-top: 4px; color: var(--muted); font-size: 10px; }
   .candidate-cards { grid-template-columns: 1fr; }
   .replay-sequence article { grid-template-columns: 38px minmax(0, 1fr); }
 }
+.chunk-boundary { max-width: 560px; margin: 90px auto; padding: 26px 28px; border: 1px solid #44625f; border-radius: 10px; background: #10242a; color: #d9e9e5; }
+.chunk-boundary p { margin: 10px 0 18px; color: #aec0bf; font-size: 14px; line-height: 1.6; }
+.chunk-boundary button { min-height: 40px; padding: 0 16px; border-radius: 6px; color: #082017; background: #8bd7ba; font-weight: 800; font-size: 12px; }

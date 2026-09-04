@@ -634,7 +634,18 @@ def create_app(*, ledger_path: str | Path | None = None) -> FastAPI:
         @app.get("/{path:path}", include_in_schema=False)
         def spa(path: str) -> FileResponse:
             target = web_dist / path
-            return FileResponse(target if target.is_file() else web_dist / "index.html")
+            if target.is_file():
+                # Real files reached here keep their default validators. Their
+                # names are stable rather than content-hashed -- favicon.svg and
+                # og.png -- so they must stay revalidatable; only /assets is
+                # hashed, and that is served by its own mount above.
+                return FileResponse(target)
+            # index.html must never be cached. It is the only file whose URL
+            # stays constant across deploys while its contents change, and it
+            # names the hashed chunks every route lazily imports. A browser
+            # holding a stale copy asks for chunk filenames the new deploy no
+            # longer has, the dynamic import 404s, and the page renders blank.
+            return FileResponse(web_dist / "index.html", headers={"Cache-Control": "no-store, must-revalidate"})
 
     return app
 
