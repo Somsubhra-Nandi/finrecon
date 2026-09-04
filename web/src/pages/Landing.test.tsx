@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import Landing from "./Landing";
 
 describe("Landing page", () => {
@@ -12,4 +12,23 @@ describe("Landing page", () => {
     expect(screen.getByRole("button", { name: /Explore Demo/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Evidence & Evaluation/i })).toHaveAttribute("href", "/benchmarks");
   });
+
+  it("reports a failed demo load instead of doing nothing", async () => {
+    // The handler used to be try/finally with no catch: a rejected request
+    // skipped the navigation and cleared the spinner, so the button looked
+    // inert and the operator was told nothing.
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      json: async () => ({ detail: { code: "backend_failure", message: "The demo batch could not be built." } }),
+    }));
+
+    render(<MemoryRouter><Landing /></MemoryRouter>);
+    fireEvent.click(screen.getByRole("button", { name: /Explore Demo/i }));
+
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("The demo batch could not be built."));
+    expect(screen.getByRole("button", { name: /Explore Demo/i })).toBeEnabled();
+  });
 });
+
+afterEach(() => { vi.unstubAllGlobals(); });
